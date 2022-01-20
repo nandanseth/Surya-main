@@ -7,9 +7,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# TODO Remove once on GCP.
 SECRET_KEY = "django-insecure-67z5lz85dagp4%=ydyzoc_cy0@0@$l-7w+e^r4uvov%bzec3s3"
 
 SITE_ID = 1
+# TODO Replace with site URL once on GCP.
 ALLOWED_HOSTS = ['localhost']
 
 # SECURITY WARNING: don't run with debug turned on in production!
