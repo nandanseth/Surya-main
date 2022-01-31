@@ -43,7 +43,7 @@ GET /demo
 
 **Response**
 
-```
+```javascript
 {
   "policy": {
     "values": {
