@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
 export const AuthContext = React.createContext(null);
@@ -7,18 +7,30 @@ const initialState = {
   isLoggedIn: false,
   isLoginPending: false,
   loginError: undefined,
-  token: undefined,
+  data: undefined,
 };
+
+const userStorageKey = 'user';
+
+
 
 export const ContextProvider = props => {
   const [state, setState] = useState(initialState);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem(userStorageKey);
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setState(foundUser);
+    }
+  }, []);
 
   const login = async (email, password) => {
     setState({
         isLoginPending: true,
         loginError: undefined, 
         isLoggedIn: false,
-        token: undefined,
+        data: undefined,
     })
 
     try {
@@ -27,14 +39,15 @@ export const ContextProvider = props => {
            isLoginPending: false,
            isLoggedIn: true,
            loginError: undefined,
-            token: res.data.token,
+            data: res.data
        });
+       localStorage.setItem(userStorageKey, res.data);
     } catch (error) {
         setState({
             isLoginPending: false,
             isLoggedIn: false,
             loginError: error,
-            token: undefined
+            data: undefined
         })
     }
   };
