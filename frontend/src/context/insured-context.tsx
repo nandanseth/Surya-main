@@ -213,6 +213,8 @@ export const FormContextProvider = ({ children }) => {
         }
     };
 
+    console.log(JSON.stringify(store, null, 2))
+
 
     return (
       <FormContext.Provider value={store}>
