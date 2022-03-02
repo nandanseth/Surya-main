@@ -269,4 +269,5 @@ userapi/
 db.sqlite3
 accounts/migrations/
 
+frontend/build/
 # End of https://www.toptal.com/developers/gitignore/api/django,python,visualstudiocode
