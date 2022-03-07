@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SubHeader from '../../components/PolicyHomeSubHeader';
@@ -37,6 +37,7 @@ const policySectionMenu = [
 
 const Policy = () => {
   const params = useParams();
+  const [data, setData] = useState(undefined);
 
   const [show, setShow] = useState(false);
   const [section, setSection] = useState(home);
@@ -50,6 +51,21 @@ const Policy = () => {
   };
 
   const { slug } = params;
+  useEffect(() => {
+    const policyUrl = '';
+    const headers = {};
+    const getPolicy = async () => {
+      try {
+      // const res = await fetch(policyUrl, headers);
+      // setData(res.data)
+      }
+      catch(error) {
+        alert(error)
+      }
+    };
+    getPolicy();
+  }, []);
+  
 
   const policyMenu = (
     <>
