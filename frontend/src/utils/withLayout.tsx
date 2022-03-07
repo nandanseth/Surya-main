@@ -4,12 +4,12 @@ import Menu from '../components/Menu';
 import Sidebar from '../components/Sidebar';
 import { Content } from '../styles/styles';
 
-const Layout = ({ children, policyMenu}) => (
+const Layout = ({ children, policyMenu = undefined}) => (
   <Main>
     <Flex>
       <Sidebar />
       <Content>
-        <Menu policyMenu={policyMenu}/>
+        <Menu policySectionMenu={policyMenu}/>
         <>
           {children}
         </>
