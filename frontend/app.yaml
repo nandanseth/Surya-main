@@ -1,4 +1,5 @@
-runtime: nodejs16
+runtime: nodejs14
+service: default
 handlers:
 - url: /(.*\..+)$
   static_files: build/\1
