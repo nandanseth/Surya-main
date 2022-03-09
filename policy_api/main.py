@@ -1,3 +1,5 @@
+import json
+from sqlite3 import Date
 import uuid
 from datetime import datetime
 from typing import List, Optional
@@ -8,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from google.cloud import firestore
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 app = FastAPI()
 
@@ -202,7 +205,7 @@ class Policy(BaseModel):
     insured: Optional[Insured] = None
     drivers: Optional[Drivers] = None
     loss_history: Optional[LossHistory] = None
-    documents: Optional[dict] = None
+    documents: Optional[dict] = {}
     # vehicles: Optional[List[Vehicle]] = None
 
 
@@ -211,29 +214,85 @@ def home():
     return {"status": "ok"}
 
 
+# TODO: Might need this later, so it was written.
+def datetime_with_nanosecs_to_str(v: DatetimeWithNanoseconds):
+    return f"{v.year},{v.month},{v.day},{v.hour}, {v.minute}, {v.second}, {v.tzinfo}"
+
+
 @app.get("/policies/")
-def get_policies(title: str, date: str, premium: str):
-    policies = db.collection("policies")
-    return JSONResponse(content={"policies": policies})
+def get_policies(
+    title: Optional[str] = None,
+    date: Optional[str] = None,
+    premium: Optional[str] = None,
+):
+    _policies = db.collection("policies").stream()
+
+    policies = []
+    for p in _policies:
+        p_id = p.id
+        p = p.to_dict()
+        # p["created_at"] = _datetime_with_nanosecs_to_str(p["created_at"])
+        # p["created_at"] = p["created_at"].strftime("%A, %d. %B %Y %I:%M%p")
+        p["id"] = p_id
+        p["created_at"] = p["created_at"].timestamp()
+        policies.append(p)
+    return JSONResponse(content=policies)
 
 
-@app.get("/policies/{policy_uuid}/", response_model=Policy)
+@app.get("/policies/{policy_id}/", response_model=Policy)
 def get_policy(policy_id: str):
-    policy = db.collection("policies").where("id", "==", policy_id).get()
-    return JSONResponse(content=policy.dict)
+    policy_ref = db.collection("policies").document(policy_id)
+    policy = policy_ref.get()
+    if policy.exists:
+        policy_id = policy.id
+        policy = policy.to_dict()
+        policy["id"] = policy_id
+        policy["created_at"] = policy["created_at"].timestamp()
+        return JSONResponse(content=policy)
+    return JSONResponse(content={"error": "Document not found."})
 
 
-@app.post("/policies/", response_model=Policy)  # create a policy
+@app.post("/policies/", response_model=Policy)
 def create_policy(policy: Policy):
     policies = db.collection("policies")
     policy_uuid = str(uuid.uuid4())
-    now = datetime.utcnow()
-    policies.document(policy_uuid).set({**policy.dict(), "created": now})
+
+    created_policy = policies.document(policy_uuid).set(
+        {**policy.dict(), "created_at": datetime.utcnow()}
+    )
+    if created_policy:
+        return JSONResponse(
+            content={"created": True, "policy_id": policy_uuid, "error": None}
+        )
+    return JSONResponse(
+        content={
+            "created": False,
+            "policy_id": None,
+            "error": "There was a problem creating the policy.",
+        }
+    )
 
 
-@app.put("/policies/{policy_uuid}/", response_model=Policy)  # create a policy
+@app.put("/policies/{policy_id}/", response_model=Policy)
 def update_policy(policy_id: str, policy: Policy):
-    return
+    policies_ref = db.collection("policies")
+    policy = policies_ref.document(policy_id)
+
+    if policy.exists:
+        try:
+            policy.update(policy)
+            return JSONResponse(
+                content={"updated": True, "policy_id": policy_id, "error": None}
+            )
+        except Exception as e:
+            return JSONResponse(
+                content={
+                    "created": False,
+                    "policy_id": None,
+                    "payload_was": policy,
+                    "error": "There was a problem updating the policy. Check the payload submitted.",
+                }
+            )
 
 
 """
