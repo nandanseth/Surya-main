@@ -270,3 +270,5 @@ db.sqlite3
 accounts/migrations/
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python,visualstudiocode
+
+vscode

@@ -177,3 +177,4 @@ sketch
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/react,node,yarn,appengine
+.vscode/*
