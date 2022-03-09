@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Buttons from '../components/Buttons';
 import Overlay from '../components/Overlay';
@@ -13,10 +13,28 @@ const title = 'Policies';
 
 const Home = () => {
   const [show, setShow] = useState(false);
+  const [policies, setPolicies] = useState([]);
+  
+  useEffect(() => {
+    const policiesUrl = '';
+    const headers = {};
+    const getPolicies = async () => {
+      try {
+      // const res = await fetch(policiesUrl, headers);
+      // setPolicies(res.data)
+      }
+      catch(error) {
+        alert(error)
+      }
+    };
+    getPolicies();
+  }, []);
+
   const close = () => {
     setShow(false);
   };
   const sample = makeSampleInfo(4);
+  // this will be the list 
   return (
     <FormContextProvider>
       <Layout>

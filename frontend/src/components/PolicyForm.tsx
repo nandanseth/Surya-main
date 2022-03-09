@@ -45,7 +45,21 @@ const PolicyForm = ({ close }) => {
 
   const [current, setCurrent] = useState('insured');
   const { name, page: Current } = Pages[current];
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = () => {
+    try {
+      const postUrl = '';
+      const postHeaders = {};
+      const postStore = async () => {
+        //await axios.post(postUrl, { data: store, postHeaders })
+      }
+      postStore();
+      return true;
+    }
+    catch (error) {
+      alert(error)
+      return false;
+    }
+  };
 
   const MenuFooter = () => (
     <Nav>
@@ -113,7 +127,7 @@ const PolicyForm = ({ close }) => {
           setCurrent('documents');
         }}
         active={current === 'documents'}
-        title="Docments"
+        title="Documents"
       >
         <StyledImg src={documentsIcon} />
       </StyledIcon>
@@ -122,7 +136,7 @@ const PolicyForm = ({ close }) => {
 
   return (
       <Container>
-        <FormHead name={name} close={close} percent={percentMap[current]} reset={reset}/>
+        <FormHead name={name} close={close} percent={percentMap[current]} reset={reset} onSubmit={onSubmit}/>
         <Main>
           <Current store={store}/>
         </Main>
@@ -136,11 +150,13 @@ const FormHead = ({
   percent = 0,
   name = 'Name',
   reset,
+  onSubmit
 }: {
   close: () => void
   percent?: number
   name?: string
   reset?: any,
+  onSubmit: () => boolean;
 }) => (
   <Header>
     <ProgressContainer>
@@ -156,8 +172,10 @@ const FormHead = ({
         <SaveDraft onClick={close}>Save as Draft</SaveDraft>
         <Submit
           onClick={() => {
-            close();
-            reset();
+            if(onSubmit) {
+              close();
+              reset();
+            }
           }}
         >
           Submit
