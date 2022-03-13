@@ -1,6 +1,6 @@
 steps:
 - name: node
-  args: ["install"]
+  args: ["run", "install"]
   dir: 'frontend'
 - name: node
   args: ["run", "build"]
