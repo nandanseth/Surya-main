@@ -1,11 +1,11 @@
 steps:
-- name: nodejs16
+- name: node
   entrypoint: yarn
   args: ["install"]
   dir: 'frontend'
-- name: nodejs16
+- name: node
   entrypoint: yarn
-  args: ["build"]
+  args: ["run", "build"]
   dir: 'frontend'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
