@@ -1,8 +1,8 @@
 steps:
-- name: nodejs16
+- name: node
   args: ["install"]
   dir: 'frontend'
-- name: nodejs16
+- name: node
   args: ["run", "build"]
   dir: 'frontend'
 - name: "gcr.io/cloud-builders/gcloud"
