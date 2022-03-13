@@ -1,4 +1,4 @@
-steps:
+# steps:
 # - name: node
 #   # entrypoint: yarn
 #   args: ["run", "install"]
