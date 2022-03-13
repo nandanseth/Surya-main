@@ -4,11 +4,11 @@
 #   args: ["run", "install"]
 #   dir: 'frontend'
 steps:
-- name: 'node'
+- name: 'node:14'
   entrypoint: 'yarn'
   args: ['install']
   dir: 'frontend'
-- name: 'node'
+- name: 'node:14'
   entrypoint: 'yarn'
   args: ['build']
   dir: 'frontend'
