@@ -6,7 +6,7 @@ steps:
 steps:
 - name: 'node'
   entrypoint: 'yarn'
-  args: ['install']
+  args: ['build']
   # dir: 'frontend'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
