@@ -6,10 +6,13 @@
 steps:
 - name: 'node'
   entrypoint: 'yarn'
-  args: ['run', 'build']
+  args: ['install']
+  dir: 'frontend'
+- name: 'node'
+  entrypoint: 'yarn'
+  args: ['build']
   dir: 'frontend'
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
   dir: 'frontend'
 timeout: "600s"
-
