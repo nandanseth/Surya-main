@@ -2,6 +2,14 @@
 
 Manage policies through these endpoints.
 
+# Service
+
+| Environment | URL |
+| ----------- | --- |
+| Prod | https://policy-api-dot-surya-systems.uc.r.appspot.com/ |
+| Dev  |  N/A  |
+
+
 # Endpoints
 
 ## Fetch all policies

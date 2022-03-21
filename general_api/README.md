@@ -30,6 +30,13 @@ uvicorn main:app --reload
 
 Your app should start running at [localhost:8000](http://localhost:8000/).
 
+# Service
+
+| Environment | URL |
+| ----------- | --- |
+| Prod | https://general-api-dot-surya-systems.uc.r.appspot.com/ |
+| Dev  |  N/A  |
+
 # Endpoints
 
 The following endpoints are available in this service.
