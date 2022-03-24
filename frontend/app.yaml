@@ -5,10 +5,18 @@ handlers:
   - url: /(.*\..+)$
     static_files: build/\1
     require_matching_file: false
-    upload: build/(.*\..+)$
+    upload: build/.*
   - url: /.*
     static_files: build/index.html
-    require_matching_file: false
     upload: build/index.html
-  - url: .*
-    script: auto
+  - url: /(.*\.(html|css|js))
+    static_files: build/\1
+    upload: build/(.*\.(html|css|js))
+
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
+network: {}
+service_account: surya-systems@appspot.gserviceaccount.com
