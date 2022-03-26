@@ -2,9 +2,12 @@ runtime: nodejs16
 env: standard
 instance_class: F1
 handlers:
-  - url: /.*
-    static_files: build/index.html
-    upload: build/index.html
+    - url: /(.*\.(js|css|svg|png)(|\.map))$
+      static_files: build/\1
+      upload: build/(.*)(|\.map)
+    - url: /.*
+      static_files: build/index.html
+      upload: build/.*
 
 
 automatic_scaling:
