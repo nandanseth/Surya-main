@@ -6,9 +6,11 @@ import PolicyHome from './pages/home';
 import PolicyPage from './pages/policies/policy';
 import Reports from './pages/reports';
 import SignIn from './pages/sign-in';
+import UrlProvider from './context/url-context';
 
 function App() {
   return (
+    <UrlProvider>
     <Router>
       <Switch>
         <Route path="/claims" component={Claims} />
@@ -18,6 +20,7 @@ function App() {
         <Route exact path="/" component={SignIn} />
       </Switch>
     </Router>
+    </UrlProvider>
   );
 }
 
