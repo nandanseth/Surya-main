@@ -52,12 +52,16 @@ const PolicyForm = ({ close }) => {
       //we can do some verification here
       const requestOptions = {
         method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(store)
     };
       const postStore = async () => {
+        console.log( JSON.stringify(store))
         const res = await fetch(urls.createPoliciesUrl, requestOptions);
         const data = await res.json();
-        console.log({ data });
+        console.log({ data }, 'test');
       }
       postStore();
       return true;
