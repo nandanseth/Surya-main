@@ -9,6 +9,7 @@ import lossHistoryIcon from '../images/loss history icon.png';
 import policyIcon from '../images/policy icon.png';
 import vehicleIcon from '../images/vehicle icon.png';
 import { Colors, Title, transitionCss } from '../styles/styles';
+import { urls } from '../shared';
 import {
   CoverageSection,
   DocumentsSection,
@@ -20,6 +21,7 @@ import {
 
 const PolicyForm = ({ close }) => {
   const store = useContext(FormContext);
+  console.log(store)
   const { reset } = store;
   const Pages = {
     policy: { page: PolicySection, name: 'Policy' },
@@ -47,10 +49,19 @@ const PolicyForm = ({ close }) => {
   const { name, page: Current } = Pages[current];
   const onSubmit = () => {
     try {
-      const postUrl = '';
-      const postHeaders = {};
+      //we can do some verification here
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(store)
+    };
       const postStore = async () => {
-        //await axios.post(postUrl, { data: store, postHeaders })
+        console.log( JSON.stringify(store))
+        const res = await fetch(urls.createPoliciesUrl, requestOptions);
+        const data = await res.json();
+        console.log({ data }, 'test');
       }
       postStore();
       return true;
@@ -172,7 +183,7 @@ const FormHead = ({
         <SaveDraft onClick={close}>Save as Draft</SaveDraft>
         <Submit
           onClick={() => {
-            if(onSubmit) {
+            if(onSubmit()) {
               close();
               reset();
             }

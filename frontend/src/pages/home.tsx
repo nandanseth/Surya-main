@@ -8,20 +8,24 @@ import Search from '../components/Search';
 import { FormContextProvider } from '../context/insured-context';
 import { Header, Title } from '../styles/styles';
 import Layout from '../utils/withLayout';
+import { urls } from '../shared';
+
 
 const title = 'Policies';
 
-const Home = () => {
+const Home = (props) => {
   const [show, setShow] = useState(false);
   const [policies, setPolicies] = useState([]);
-  
+  console.log(props, 'test');
+
   useEffect(() => {
-    const policiesUrl = '';
     const headers = {};
     const getPolicies = async () => {
       try {
-      // const res = await fetch(policiesUrl, headers);
-      // setPolicies(res.data)
+       const res = await fetch(urls.getAllPoliciesUrl);
+       const data = await res.json();
+       console.log(data, 'test')
+       setPolicies(data);
       }
       catch(error) {
         alert(error)

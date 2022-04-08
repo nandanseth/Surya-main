@@ -306,19 +306,18 @@ const NewInsuredSection = ({
           <InputWrapper>
             <SuryaInput
               value={values.licenseEffDate}
-              onChange={(v) => {
-                setValues({ ...values, licenseEffDate: v });
-              }}
+              onChange={handleInputOnChange}
               label="License Effective Date"
               placeholder="MM/DD/YYYY"
+              name="licenseEffDate"
+
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
               value={values.licenseExpDate}
-              onChange={(v) => {
-                setValues({ ...values, licenseExpDate: v });
-              }}
+              name="licenseExpDate"
+              onChange={handleInputOnChange}
               label="License Expiration Date"
               placeholder="MM/DD/YYYY"
             />
