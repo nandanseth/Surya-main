@@ -7,6 +7,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "https://surya-systems.uc.r.appspot.com/",
 ]
 
 app.add_middleware(
