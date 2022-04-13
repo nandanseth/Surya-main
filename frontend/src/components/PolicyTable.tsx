@@ -64,9 +64,12 @@ const useSortableData = (items: Policy[], config = null) => {
 };
 
 const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
-  const { items, requestSort, sortConfig } = useSortableData(policies);
+  //const { items, requestSort, sortConfig } = useSortableData(policies);
+  const items = policies;
+  let sortConfig = undefined;
   const history = useHistory();
 
+  // add this in there to sort when getting the info
   const getAttribute = (name: string) => {
     if (!sortConfig) {
       return {};
