@@ -15,8 +15,8 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 app = FastAPI()
 
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
+    "localhost",
+    "localhost:3000",
     "https://surya-systems.uc.r.appspot.com",
 ]
 
