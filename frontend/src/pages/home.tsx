@@ -28,7 +28,8 @@ const Home = (props) => {
        setPolicies(data);
       }
       catch(error) {
-        alert(error)
+        alert(error);
+        console.log(error);
       }
     };
     getPolicies();
@@ -53,7 +54,7 @@ const Home = (props) => {
               <Search style={{ marginLeft: 'auto' }} placeholder="Search Policies" />
             </Header>
             <Section>
-              <PolicyTable policies={sample} />
+              <PolicyTable policies={policies} />
             </Section>
           </ContentMain>
           <Side />
