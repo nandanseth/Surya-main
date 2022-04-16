@@ -3,7 +3,7 @@ steps:
 #   entrypoint: 'yarn'
 #   args: ['install']
 #   dir: 'frontend'
-- name: 'node:14'
+- name: 'node'
   entrypoint: 'yarn'
   args: ['build']
   dir: 'frontend'
