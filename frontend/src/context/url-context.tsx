@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
 const urls = {
-    getAllPoliciesUrl: 'https://policy-api-dot-surya-systems.uc.r.appspot.com/policies/',
-    createPoliciesUrl: 'https://policy-api-dot-surya-systems.uc.r.appspot.com/policies/',
+    getAllPoliciesUrl: 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/policies/',
+    createPoliciesUrl: 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/policies/',
   };
 
   export const UrlContext = React.createContext(null);

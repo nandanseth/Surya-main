@@ -6,7 +6,7 @@ Manage policies through these endpoints.
 
 | Environment | URL |
 | ----------- | --- |
-| Prod | https://policy-api-dot-surya-systems.uc.r.appspot.com/ |
+| Prod | https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/ |
 | Dev  |  N/A  |
 
 
