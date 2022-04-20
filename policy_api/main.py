@@ -37,177 +37,253 @@ class Label(BaseModel):
 
 
 class PolicyMeta(BaseModel):
-    states: Optional[str] = None
-    classification: Optional[str] = None
-    lineOfBusiness: Optional[str] = None
-    policyLineItem: Optional[str] = None
-    coverageTerm: Optional[str] = None
-    policyCategory: Optional[str] = None
-    underwritingCode: Optional[str] = None
-    agent: Optional[str] = None
-    effectiveDate: Optional[str] = None
-    expirationDate: Optional[str] = None
-    radius: Optional[str] = None
-    classCode: Optional[str] = None
-    businessUseClass: Optional[str] = None
-    sizeClass: Optional[str] = None
+    states: Optional[str]
+    classification: Optional[str]
+    lineOfBusiness: Optional[str]
+    policyLineItem: Optional[str]
+    coverageTerm: Optional[str]
+    policyCategory: Optional[str]
+    underwritingCode: Optional[str]
+    agent: Optional[str]
+    effectiveDate: Optional[str]
+    expirationDate: Optional[str]
+    radius: Optional[str]
+    classCode: Optional[str]
+    businessUseClass: Optional[str]
+    sizeClass: Optional[str]
 
 
 class Coverage(BaseModel):
-    overall: Optional[Label] = None
-    personalInjury: Optional[Label] = None
-    medicalPayments: Optional[Label] = None
-    underinsuredMotorist: Optional[Label] = None
-    uninsuredMotorist: Optional[Label] = None
-    csl: Optional[Label] = None
-    nonOwnedCSL: Optional[Label] = None
-    deductable: Optional[str] = None
-    deductableAmount: Optional[str] = None
-    deductableAutoEntry: Optional[str] = None
-    combinedSectionLimit: Optional[str] = None
-    combinedSectionEntry: Optional[str] = None
-    splitSectionBodyPerPerson: Optional[str] = None
-    splitSectionBodyPerAccidentOptions: Optional[str] = None
-    splitSectionPropertyDamageOptions: Optional[str] = None
-    splitSectionAutoEntryOptions: Optional[str] = None
-    pIProtectionSingleLimit: Optional[str] = None
-    pIProtectionSingleEntry: Optional[str] = None
-    pIProtectionSplitBodyPerPerson: Optional[str] = None
-    pIProtectionSplitBodyPerAccident: Optional[str] = None
-    pIProtectionSplitPropertyDamage: Optional[str] = None
-    pIProtectionSplitAutoEntry: Optional[str] = None
-    medicalSingleLimit: Optional[str] = None
-    medicalSingleEntry: Optional[str] = None
-    medicalSplitBodyPerPerson: Optional[str] = None
-    medicalSplitBodyPerAccident: Optional[str] = None
-    medicalSplitPropertyDamage: Optional[str] = None
-    medicalSplitAutoEntry: Optional[str] = None
-    underinsuredMotoristSingleLimit: Optional[str] = None
-    underinsuredMotoristSingleAutoEntry: Optional[str] = None
-    underMotoristBodyPerPerson: Optional[str] = None
-    underMotoristBodyPerAccident: Optional[str] = None
-    underMotoristProperty: Optional[str] = None
-    underMotoristAuto: Optional[str] = None
-    uninsuredMotoristSingleLimit: Optional[str] = None
-    uninsuredMotoristSingleAutoEntry: Optional[str] = None
-    unMotoristBodyPerPerson: Optional[str] = None
-    unMotoristBodyPerAccident: Optional[str] = None
-    unMotoristProperty: Optional[str] = None
-    unMotoristAuto: Optional[str] = None
-    cslSingleLimit: Optional[str] = None
-    cslSingleAuto: Optional[str] = None
-    nonCslSingleLimit: Optional[str] = None
-    nonCslSingleAuto: Optional[str] = None
-    cslBodyPerPerson: Optional[str] = None
-    cslBodyPerAccident: Optional[str] = None
-    cslProperty: Optional[str] = None
-    cslSplitAuto: Optional[str] = None
-    nonCslBodyPerPerson: Optional[str] = None
-    nonCslBodyPerAccident: Optional[str] = None
-    nonCslProperty: Optional[str] = None
-    nonCslSplitAuto: Optional[str] = None
+    overall: Optional[Label]
+    personalInjury: Optional[Label]
+    medicalPayments: Optional[Label]
+    underinsuredMotorist: Optional[Label]
+    uninsuredMotorist: Optional[Label]
+    csl: Optional[Label]
+    nonOwnedCSL: Optional[Label]
+    deductable: Optional[str]
+    deductableAmount: Optional[str]
+    deductableAutoEntry: Optional[str]
+    combinedSectionLimit: Optional[str]
+    combinedSectionEntry: Optional[str]
+    splitSectionBodyPerPerson: Optional[str]
+    splitSectionBodyPerAccidentOptions: Optional[str]
+    splitSectionPropertyDamageOptions: Optional[str]
+    splitSectionAutoEntryOptions: Optional[str]
+    pIProtectionSingleLimit: Optional[str]
+    pIProtectionSingleEntry: Optional[str]
+    pIProtectionSplitBodyPerPerson: Optional[str]
+    pIProtectionSplitBodyPerAccident: Optional[str]
+    pIProtectionSplitPropertyDamage: Optional[str]
+    pIProtectionSplitAutoEntry: Optional[str]
+    medicalSingleLimit: Optional[str]
+    medicalSingleEntry: Optional[str]
+    medicalSplitBodyPerPerson: Optional[str]
+    medicalSplitBodyPerAccident: Optional[str]
+    medicalSplitPropertyDamage: Optional[str]
+    medicalSplitAutoEntry: Optional[str]
+    underinsuredMotoristSingleLimit: Optional[str]
+    underinsuredMotoristSingleAutoEntry: Optional[str]
+    underMotoristBodyPerPerson: Optional[str]
+    underMotoristBodyPerAccident: Optional[str]
+    underMotoristProperty: Optional[str]
+    underMotoristAuto: Optional[str]
+    uninsuredMotoristSingleLimit: Optional[str]
+    uninsuredMotoristSingleAutoEntry: Optional[str]
+    unMotoristBodyPerPerson: Optional[str]
+    unMotoristBodyPerAccident: Optional[str]
+    unMotoristProperty: Optional[str]
+    unMotoristAuto: Optional[str]
+    cslSingleLimit: Optional[str]
+    cslSingleAuto: Optional[str]
+    nonCslSingleLimit: Optional[str]
+    nonCslSingleAuto: Optional[str]
+    cslBodyPerPerson: Optional[str]
+    cslBodyPerAccident: Optional[str]
+    cslProperty: Optional[str]
+    cslSplitAuto: Optional[str]
+    nonCslBodyPerPerson: Optional[str]
+    nonCslBodyPerAccident: Optional[str]
+    nonCslProperty: Optional[str]
+    nonCslSplitAuto: Optional[str]
     errors: Optional[List]
 
 
 class Insured(BaseModel):
-    agent: Optional[str] = None
-    entity: Optional[str] = None
-    firstName: Optional[str] = None
-    lastName: Optional[str] = None
-    middleName: Optional[str] = None
-    dob: Optional[str] = None
-    suffix: Optional[str] = None
-    gender: Optional[str] = None
-    ssn: Optional[str] = None
-    address1: Optional[str] = None
-    address2: Optional[str] = None
-    city: Optional[str] = None
-    state: Optional[str] = None
-    zipCode: Optional[str] = None
-    email: Optional[str] = None
-    phoneNumber: Optional[str] = None
-    licenseState: Optional[str] = None
-    licenseNumber: Optional[str] = None
-    licenseEff: Optional[str] = (None,)
-    licenseExp: Optional[str] = None
-    contactName: Optional[str] = None
-    contactNumber: Optional[str] = None
-    contactEmail: Optional[str] = None
-    corporationName: Optional[str] = None
-    taxIdNumber: Optional[str] = None
-    isAddActive: Optional[bool] = None
+    agent: Optional[str]
+    entity: Optional[str]
+    firstName: Optional[str]
+    lastName: Optional[str]
+    middleName: Optional[str]
+    dob: Optional[str]
+    suffix: Optional[str]
+    gender: Optional[str]
+    ssn: Optional[str]
+    address1: Optional[str]
+    address2: Optional[str]
+    city: Optional[str]
+    state: Optional[str]
+    zipCode: Optional[str]
+    email: Optional[str]
+    phoneNumber: Optional[str]
+    licenseState: Optional[str]
+    licenseNumber: Optional[str]
+    licenseEff: Optional[str]
+    licenseExp: Optional[str]
+    contactName: Optional[str]
+    contactNumber: Optional[str]
+    contactEmail: Optional[str]
+    corporationName: Optional[str]
+    taxIdNumber: Optional[str]
+    isAddActive: Optional[bool]
 
 
 class DriverDefaults(BaseModel):
-    driverName: Optional[str] = None
-    states: Optional[str] = None
-    licenseNumber: Optional[str] = None
-    licenseEffDate: Optional[str] = None
-    licenseExpDate: Optional[str] = None
+    driverName: Optional[str]
+    states: Optional[str]
+    licenseNumber: Optional[str]
+    licenseEffDate: Optional[str]
+    licenseExpDate: Optional[str]
 
 
 class Driver(BaseModel):
-    driverName: Optional[str] = None
-    states: Optional[str] = None
-    licenseNumber: Optional[str] = None
-    licenseEffDate: Optional[str] = None
-    licenseExpDate: Optional[str] = None
+    driverName: Optional[str]
+    states: Optional[str]
+    licenseNumber: Optional[str]
+    licenseEffDate: Optional[str]
+    licenseExpDate: Optional[str]
 
 
 class Drivers(BaseModel):
-    values: Optional[List[Driver]] = None
-    defaults: Optional[DriverDefaults] = None
+    values: Optional[List[Driver]]
+    defaults: Optional[DriverDefaults]
 
 
 class LossHistoryDefaults(BaseModel):
-    accidentDate: Optional[str] = None
-    reportedDate: Optional[str] = None
-    claimNumber: Optional[str] = None
-    claimType: Optional[str] = None
-    subClaimNumber: Optional[str] = None
-    totalIncurred: Optional[str] = None
-    liabilityPaid: Optional[str] = None
-    openReserve: Optional[str] = None
-    status: Optional[str] = None
-    previousPolicyNumber: Optional[str] = None
-    priorCarrierName: Optional[str] = None
-    originalInceptionDate: Optional[str] = None
-    expirationDate: Optional[str] = None
-    isExperienceMode: Optional[str] = None
-    isPolicyTransferred: Optional[str] = None
+    accidentDate: Optional[str]
+    reportedDate: Optional[str]
+    claimNumber: Optional[str]
+    claimType: Optional[str]
+    subClaimNumber: Optional[str]
+    totalIncurred: Optional[str]
+    liabilityPaid: Optional[str]
+    openReserve: Optional[str]
+    status: Optional[str]
+    previousPolicyNumber: Optional[str]
+    priorCarrierName: Optional[str]
+    originalInceptionDate: Optional[str]
+    expirationDate: Optional[str]
+    isExperienceMode: Optional[str]
+    isPolicyTransferred: Optional[str]
 
 
 class LossIncident(BaseModel):
-    accidentDate: Optional[str] = None
-    reportedDate: Optional[str] = None
-    claimNumber: Optional[str] = None
-    claimType: Optional[str] = None
-    subClaimNumber: Optional[str] = None
-    totalIncurred: Optional[str] = None
-    liabilityPaid: Optional[str] = None
-    openReserve: Optional[str] = None
-    status: Optional[str] = None
-    previousPolicyNumber: Optional[str] = None
-    priorCarrierName: Optional[str] = None
-    originalInceptionDate: Optional[str] = None
-    expirationDate: Optional[str] = None
-    isExperienceMode: Optional[str] = None
-    isPolicyTransferred: Optional[str] = None
+    accidentDate: Optional[str]
+    reportedDate: Optional[str]
+    claimNumber: Optional[str]
+    claimType: Optional[str]
+    subClaimNumber: Optional[str]
+    totalIncurred: Optional[str]
+    liabilityPaid: Optional[str]
+    openReserve: Optional[str]
+    status: Optional[str]
+    previousPolicyNumber: Optional[str]
+    priorCarrierName: Optional[str]
+    originalInceptionDate: Optional[str]
+    expirationDate: Optional[str]
+    isExperienceMode: Optional[str]
+    isPolicyTransferred: Optional[str]
 
 
 class LossHistory(BaseModel):
-    incidents: Optional[List[LossIncident]] = None
-    defaults: Optional[LossHistoryDefaults] = None
+    incidents: Optional[List[LossIncident]]
+    defaults: Optional[LossHistoryDefaults]
+
+# Documents (empty)
+
+# Vehicles
+class VehicleState(BaseModel):
+    yesNo: Optional[str]
+    category: Optional[str]
+    classification: Optional[str]
+    vehicleCategory: Optional[str]
+    vehicleType: Optional[str]
+    state: Optional[str]
+    vehicleState: Optional[str]
+    vehicleWeight: Optional[str]
+    fuelType: Optional[str]
+    vin: Optional[str]
+    make: Optional[str]
+    model: Optional[str]
+    modelYear: Optional[str]
+    seating: Optional[str]
+    wheelChair: Optional[str]
+    plateNumber: Optional[str]
+    garageZipCode: Optional[str]
+    zoneCode: Optional[str]
+    rateClassCode: Optional[str]
+    baseName: Optional[str]
+    baseType: Optional[str]
+    baseNumber: Optional[str]
+    baseExpDate: Optional[str]
+    shl: Optional[str]
+    garageAddress1: Optional[str]
+    garageAddress2: Optional[str]
+    garageZipCode2: Optional[str]
+    garageCity: Optional[str]
+    garageCounty: Optional[str]
+    garageState: Optional[str]
+    garageCountry: Optional[str]
+
+class VehicleDefaults(BaseModel):
+    yesNo: Optional[str]
+    category: Optional[str]
+    classification: Optional[str]
+    vehicleCategory: Optional[str]
+    vehicleType: Optional[str]
+    state: Optional[str]
+    vehicleState: Optional[str]
+    vehicleWeight: Optional[str]
+    fuelType: Optional[str]
+    vin: Optional[str]
+    make: Optional[str]
+    model: Optional[str]
+    modelYear: Optional[str]
+    seating: Optional[str]
+    wheelChair: Optional[str]
+    plateNumber: Optional[str]
+    garageZipCode: Optional[str]
+    zoneCode: Optional[str]
+    rateClassCode: Optional[str]
+    baseName: Optional[str]
+    baseType: Optional[str]
+    baseNumber: Optional[str]
+    baseExpDate: Optional[str]
+    shl: Optional[str]
+    garageAddress1: Optional[str]
+    garageAddress2: Optional[str]
+    garageZipCode2: Optional[str]
+    garageCity: Optional[str]
+    garageCounty: Optional[str]
+    garageState: Optional[str]
+    garageCountry: Optional[str]
+    
+class Vehicles(BaseModel):
+    vehicles: Optional[List[VehicleState]]
+    defaultValue: Optional[str]
+    yesNoValues: Optional[str]
+    yesNoOptions: Optional[List[Label]]
+    defaults: Optional[VehicleDefaults]
 
 
 class Policy(BaseModel):
-    policy: Optional[PolicyMeta] = None
-    coverage: Optional[Coverage] = None
-    insured: Optional[Insured] = None
-    drivers: Optional[Drivers] = None
-    loss_history: Optional[LossHistory] = None
-    documents: Optional[dict] = {}
-    # vehicles: Optional[List[Vehicle]] = None
+    policy: Optional[PolicyMeta]
+    coverage: Optional[Coverage]
+    insured: Optional[Insured]
+    drivers: Optional[Drivers]
+    loss_history: Optional[LossHistory]
+    documents: Optional[dict]
+    vehicles: Optional[Vehicles]
 
 
 @app.get("/")
@@ -300,20 +376,20 @@ def update_policy(policy_id: str, policy: Policy):
     manifest = {
         "policy": {
             "values": {
-                "states": None,
-                "classification": None,
-                "lineOfBusiness": None,
-                "policyLineItem": None,
-                "coverageTerm": None,
-                "policyCategory": None,
-                "underwritingCode": None,
-                "agent": None,
-                "effectiveDate": None,
-                "expirationDate": None,
-                "radius": None,
-                "classCode": None,
-                "businessUseClass": None,
-                "sizeClass": None,
+                "states" = Optional[str],
+                "classification" = Optional[str],
+                "lineOfBusiness" = Optional[str],
+                "policyLineItem" = Optional[str],
+                "coverageTerm" = Optional[str],
+                "policyCategory" = Optional[str],
+                "underwritingCode" = Optional[str],
+                "agent" = Optional[str],
+                "effectiveDate" = Optional[str],
+                "expirationDate" = Optional[str],
+                "radius" = Optional[str],
+                "classCode" = Optional[str],
+                "businessUseClass" = Optional[str],
+                "sizeClass" = Optional[str],
             }
         },
         #########
@@ -347,82 +423,82 @@ def update_policy(policy_id: str, policy: Policy):
                     "value": "Combined Single Limit",
                     "label": "Combined Single Limit",
                 },
-                "deductable": None,
-                "deductableAmount": None,
-                "deductableAutoEntry": None,
-                "combinedSectionLimit": None,
-                "combinedSectionEntry": None,
-                "splitSectionBodyPerPerson": None,
-                "splitSectionBodyPerAccidentOptions": None,
-                "splitSectionPropertyDamageOptions": None,
-                "splitSectionAutoEntryOptions": None,
-                "pIProtectionSingleLimit": None,
-                "pIProtectionSingleEntry": None,
-                "pIProtectionSplitBodyPerPerson": None,
-                "pIProtectionSplitBodyPerAccident": None,
-                "pIProtectionSplitPropertyDamage": None,
-                "pIProtectionSplitAutoEntry": None,
-                "medicalSingleLimit": None,
-                "medicalSingleEntry": None,
-                "medicalSplitBodyPerPerson": None,
-                "medicalSplitBodyPerAccident": None,
-                "medicalSplitPropertyDamage": None,
-                "medicalSplitAutoEntry": None,
-                "underinsuredMotoristSingleLimit": None,
-                "underinsuredMotoristSingleAutoEntry": None,
-                "underMotoristBodyPerPerson": None,
-                "underMotoristBodyPerAccident": None,
-                "underMotoristProperty": None,
-                "underMotoristAuto": None,
-                "uninsuredMotoristSingleLimit": None,
-                "uninsuredMotoristSingleAutoEntry": None,
-                "unMotoristBodyPerPerson": None,
-                "unMotoristBodyPerAccident": None,
-                "unMotoristProperty": None,
-                "unMotoristAuto": None,
-                "cslSingleLimit": None,
-                "cslSingleAuto": None,
-                "nonCslSingleLimit": None,
-                "nonCslSingleAuto": None,
-                "cslBodyPerPerson": None,
-                "cslBodyPerAccident": None,
-                "cslProperty": None,
-                "cslSplitAuto": None,
-                "nonCslBodyPerPerson": None,
-                "nonCslBodyPerAccident": None,
-                "nonCslProperty": None,
-                "nonCslSplitAuto": None,
+                "deductable" = Optional[str],
+                "deductableAmount" = Optional[str],
+                "deductableAutoEntry" = Optional[str],
+                "combinedSectionLimit" = Optional[str],
+                "combinedSectionEntry" = Optional[str],
+                "splitSectionBodyPerPerson" = Optional[str],
+                "splitSectionBodyPerAccidentOptions" = Optional[str],
+                "splitSectionPropertyDamageOptions" = Optional[str],
+                "splitSectionAutoEntryOptions" = Optional[str],
+                "pIProtectionSingleLimit" = Optional[str],
+                "pIProtectionSingleEntry" = Optional[str],
+                "pIProtectionSplitBodyPerPerson" = Optional[str],
+                "pIProtectionSplitBodyPerAccident" = Optional[str],
+                "pIProtectionSplitPropertyDamage" = Optional[str],
+                "pIProtectionSplitAutoEntry" = Optional[str],
+                "medicalSingleLimit" = Optional[str],
+                "medicalSingleEntry" = Optional[str],
+                "medicalSplitBodyPerPerson" = Optional[str],
+                "medicalSplitBodyPerAccident" = Optional[str],
+                "medicalSplitPropertyDamage" = Optional[str],
+                "medicalSplitAutoEntry" = Optional[str],
+                "underinsuredMotoristSingleLimit" = Optional[str],
+                "underinsuredMotoristSingleAutoEntry" = Optional[str],
+                "underMotoristBodyPerPerson" = Optional[str],
+                "underMotoristBodyPerAccident" = Optional[str],
+                "underMotoristProperty" = Optional[str],
+                "underMotoristAuto" = Optional[str],
+                "uninsuredMotoristSingleLimit" = Optional[str],
+                "uninsuredMotoristSingleAutoEntry" = Optional[str],
+                "unMotoristBodyPerPerson" = Optional[str],
+                "unMotoristBodyPerAccident" = Optional[str],
+                "unMotoristProperty" = Optional[str],
+                "unMotoristAuto" = Optional[str],
+                "cslSingleLimit" = Optional[str],
+                "cslSingleAuto" = Optional[str],
+                "nonCslSingleLimit" = Optional[str],
+                "nonCslSingleAuto" = Optional[str],
+                "cslBodyPerPerson" = Optional[str],
+                "cslBodyPerAccident" = Optional[str],
+                "cslProperty" = Optional[str],
+                "cslSplitAuto" = Optional[str],
+                "nonCslBodyPerPerson" = Optional[str],
+                "nonCslBodyPerAccident" = Optional[str],
+                "nonCslProperty" = Optional[str],
+                "nonCslSplitAuto" = Optional[str],
             },
             "errors": [],
         },
         ######
         "insured": {
             "values": {
-                "agent": None,
-                "entity": None,
-                "firstName": None,
-                "lastName": None,
-                "middleName": None,
-                "dob": None,
-                "suffix": None,
-                "gender": None,
-                "ssn": None,
-                "address1": None,
-                "address2": None,
-                "city": None,
-                "state": None,
-                "zipCode": None,
-                "email": None,
-                "phoneNumber": None,
-                "licenseState": None,
-                "licenseNumber": None,
-                "licenseEff": None,
-                "licenseExp": None,
-                "contactName": None,
-                "contactNumber": None,
-                "contactEmail": None,
-                "corporationName": None,
-                "taxIdNumber": None,
+                "agent" = Optional[str],
+                "entity" = Optional[str],
+                "firstName" = Optional[str],
+                "lastName" = Optional[str],
+                "middleName" = Optional[str],
+                "dob" = Optional[str],
+                "suffix" = Optional[str],
+                "gender" = Optional[str],
+                "ssn" = Optional[str],
+                "address1" = Optional[str],
+                "address2" = Optional[str],
+                "city" = Optional[str],
+                "state" = Optional[str],
+                "zipCode" = Optional[str],
+                "email" = Optional[str],
+                "phoneNumber" = Optional[str],
+                "licenseState" = Optional[str],
+                "licenseNumber" = Optional[str],
+                "licenseEff" = Optional[str],
+                "licenseExp" = Optional[str],
+                "contactName" = Optional[str],
+                "contactNumber" = Optional[str],
+                "contactEmail" = Optional[str],
+                "corporationName" = Optional[str],
+                "taxIdNumber" = Optional[str],
             },
             "isAddActive": False,
         },
@@ -430,58 +506,58 @@ def update_policy(policy_id: str, policy: Policy):
         "drivers": {
             "values": [
                 {
-                    "driverName": None,
-                    "states": None,
-                    "licenseNumber": None,
-                    "licenseEffDate": None,
-                    "licenseExpDate": None,
+                    "driverName" = Optional[str],
+                    "states" = Optional[str],
+                    "licenseNumber" = Optional[str],
+                    "licenseEffDate" = Optional[str],
+                    "licenseExpDate" = Optional[str],
                 }
             ],
             "defaults": {
-                "driverName": None,
-                "states": None,
-                "licenseNumber": None,
-                "licenseEffDate": None,
-                "licenseExpDate": None,
+                "driverName" = Optional[str],
+                "states" = Optional[str],
+                "licenseNumber" = Optional[str],
+                "licenseEffDate" = Optional[str],
+                "licenseExpDate" = Optional[str],
             },
         },
         ######
         "lossHistory": {
             "values": [
                 {
-                    "accidentDate": None,
-                    "reportedDate": None,
-                    "claimNumber": None,
-                    "claimType": None,
-                    "subClaimNumber": None,
-                    "totalIncurred": None,
-                    "liabilityPaid": None,
-                    "openReserve": None,
-                    "status": None,
-                    "previousPolicyNumber": None,
-                    "priorCarrierName": None,
-                    "originalInceptionDate": None,
-                    "expirationDate": None,
-                    "isExperienceMode": None,
-                    "isPolicyTransferred": None,
+                    "accidentDate" = Optional[str],
+                    "reportedDate" = Optional[str],
+                    "claimNumber" = Optional[str],
+                    "claimType" = Optional[str],
+                    "subClaimNumber" = Optional[str],
+                    "totalIncurred" = Optional[str],
+                    "liabilityPaid" = Optional[str],
+                    "openReserve" = Optional[str],
+                    "status" = Optional[str],
+                    "previousPolicyNumber" = Optional[str],
+                    "priorCarrierName" = Optional[str],
+                    "originalInceptionDate" = Optional[str],
+                    "expirationDate" = Optional[str],
+                    "isExperienceMode" = Optional[str],
+                    "isPolicyTransferred" = Optional[str],
                 }
             ],
             "defaults": {
-                "accidentDate": None,
-                "reportedDate": None,
-                "claimNumber": None,
-                "claimType": None,
-                "subClaimNumber": None,
-                "totalIncurred": None,
-                "liabilityPaid": None,
-                "openReserve": None,
-                "status": None,
-                "previousPolicyNumber": None,
-                "priorCarrierName": None,
-                "originalInceptionDate": None,
-                "expirationDate": None,
-                "isExperienceMode": None,
-                "isPolicyTransferred": None,
+                "accidentDate" = Optional[str],
+                "reportedDate" = Optional[str],
+                "claimNumber" = Optional[str],
+                "claimType" = Optional[str],
+                "subClaimNumber" = Optional[str],
+                "totalIncurred" = Optional[str],
+                "liabilityPaid" = Optional[str],
+                "openReserve" = Optional[str],
+                "status" = Optional[str],
+                "previousPolicyNumber" = Optional[str],
+                "priorCarrierName" = Optional[str],
+                "originalInceptionDate" = Optional[str],
+                "expirationDate" = Optional[str],
+                "isExperienceMode" = Optional[str],
+                "isPolicyTransferred" = Optional[str],
             },
         },
         #######
@@ -491,36 +567,36 @@ def update_policy(policy_id: str, policy: Policy):
             "values": [
                 {
                     "yesNo": "No",
-                    "category": None,
-                    "classification": None,
-                    "vehicleCategory": None,
-                    "vehicleType": None,
-                    "state": None,
-                    "vehicleState": None,
-                    "vehicleWeight": None,
-                    "fuelType": None,
-                    "vin": None,
-                    "make": None,
-                    "model": None,
-                    "modelYear": None,
-                    "seating": None,
-                    "wheelChair": None,
-                    "plateNumber": None,
-                    "garageZipCode": None,
-                    "zoneCode": None,
-                    "rateClassCode": None,
-                    "baseName": None,
-                    "baseType": None,
-                    "baseNumber": None,
-                    "baseExpDate": None,
-                    "shl": None,
-                    "garageAddress1": None,
-                    "garageAddress2": None,
-                    "garageZipCode2": None,
-                    "garageCity": None,
-                    "garageCounty": None,
-                    "garageState": None,
-                    "garageCountry": None,
+                    "category" = Optional[str],
+                    "classification" = Optional[str],
+                    "vehicleCategory" = Optional[str],
+                    "vehicleType" = Optional[str],
+                    "state" = Optional[str],
+                    "vehicleState" = Optional[str],
+                    "vehicleWeight" = Optional[str],
+                    "fuelType" = Optional[str],
+                    "vin" = Optional[str],
+                    "make" = Optional[str],
+                    "model" = Optional[str],
+                    "modelYear" = Optional[str],
+                    "seating" = Optional[str],
+                    "wheelChair" = Optional[str],
+                    "plateNumber" = Optional[str],
+                    "garageZipCode" = Optional[str],
+                    "zoneCode" = Optional[str],
+                    "rateClassCode" = Optional[str],
+                    "baseName" = Optional[str],
+                    "baseType" = Optional[str],
+                    "baseNumber" = Optional[str],
+                    "baseExpDate" = Optional[str],
+                    "shl" = Optional[str],
+                    "garageAddress1" = Optional[str],
+                    "garageAddress2" = Optional[str],
+                    "garageZipCode2" = Optional[str],
+                    "garageCity" = Optional[str],
+                    "garageCounty" = Optional[str],
+                    "garageState" = Optional[str],
+                    "garageCountry" = Optional[str],
                 }
             ],
             "defaultValue": "No",
@@ -531,36 +607,36 @@ def update_policy(policy_id: str, policy: Policy):
             ],
             "defaults": {
                 "yesNo": "No",
-                "category": None,
-                "classification": None,
-                "vehicleCategory": None,
-                "vehicleType": None,
-                "state": None,
-                "vehicleState": None,
-                "vehicleWeight": None,
-                "fuelType": None,
-                "vin": None,
-                "make": None,
-                "model": None,
-                "modelYear": None,
-                "seating": None,
-                "wheelChair": None,
-                "plateNumber": None,
-                "garageZipCode": None,
-                "zoneCode": None,
-                "rateClassCode": None,
-                "baseName": None,
-                "baseType": None,
-                "baseNumber": None,
-                "baseExpDate": None,
-                "shl": None,
-                "garageAddress1": None,
-                "garageAddress2": None,
-                "garageZipCode2": None,
-                "garageCity": None,
-                "garageCounty": None,
-                "garageState": None,
-                "garageCountry": None,
+                "category" = Optional[str],
+                "classification" = Optional[str],
+                "vehicleCategory" = Optional[str],
+                "vehicleType" = Optional[str],
+                "state" = Optional[str],
+                "vehicleState" = Optional[str],
+                "vehicleWeight" = Optional[str],
+                "fuelType" = Optional[str],
+                "vin" = Optional[str],
+                "make" = Optional[str],
+                "model" = Optional[str],
+                "modelYear" = Optional[str],
+                "seating" = Optional[str],
+                "wheelChair" = Optional[str],
+                "plateNumber" = Optional[str],
+                "garageZipCode" = Optional[str],
+                "zoneCode" = Optional[str],
+                "rateClassCode" = Optional[str],
+                "baseName" = Optional[str],
+                "baseType" = Optional[str],
+                "baseNumber" = Optional[str],
+                "baseExpDate" = Optional[str],
+                "shl" = Optional[str],
+                "garageAddress1" = Optional[str],
+                "garageAddress2" = Optional[str],
+                "garageZipCode2" = Optional[str],
+                "garageCity" = Optional[str],
+                "garageCounty" = Optional[str],
+                "garageState" = Optional[str],
+                "garageCountry" = Optional[str],
             },
         },
     }
