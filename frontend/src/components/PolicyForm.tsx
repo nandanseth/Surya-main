@@ -9,7 +9,7 @@ import lossHistoryIcon from '../images/loss history icon.png';
 import policyIcon from '../images/policy icon.png';
 import vehicleIcon from '../images/vehicle icon.png';
 import { Colors, Title, transitionCss } from '../styles/styles';
-import { urls } from '../shared';
+import { urls, preSubmit } from '../shared';
 import {
   CoverageSection,
   DocumentsSection,
@@ -50,12 +50,13 @@ const PolicyForm = ({ close }) => {
   const onSubmit = () => {
     try {
       //we can do some verification here
+      console.log(preSubmit(store), 'submitting')
       const requestOptions = {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(store)
+        body: JSON.stringify(preSubmit(store))
     };
       const postStore = async () => {
         console.log( JSON.stringify(store))
