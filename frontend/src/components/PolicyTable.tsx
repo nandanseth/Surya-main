@@ -68,6 +68,7 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
   const items = policies;
   let sortConfig = undefined;
   const history = useHistory();
+  console.log(items, 'test');
 
   // add this in there to sort when getting the info
   const getAttribute = (name: string) => {
@@ -92,11 +93,11 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
           {headers.map((name, i) => {
             const green = i === headers.length - 1;
             return (
-              <Th key={name}>
+              <Th key={i}>
                 <SortByHeader
                   type="button"
                   green={green}
-                  onClick={() => requestSort(name)}
+                  //onClick={() => requestSort(name)}
                 >
                   {name}
                   {getAttribute(name)?.direction
@@ -111,21 +112,22 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
       <tbody>
         {items.map(
           ({
-            name, insured, broker, period, grossBilled, netBilled, createdDate
-          }) => (
+            created_at, id
+          }, i) => (
             //        <StyledLink to={`/policies/${encodeURI(name)}`} key={name}>
             <TR
-              key={name}
+              key={i}
               onClick={() => {
-                history.push(`/policies/${encodeURI(name)}`);
+                //@ts-ignore
+                history.push(`/policies/${encodeURI(id)}`);
               }}
             >
-              <Name>{name}</Name>
-              <TD>{insured}</TD>
-              <TD>{broker}</TD>
-              <TD>{period}</TD>
-              <TD>{grossBilled}</TD>
-              <TD>{netBilled}</TD>
+              <Name>{id}</Name>
+              <TD>tbd</TD>
+              <TD>{created_at}</TD>
+              <TD>tbd</TD>
+              <TD>tbd</TD>
+              <TD>tbd</TD>
             </TR>
           ),
         )}

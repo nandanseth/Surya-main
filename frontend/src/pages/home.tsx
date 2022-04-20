@@ -8,7 +8,7 @@ import Search from '../components/Search';
 import { FormContextProvider } from '../context/insured-context';
 import { Header, Title } from '../styles/styles';
 import Layout from '../utils/withLayout';
-import { urls } from '../shared';
+import { testPolicies, urls } from '../shared';
 
 
 const title = 'Policies';
@@ -54,7 +54,7 @@ const Home = (props) => {
               <Search style={{ marginLeft: 'auto' }} placeholder="Search Policies" />
             </Header>
             <Section>
-              <PolicyTable policies={policies} />
+              <PolicyTable policies={testPolicies} />
             </Section>
           </ContentMain>
           <Side />
