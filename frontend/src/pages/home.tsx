@@ -16,7 +16,7 @@ const title = 'Policies';
 const Home = (props) => {
   const [show, setShow] = useState(false);
   const [policies, setPolicies] = useState([]);
-  console.log(props, 'test');
+  console.log(policies, 'these are the policies');
 
   useEffect(() => {
     const headers = {};
@@ -54,7 +54,7 @@ const Home = (props) => {
               <Search style={{ marginLeft: 'auto' }} placeholder="Search Policies" />
             </Header>
             <Section>
-              <PolicyTable policies={testPolicies} />
+              <PolicyTable policies={policies ?? testPolicies} />
             </Section>
           </ContentMain>
           <Side />
