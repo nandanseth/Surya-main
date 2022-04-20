@@ -13,11 +13,11 @@ function App() {
     <UrlProvider>
     <Router>
       <Switch>
-        <Route path="/claims" component={Claims} />
-        <Route path="/reports" component={Reports} />
-        <Route path="/home" component={PolicyHome} />
-        <Route path="/policies/:slug" component={PolicyPage} />
-        <Route exact path="/" component={SignIn} />
+        <Route path="/claims" component={Claims} title="Claims | Surya" />
+        <Route path="/reports" component={Reports} title="Reports | Surya" />
+        <Route path="/home" component={PolicyHome} title="Home | Surya" />
+        <Route path="/policies/:slug" component={PolicyPage} title="Policies | Surya" />
+        <Route exact path="/" component={SignIn} title="Sign In | Surya" />
       </Switch>
     </Router>
     </UrlProvider>

@@ -330,34 +330,35 @@ def get_policy(policy_id: str):
 
 
 @app.post("/policies/", response_model=Policy)
-def create_policy(policy: Policy):
+def create_policy(policy_payload: Policy):
     policies = db.collection("policies")
     policy_uuid = str(uuid.uuid4())
-
+    policy = json.loads(policy_payload.json())
     created_policy = policies.document(policy_uuid).set(
-        {**policy.dict(), "created_at": datetime.utcnow()}
+        {**policy, "created_at": datetime.utcnow()}
     )
     if created_policy:
         return JSONResponse(
-            content={"created": True, "policy_id": policy_uuid, "error": None}
+            content={"created": True, "policy_id": policy_uuid, "error": None, "payload": policy_payload.json(),}
         )
     return JSONResponse(
         content={
             "created": False,
             "policy_id": None,
+            "payload": policy_payload.json(),
             "error": "There was a problem creating the policy.",
         }
     )
 
 
 @app.put("/policies/{policy_id}/", response_model=Policy)
-def update_policy(policy_id: str, policy: Policy):
+def update_policy(policy_id: str, policy_payload: Policy):
     policies_ref = db.collection("policies")
     policy = policies_ref.document(policy_id)
 
     if policy.exists:
         try:
-            policy.update(policy)
+            policy.update(policy_payload)
             return JSONResponse(
                 content={"updated": True, "policy_id": policy_id, "error": None}
             )
@@ -366,7 +367,7 @@ def update_policy(policy_id: str, policy: Policy):
                 content={
                     "created": False,
                     "policy_id": None,
-                    "payload_was": policy,
+                    "payload_was": policy_payload,
                     "error": "There was a problem updating the policy. Check the payload submitted.",
                 }
             )
