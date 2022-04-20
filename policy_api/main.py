@@ -271,7 +271,7 @@ class VehicleDefaults(BaseModel):
 class Vehicles(BaseModel):
     vehicles: Optional[List[VehicleState]]
     defaultValue: Optional[str]
-    yesNoValues: Optional[str]
+    yesNoValues: Optional[List[str]]
     yesNoOptions: Optional[List[Label]]
     defaults: Optional[VehicleDefaults]
 
