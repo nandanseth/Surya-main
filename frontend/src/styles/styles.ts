@@ -250,7 +250,7 @@ const SectionTitle = styled.h2`
     margin-bottom: 2px;
     margin-top: 10px;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 18px;
     color: ${Colors.text};
 `;
 

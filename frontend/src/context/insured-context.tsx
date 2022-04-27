@@ -1,4 +1,17 @@
 import React, { createContext, useState } from "react";
+import { states, statesOptions } from "../utils/policies";
+import vehicleTypes from '../utils/vehicle/getVehicleType';
+import vehicleCategoryOptions, {
+    optionsMap
+  } from '../utils/vehicle/getVehicleCategory';
+import getWeightSelects from "../utils/vehicle/getWeightSelects";
+import fuelTypeOptions from '../utils/vehicle/fuelType';
+
+
+export const yesNoOptions = [
+    { label: 'Yes', value: 'Yes' },
+    { label: 'No', value: 'No' },
+  ];
 
 const policyInitialState = {
     states: null,
@@ -47,7 +60,7 @@ const insuredInitialState = {
 
 const driversInitialState = {
     driverName: null,
-    states: null,
+    states: states[0],
     licenseNumber: null,
     licenseEffDate: null,
     licenseExpDate: null,
@@ -57,18 +70,18 @@ const lossHistoryState = {
     accidentDate: null,
     reportedDate: null,
     claimNumber: null,
-    claimType: null,
+    claimType: 'Body Injury',
     subClaimNumber: null,
     totalIncurred: null,
     liabilityPaid: null,
     openReserve: null,
-    status: null,
+    status: yesNoOptions[0].value,
     previousPolicyNumber: null,
     priorCarrierName: null,
     originalInceptionDate: null,
     expirationDate: null,
-    isExperienceMode: null,
-    isPolicyTransferred: null,
+    isExperienceMode:  yesNoOptions[0].value,
+    isPolicyTransferred:  yesNoOptions[0].value,
 };
 
 
@@ -137,33 +150,31 @@ const coverageState = {
 
 const defaultValue = 'No';
 const yesNoValues = ['Yes', defaultValue];
-const yesNoOptions = [
-  { label: 'Yes', value: 'Yes' },
-  { label: 'No', value: 'No' },
-];
+
 
 const vehicleState = {
     yesNo: defaultValue,
-    category: null,
+    category: vehicleCategoryOptions[0].value,
     classification: null,
-    vehicleCategory: null,
-    vehicleType: null,
-    state: null,
+    vehicleCategory: optionsMap[Object.keys(optionsMap)[0]][0].value,
+    vehicleType: vehicleTypes[0].value,
+    state: states[0],
     vehicleState: null,
-    vehicleWeight: null,
-    fuelType: null,
+    vehicleWeight: getWeightSelects[0].value,
+    fuelType: fuelTypeOptions[0].value,
+    fleet: yesNoOptions[0].value,
     vin: null,
     make: null,
     model: null,
     modelYear: null,
     seating: null,
-    wheelChair: null,
+    wheelChair: yesNoOptions[0].value,
     plateNumber: null,
     garageZipCode: null,
     zoneCode: null,
     rateClassCode: null,
     baseName: null,
-    baseType: null,
+    baseType: 'Black Car',
     baseNumber: null,
     baseExpDate: null,
     shl: null,
@@ -172,7 +183,7 @@ const vehicleState = {
     garageZipCode2: null,
     garageCity: null,
     garageCounty: null,
-    garageState: null,
+    garageState: statesOptions[0].value,
     garageCountry: null,
 };
 
@@ -199,6 +210,7 @@ export const FormContextProvider = ({ children }) => {
         lossHistory: { values: lossValues, setValues: setLossValues, defaults: lossHistoryState,},
         documents: { values: document, setValues: setDocument},
         vehicles: { values: vehicleValues, setValues: setVehicleValues, defaultValue,  yesNoValues, yesNoOptions, defaults: vehicleState },
+        payment: { values: {}},
         reset: () => {
             setPolicyValues(policyInitialState);
             setInsuredValues(insuredInitialState);
