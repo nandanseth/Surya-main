@@ -1,11 +1,12 @@
 import React, { createContext, useState } from "react";
-import { states, statesOptions } from "../utils/policies";
+import { agent, classificationMap, coverageTerm, entityType, lineOfBusiness, policyCategory, policyLineItem, states, statesOptions, underwritingCode } from "../utils/policies";
 import vehicleTypes from '../utils/vehicle/getVehicleType';
 import vehicleCategoryOptions, {
     optionsMap
   } from '../utils/vehicle/getVehicleCategory';
 import getWeightSelects from "../utils/vehicle/getWeightSelects";
 import fuelTypeOptions from '../utils/vehicle/fuelType';
+import { bussinessUseClasses, classCodes, radius, sizeClasses } from "../utils/policies/getCommercial";
 
 
 export const yesNoOptions = [
@@ -14,40 +15,40 @@ export const yesNoOptions = [
   ];
 
 const policyInitialState = {
-    states: null,
-    classification: null, 
-    lineOfBusiness: null,
-    policyLineItem: null,
-    coverageTerm: null,
-    policyCategory: null,
-    underwritingCode: null,
-    agent: null,
+    states: states[0],
+    classification: classificationMap[policyCategory[0]].value, 
+    lineOfBusiness: lineOfBusiness[0],
+    policyLineItem: policyLineItem[0],
+    coverageTerm: coverageTerm[0],
+    policyCategory: policyCategory[0],
+    underwritingCode: underwritingCode[0],
+    agent: agent[0],
     effectiveDate: null,
     expirationDate: null,
-    radius: null,
-    classCode: null,
-    businessUseClass: null,
-    sizeClass: null,
+    radius: radius[0],
+    classCode: classCodes[0],
+    businessUseClass: bussinessUseClasses[0],
+    sizeClass: sizeClasses[0],
 };
 
 const insuredInitialState = {
-    agent: null,
-    entity: null,
+    agent: agent[0],
+    entity: entityType[0],
     firstName: null,
     lastName: null,
     middleName: null,
     dob: null,
     suffix: null,
-    gender: null,
+    gender: 'Male',
     ssn: null,
     address1: null,
     address2: null,
     city: null,
-    state: null,
+    state: states[0],
     zipCode: null,
     email: null,
     phoneNumber: null,
-    licenseState: null,
+    licenseState: states[0],
     licenseNumber: null,
     licenseEff: null,
     licenseExp: null,
