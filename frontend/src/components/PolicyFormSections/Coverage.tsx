@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form } from '../../styles/styles';
-import autoEntryOptions from '../../utils/coverage/getAutoSymbolEntry';
-import CoverageOptions from '../../utils/coverage/getLimit';
+import autoEntryOptions, { auto } from '../../utils/coverage/getAutoSymbolEntry';
+import CoverageOptions, { limits, bodyPerPerson, bodyPerAccident, propertyDamage } from '../../utils/coverage/getLimit';
 import SuryaSelect from '../PolicyFormSelect';
 
 const {
@@ -16,20 +16,21 @@ const {
   propertyDamageOptions,
 } = CoverageOptions;
 
+
+const deductableOptions = [
+  { value: 'Yes', label: 'Yes' },
+  { value: 'No', label: 'No' },
+];
+const overallOptions = [
+  { value: 'Combined Single Limit', label: 'Combined Single Limit' },
+  { value: 'Split Limit', label: 'Split Limit' },
+];
+
 const CoverageSection = ({ store }) => {
   const { coverage: coverageStates } = store;
   const  { values, setValues, errors, setErrors }  = coverageStates;
 
   const optional = new Set(['deductableAutoEntry', 'deductableAmount']);
-
-  const deductableOptions = [
-    { value: 'Yes', label: 'Yes' },
-    { value: 'No', label: 'No' },
-  ];
-  const overallOptions = [
-    { value: 'Combined Single Limit', label: 'Combined Single Limit' },
-    { value: 'Split Limit', label: 'Split Limit' },
-  ];
 
   const {
     overall,
@@ -86,36 +87,92 @@ const CoverageSection = ({ store }) => {
     nonOwnedCSL,
   } = values;
 
-  const validate = () => {
-    const keys = Object.keys(values);
-    const errorsList = [];
+  useEffect(() => {
+    setValues({ ...values, 
+      overall: 'Combined Single Limit',
+      deductable,
+      deductableAmount,
+      deductableAutoEntry,
+      combinedSectionLimit: limits[0],
+      combinedSectionEntry: auto[0],
+      splitSectionBodyPerPerson: bodyPerPerson[0],
+      splitSectionBodyPerAccidentOptions: bodyPerAccident[0],
+      splitSectionPropertyDamageOptions: propertyDamage[0],
+      splitSectionAutoEntryOptions: auto[0],
+      pIProtectionSingleLimit: limits[0],
+      pIProtectionSingleEntry: auto[0],
+      pIProtectionSplitBodyPerPerson: bodyPerPerson[0],
+      pIProtectionSplitBodyPerAccident: bodyPerAccident[0],
+      pIProtectionSplitPropertyDamage: propertyDamage[0],
+      pIProtectionSplitAutoEntry: auto[0],
+      medicalSingleLimit: limits[0],
+      medicalSingleEntry: auto[0],
+      medicalSplitBodyPerPerson: bodyPerPerson[0],
+      medicalSplitBodyPerAccident: bodyPerAccident[0],
+      medicalSplitPropertyDamage: propertyDamage[0],
+      medicalSplitAutoEntry: auto[0],
+      underinsuredMotoristSingleLimit: limits[0],
+      underinsuredMotoristSingleAutoEntry: auto[0],
+      underMotoristBodyPerPerson: bodyPerPerson[0],
+      underMotoristBodyPerAccident: bodyPerAccident[0],
+      underMotoristProperty: propertyDamage[0],
+      underMotoristAuto: auto[0],
+      cslSingleLimit: limits[0],
+      cslBodyPerAccident: bodyPerAccident[0],
+      cslBodyPerPerson: bodyPerPerson[0],
+      cslSingleAuto: auto[0],
+      cslProperty: propertyDamage[0],
+      cslSplitAuto: auto[0],
+      nonCslBodyPerAccident: bodyPerAccident[0],
+      nonCslBodyPerPerson: bodyPerPerson[0],
+      nonCslProperty: propertyDamage[0],
+      nonCslSingleAuto: auto[0],
+      nonCslSingleLimit: limits[0],
+      nonCslSplitAuto: auto[0],
+      unMotoristAuto: auto[0],
+      unMotoristBodyPerAccident: bodyPerAccident[0],
+      unMotoristBodyPerPerson: bodyPerPerson[0],
+      unMotoristProperty: propertyDamage[0],
+      uninsuredMotoristSingleAutoEntry: auto[0],
+      uninsuredMotoristSingleLimit: limits[0],
+      personalInjury: 'Combined Single Limit',
+      medicalPayments: 'Combined Single Limit',
+      underinsuredMotorist: 'Combined Single Limit',
+      uninsuredMotorist: 'Combined Single Limit',
+      csl: 'Yes',
+      nonOwnedCSL: 'Yes',
+    })
+  }, []);
+   
 
-    const isNotUndefinied = (item) => {
-      if (optional.has(item)) {
-        return true;
-      }
-      return values[item] !== null;
-    };
+  // const validate = () => {
+  //   const keys = Object.keys(values);
+  //   const errorsList = [];
 
-    const map = keys.map(isNotUndefinied);
+  //   const isNotUndefinied = (item) => {
+  //     if (optional.has(item)) {
+  //       return true;
+  //     }
+  //     return values[item] !== null;
+  //   };
 
-    const isValid = map.every((item) => {
-      if (item !== true) {
-        errorsList.push(item);
-        return false;
-      }
-      return true;
-    });
-    if (isValid) {
-      setErrors([]);
-      return true;
-    }
+  //   const map = keys.map(isNotUndefinied);
 
-    setErrors(errorsList);
-    return false;
-  };
+  //   const isValid = map.every((item) => {
+  //     if (item !== true) {
+  //       errorsList.push(item);
+  //       return false;
+  //     }
+  //     return true;
+  //   });
+  //   if (isValid) {
+  //     setErrors([]);
+  //     return true;
+  //   }
 
-  const submit = () => validate();
+  //   setErrors(errorsList);
+  //   return false;
+  // };
 
   const combinedSection = (
     <>
@@ -126,8 +183,8 @@ const CoverageSection = ({ store }) => {
             placeholder="Choose Limit"
             label="Limit"
             value={combinedSectionLimit}
-            onChange={(v) => {
-              setValues({ ...values, combinedSectionLimit: v });
+            onChange={(e) => {
+              setValues({ ...values, combinedSectionLimit: e.target.value });
             }}
           />
         </InputWrapper>
@@ -137,8 +194,8 @@ const CoverageSection = ({ store }) => {
             placeholder="Covered Auto Symbol Entry"
             label="Choose Auto Symbol"
             value={combinedSectionEntry}
-            onChange={(v) => {
-              setValues({ ...values, combinedSectionEntry: v });
+            onChange={(e) => {
+              setValues({ ...values, combinedSectionEntry: e.target.value});
             }}
           />
         </InputWrapper>
@@ -155,8 +212,8 @@ const CoverageSection = ({ store }) => {
             placeholder="Choose Amount"
             label="Body Injury Per Person"
             value={splitSectionBodyPerPerson}
-            onChange={(v) => {
-              setValues({ ...values, splitSectionBodyPerPerson: v });
+            onChange={(e) => {
+              setValues({ ...values, splitSectionBodyPerPerson: e.target.value });
             }}
           />
         </InputWrapper>
@@ -166,8 +223,8 @@ const CoverageSection = ({ store }) => {
             placeholder="Choose Amount"
             label="Body Injury Per Accident"
             value={splitSectionBodyPerAccidentOptions}
-            onChange={(v) => {
-              setValues({ ...values, splitSectionBodyPerAccidentOptions: v });
+            onChange={(e) => {
+              setValues({ ...values, splitSectionBodyPerAccidentOptions: e.target.value});
             }}
           />
         </InputWrapper>
@@ -177,8 +234,8 @@ const CoverageSection = ({ store }) => {
             placeholder="Choose Amount"
             label="Property Damage"
             value={splitSectionPropertyDamageOptions}
-            onChange={(v) => {
-              setValues({ ...values, splitSectionPropertyDamageOptions: v });
+            onChange={(e) => {
+              setValues({ ...values, splitSectionPropertyDamageOptions: e.target.value });
             }}
           />
         </InputWrapper>
@@ -188,8 +245,8 @@ const CoverageSection = ({ store }) => {
             placeholder="Covered Auto Symbol Entry"
             label="Choose Auto Symbol"
             value={splitSectionAutoEntryOptions}
-            onChange={(v) => {
-              setValues({ ...values, splitSectionAutoEntryOptions: v });
+            onChange={(e) => {
+              setValues({ ...values, splitSectionAutoEntryOptions: e.target.value });
             }}
           />
         </InputWrapper>
@@ -205,8 +262,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Limit"
           label="Limit"
           value={pIProtectionSingleLimit}
-          onChange={(v) => {
-            setValues({ ...values, pIProtectionSingleLimit: v });
+          onChange={(e) => {
+            setValues({ ...values, pIProtectionSingleLimit: e.target.value });
           }}
         />
       </InputWrapper>
@@ -216,8 +273,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={pIProtectionSingleEntry}
-          onChange={(v) => {
-            setValues({ ...values, pIProtectionSingleEntry: v });
+          onChange={(e) => {
+            setValues({ ...values, pIProtectionSingleEntry: e.target.value });
           }}
         />
       </InputWrapper>
@@ -232,8 +289,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Person"
           value={pIProtectionSplitBodyPerPerson}
-          onChange={(v) => {
-            setValues({ ...values, pIProtectionSplitBodyPerPerson: v });
+          onChange={(e) => {
+            setValues({ ...values, pIProtectionSplitBodyPerPerson: e.target.value });
           }}
         />
       </InputWrapper>
@@ -243,8 +300,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Accident"
           value={pIProtectionSplitBodyPerAccident}
-          onChange={(v) => {
-            setValues({ ...values, pIProtectionSplitBodyPerAccident: v });
+          onChange={(e) => {
+            setValues({ ...values, pIProtectionSplitBodyPerAccident: e.target.value });
           }}
         />
       </InputWrapper>
@@ -254,8 +311,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Property Damage"
           value={pIProtectionSplitPropertyDamage}
-          onChange={(v) => {
-            setValues({ ...values, pIProtectionSplitPropertyDamage: v });
+          onChange={(e) => {
+            setValues({ ...values, pIProtectionSplitPropertyDamage: e.target.value });
           }}
         />
       </InputWrapper>
@@ -265,8 +322,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={pIProtectionSplitAutoEntry}
-          onChange={(v) => {
-            setValues({ ...values, pIProtectionSplitAutoEntry: v });
+          onChange={(e) => {
+            setValues({ ...values, pIProtectionSplitAutoEntry: e.target.value});
           }}
         />
       </InputWrapper>
@@ -281,8 +338,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Limit"
           label="Limit"
           value={medicalSingleLimit}
-          onChange={(v) => {
-            setValues({ ...values, medicalSingleLimit: v });
+          onChange={(e) => {
+            setValues({ ...values, medicalSingleLimit: e.target.value });
           }}
         />
       </InputWrapper>
@@ -292,8 +349,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={medicalSingleEntry}
-          onChange={(v) => {
-            setValues({ ...values, medicalSingleEntry: v });
+          onChange={(e) => {
+            setValues({ ...values, medicalSingleEntry: e.target.value });
           }}
         />
       </InputWrapper>
@@ -308,8 +365,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Person"
           value={medicalSplitBodyPerPerson}
-          onChange={(v) => {
-            setValues({ ...values, medicalSplitBodyPerPerson: v });
+          onChange={(e) => {
+            setValues({ ...values, medicalSplitBodyPerPerson: e.target.value });
           }}
         />
       </InputWrapper>
@@ -319,8 +376,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Accident"
           value={medicalSplitBodyPerAccident}
-          onChange={(v) => {
-            setValues({ ...values, medicalSplitBodyPerAccident: v });
+          onChange={(e) => {
+            setValues({ ...values, medicalSplitBodyPerAccident: e.target.value });
           }}
         />
       </InputWrapper>
@@ -330,8 +387,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Property Damage"
           value={medicalSplitPropertyDamage}
-          onChange={(v) => {
-            setValues({ ...values, medicalSplitPropertyDamage: v });
+          onChange={(e) => {
+            setValues({ ...values, medicalSplitPropertyDamage: e.target.value });
           }}
         />
       </InputWrapper>
@@ -341,8 +398,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={medicalSplitAutoEntry}
-          onChange={(v) => {
-            setValues({ ...values, medicalSplitAutoEntry: v });
+          onChange={(e) => {
+            setValues({ ...values, medicalSplitAutoEntry: e.target.value });
           }}
         />
       </InputWrapper>
@@ -357,8 +414,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Limit"
           label="Limit"
           value={underinsuredMotoristSingleLimit}
-          onChange={(v) => {
-            setValues({ ...values, underinsuredMotoristSingleLimit: v });
+          onChange={(e) => {
+            setValues({ ...values, underinsuredMotoristSingleLimit: e.target.value });
           }}
         />
       </InputWrapper>
@@ -368,8 +425,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={underinsuredMotoristSingleAutoEntry}
-          onChange={(v) => {
-            setValues({ ...values, underinsuredMotoristSingleAutoEntry: v });
+          onChange={(e) => {
+            setValues({ ...values, underinsuredMotoristSingleAutoEntry: e.target.value });
           }}
         />
       </InputWrapper>
@@ -384,8 +441,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Person"
           value={underMotoristBodyPerPerson}
-          onChange={(v) => {
-            setValues({ ...values, underMotoristBodyPerPerson: v });
+          onChange={(e) => {
+            setValues({ ...values, underMotoristBodyPerPerson: e.target.value });
           }}
         />
       </InputWrapper>
@@ -395,8 +452,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Accident"
           value={underMotoristBodyPerAccident}
-          onChange={(v) => {
-            setValues({ ...values, underMotoristBodyPerAccident: v });
+          onChange={(e) => {
+            setValues({ ...values, underMotoristBodyPerAccident: e.target.value });
           }}
         />
       </InputWrapper>
@@ -406,8 +463,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Property Damage"
           value={underMotoristProperty}
-          onChange={(v) => {
-            setValues({ ...values, underMotoristProperty: v });
+          onChange={(e) => {
+            setValues({ ...values, underMotoristProperty: e.target.value });
           }}
         />
       </InputWrapper>
@@ -417,8 +474,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={underMotoristAuto}
-          onChange={(v) => {
-            setValues({ ...values, underMotoristAuto: v });
+          onChange={(e) => {
+            setValues({ ...values, underMotoristAuto: e.target.value });
           }}
         />
       </InputWrapper>
@@ -433,8 +490,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Limit"
           label="Limit"
           value={uninsuredMotoristSingleLimit}
-          onChange={(v) => {
-            setValues({ ...values, uninsuredMotoristSingleLimit: v });
+          onChange={(e) => {
+            setValues({ ...values, uninsuredMotoristSingleLimit: e.target.value });
           }}
         />
       </InputWrapper>
@@ -444,8 +501,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={uninsuredMotoristSingleAutoEntry}
-          onChange={(v) => {
-            setValues({ ...values, uninsuredMotoristSingleAutoEntry: v });
+          onChange={(e) => {
+            setValues({ ...values, uninsuredMotoristSingleAutoEntry: e.target.value });
           }}
         />
       </InputWrapper>
@@ -460,8 +517,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Person"
           value={unMotoristBodyPerPerson}
-          onChange={(v) => {
-            setValues({ ...values, unMotoristBodyPerPerson: v });
+          onChange={(e) => {
+            setValues({ ...values, unMotoristBodyPerPerson: e.target.value });
           }}
         />
       </InputWrapper>
@@ -471,8 +528,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Accident"
           value={unMotoristBodyPerAccident}
-          onChange={(v) => {
-            setValues({ ...values, unMotoristBodyPerAccident: v });
+          onChange={(e) => {
+            setValues({ ...values, unMotoristBodyPerAccident: e.target.value });
           }}
         />
       </InputWrapper>
@@ -480,10 +537,10 @@ const CoverageSection = ({ store }) => {
         <SuryaSelect
           options={propertyDamageOptions}
           placeholder="Choose Amount"
-          label="Property Damage"
+          label="Uninsured Property Damage"
           value={unMotoristProperty}
-          onChange={(v) => {
-            setValues({ ...values, unMotoristProperty: v });
+          onChange={(e) => {
+            setValues({ ...values, unMotoristProperty: e.target.value });
           }}
         />
       </InputWrapper>
@@ -493,8 +550,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={unMotoristAuto}
-          onChange={(v) => {
-            setValues({ ...values, unMotoristAuto: v });
+          onChange={(e) => {
+            setValues({ ...values, unMotoristAuto: e.target.value });
           }}
         />
       </InputWrapper>
@@ -509,8 +566,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Limit"
           label="Limit"
           value={cslSingleLimit}
-          onChange={(v) => {
-            setValues({ ...values, cslSingleLimit: v });
+          onChange={(e) => {
+            setValues({ ...values, cslSingleLimit: e.target.value });
           }}
         />
       </InputWrapper>
@@ -520,8 +577,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={cslSingleAuto}
-          onChange={(v) => {
-            setValues({ ...values, cslSingleAuto: v });
+          onChange={(e) => {
+            setValues({ ...values, cslSingleAuto: e.target.value });
           }}
         />
       </InputWrapper>
@@ -536,8 +593,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Person"
           value={cslBodyPerPerson}
-          onChange={(v) => {
-            setValues({ ...values, cslBodyPerPerson: v });
+          onChange={(e) => {
+            setValues({ ...values, cslBodyPerPerson: e.target.value });
           }}
         />
       </InputWrapper>
@@ -547,8 +604,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Accident"
           value={cslBodyPerAccident}
-          onChange={(v) => {
-            setValues({ ...values, cslBodyPerAccident: v });
+          onChange={(e) => {
+            setValues({ ...values, cslBodyPerAccident: e.target.value });
           }}
         />
       </InputWrapper>
@@ -558,8 +615,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Property Damage"
           value={cslProperty}
-          onChange={(v) => {
-            setValues({ ...values, cslProperty: v });
+          onChange={(e) => {
+            setValues({ ...values, cslProperty: e.target.value});
           }}
         />
       </InputWrapper>
@@ -569,8 +626,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={cslSplitAuto}
-          onChange={(v) => {
-            setValues({ ...values, cslSplitAuto: v });
+          onChange={(e) => {
+            setValues({ ...values, cslSplitAuto: e.target.value });
           }}
         />
       </InputWrapper>
@@ -585,8 +642,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Limit"
           label="Limit"
           value={nonCslSingleLimit}
-          onChange={(v) => {
-            setValues({ ...values, nonCslSingleLimit: v });
+          onChange={(e) => {
+            setValues({ ...values, nonCslSingleLimit: e.target.value });
           }}
         />
       </InputWrapper>
@@ -596,8 +653,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={nonCslSingleAuto}
-          onChange={(v) => {
-            setValues({ ...values, nonCslSingleAuto: v });
+          onChange={(e) => {
+            setValues({ ...values, nonCslSingleAuto: e.target.value });
           }}
         />
       </InputWrapper>
@@ -612,8 +669,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Person"
           value={nonCslBodyPerPerson}
-          onChange={(v) => {
-            setValues({ ...values, nonCslBodyPerPerson: v });
+          onChange={(e) => {
+            setValues({ ...values, nonCslBodyPerPerson: e.target.value });
           }}
         />
       </InputWrapper>
@@ -623,8 +680,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Body Injury Per Accident"
           value={nonCslBodyPerAccident}
-          onChange={(v) => {
-            setValues({ ...values, nonCslBodyPerAccident: v });
+          onChange={(e) => {
+            setValues({ ...values, nonCslBodyPerAccident: e.target.value });
           }}
         />
       </InputWrapper>
@@ -634,8 +691,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Choose Amount"
           label="Property Damage"
           value={nonCslProperty}
-          onChange={(v) => {
-            setValues({ ...values, nonCslProperty: v });
+          onChange={(e) => {
+            setValues({ ...values, nonCslProperty: e.target.value });
           }}
         />
       </InputWrapper>
@@ -645,8 +702,8 @@ const CoverageSection = ({ store }) => {
           placeholder="Covered Auto Symbol Entry"
           label="Choose Auto Symbol"
           value={nonCslSplitAuto}
-          onChange={(v) => {
-            setValues({ ...values, nonCslSplitAuto: v });
+          onChange={(e) => {
+            setValues({ ...values, nonCslSplitAuto: e.target.value });
           }}
         />
       </InputWrapper>
@@ -662,16 +719,16 @@ const CoverageSection = ({ store }) => {
             <SuryaSelect
               options={overallOptions}
               placeholder="Choose Overall Coverage"
-              label="Overall"
-              onChange={(val) => {
-                setValues({ ...values, overall: val });
+              label="Choose Overall Coverage"
+              onChange={(e) => {
+                setValues({ ...values, overall: e.target.value });
               }}
               value={overall}
             />
           </InputWrapper>
         </Flex>
 
-        {overall?.value === 'Combined Single Limit'
+        {overall === 'Combined Single Limit'
           ? combinedSection
           : splitSection}
       </Section>
@@ -683,15 +740,15 @@ const CoverageSection = ({ store }) => {
               options={overallOptions}
               placeholder="Choose Personal Injury Protection Coverage"
               label="Overall"
-              onChange={(val) => {
-                setValues({ ...values, personalInjury: val });
+              onChange={(e) => {
+                setValues({ ...values, personalInjury: e.target.value });
               }}
               value={personalInjury}
             />
           </InputWrapper>
         </Flex>
         <Flex>
-          {personalInjury?.value === 'Combined Single Limit'
+          {personalInjury === 'Combined Single Limit'
             ? pIProtectionSingle
             : pIProtectionSplit}
         </Flex>
@@ -704,15 +761,15 @@ const CoverageSection = ({ store }) => {
               options={overallOptions}
               placeholder="Choose Personal Injury Protection Coverage"
               label="Overall"
-              onChange={(val) => {
-                setValues({ ...values, medicalPayments: val });
+              onChange={(e) => {
+                setValues({ ...values, medicalPayments: e.target.value });
               }}
               value={medicalPayments}
             />
           </InputWrapper>
         </Flex>
         <Flex>
-          {medicalPayments?.value === 'Combined Single Limit'
+          {medicalPayments === 'Combined Single Limit'
             ? medicalSingle
             : medicalSplit}
         </Flex>
@@ -725,16 +782,16 @@ const CoverageSection = ({ store }) => {
             <SuryaSelect
               options={overallOptions}
               placeholder="Choose Underinsured Motorist Coverage"
-              label="Overall"
-              onChange={(val) => {
-                setValues({ ...values, underinsuredMotorist: val });
+              label="Choose Underinsured Motorist Coverage"
+              onChange={(e) => {
+                setValues({ ...values, underinsuredMotorist: e.target.value });
               }}
               value={underinsuredMotorist}
             />
           </InputWrapper>
         </Flex>
         <Flex>
-          {underinsuredMotorist?.value === 'Combined Single Limit'
+          {underinsuredMotorist === 'Combined Single Limit'
             ? underinsuredMotoristSingle
             : underinsuredMotoristSplit}
         </Flex>
@@ -748,15 +805,15 @@ const CoverageSection = ({ store }) => {
               options={overallOptions}
               placeholder="Choose Underinsured Motorist Coverage"
               label="Overall"
-              onChange={(val) => {
-                setValues({ ...values, uninsuredMotorist: val });
+              onChange={(e) => {
+                setValues({ ...values, uninsuredMotorist: e.target.value });
               }}
               value={uninsuredMotorist}
             />
           </InputWrapper>
         </Flex>
         <Flex>
-          {uninsuredMotorist?.value === 'Combined Single Limit'
+          {uninsuredMotorist === 'Combined Single Limit'
             ? uninsuredMotoristSingle
             : uninsuredMotoristSplit}
         </Flex>
@@ -768,10 +825,9 @@ const CoverageSection = ({ store }) => {
           <InputWrapper>
             <SuryaSelect
               options={[{label: 'Yes', value: 'Yes'}, {label: 'No', value: 'No'}]}
-              placeholder="Choose CSL Coverage"
-              label="Yes/No"
-              onChange={(val) => {
-                setValues({ ...values, csl: val });
+              label="Choose CSL Coverage"
+              onChange={(e) => {
+                setValues({ ...values, csl: e.target.value });
               }}
               value={csl}
             />
@@ -786,8 +842,8 @@ const CoverageSection = ({ store }) => {
               options={[{label: 'Yes', value: 'Yes'}, {label: 'No', value: 'No'}]}
               placeholder="Choose Non Owned CSL Coverage"
               label="Overall"
-              onChange={(val) => {
-                setValues({ ...values, nonOwnedCSL: val });
+              onChange={(e) => {
+                setValues({ ...values, nonOwnedCSL: e.target.value });
               }}
               value={nonOwnedCSL}
             />
@@ -803,14 +859,14 @@ const CoverageSection = ({ store }) => {
               options={deductableOptions}
               placeholder="Yes/No"
               label="Deductable"
-              onChange={(v) => {
-                setValues({ ...values, deductable: v });
+              onChange={(e) => {
+                setValues({ ...values, deductable: e.target.value });
               }}
               value={deductable}
             />
           </InputWrapper>
           {deductable
-            && (deductable?.value === 'Yes' ? (
+            && (deductable === 'Yes' ? (
               <>
                 <InputWrapper>
                   <SuryaSelect
@@ -818,8 +874,8 @@ const CoverageSection = ({ store }) => {
                     placeholder="$$"
                     label="Amount"
                     value={deductableAmount}
-                    onChange={(v) => {
-                      setValues({ ...values, deductableAmount: v });
+                    onChange={(e) => {
+                      setValues({ ...values, deductableAmount: e.target.value });
                     }}
                   />
                 </InputWrapper>
@@ -829,8 +885,8 @@ const CoverageSection = ({ store }) => {
                     placeholder="$$"
                     label="Covered Auto Symbol Entry"
                     value={deductableAutoEntry}
-                    onChange={(v) => {
-                      setValues({ ...values, deductableAutoEntry: v });
+                    onChange={(e) => {
+                      setValues({ ...values, deductableAutoEntry:  e.target.value });
                     }}
                   />
                 </InputWrapper>

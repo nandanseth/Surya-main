@@ -1,6 +1,7 @@
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
+import { InputContainer } from './Input';
 
 const SuryaSelect = ({
   label = '',
@@ -11,26 +12,14 @@ const SuryaSelect = ({
   style = {},
 }) => (
   <Wrapper style={style}>
-    <Autocomplete
-      className="combo-box-demo"
-      options={options}
-      getOptionLabel={(item) => item?.label?.toString() || ''}
-      getOptionSelected={(option, value) => option?.value === value?.value}
-      onChange={(e, v) => {
-        onChange(v);
-      }}
-      value={value || ''}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={label}
-          variant="outlined"
-          value={value}
-          placeholder={placeholder}
-          InputLabelProps={{ shrink: true }}
-        />
-      )}
-    />
+    <label>{label}</label>
+    <InputContainer className="select-container">
+        <select value={value === null ? '' : value} onChange={onChange}>
+            {options.map((option) => (
+              <option value={option.value}>{option.label}</option>
+            ))}
+        </select>
+  </InputContainer>
   </Wrapper>
 );
 

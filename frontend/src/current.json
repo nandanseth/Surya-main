@@ -1,0 +1,319 @@
+{
+    "policy": {
+      "states": {
+        "value": "",
+        "label": ""
+      },
+      "classification": {
+        "value": "",
+        "label": ""
+      },
+      "lineOfBusiness": {
+        "value": "",
+        "label": ""
+      },
+      "policyLineItem": {
+        "value": "",
+        "label": ""
+      },
+      "coverageTerm": {
+        "value": "",
+        "label": ""
+      },
+      "policyCategory": {
+        "value": "",
+        "label": ""
+      },
+      "underwritingCode": {
+        "value": "",
+        "label": ""
+      },
+      "agent": "",
+      "effectiveDate": "kkjkjjk",
+      "expirationDate": "kkkk",
+      "radius": {
+        "value": "Local",
+        "label": "Local"
+      },
+      "classCode": {
+        "value": "Non-fleet",
+        "label": "Non-fleet"
+      },
+      "businessUseClass": null,
+      "sizeClass": null,
+      "entity": ""
+    },
+    "insured": {
+      "agent": {
+        "value": "",
+        "label": ""
+      },
+      "entity": {
+        "value": "",
+        "label": ""
+      },
+      "firstName": null,
+      "lastName": null,
+      "middleName": null,
+      "dob": null,
+      "suffix": null,
+      "gender": null,
+      "ssn": null,
+      "address1": "189 Bridge St, Apt 5D",
+      "address2": null,
+      "city": "New York",
+      "state": "New York",
+      "zipCode": "11201",
+      "email": "ojp3@cornell.edu",
+      "phoneNumber": "6783135746",
+      "licenseState": {
+        "value": "Indiana",
+        "label": "Indiana"
+      },
+      "licenseNumber": null,
+      "licenseEff": null,
+      "licenseExp": null,
+      "contactName": "Regina Powell",
+      "contactNumber": "6784274140",
+      "contactEmail": "regina.powell2@yahoo.com",
+      "corporationName": "Omari",
+      "taxIdNumber": "Powell"
+    },
+    "drivers": {
+      "values": [
+        {
+          "driverName": null,
+          "states": {
+            "value": "",
+            "label": ""
+          },
+          "licenseNumber": null,
+          "licenseEffDate": null,
+          "licenseExpDate": null
+        }
+      ]
+    },
+    "lossHistory": {
+      "incidents": [
+        {
+          "accidentDate": null,
+          "reportedDate": null,
+          "claimNumber": null,
+          "claimType": {
+            "value": "",
+            "label": ""
+          },
+          "subClaimNumber": null,
+          "totalIncurred": null,
+          "liabilityPaid": null,
+          "openReserve": null,
+          "status": {
+            "value": "",
+            "label": ""
+          },
+          "previousPolicyNumber": null,
+          "priorCarrierName": null,
+          "originalInceptionDate": null,
+          "expirationDate": "10/24",
+          "isExperienceMode": {
+            "value": "",
+            "label": ""
+          },
+          "isPolicyTransferred": {
+            "value": "",
+            "label": ""
+          }
+        }
+      ]
+    },
+    "documents": {},
+    "coverage": {
+      "overall": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "personalInjury": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "medicalPayments": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "underinsuredMotorist": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "uninsuredMotorist": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "csl": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "nonOwnedCSL": {
+        "value": "Combined Single Limit",
+        "label": "Combined Single Limit"
+      },
+      "deductable": {
+        "value": "Yes",
+        "label": "Yes"
+      },
+      "deductableAmount": {
+        "value": "75,000",
+        "label": "75,000"
+      },
+      "deductableAutoEntry": {
+        "value": 14,
+        "label": 14
+      },
+      "combinedSectionLimit": {
+        "value": "50,000",
+        "label": "50,000"
+      },
+      "combinedSectionEntry": {
+        "value": 12,
+        "label": 12
+      },
+      "splitSectionBodyPerPerson": {
+        "value": "25,000",
+        "label": "25,000"
+      },
+      "splitSectionBodyPerAccidentOptions": {
+        "value": "25,000",
+        "label": "25,000"
+      },
+      "splitSectionPropertyDamageOptions": {
+        "value": "25,000",
+        "label": "25,000"
+      },
+      "splitSectionAutoEntryOptions": {
+        "value": 12,
+        "label": 12
+      },
+      "pIProtectionSingleLimit": {
+        "value": "100,000",
+        "label": "100,000"
+      },
+      "pIProtectionSingleEntry": {
+        "value": 12,
+        "label": 12
+      },
+      "pIProtectionSplitBodyPerPerson": null,
+      "pIProtectionSplitBodyPerAccident": null,
+      "pIProtectionSplitPropertyDamage": null,
+      "pIProtectionSplitAutoEntry": null,
+      "medicalSingleLimit": {
+        "value": "2,000,000",
+        "label": "2,000,000"
+      },
+      "medicalSingleEntry": {
+        "value": 19,
+        "label": 19
+      },
+      "medicalSplitBodyPerPerson": null,
+      "medicalSplitBodyPerAccident": null,
+      "medicalSplitPropertyDamage": null,
+      "medicalSplitAutoEntry": null,
+      "underinsuredMotoristSingleLimit": {
+        "value": "100,000",
+        "label": "100,000"
+      },
+      "underinsuredMotoristSingleAutoEntry": {
+        "value": 13,
+        "label": 13
+      },
+      "underMotoristBodyPerPerson": null,
+      "underMotoristBodyPerAccident": null,
+      "underMotoristProperty": null,
+      "underMotoristAuto": null,
+      "uninsuredMotoristSingleLimit": {
+        "value": "250,000",
+        "label": "250,000"
+      },
+      "uninsuredMotoristSingleAutoEntry": {
+        "value": 14,
+        "label": 14
+      },
+      "unMotoristBodyPerPerson": null,
+      "unMotoristBodyPerAccident": null,
+      "unMotoristProperty": null,
+      "unMotoristAuto": null,
+      "cslSingleLimit": null,
+      "cslSingleAuto": null,
+      "nonCslSingleLimit": null,
+      "nonCslSingleAuto": null,
+      "cslBodyPerPerson": null,
+      "cslBodyPerAccident": null,
+      "cslProperty": null,
+      "cslSplitAuto": null,
+      "nonCslBodyPerPerson": null,
+      "nonCslBodyPerAccident": null,
+      "nonCslProperty": null,
+      "nonCslSplitAuto": null
+    },
+    "vehicles": {
+      "states": [
+        {
+          "yesNo": "Yes",
+          "category": {
+            "value": "Taxicabs and Limousines",
+            "label": "Taxicabs and Limousines"
+          },
+          "classification": null,
+          "vehicleCategory": {
+            "value": "Limousine - Seating 8 or Fewer",
+            "label": "Limousine - Seating 8 or Fewer"
+          },
+          "vehicleType": {
+            "value": "Medi Cars",
+            "label": "Medi Cars"
+          },
+          "state": null,
+          "vehicleState": null,
+          "vehicleWeight": {
+            "value": "10,001 - 20,000",
+            "label": "10,001 - 20,000",
+            "info": 20000
+          },
+          "fuelType": {
+            "value": "Electric",
+            "label": "Electric"
+          },
+          "vin": null,
+          "make": null,
+          "model": null,
+          "modelYear": null,
+          "seating": null,
+          "wheelChair": {
+            "label": "Yes",
+            "value": "Yes"
+          },
+          "plateNumber": null,
+          "garageZipCode": null,
+          "zoneCode": null,
+          "rateClassCode": null,
+          "baseName": null,
+          "baseType": {
+            "value": "Black Car",
+            "label": "Black Car"
+          },
+          "baseNumber": null,
+          "baseExpDate": null,
+          "shl": null,
+          "garageAddress1": null,
+          "garageAddress2": null,
+          "garageZipCode2": null,
+          "garageCity": null,
+          "garageCounty": null,
+          "garageState": {
+            "value": "California",
+            "label": "California"
+          },
+          "garageCountry": null,
+          "": "kkkkk"
+        }
+      ]
+    }
+  }

@@ -87,3 +87,117 @@ const StyledInput = styled.input<{ hasError: boolean }>`
 `;
 
 export default Input;
+
+export const InputContainer = styled.div`
+ position: relative;
+  display: flex;
+  flex-direction: column;
+
+  :focus-within label {
+    transform: translate(0, 12px) scale(0.8);
+    color: #0a53e4;
+  }
+
+  label {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(0, 23px) scale(1);
+    transform-origin: top left;
+    transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    color: #6f81a5;
+    font-size: 16px;
+    line-height: 1;
+    left: 16px;
+  }
+
+  input {
+  height: 64px;
+  border-radius: 4px;
+  border: none;
+  padding: 24px 16px 4px 16px;
+  font-size: 16px;
+  line-height: 1;
+  outline: none;
+  box-shadow: none;
+  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  }
+
+  input:focus {
+  box-shadow: 0 0 0 2px #79b1ff;
+  }
+
+`;
+
+/*
+
+const Container = styled.div`
+ position: relative;
+  display: flex;
+  flex-direction: column;
+
+  :focus-within label {
+    transform: translate(0, 12px) scale(0.8);
+    color: #0a53e4;
+  }
+
+  label {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(0, 23px) scale(1);
+    transform-origin: top left;
+    transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    color: #6f81a5;
+    font-size: 16px;
+    line-height: 1;
+    left: 16px;
+  }
+
+  input {
+  height: 64px;
+  border-radius: 4px;
+  border: none;
+  padding: 24px 16px 4px 16px;
+  font-size: 16px;
+  line-height: 1;
+  outline: none;
+  box-shadow: none;
+  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  }
+
+  input:focus {
+  box-shadow: 0 0 0 2px #79b1ff;
+  }
+
+`;
+
+const Label = styled.label`
+  position: absolute;
+  pointer-events: none;
+  transform: translate(0, 23px) scale(1);
+  transform-origin: top left;
+  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  color: #6f81a5;
+  font-size: 16px;
+  line-height: 1;
+  left: 16px;
+`;
+
+
+.input-container input {
+  height: 64px;
+  border-radius: 4px;
+  border: none;
+  padding: 24px 16px 4px 16px;
+  font-size: 16px;
+  line-height: 1;
+  outline: none;
+  box-shadow: none;
+  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.input-container input:focus {
+  box-shadow: 0 0 0 2px #79b1ff;
+}
+
+
+*/
