@@ -156,15 +156,16 @@ export const preSubmit = (store) => {
   */
 
   const { policy, coverage, insured, drivers, lossHistory, documents, vehicles} = store;
-  return {
+  const toReturn =  {
     policy: { ...policy.values,},
     insured: { ...insured?.values },
     drivers: {values: [...drivers?.values]},
     lossHistory: {incidents: [...lossHistory?.values]},
     documents,
     coverage: { ...coverage?.values},
-    vehicles: { states: [...vehicles?.values]},
+    vehicles: { values: [...vehicles?.values]},
   };
+  return toReturn;
 }
 
 
