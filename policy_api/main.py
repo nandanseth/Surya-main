@@ -54,13 +54,13 @@ class PolicyMeta(BaseModel):
 
 
 class Coverage(BaseModel):
-    overall: Optional[Label]
-    personalInjury: Optional[Label]
-    medicalPayments: Optional[Label]
-    underinsuredMotorist: Optional[Label]
-    uninsuredMotorist: Optional[Label]
-    csl: Optional[Label]
-    nonOwnedCSL: Optional[Label]
+    overall: Optional[str]
+    personalInjury: Optional[str]
+    medicalPayments: Optional[str]
+    underinsuredMotorist: Optional[str]
+    uninsuredMotorist: Optional[str]
+    csl: Optional[str]
+    nonOwnedCSL: Optional[str]
     deductable: Optional[str]
     deductableAmount: Optional[str]
     deductableAutoEntry: Optional[str]
@@ -269,21 +269,18 @@ class VehicleDefaults(BaseModel):
     garageCountry: Optional[str]
     
 class Vehicles(BaseModel):
-    vehicles: Optional[List[VehicleState]]
-    defaultValue: Optional[str]
-    yesNoValues: Optional[List[str]]
-    yesNoOptions: Optional[List[Label]]
-    defaults: Optional[VehicleDefaults]
+    # TODO Change this to "states" in the future. This is temporary to suit the front-end.
+    values: Optional[List[VehicleState]]
 
 
 class Policy(BaseModel):
     policy: Optional[PolicyMeta]
-    coverage: Optional[Coverage]
     insured: Optional[Insured]
     drivers: Optional[Drivers]
     loss_history: Optional[LossHistory]
     documents: Optional[dict]
-    vehicles: Optional[Vehicles]
+    coverage: Optional[Coverage]
+    vehicles: Optional[List[Vehicles]]
 
 
 @app.get("/")
@@ -345,7 +342,7 @@ def create_policy(policy_payload: Policy):
         content={
             "created": False,
             "policy_id": None,
-            "payload": policy_payload.json(),
+            "payload": policy_payload,
             "error": "There was a problem creating the policy.",
         }
     )
@@ -371,275 +368,3 @@ def update_policy(policy_id: str, policy_payload: Policy):
                     "error": "There was a problem updating the policy. Check the payload submitted.",
                 }
             )
-
-
-"""
-    manifest = {
-        "policy": {
-            "values": {
-                "states" = Optional[str],
-                "classification" = Optional[str],
-                "lineOfBusiness" = Optional[str],
-                "policyLineItem" = Optional[str],
-                "coverageTerm" = Optional[str],
-                "policyCategory" = Optional[str],
-                "underwritingCode" = Optional[str],
-                "agent" = Optional[str],
-                "effectiveDate" = Optional[str],
-                "expirationDate" = Optional[str],
-                "radius" = Optional[str],
-                "classCode" = Optional[str],
-                "businessUseClass" = Optional[str],
-                "sizeClass" = Optional[str],
-            }
-        },
-        #########
-        "coverage": {
-            "values": {
-                "overall": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "personalInjury": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "medicalPayments": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "underinsuredMotorist": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "uninsuredMotorist": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "csl": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "nonOwnedCSL": {
-                    "value": "Combined Single Limit",
-                    "label": "Combined Single Limit",
-                },
-                "deductable" = Optional[str],
-                "deductableAmount" = Optional[str],
-                "deductableAutoEntry" = Optional[str],
-                "combinedSectionLimit" = Optional[str],
-                "combinedSectionEntry" = Optional[str],
-                "splitSectionBodyPerPerson" = Optional[str],
-                "splitSectionBodyPerAccidentOptions" = Optional[str],
-                "splitSectionPropertyDamageOptions" = Optional[str],
-                "splitSectionAutoEntryOptions" = Optional[str],
-                "pIProtectionSingleLimit" = Optional[str],
-                "pIProtectionSingleEntry" = Optional[str],
-                "pIProtectionSplitBodyPerPerson" = Optional[str],
-                "pIProtectionSplitBodyPerAccident" = Optional[str],
-                "pIProtectionSplitPropertyDamage" = Optional[str],
-                "pIProtectionSplitAutoEntry" = Optional[str],
-                "medicalSingleLimit" = Optional[str],
-                "medicalSingleEntry" = Optional[str],
-                "medicalSplitBodyPerPerson" = Optional[str],
-                "medicalSplitBodyPerAccident" = Optional[str],
-                "medicalSplitPropertyDamage" = Optional[str],
-                "medicalSplitAutoEntry" = Optional[str],
-                "underinsuredMotoristSingleLimit" = Optional[str],
-                "underinsuredMotoristSingleAutoEntry" = Optional[str],
-                "underMotoristBodyPerPerson" = Optional[str],
-                "underMotoristBodyPerAccident" = Optional[str],
-                "underMotoristProperty" = Optional[str],
-                "underMotoristAuto" = Optional[str],
-                "uninsuredMotoristSingleLimit" = Optional[str],
-                "uninsuredMotoristSingleAutoEntry" = Optional[str],
-                "unMotoristBodyPerPerson" = Optional[str],
-                "unMotoristBodyPerAccident" = Optional[str],
-                "unMotoristProperty" = Optional[str],
-                "unMotoristAuto" = Optional[str],
-                "cslSingleLimit" = Optional[str],
-                "cslSingleAuto" = Optional[str],
-                "nonCslSingleLimit" = Optional[str],
-                "nonCslSingleAuto" = Optional[str],
-                "cslBodyPerPerson" = Optional[str],
-                "cslBodyPerAccident" = Optional[str],
-                "cslProperty" = Optional[str],
-                "cslSplitAuto" = Optional[str],
-                "nonCslBodyPerPerson" = Optional[str],
-                "nonCslBodyPerAccident" = Optional[str],
-                "nonCslProperty" = Optional[str],
-                "nonCslSplitAuto" = Optional[str],
-            },
-            "errors": [],
-        },
-        ######
-        "insured": {
-            "values": {
-                "agent" = Optional[str],
-                "entity" = Optional[str],
-                "firstName" = Optional[str],
-                "lastName" = Optional[str],
-                "middleName" = Optional[str],
-                "dob" = Optional[str],
-                "suffix" = Optional[str],
-                "gender" = Optional[str],
-                "ssn" = Optional[str],
-                "address1" = Optional[str],
-                "address2" = Optional[str],
-                "city" = Optional[str],
-                "state" = Optional[str],
-                "zipCode" = Optional[str],
-                "email" = Optional[str],
-                "phoneNumber" = Optional[str],
-                "licenseState" = Optional[str],
-                "licenseNumber" = Optional[str],
-                "licenseEff" = Optional[str],
-                "licenseExp" = Optional[str],
-                "contactName" = Optional[str],
-                "contactNumber" = Optional[str],
-                "contactEmail" = Optional[str],
-                "corporationName" = Optional[str],
-                "taxIdNumber" = Optional[str],
-            },
-            "isAddActive": False,
-        },
-        #######
-        "drivers": {
-            "values": [
-                {
-                    "driverName" = Optional[str],
-                    "states" = Optional[str],
-                    "licenseNumber" = Optional[str],
-                    "licenseEffDate" = Optional[str],
-                    "licenseExpDate" = Optional[str],
-                }
-            ],
-            "defaults": {
-                "driverName" = Optional[str],
-                "states" = Optional[str],
-                "licenseNumber" = Optional[str],
-                "licenseEffDate" = Optional[str],
-                "licenseExpDate" = Optional[str],
-            },
-        },
-        ######
-        "lossHistory": {
-            "values": [
-                {
-                    "accidentDate" = Optional[str],
-                    "reportedDate" = Optional[str],
-                    "claimNumber" = Optional[str],
-                    "claimType" = Optional[str],
-                    "subClaimNumber" = Optional[str],
-                    "totalIncurred" = Optional[str],
-                    "liabilityPaid" = Optional[str],
-                    "openReserve" = Optional[str],
-                    "status" = Optional[str],
-                    "previousPolicyNumber" = Optional[str],
-                    "priorCarrierName" = Optional[str],
-                    "originalInceptionDate" = Optional[str],
-                    "expirationDate" = Optional[str],
-                    "isExperienceMode" = Optional[str],
-                    "isPolicyTransferred" = Optional[str],
-                }
-            ],
-            "defaults": {
-                "accidentDate" = Optional[str],
-                "reportedDate" = Optional[str],
-                "claimNumber" = Optional[str],
-                "claimType" = Optional[str],
-                "subClaimNumber" = Optional[str],
-                "totalIncurred" = Optional[str],
-                "liabilityPaid" = Optional[str],
-                "openReserve" = Optional[str],
-                "status" = Optional[str],
-                "previousPolicyNumber" = Optional[str],
-                "priorCarrierName" = Optional[str],
-                "originalInceptionDate" = Optional[str],
-                "expirationDate" = Optional[str],
-                "isExperienceMode" = Optional[str],
-                "isPolicyTransferred" = Optional[str],
-            },
-        },
-        #######
-        "documents": {},
-        #######
-        "vehicles": {
-            "values": [
-                {
-                    "yesNo": "No",
-                    "category" = Optional[str],
-                    "classification" = Optional[str],
-                    "vehicleCategory" = Optional[str],
-                    "vehicleType" = Optional[str],
-                    "state" = Optional[str],
-                    "vehicleState" = Optional[str],
-                    "vehicleWeight" = Optional[str],
-                    "fuelType" = Optional[str],
-                    "vin" = Optional[str],
-                    "make" = Optional[str],
-                    "model" = Optional[str],
-                    "modelYear" = Optional[str],
-                    "seating" = Optional[str],
-                    "wheelChair" = Optional[str],
-                    "plateNumber" = Optional[str],
-                    "garageZipCode" = Optional[str],
-                    "zoneCode" = Optional[str],
-                    "rateClassCode" = Optional[str],
-                    "baseName" = Optional[str],
-                    "baseType" = Optional[str],
-                    "baseNumber" = Optional[str],
-                    "baseExpDate" = Optional[str],
-                    "shl" = Optional[str],
-                    "garageAddress1" = Optional[str],
-                    "garageAddress2" = Optional[str],
-                    "garageZipCode2" = Optional[str],
-                    "garageCity" = Optional[str],
-                    "garageCounty" = Optional[str],
-                    "garageState" = Optional[str],
-                    "garageCountry" = Optional[str],
-                }
-            ],
-            "defaultValue": "No",
-            "yesNoValues": ["Yes", "No"],
-            "yesNoOptions": [
-                {"label": "Yes", "value": "Yes"},
-                {"label": "No", "value": "No"},
-            ],
-            "defaults": {
-                "yesNo": "No",
-                "category" = Optional[str],
-                "classification" = Optional[str],
-                "vehicleCategory" = Optional[str],
-                "vehicleType" = Optional[str],
-                "state" = Optional[str],
-                "vehicleState" = Optional[str],
-                "vehicleWeight" = Optional[str],
-                "fuelType" = Optional[str],
-                "vin" = Optional[str],
-                "make" = Optional[str],
-                "model" = Optional[str],
-                "modelYear" = Optional[str],
-                "seating" = Optional[str],
-                "wheelChair" = Optional[str],
-                "plateNumber" = Optional[str],
-                "garageZipCode" = Optional[str],
-                "zoneCode" = Optional[str],
-                "rateClassCode" = Optional[str],
-                "baseName" = Optional[str],
-                "baseType" = Optional[str],
-                "baseNumber" = Optional[str],
-                "baseExpDate" = Optional[str],
-                "shl" = Optional[str],
-                "garageAddress1" = Optional[str],
-                "garageAddress2" = Optional[str],
-                "garageZipCode2" = Optional[str],
-                "garageCity" = Optional[str],
-                "garageCounty" = Optional[str],
-                "garageState" = Optional[str],
-                "garageCountry" = Optional[str],
-            },
-        },
-    }
-    return JSONResponse(content=manifest)
-"""
