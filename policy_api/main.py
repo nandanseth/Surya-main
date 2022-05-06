@@ -280,7 +280,7 @@ class Policy(BaseModel):
     loss_history: Optional[LossHistory]
     documents: Optional[dict]
     coverage: Optional[Coverage]
-    vehicles: Optional[List[Vehicles]]
+    vehicles: Optional[Vehicles]
 
 
 @app.get("/")
