@@ -47,11 +47,13 @@ const VehicleSection = ({ store }) => {
       setValues(copy);
     };
 
-    const handleSelectOnChange = (v, propertyName) => {
+    const handleSelectOnChange = (e, propertyName) => {
       const copy = [ ...values ];
-      copy[num][propertyName] = v;
+      copy[num][propertyName] = e.target.value;
       setValues(copy);
     }
+
+    console.log(optionsMap[values[num].category], '123å', values[num].category)
 
     return (
       <div>
@@ -60,8 +62,10 @@ const VehicleSection = ({ store }) => {
           <Flex>
             <RadioGroup
               values={yesNoValues}
-              setValue={(s) => {
-                handleSelectOnChange(s, 'yesNo')
+              setValue={(v) => {
+                const copy = [ ...values ];
+                copy[num].yesNo = v;
+                setValues(copy);
               }}
               currentValue={values[num].yesNo}
             />
@@ -76,19 +80,22 @@ const VehicleSection = ({ store }) => {
                       placeholder="Category"
                       label="Vehicle Category"
                       value={values[num].category}
-                      onChange={(v) => {
-                        handleSelectOnChange(v, 'category');
+                      onChange={(e) => {
+                        const copy = [ ...values ];
+                        copy[num].category = e.target.value;
+                        copy[num].vehicleCategory = optionsMap[values[num].category].value;
+                        setValues(copy);
                       }}
                     />
                   </InputWrapper>
                 </Flex>
                 <Flex>
-                  {values[num].category !== null ? (
+                  {values[num].category !== null || values[num].category === '' ? (
                     <InputWrapper>
                       <SuryaSelect
-                        options={optionsMap[values[num].category?.value]}
-                        placeholder="Category"
-                        label="Vehicle Category"
+                        options={optionsMap[values[num].category]}
+                        placeholder="Sub Category"
+                        label="Sub Vehicle Category"
                         value={values[num].vehicleCategory}
                         onChange={(v) => {
                           handleSelectOnChange(v, 'vehicleCategory');
@@ -238,9 +245,9 @@ const VehicleSection = ({ store }) => {
                 options={yesNoOptions}
                 placeholder="Yes/No"
                 label="Fleet"
-                value={values[num].vehicleWeight}
+                value={values[num].fleet}
                 onChange={(v) => {
-                  handleSelectOnChange(v, 'vehicleWeight');
+                  handleSelectOnChange(v, 'fleet');
                 }}
               />
             </InputWrapper>

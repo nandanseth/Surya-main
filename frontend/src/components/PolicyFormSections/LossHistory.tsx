@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { yesNoOptions } from '../../context/insured-context';
 import { ButtonHolder, Form } from '../../styles/styles';
 import { Save } from '../Buttons';
 import SuryaInput from '../PolicyFormInput';
@@ -94,9 +95,9 @@ const LossHistory = ({ store }) => {
               { value: 'Medical', label: 'Medical'}, { value: 'Uninsured Motorist', label: 'Uninsured Motorist'},
             ]}
               value={values[num].claimType}
-              onChange={(v) => {
+              onChange={(e) => {
                 const copy = [...values];
-                copy[num].claimType = v;
+                copy[num].claimType = e.target.value;
                 setValues(copy);
               }}
             />
@@ -113,13 +114,13 @@ const LossHistory = ({ store }) => {
         </Flex>
         <Flex>
           <SuryaSelect
-            options={[{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }]}
+            options={yesNoOptions}
             placeholder="Status"
             label="Open Or Closed Status"
             value={values[num].status}
-            onChange={(v) => {
+            onChange={(e) => {
               const copy = [...values];
-              copy[num].status = v;
+              copy[num].status = e.target.value;
               setValues(copy);
             }}
           />
@@ -167,9 +168,9 @@ const LossHistory = ({ store }) => {
               placeholder="Yes/No"
               label="Is Experience Mode"
               value={values[num].isExperienceMode}
-              onChange={(v) => {
+              onChange={(e) => {
                 const copy = [...values];
-                copy[num].isExperienceMode = v;
+                copy[num].isExperienceMode = e.target.value;
                 setValues(copy);
               }}
             />
@@ -180,9 +181,9 @@ const LossHistory = ({ store }) => {
               placeholder="Yes/No"
               label="Is Policy Transferred"
               value={values[num].isPolicyTransferred}
-              onChange={(v) => {
+              onChange={(e) => {
                 const copy = [...values];
-                copy[num].isPolicyTransferred = v;
+                copy[num].isPolicyTransferred =  e.target.value;
                 setValues(copy);
               }}
             />

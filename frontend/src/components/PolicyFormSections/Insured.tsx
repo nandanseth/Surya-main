@@ -42,8 +42,8 @@ const Insured = ({ store }) => {
           placeholder="Agent"
           label="Agent"
           value={values.agent}
-          onChange={(v) => {
-            setValues({ ...values, agent: v });
+          onChange={(e) => {
+            setValues({ ...values, agent: e.target.value });
           }}
         />
         <Section>
@@ -98,8 +98,8 @@ const NewInsuredSection = ({
             placeholder="Entity"
             label="What entity?"
             value={values.entity}
-            onChange={(v) => {
-              setValues({ ...values, entity: v });
+            onChange={(e) => {
+              setValues({ ...values, entity: e.target.value });
             }}
           />
         </Flex>
@@ -190,12 +190,12 @@ const NewInsuredSection = ({
             </InputWrapper>
             <InputWrapper>
             <SuryaSelect
-              options={entityTypeOptions}
+              options={[{value: 'Male', label: 'Male'},{value: 'Female', label: 'Female'}, ]}
               placeholder="Gender"
               label="Choose gender"
               value={values.gender}
-              onChange={(v) => {
-                setValues({ ...values, gender: v });
+              onChange={(e) => {
+                setValues({ ...values, gender: e.target.value });
               }}
             />
           </InputWrapper>
@@ -289,8 +289,8 @@ const NewInsuredSection = ({
               placeholder="State"
               options={statesOptions}
               value={values.licenseState}
-              onChange={(v) => {
-                setValues({ ...values, licenseState: v });
+              onChange={(e) => {
+                setValues({ ...values, licenseState: e.target.value });
               }}
             />
           </InputWrapper>

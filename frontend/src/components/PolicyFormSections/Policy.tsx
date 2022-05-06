@@ -4,7 +4,7 @@ import {
   agentOptions, coverageTermOptions, lineOfBusinessOptions,
   policyCategoryOptions, policyLineItemOptions, statesOptions, underwritingCodeOptions
 } from '../../utils/policies';
-import { bussinessUseClassesOptions, classCodesOptions, radiusOptions, sizeClassOptions } from '../../utils/policies/getCommercial';
+import { bussinessUseClassesOptions, classCodesOptions, radiusOptions, sizeClassOptions, } from '../../utils/policies/getCommercial';
 import { classificationMap } from '../../utils/policies/getPolicyCategory';
 import SuryaInput from '../PolicyFormInput';
 import SuryaSelect from '../PolicyFormSelect';
@@ -49,8 +49,8 @@ const PoliciesSection = ({ store }) => {
             placeholder="States"
             label="What state will the policy be in?"
             value={states}
-            onChange={(v) => {
-              setValues({ ...values, states: v });
+            onChange={(e) => {
+              setValues({ ...values, states: e.target.value });
             }}
 
           />
@@ -86,8 +86,8 @@ const PoliciesSection = ({ store }) => {
             placeholder="Line of Business"
             label="What line of business?"
             value={lineOfBusiness}
-            onChange={(v) => {
-              setValues({ ...values, lineOfBusiness: v });
+            onChange={(e) => {
+              setValues({ ...values, lineOfBusiness: e.target.value });
             }}
           />
         </InputWrapper>
@@ -101,8 +101,8 @@ const PoliciesSection = ({ store }) => {
             placeholder="Line Item"
             label="What type of drive?"
             value={policyLineItem}
-            onChange={(v) => {
-              setValues({ ...values, policyLineItem: v });
+            onChange={(e) => {
+              setValues({ ...values, policyLineItem: e.target.value });
             }}
           />
         </InputWrapper>
@@ -112,13 +112,13 @@ const PoliciesSection = ({ store }) => {
             placeholder="Coverage Term"
             label="What is the coverage term?"
             value={coverageTerm}
-            onChange={(v) => {
-              setValues({ ...values, coverageTerm: v });
+            onChange={(e) => {
+              setValues({ ...values, coverageTerm: e.target.value });
             }}
           />
         </InputWrapper>
         {
-          lineOfBusiness?.value === "Livery"? (
+          lineOfBusiness === "Livery"? (
             <>
               <InputWrapper>
                 <SuryaSelect
@@ -126,8 +126,8 @@ const PoliciesSection = ({ store }) => {
                   placeholder="Category"
                   label="What is the category?"
                   value={policyCategory}
-                  onChange={(v) => {
-                    setValues({ ...values, policyCategory: v });
+                  onChange={(e) => {
+                    setValues({ ...values, policyCategory: e.target.value, classification: classificationMap[e.target.value][0].value });
                   }}
                 />
               </InputWrapper>
@@ -139,8 +139,8 @@ const PoliciesSection = ({ store }) => {
                     placeholder="Category"
                     label="What is the classification?"
                     value={classification}
-                    onChange={(v) => {
-                      setValues({ ...values, classification: v });
+                    onChange={(e) => {
+                      setValues({ ...values, classification: e.target.value });
                     }}
                   />
               </InputWrapper>)
@@ -157,8 +157,8 @@ const PoliciesSection = ({ store }) => {
                   placeholder="Category"
                   label="What is size class?"
                   value={sizeClass}
-                  onChange={(v) => {
-                    setValues({ ...values, sizeClass: v });
+                  onChange={(e) => {
+                    setValues({ ...values, sizeClass: e.target.value});
                   }}
                 />
               </InputWrapper>
@@ -168,8 +168,8 @@ const PoliciesSection = ({ store }) => {
                   placeholder="Category"
                   label="What is the business use class?"
                   value={businessUseClass}
-                  onChange={(v) => {
-                    setValues({ ...values, businessUseClass: v });
+                  onChange={(e) => {
+                    setValues({ ...values, businessUseClass: e.target.value });
                   }}
                 />
               </InputWrapper>
@@ -187,8 +187,8 @@ const PoliciesSection = ({ store }) => {
             placeholder="Underwriting code"
             label="Underwriting code"
             value={underwritingCode}
-            onChange={(v) => {
-              setValues({ ...values, underwritingCode: v });
+            onChange={(e) => {
+              setValues({ ...values, underwritingCode: e.target.value });
             }}
           />
         </InputWrapper>
@@ -198,8 +198,8 @@ const PoliciesSection = ({ store }) => {
             placeholder="Agent"
             label="Agent"
             value={agent}
-            onChange={(v) => {
-              setValues({ ...values, agent: v });
+            onChange={(e) => {
+              setValues({ ...values, agent: e.target.value });
             }}
           />
         </InputWrapper>
@@ -211,8 +211,8 @@ const PoliciesSection = ({ store }) => {
               placeholder="Class code"
               label="What is the class code?"
               value={classCode}
-              onChange={(v) => {
-                setValues({ ...values, classCode: v });
+              onChange={(e) => {
+                setValues({ ...values, classCode: e.target.value });
               }}
             />
         </InputWrapper>
@@ -222,8 +222,8 @@ const PoliciesSection = ({ store }) => {
               placeholder="radius"
               label="What is the radius?"
               value={radius}
-              onChange={(v) => {
-                setValues({ ...values, radius: v });
+              onChange={(e) => {
+                setValues({ ...values, radius: e.target.value });
               }}
             />
         </InputWrapper>

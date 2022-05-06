@@ -22,5 +22,7 @@ export const optionsMap = {
 
 };
 
+console.log(optionsMap, 'hii')
+
 
 export default types.map((item) => ({ value: item, label: item }));

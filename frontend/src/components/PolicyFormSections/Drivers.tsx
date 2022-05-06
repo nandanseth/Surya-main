@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ButtonHolder, Form } from '../../styles/styles';
 import { statesOptions } from '../../utils/policies';
@@ -18,14 +18,20 @@ const driversOptions = [];
 const DriversSection = ({ store }) => {
   const { drivers: driverStates } = store;
   const  { values, setValues, defaults } = driverStates;
-  console.log({ values, setValues, defaults });
+
+  const [test, setTest] = useState("{ anyKey: 'anyvalue'}")
+
+  useEffect(() => {
+    setValues([{ ...defaults, states: 'Oregon'}]);
+    setTest('yo yo yo we mounted and set shit')
+  }, [])
 
   const addFields = () => {
-    setValues([...values, { ...defaults }]);
+    setValues([...values, { ...defaults, states: 'Oregon'}]);
   };
   const removeFields = (i) => {
     if (values.length <= 0) {
-      setValues([{ ...defaults }]);
+      setValues([{ ...defaults, states: 'Oregon'}]);
       return;
     }
 
@@ -41,9 +47,9 @@ const DriversSection = ({ store }) => {
       setValues(copy);
     };
 
-    const handleSelectOnChange = (v, propertyName) => {
+    const handleSelectOnChange = (e, propertyName) => {
       const copy = [ ...values ];
-      copy[num][propertyName] = v;
+      copy[num][propertyName] = e.target.value;
       setValues(copy);
     }
 
@@ -52,14 +58,13 @@ const DriversSection = ({ store }) => {
         <Section>
           <Flex>
             <InputWrapper>
-              <SuryaSelect
-                options={driversOptions}
+              <SuryaInput
+                //options={driversOptions}
                 placeholder="Driver Name"
                 label="What is the name of the driver?"
                 value={values[num].driverName}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'driverName');
-                }}
+                onChange={handleInputOnChange}
+                name="driverName"
               />
             </InputWrapper>
             <InputWrapper>
@@ -79,6 +84,7 @@ const DriversSection = ({ store }) => {
                 placeholder="License Number"
                 value={values[num].licenseNumber}
                 onChange={handleInputOnChange}
+                name="licenseNumber"
               />
             </InputWrapper>
           </Flex>
@@ -89,6 +95,7 @@ const DriversSection = ({ store }) => {
                 placeholder="MM/DD/YYYY"
                 onChange={handleInputOnChange}
                 label="License Effective Date"
+                name="licenseEffDate"
               />
             </InputWrapper>
             <InputWrapper>
@@ -97,6 +104,7 @@ const DriversSection = ({ store }) => {
                 value={values[num].licenseExpDate}
                 onChange={handleInputOnChange}
                 label="License Expiration Date"
+                name="licenseExpDate"
               />
             </InputWrapper>
           </Flex>

@@ -1,40 +1,54 @@
 import React, { createContext, useState } from "react";
+import { agent, classificationMap, coverageTerm, entityType, lineOfBusiness, policyCategory, policyLineItem, states, statesOptions, underwritingCode } from "../utils/policies";
+import vehicleTypes from '../utils/vehicle/getVehicleType';
+import vehicleCategoryOptions, {
+    optionsMap
+  } from '../utils/vehicle/getVehicleCategory';
+import getWeightSelects from "../utils/vehicle/getWeightSelects";
+import fuelTypeOptions from '../utils/vehicle/fuelType';
+import { bussinessUseClasses, classCodes, radius, sizeClasses } from "../utils/policies/getCommercial";
+
+
+export const yesNoOptions = [
+    { label: 'Yes', value: 'Yes' },
+    { label: 'No', value: 'No' },
+  ];
 
 const policyInitialState = {
-    states: null,
-    classification: null, 
-    lineOfBusiness: null,
-    policyLineItem: null,
-    coverageTerm: null,
-    policyCategory: null,
-    underwritingCode: null,
-    agent: null,
+    states: states[0],
+    classification: classificationMap[policyCategory[0]].value, 
+    lineOfBusiness: lineOfBusiness[0],
+    policyLineItem: policyLineItem[0],
+    coverageTerm: coverageTerm[0],
+    policyCategory: policyCategory[0],
+    underwritingCode: underwritingCode[0],
+    agent: agent[0],
     effectiveDate: null,
     expirationDate: null,
-    radius: null,
-    classCode: null,
-    businessUseClass: null,
-    sizeClass: null,
+    radius: radius[0],
+    classCode: classCodes[0],
+    businessUseClass: bussinessUseClasses[0],
+    sizeClass: sizeClasses[0],
 };
 
 const insuredInitialState = {
-    agent: null,
-    entity: null,
+    agent: agent[0],
+    entity: entityType[0],
     firstName: null,
     lastName: null,
     middleName: null,
     dob: null,
     suffix: null,
-    gender: null,
+    gender: 'Male',
     ssn: null,
     address1: null,
     address2: null,
     city: null,
-    state: null,
+    state: states[0],
     zipCode: null,
     email: null,
     phoneNumber: null,
-    licenseState: null,
+    licenseState: states[0],
     licenseNumber: null,
     licenseEff: null,
     licenseExp: null,
@@ -47,7 +61,7 @@ const insuredInitialState = {
 
 const driversInitialState = {
     driverName: null,
-    states: null,
+    states: states[0],
     licenseNumber: null,
     licenseEffDate: null,
     licenseExpDate: null,
@@ -57,18 +71,18 @@ const lossHistoryState = {
     accidentDate: null,
     reportedDate: null,
     claimNumber: null,
-    claimType: null,
+    claimType: 'Body Injury',
     subClaimNumber: null,
     totalIncurred: null,
     liabilityPaid: null,
     openReserve: null,
-    status: null,
+    status: yesNoOptions[0].value,
     previousPolicyNumber: null,
     priorCarrierName: null,
     originalInceptionDate: null,
     expirationDate: null,
-    isExperienceMode: null,
-    isPolicyTransferred: null,
+    isExperienceMode:  yesNoOptions[0].value,
+    isPolicyTransferred:  yesNoOptions[0].value,
 };
 
 
@@ -137,33 +151,31 @@ const coverageState = {
 
 const defaultValue = 'No';
 const yesNoValues = ['Yes', defaultValue];
-const yesNoOptions = [
-  { label: 'Yes', value: 'Yes' },
-  { label: 'No', value: 'No' },
-];
+
 
 const vehicleState = {
     yesNo: defaultValue,
-    category: null,
+    category: vehicleCategoryOptions[0].value,
     classification: null,
-    vehicleCategory: null,
-    vehicleType: null,
-    state: null,
+    vehicleCategory: optionsMap[Object.keys(optionsMap)[0]][0].value,
+    vehicleType: vehicleTypes[0].value,
+    state: states[0],
     vehicleState: null,
-    vehicleWeight: null,
-    fuelType: null,
+    vehicleWeight: getWeightSelects[0].value,
+    fuelType: fuelTypeOptions[0].value,
+    fleet: yesNoOptions[0].value,
     vin: null,
     make: null,
     model: null,
     modelYear: null,
     seating: null,
-    wheelChair: null,
+    wheelChair: yesNoOptions[0].value,
     plateNumber: null,
     garageZipCode: null,
     zoneCode: null,
     rateClassCode: null,
     baseName: null,
-    baseType: null,
+    baseType: 'Black Car',
     baseNumber: null,
     baseExpDate: null,
     shl: null,
@@ -172,7 +184,7 @@ const vehicleState = {
     garageZipCode2: null,
     garageCity: null,
     garageCounty: null,
-    garageState: null,
+    garageState: statesOptions[0].value,
     garageCountry: null,
 };
 
@@ -199,6 +211,7 @@ export const FormContextProvider = ({ children }) => {
         lossHistory: { values: lossValues, setValues: setLossValues, defaults: lossHistoryState,},
         documents: { values: document, setValues: setDocument},
         vehicles: { values: vehicleValues, setValues: setVehicleValues, defaultValue,  yesNoValues, yesNoOptions, defaults: vehicleState },
+        payment: { values: {}},
         reset: () => {
             setPolicyValues(policyInitialState);
             setInsuredValues(insuredInitialState);
