@@ -93,7 +93,7 @@ const PoliciesSection = ({ store }) => {
         </InputWrapper>
       </Flex>
     </Section>
-   { lineOfBusiness !== null && ( <Section>
+    <Section>
       <Flex>
         <InputWrapper>
           <SuryaSelect
@@ -132,7 +132,7 @@ const PoliciesSection = ({ store }) => {
                 />
               </InputWrapper>
               {
-                policyCategory !== null && 
+                policyCategory !== null || policyCategory !== '' && 
                 (<InputWrapper>
                   <SuryaSelect
                     options={classificationMap[policyCategory?.value]}
@@ -229,8 +229,7 @@ const PoliciesSection = ({ store }) => {
         </InputWrapper>
       </Flex>
 
-    </Section>) 
-    }
+    </Section>
     </>
   
   );

@@ -163,7 +163,7 @@ export const preSubmit = (store) => {
     lossHistory: {incidents: [...lossHistory?.values]},
     documents,
     coverage: { ...coverage?.values},
-    vehicles: { values: [...vehicles?.values]},
+  vehicles: { values: [...vehicles?.values]},
   };
   return toReturn;
 }

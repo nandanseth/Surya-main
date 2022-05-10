@@ -48,30 +48,30 @@ const PolicyForm = ({ close }) => {
   const [current, setCurrent] = useState('insured');
   const { name, page: Current } = Pages[current];
   const onSubmit = () => {
-    try {
-      //we can do some verification here
-      console.log(preSubmit(store), 'submitting')
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(preSubmit(store))
-    };
       const postStore = async () => {
+        try {
+          //we can do some verification here
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(preSubmit(store))
+        };
         console.log( JSON.stringify(store))
         const res = await fetch(urls.createPoliciesUrl, requestOptions);
         const data = await res.json();
         console.log({ data }, 'test');
+        return true;
+        }
+
+        catch (error) {
+          alert(error)
+          return false;
+        }
       }
-      postStore();
-      return true;
-    }
-    catch (error) {
-      alert(error)
-      return false;
-    }
-  };
+      return postStore();
+    };
 
   const MenuFooter = () => (
     <Nav>
