@@ -84,13 +84,13 @@ const CoverageSection = ({ store }) => {
     uninsuredMotorist,
     csl,
     nonOwnedCSL,
-    overallLimit,
-    personalInjuryProtectionLimit,
-    medicalPaymentsLimit,
-    underinsuredMotoristLimit,
-    uninsuredMotoristLimit,
-    hiredCSLLimit,
-    nonOwnedCSLLimit,
+    overallPremium,
+    personalInjuryProtectionPremium,
+    medicalPaymentsPremium,
+    underinsuredMotoristPremium,
+    uninsuredMotoristPremium,
+    hiredCSLPremium,
+    nonOwnedCSLPremium,
   } = values;
 
   useEffect(() => {
@@ -148,13 +148,13 @@ const CoverageSection = ({ store }) => {
       csl: 'Yes',
       nonOwnedCSL: 'Yes',
 
-      overallLimit: '',
-      personalInjuryProtectionLimit: '',
-      medicalPaymentsLimit: '',
-      underinsuredMotoristLimit: '',
-      uninsuredMotoristLimit: '',
-      hiredCSLLimit: '',
-      nonOwnedCSLLimit: '',
+      overallPremium: '',
+      personalInjuryProtectionPremium: '',
+      medicalPaymentsPremium: '',
+      underinsuredMotoristPremium: '',
+      uninsuredMotoristPremium: '',
+      hiredCSLPremium: '',
+      nonOwnedCSLPremium: '',
     })
   }, []);
    
@@ -747,12 +747,13 @@ const CoverageSection = ({ store }) => {
           : splitSection}
           <Flex>
             <SuryaInput 
-              placeholder="Overall Limit" 
-              label="Overall Limit"
-              value={overallLimit} 
+              placeholder="Overall Premium" 
+              label="Overall Premium"
+              value={overallPremium} 
               onChange={(e) => {
-              setValues({ ...values, overallLimit: e.target.value });
+              setValues({ ...values, overallPremium: e.target.value });
             }} 
+            type="number"
             />
           </Flex>
       </Section>
@@ -779,12 +780,13 @@ const CoverageSection = ({ store }) => {
 
         <Flex>
             <SuryaInput 
-              placeholder="Personal Injury Protection Limit" 
-              label="Personal Injury Protection Limit"
-              value={personalInjuryProtectionLimit} 
+              placeholder="Personal Injury Protection Premium" 
+              label="Personal Injury Protection Premium"
+              value={personalInjuryProtectionPremium} 
               onChange={(e) => {
-              setValues({ ...values, personalInjuryProtectionLimit: e.target.value });
+              setValues({ ...values, personalInjuryProtectionPremium: e.target.value });
             }} 
+            type="number"
             />
           </Flex>
       </Section>
@@ -810,12 +812,13 @@ const CoverageSection = ({ store }) => {
         </Flex>
         <Flex>
             <SuryaInput 
-              placeholder="Medical Payments Limit" 
-              label="Medical Payments Limit"
-              value={medicalPaymentsLimit} 
+              placeholder="Medical Payments Premium" 
+              label="Medical Payments Premium"
+              value={medicalPaymentsPremium} 
               onChange={(e) => {
-              setValues({ ...values, medicalPaymentsLimit: e.target.value });
+              setValues({ ...values, medicalPaymentsPremium: e.target.value });
             }} 
+            type="number"
             />
           </Flex>
 
@@ -844,12 +847,13 @@ const CoverageSection = ({ store }) => {
 
         <Flex>
             <SuryaInput 
-              placeholder="Underinsured Motorist Limit" 
-              label="Underinsured Motorist Limit"
-              value={underinsuredMotoristLimit} 
+              placeholder="Underinsured Motorist Premium" 
+              label="Underinsured Motorist Premium"
+              value={underinsuredMotoristPremium} 
               onChange={(e) => {
-              setValues({ ...values, underinsuredMotoristLimit: e.target.value });
+              setValues({ ...values, underinsuredMotoristPremium: e.target.value });
             }} 
+            type="number"
             />
           </Flex>
       </Section>
@@ -877,12 +881,13 @@ const CoverageSection = ({ store }) => {
 
         <Flex>
             <SuryaInput 
-              placeholder="Uninsured Motorist Limit" 
-              label="Uninsured Motorist Limit"
-              value={uninsuredMotoristLimit} 
+              placeholder="Uninsured Motorist Premium}" 
+              label="Uninsured Motorist Premium"
+              value={uninsuredMotoristPremium} 
               onChange={(e) => {
-              setValues({ ...values, uninsuredMotoristLimit: e.target.value });
+              setValues({ ...values, uninsuredMotoristPremium: e.target.value });
             }} 
+            type="number"
             />
           </Flex>
       </Section>

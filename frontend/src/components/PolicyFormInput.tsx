@@ -2,7 +2,7 @@ import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
 
 const SuryaInput = ({
-  label = '', placeholder, value, onChange, style = {}, name = '',
+  label = '', placeholder, value, onChange, style = {}, name = '', ...rest
 }) => (
 
   <Wrapper style={style}>
@@ -15,6 +15,7 @@ const SuryaInput = ({
       fullWidth
       name={name}
       onChange={onChange}
+      {...rest}
     />
   </Wrapper>
 );

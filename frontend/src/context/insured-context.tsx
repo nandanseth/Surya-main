@@ -144,13 +144,13 @@ const coverageState = {
       csl: 'Yes',
       nonOwnedCSL: 'Yes',
 
-      overallLimit: '',
-      personalInjuryProtectionLimit: '',
-      medicalPaymentsLimit: '',
-      underinsuredMotoristLimit: '',
-      uninsuredMotoristLimit: '',
-      hiredCSLLimit: '',
-      nonOwnedCSLLimit: '',
+      overallPremium: '',
+      personalInjuryProtectionPremium: '',
+      medicalPaymentsPremium: '',
+      underinsuredMotoristPremium: '',
+      uninsuredMotoristPremium: '',
+      hiredCSLPremium: '',
+      nonOwnedCSLPremium: '',
 };
 
 
