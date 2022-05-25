@@ -143,6 +143,14 @@ const coverageState = {
       uninsuredMotorist: 'Combined Single Limit',
       csl: 'Yes',
       nonOwnedCSL: 'Yes',
+
+      overallLimit: '',
+      personalInjuryProtectionLimit: '',
+      medicalPaymentsLimit: '',
+      underinsuredMotoristLimit: '',
+      uninsuredMotoristLimit: '',
+      hiredCSLLimit: '',
+      nonOwnedCSLLimit: '',
 };
 
 

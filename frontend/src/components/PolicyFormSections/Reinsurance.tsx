@@ -15,7 +15,7 @@ const ReSection = () => {
   const [reIns, setReIns] = useState(undefined);
   const [resInsAmmout, setAmount] = useState('');
 
-  const inputLabel = reIns?.value === 'Price Forbes' ? 'Reinsurance Percentage' : 'Reinsurance Amount';
+  const inputLabel = reIns === 'Price Forbes' ? 'Reinsurance Percentage' : 'Reinsurance Amount';
 
   return (
     <div>

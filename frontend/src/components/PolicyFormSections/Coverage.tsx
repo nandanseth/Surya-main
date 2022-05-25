@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Form } from '../../styles/styles';
 import autoEntryOptions, { auto } from '../../utils/coverage/getAutoSymbolEntry';
 import CoverageOptions, { limits, bodyPerPerson, bodyPerAccident, propertyDamage } from '../../utils/coverage/getLimit';
+import SuryaInput from '../PolicyFormInput';
 import SuryaSelect from '../PolicyFormSelect';
 
 const {
@@ -29,8 +30,6 @@ const overallOptions = [
 const CoverageSection = ({ store }) => {
   const { coverage: coverageStates } = store;
   const  { values, setValues, errors, setErrors }  = coverageStates;
-
-  const optional = new Set(['deductableAutoEntry', 'deductableAmount']);
 
   const {
     overall,
@@ -85,6 +84,13 @@ const CoverageSection = ({ store }) => {
     uninsuredMotorist,
     csl,
     nonOwnedCSL,
+    overallLimit,
+    personalInjuryProtectionLimit,
+    medicalPaymentsLimit,
+    underinsuredMotoristLimit,
+    uninsuredMotoristLimit,
+    hiredCSLLimit,
+    nonOwnedCSLLimit,
   } = values;
 
   useEffect(() => {
@@ -141,6 +147,14 @@ const CoverageSection = ({ store }) => {
       uninsuredMotorist: 'Combined Single Limit',
       csl: 'Yes',
       nonOwnedCSL: 'Yes',
+
+      overallLimit: '',
+      personalInjuryProtectionLimit: '',
+      medicalPaymentsLimit: '',
+      underinsuredMotoristLimit: '',
+      uninsuredMotoristLimit: '',
+      hiredCSLLimit: '',
+      nonOwnedCSLLimit: '',
     })
   }, []);
    
@@ -731,6 +745,16 @@ const CoverageSection = ({ store }) => {
         {overall === 'Combined Single Limit'
           ? combinedSection
           : splitSection}
+          <Flex>
+            <SuryaInput 
+              placeholder="Overall Limit" 
+              label="Overall Limit"
+              value={overallLimit} 
+              onChange={(e) => {
+              setValues({ ...values, overallLimit: e.target.value });
+            }} 
+            />
+          </Flex>
       </Section>
       <Section>
         <SectionTitle>Personal Injury Protection</SectionTitle>
@@ -752,6 +776,17 @@ const CoverageSection = ({ store }) => {
             ? pIProtectionSingle
             : pIProtectionSplit}
         </Flex>
+
+        <Flex>
+            <SuryaInput 
+              placeholder="Personal Injury Protection Limit" 
+              label="Personal Injury Protection Limit"
+              value={personalInjuryProtectionLimit} 
+              onChange={(e) => {
+              setValues({ ...values, personalInjuryProtectionLimit: e.target.value });
+            }} 
+            />
+          </Flex>
       </Section>
       <Section>
         <SectionTitle>Medical Payments</SectionTitle>
@@ -773,6 +808,17 @@ const CoverageSection = ({ store }) => {
             ? medicalSingle
             : medicalSplit}
         </Flex>
+        <Flex>
+            <SuryaInput 
+              placeholder="Medical Payments Limit" 
+              label="Medical Payments Limit"
+              value={medicalPaymentsLimit} 
+              onChange={(e) => {
+              setValues({ ...values, medicalPaymentsLimit: e.target.value });
+            }} 
+            />
+          </Flex>
+
       </Section>
 
       <Section>
@@ -795,6 +841,17 @@ const CoverageSection = ({ store }) => {
             ? underinsuredMotoristSingle
             : underinsuredMotoristSplit}
         </Flex>
+
+        <Flex>
+            <SuryaInput 
+              placeholder="Underinsured Motorist Limit" 
+              label="Underinsured Motorist Limit"
+              value={underinsuredMotoristLimit} 
+              onChange={(e) => {
+              setValues({ ...values, underinsuredMotoristLimit: e.target.value });
+            }} 
+            />
+          </Flex>
       </Section>
 
       <Section>
@@ -817,6 +874,17 @@ const CoverageSection = ({ store }) => {
             ? uninsuredMotoristSingle
             : uninsuredMotoristSplit}
         </Flex>
+
+        <Flex>
+            <SuryaInput 
+              placeholder="Uninsured Motorist Limit" 
+              label="Uninsured Motorist Limit"
+              value={uninsuredMotoristLimit} 
+              onChange={(e) => {
+              setValues({ ...values, uninsuredMotoristLimit: e.target.value });
+            }} 
+            />
+          </Flex>
       </Section>
 
       <Section>
@@ -830,6 +898,7 @@ const CoverageSection = ({ store }) => {
                 setValues({ ...values, csl: e.target.value });
               }}
               value={csl}
+              placeholder=''
             />
           </InputWrapper>
         </Flex>
