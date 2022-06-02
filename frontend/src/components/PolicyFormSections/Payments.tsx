@@ -18,7 +18,13 @@ const PaymentsSection = ({ store }) => {
   } = coverageValues;
   const { values, setValues } = payments;
 
-  const total = {};
+  const total = [overallPremium,
+    personalInjuryProtectionPremium,
+    medicalPaymentsPremium,
+    underinsuredMotoristPremium,
+    uninsuredMotoristPremium,
+    hiredCSLPremium,
+    nonOwnedCSLPremium,].reduce((partialSum, a) => partialSum + a, 0);
 };
 
 export default PaymentsSection;

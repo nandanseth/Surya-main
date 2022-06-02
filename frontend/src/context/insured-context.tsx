@@ -26,6 +26,7 @@ export const yesNoOptions = [
 ];
 
 const policyInitialState = {
+  policyNum: null,
   states: states[0],
   classification: classificationMap[policyCategory[0]].value,
   lineOfBusiness: lineOfBusiness[0],

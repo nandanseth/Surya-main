@@ -26,6 +26,7 @@ const PoliciesSection = ({ store }) => {
   const { values, setValues } = policyStates;
 
   const {
+    policyNum,
     states,
     lineOfBusiness,
     policyLineItem,
@@ -47,6 +48,18 @@ const PoliciesSection = ({ store }) => {
   return (
     <>
       <Section>
+        <Flex>
+          <InputWrapper>
+            <SuryaInput
+              label="Policy Number"
+              onChange={(e) => {
+                setValues({ ...values, policyNum: e.target.value });
+              }}
+              placeholder="MM/DD/YYYY"
+              value={policyNum}
+            />
+          </InputWrapper>
+        </Flex>
         <Flex>
           <InputWrapper>
             <SuryaSelect
