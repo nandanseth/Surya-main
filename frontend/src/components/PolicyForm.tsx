@@ -1,32 +1,32 @@
-import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
-import { FormContext } from '../context/insured-context';
-import coverageIcon from '../images/coverage icon.png';
-import documentsIcon from '../images/documents icon.png';
-import driversIcon from '../images/drivers icon.png';
-import insuredIcon from '../images/insured icon.png';
-import lossHistoryIcon from '../images/loss history icon.png';
-import policyIcon from '../images/policy icon.png';
-import vehicleIcon from '../images/vehicle icon.png';
-import reinsuranceIcon from '../images/reinsurance icon.png';
-import paymentsIcon from '../images/payments icon.png';
 import { Colors, Title, transitionCss } from '../styles/styles';
-import { urls, preSubmit } from '../shared';
 import {
   CoverageSection,
   DocumentsSection,
   DriversSection,
   InsuredSection,
   LossHistorySection,
-  PolicySection, 
-  VehicleSection,
-  ResinuranceSection,
   PaymentsSection,
+  PolicySection,
+  ResinuranceSection,
+  VehicleSection,
 } from './PolicyFormSections';
+import { FormContext } from '../context/insured-context';
+import { preSubmit, urls } from '../shared';
+import coverageIcon from '../images/coverage icon.png';
+import documentsIcon from '../images/documents icon.png';
+import driversIcon from '../images/drivers icon.png';
+import insuredIcon from '../images/insured icon.png';
+import lossHistoryIcon from '../images/loss history icon.png';
+import paymentsIcon from '../images/payments icon.png';
+import policyIcon from '../images/policy icon.png';
+import React, { useContext, useState } from 'react';
+import reinsuranceIcon from '../images/reinsurance icon.png';
+import styled from 'styled-components';
+import vehicleIcon from '../images/vehicle icon.png';
 
 const PolicyForm = ({ close }) => {
   const store = useContext(FormContext);
-  console.log(store)
+  console.log(store);
   const { reset } = store;
   const Pages = {
     policy: { page: PolicySection, name: 'Policy' },
@@ -36,8 +36,8 @@ const PolicyForm = ({ close }) => {
     loss: { page: LossHistorySection, name: 'Loss History' },
     coverage: { page: CoverageSection, name: 'Coverage' },
     documents: { page: DocumentsSection, name: 'Documents' },
-    reinsurance: { page: ResinuranceSection, name: 'Reinsurance'},
-    payments: { page: PaymentsSection, name: 'Payments'}
+    reinsurance: { page: ResinuranceSection, name: 'Reinsurance' },
+    payments: { page: PaymentsSection, name: 'Payments' },
   };
 
   const total = Object.keys(Pages).length;
@@ -57,116 +57,114 @@ const PolicyForm = ({ close }) => {
   const [current, setCurrent] = useState('insured');
   const { name, page: Current } = Pages[current];
   const onSubmit = () => {
-      const postStore = async () => {
-        try {
-          //we can do some verification here
-          const requestOptions = {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(preSubmit(store))
+    const postStore = async () => {
+      try {
+        //we can do some verification here
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(preSubmit(store)),
         };
-        console.log( JSON.stringify(store))
+        console.log(JSON.stringify(store));
         const res = await fetch(urls.createPoliciesUrl, requestOptions);
         const data = await res.json();
         console.log({ data }, 'test');
         return true;
-        }
-
-        catch (error) {
-          alert(error)
-          return false;
-        }
+      } catch (error) {
+        alert(error);
+        return false;
       }
-      return postStore();
     };
+    return postStore();
+  };
 
   const MenuFooter = () => (
     <Nav>
       <StyledIcon
+        active={current === 'insured'}
         onClick={() => {
           setCurrent('insured');
         }}
-        active={current === 'insured'}
         title="Insured Section"
       >
         <StyledImg src={insuredIcon} />
       </StyledIcon>
       <StyledIcon
-        style={{ backgroundImage: `url('${policyIcon}')` }}
+        active={current === 'policy'}
         onClick={() => {
           setCurrent('policy');
         }}
-        active={current === 'policy'}
+        style={{ backgroundImage: `url('${policyIcon}')` }}
         title="Policy Section"
       >
         <StyledImg src={policyIcon} />
       </StyledIcon>
       <StyledIcon
+        active={current === 'vehicles'}
         onClick={() => {
           setCurrent('vehicles');
         }}
-        active={current === 'vehicles'}
         title="Vehicles Section"
       >
         <StyledImg src={vehicleIcon} />
       </StyledIcon>
 
       <StyledIcon
+        active={current === 'drivers'}
         onClick={() => {
           setCurrent('drivers');
         }}
-        active={current === 'drivers'}
         title="Drivers Section"
       >
         <StyledImg src={driversIcon} />
       </StyledIcon>
 
       <StyledIcon
+        active={current === 'loss'}
         onClick={() => {
           setCurrent('loss');
         }}
-        active={current === 'loss'}
         title="Loss History"
       >
         <StyledImg src={lossHistoryIcon} />
       </StyledIcon>
 
       <StyledIcon
+        active={current === 'coverage'}
         onClick={() => {
           setCurrent('coverage');
         }}
-        active={current === 'coverage'}
         title="Coverage"
       >
         <StyledImg src={coverageIcon} />
       </StyledIcon>
 
       <StyledIcon
+        active={current === 'documents'}
         onClick={() => {
           setCurrent('documents');
         }}
-        active={current === 'documents'}
         title="Documents"
       >
         <StyledImg src={documentsIcon} />
       </StyledIcon>
 
       <StyledIcon
+        active={current === 'reinsurnace'}
         onClick={() => {
           setCurrent('reinsurnace');
         }}
-        active={current === 'reinsurnace'}
         title="Reinsurance"
       >
         <StyledImg src={reinsuranceIcon} />
       </StyledIcon>
       <StyledIcon
+        active={current === 'payments'}
         onClick={() => {
           setCurrent('payments');
         }}
-        active={current === 'payments'}
         title="Payments"
       >
         <StyledImg src={paymentsIcon} />
@@ -175,13 +173,13 @@ const PolicyForm = ({ close }) => {
   );
 
   return (
-      <Container>
-        <FormHead name={name} close={close} percent={percentMap[current]} reset={reset} onSubmit={onSubmit}/>
-        <Main>
-          <Current store={store}/>
-        </Main>
-        <MenuFooter />
-      </Container>
+    <Container>
+      <FormHead close={close} name={name} onSubmit={onSubmit} percent={percentMap[current]} reset={reset} />
+      <Main>
+        <Current store={store} />
+      </Main>
+      <MenuFooter />
+    </Container>
   );
 };
 
@@ -190,48 +188,47 @@ const FormHead = ({
   percent = 0,
   name = 'Name',
   reset,
-  onSubmit
+  onSubmit,
 }: {
-  close: () => void
-  percent?: number
-  name?: string
-  reset?: any,
+  close: () => void;
+  percent?: number;
+  name?: string;
+  reset?: any;
   onSubmit: () => Promise<boolean>;
 }) => {
-
   const [loading, setLoading] = useState(false);
-return (
-  <Header>
-    <ProgressContainer>
-      <Background />
-      <Progress percent={percent} />
-    </ProgressContainer>
-    <HeaderContent>
-      <Left>
-        <NewApplication> New Application</NewApplication>
-        <Title>{name}</Title>
-      </Left>
-      <Right>
-        <SaveDraft onClick={close}>Save as Draft</SaveDraft>
-        <Submit
-          onClick={async () => {
-            setLoading(true);
-            const check = await onSubmit();
-            if(check) {
+  return (
+    <Header>
+      <ProgressContainer>
+        <Background />
+        <Progress percent={percent} />
+      </ProgressContainer>
+      <HeaderContent>
+        <Left>
+          <NewApplication> New Application</NewApplication>
+          <Title>{name}</Title>
+        </Left>
+        <Right>
+          <SaveDraft onClick={close}>Save as Draft</SaveDraft>
+          <Submit
+            disabled={loading}
+            onClick={async () => {
+              setLoading(true);
+              const check = await onSubmit();
+              if (check) {
+                setLoading(false);
+                close();
+                reset();
+              }
               setLoading(false);
-              close();
-              reset();
-            }
-            setLoading(false);
-          }}
-          disabled={loading}
-        >
-          {loading? 'Loading':  'Submit'}
-        </Submit>
-      </Right>
-    </HeaderContent>
-  </Header>
-)
+            }}
+          >
+            {loading ? 'Loading' : 'Submit'}
+          </Submit>
+        </Right>
+      </HeaderContent>
+    </Header>
+  );
 };
 
 const ProgressContainer = styled.div`
@@ -249,13 +246,13 @@ const BaseBox = styled.div`
 `;
 
 const Background = styled(BaseBox)`
-  background: linear-gradient(90deg,rgba(89,195,179,0.394559) 0%,rgb(0 209 255 / 64%) 180%);
+  background: linear-gradient(90deg, rgba(89, 195, 179, 0.394559) 0%, rgb(0 209 255 / 64%) 180%);
   width: 100%;
   height: 8px;
 `;
 
 const Progress = styled(BaseBox)<{ percent: number }>`
-  background: #03CDAE;
+  background: #03cdae;
   border-radius: 0px 8px 8px 0px;
   width: ${({ percent }) => percent * 100}%;
 `;
@@ -307,13 +304,13 @@ const SaveDraft = styled.button`
 `;
 
 const Submit = styled.button`
-font-weight: 600;
-font-size: 16px;
-color: #00aeff;
-text-align: center;
-background: #00aeff12;
-padding: 4px 15px;
-border-radius: 3px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #00aeff;
+  text-align: center;
+  background: #00aeff12;
+  padding: 4px 15px;
+  border-radius: 3px;
 `;
 
 const Container = styled.div`
@@ -361,8 +358,9 @@ const StyledIcon = styled.div<{ active: boolean }>`
   align-items: center;
   cursor: pointer;
   ${transitionCss}
-  ${({ active }) => active
-    && `
+  ${({ active }) =>
+    active &&
+    `
       border-bottom: solid 4px #3A5560;
       background-color: #00000003;
     `}}

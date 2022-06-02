@@ -28,7 +28,7 @@ const Overlay = ({ show, children, style = {} }) => {
   };
   return (
     render && (
-      <div onAnimationEnd={onAnimationEnd} className="overlay-block" style={s}>
+      <div className="overlay-block" onAnimationEnd={onAnimationEnd} style={s}>
         {children}
       </div>
     )

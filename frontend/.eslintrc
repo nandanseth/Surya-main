@@ -1,0 +1,60 @@
+{
+    "env": { "browser": true },
+    "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+    "ignorePatterns": ["dist/"],
+    "parser": "@typescript-eslint/parser",
+  
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "project": "tsconfig.json"
+    },
+  
+    "plugins": [
+      "@typescript-eslint",
+      "import",
+      "jsx-a11y",
+      "prettier",
+      "react",
+      "react-hooks",
+      "sort-imports-es6-autofix"
+    ],
+  
+    "rules": {
+      "@typescript-eslint/ban-ts-comment": "warn",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/indent": "off",
+      "@typescript-eslint/lines-between-class-members": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/no-shadow": "error",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "eqeqeq": "error",
+      "func-names": ["error", "as-needed"],
+      "import/first": "error",
+      "import/order": "off",
+      "import/prefer-default-export": "off",
+      "no-plusplus": "off",
+      "no-shadow": "off",
+      "no-void": "off",
+      "object-curly-newline": ["error", { "consistent": true }],
+      "object-shorthand": "error",
+      "prefer-template": "error",
+      "prettier/prettier": "error",
+      "react-hooks/exhaustive-deps": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react/jsx-boolean-value": "error",
+      "react/jsx-one-expression-per-line": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/jsx-sort-props": "error",
+      "react/react-in-jsx-scope": "off",
+      "react/require-default-props": "off",
+      "sort-imports-es6-autofix/sort-imports-es6": [
+        "error",
+        {
+          "ignoreCase": true,
+          "ignoreMemberSort": false,
+          "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+        }
+      ]
+    }
+  }

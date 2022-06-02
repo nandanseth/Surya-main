@@ -1,26 +1,14 @@
+import { Colors, transitionCss } from '../styles/styles';
+import searchIcon from '../images/search-icon.png';
 import styled from 'styled-components';
 import useSearchPolicies from '../hooks/useSearchPolicies';
-import searchIcon from '../images/search-icon.png';
-import { Colors, transitionCss } from '../styles/styles';
 
-const Search = ({
-  value,
-  placeholder,
-  style,
-}: {
-  value?: any
-  placeholder?: string
-  style?: any
-}) => {
+const Search = ({ value, placeholder, style }: { value?: any; placeholder?: string; style?: any }) => {
   const { onChange, inputValue } = useSearchPolicies(value);
   return (
     <Container style={{ ...style }}>
       <Icon src="search-icon.png" />
-      <SearchInput
-        placeholder={placeholder}
-        value={inputValue}
-        onChange={onChange}
-      />
+      <SearchInput onChange={onChange} placeholder={placeholder} value={inputValue} />
     </Container>
   );
 };
@@ -31,14 +19,14 @@ export const GenericSearch = ({
   style,
   onChange,
 }: {
-  value?: any
-  placeholder?: string
-  style?: any
-  onChange?: any
+  value?: any;
+  placeholder?: string;
+  style?: any;
+  onChange?: any;
 }) => (
   <Container style={{ ...style }}>
     <Icon src={searchIcon} />
-    <SearchInput placeholder={placeholder} value={value} onChange={onChange} />
+    <SearchInput onChange={onChange} placeholder={placeholder} value={value} />
   </Container>
 );
 

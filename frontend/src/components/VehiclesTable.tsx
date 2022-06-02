@@ -1,27 +1,25 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
+import { SortByHeader, Table, TD, Th, TR } from '../styles/styles';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import {
-    SortByHeader, Table, TD, Th, TR
-} from '../styles/styles';
 
 const headers = ['Vin', 'Model', 'Insured', 'Period', 'Seating', 'Net Billed'];
 
 interface IObjectKeys {
-    [key: string]: string | number | undefined;
+  [key: string]: string | number | undefined;
 }
 
 interface Vehicle extends IObjectKeys {
-    vin: string;
-    insured: string;
-    model: string;
-    period: string;
-    seating: string | number;
-    totalPremium: string;
+  vin: string;
+  insured: string;
+  model: string;
+  period: string;
+  seating: string | number;
+  totalPremium: string;
 }
 
 const useSortableData = (items: Vehicle[], config = null) => {
-  const [sortConfig, setSortConfig] = useState<{key: string; direction: string} | null>(config);
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: string } | null>(config);
 
   const sortedItems = useMemo(() => {
     const sortableItems = [...items];
@@ -49,10 +47,7 @@ const useSortableData = (items: Vehicle[], config = null) => {
   }, [items, sortConfig]);
 
   const requestSort = (key: string) => {
-    if (
-      sortConfig
-        && sortConfig.key === key
-    ) {
+    if (sortConfig && sortConfig.key === key) {
       const { direction } = sortConfig;
       if (direction === 'ascending') {
         setSortConfig({ key, direction: 'descending' });
@@ -68,7 +63,7 @@ const useSortableData = (items: Vehicle[], config = null) => {
   return { items: sortedItems, requestSort, sortConfig };
 };
 
-const VehiclesTable = ({ vehicles, open }: { vehicles: Vehicle[], open: any}) => {
+const VehiclesTable = ({ vehicles, open }: { vehicles: Vehicle[]; open: any }) => {
   const { items, requestSort, sortConfig } = useSortableData(vehicles);
   const getAttribute = (name: string) => {
     if (!sortConfig) {
@@ -87,18 +82,13 @@ const VehiclesTable = ({ vehicles, open }: { vehicles: Vehicle[], open: any}) =>
 
   return (
     <Table>
-
       <thead>
         <tr>
           {headers.map((name, i) => {
             const green = i === headers.length - 1;
             return (
               <Th key={name}>
-                <SortByHeader
-                  type="button"
-                  green={green}
-                  onClick={() => requestSort(name)}
-                >
+                <SortByHeader green={green} onClick={() => requestSort(name)} type="button">
                   {name}
                   {getAttribute(name)?.direction ? getArrow(getAttribute(name).direction) : null}
                 </SortByHeader>
@@ -108,9 +98,7 @@ const VehiclesTable = ({ vehicles, open }: { vehicles: Vehicle[], open: any}) =>
         </tr>
       </thead>
       <tbody>
-        {items.map(({
-          vin, model, insured, period, seating, totalPremium,
-        }) => (
+        {items.map(({ vin, model, insured, period, seating, totalPremium }) => (
           <TR key={vin} onClick={open}>
             <Name>{vin}</Name>
             <TD>{model}</TD>
@@ -129,7 +117,7 @@ const Name = styled(TD)`
   font-weight: 600;
 `;
 
-export const makeSampleInfo = (num:number) => {
+export const makeSampleInfo = (num: number) => {
   const sample: Vehicle[] = [];
   for (let i = 0; i <= num; i += 1) {
     const vin = `21PAT00083 - 0${i}`;
@@ -139,7 +127,12 @@ export const makeSampleInfo = (num:number) => {
     const seating = 4;
     const totalPremium = `$${(750.12 + i) * (i + 1)}`;
     sample.push({
-      vin, model, insured, period, seating, totalPremium,
+      vin,
+      model,
+      insured,
+      period,
+      seating,
+      totalPremium,
     });
   }
   return sample;

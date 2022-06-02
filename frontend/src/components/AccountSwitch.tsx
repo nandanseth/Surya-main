@@ -1,7 +1,7 @@
+import { Colors, transitionCss } from '../styles/styles';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import styled from 'styled-components';
 import useComponentVisible from '../hooks/useComponentVisible';
-import { Colors, transitionCss } from '../styles/styles';
 
 const AccountSwitch = ({ title }) => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
@@ -38,7 +38,6 @@ const AccountSwitch = ({ title }) => {
     </Spacer>
   );
 };
-
 
 const Spacer = styled.div``;
 

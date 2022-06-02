@@ -1,8 +1,7 @@
-import styled from 'styled-components';
 import AccountSwitch from './AccountSwitch';
+import styled from 'styled-components';
 
 const Menu = ({ policySectionMenu }) => {
-  
   return (
     <Nav>
       {policySectionMenu}
@@ -10,9 +9,8 @@ const Menu = ({ policySectionMenu }) => {
         <AccountSwitch title="Kush Dave" />
       </Margin>
     </Nav>
-  )
+  );
 };
-
 
 const Nav = styled.nav`
   position: sticky;
@@ -36,4 +34,4 @@ const Margin = styled.div`
   margin-left: auto;
 `;
 
-export default Menu
+export default Menu;

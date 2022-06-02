@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { FormContextProvider } from '../context/insured-context';
+import { Header, Title } from '../styles/styles';
+import { testPolicies, urls } from '../shared';
 import Buttons from '../components/Buttons';
+import Layout from '../utils/withLayout';
 import Overlay from '../components/Overlay';
 import PolicyForm from '../components/PolicyForm';
 import PolicyTable, { makeSampleInfo } from '../components/PolicyTable';
+import React, { useEffect, useState } from 'react';
 import Search from '../components/Search';
-import { FormContextProvider } from '../context/insured-context';
-import { Header, Title } from '../styles/styles';
-import Layout from '../utils/withLayout';
-import { testPolicies, urls } from '../shared';
-
+import styled from 'styled-components';
 
 const title = 'Policies';
 
@@ -22,12 +21,11 @@ const Home = (props) => {
     const headers = {};
     const getPolicies = async () => {
       try {
-       const res = await fetch(urls.getAllPoliciesUrl);
-       const data = await res.json();
-       console.log(data, 'test')
-       setPolicies(data);
-      }
-      catch(error) {
+        const res = await fetch(urls.getAllPoliciesUrl);
+        const data = await res.json();
+        console.log(data, 'test');
+        setPolicies(data);
+      } catch (error) {
         alert(error);
         console.log(error);
       }
@@ -39,7 +37,7 @@ const Home = (props) => {
     setShow(false);
   };
   const sample = makeSampleInfo(4);
-  // this will be the list 
+  // this will be the list
   return (
     <FormContextProvider>
       <Layout>
@@ -47,11 +45,12 @@ const Home = (props) => {
           <ContentMain>
             <Header>
               <Title>{title}</Title>
-              <Buttons.CreateNewPolicyButton onClick={() => {
-                setShow(true);
-              }}
+              <Buttons.CreateNewPolicyButton
+                onClick={() => {
+                  setShow(true);
+                }}
               />
-              <Search style={{ marginLeft: 'auto' }} placeholder="Search Policies" />
+              <Search placeholder="Search Policies" style={{ marginLeft: 'auto' }} />
             </Header>
             <Section>
               <PolicyTable policies={policies ?? testPolicies} />
@@ -59,24 +58,21 @@ const Home = (props) => {
           </ContentMain>
           <Side />
         </ContentLayout>
-        {
-          show && (
-            <Overlay show={show} style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}>
-              <Wrapper>
-                <Exit onClick={close}>
-                  X
-                </Exit>
-                <PolicyForm close={() => {
+        {show && (
+          <Overlay show={show} style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}>
+            <Wrapper>
+              <Exit onClick={close}>X</Exit>
+              <PolicyForm
+                close={() => {
                   console.log('hey');
                   close();
-                }}/>
-              </Wrapper>
-            </Overlay>
-          )
-        }
+                }}
+              />
+            </Wrapper>
+          </Overlay>
+        )}
       </Layout>
     </FormContextProvider>
-    
   );
 };
 
@@ -102,7 +98,6 @@ const Side = styled.div`
 
 const Section = styled.section`
   width: 100%;
-  
 `;
 
 const Wrapper = styled.div`
@@ -119,7 +114,7 @@ const Exit = styled.div`
   font-weight: 700;
   font-size: 40px;
   text-align: right;
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 export default Home;

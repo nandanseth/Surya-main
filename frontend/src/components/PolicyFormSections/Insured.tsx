@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import {
-  ButtonHolder, Colors, Form, transitionCss
-} from '../../styles/styles';
 import { agentOptions, entityTypeOptions, statesOptions } from '../../utils/policies';
+import { ButtonHolder, Colors, Form, transitionCss } from '../../styles/styles';
 import { Cancel, Save } from '../Buttons';
 import Overlay from '../Overlay';
+import React, { useState } from 'react';
+import SearchOverlay from '../SearchOverlay';
+import styled from 'styled-components';
 import SuryaInput from '../PolicyFormInput';
 import SuryaSelect from '../PolicyFormSelect';
-import SearchOverlay from '../SearchOverlay';
 
-const {
-  Section, SectionTitle, Flex, InputWrapper,
-} = Form;
+const { Section, SectionTitle, Flex, InputWrapper } = Form;
 
 const search = '+ Search New Insured';
 const add = '+ Add New Insured';
@@ -21,11 +17,10 @@ const insuredText = 'Choose Insured';
 const personTitle = 'Personal Info';
 const corpTitle = 'Coporation Info';
 
-
 const Insured = ({ store }) => {
   const { insured: insuredStates } = store;
 
-  const  { values, setValues, isAddActive, setAddActive } = insuredStates;
+  const { values, setValues, isAddActive, setAddActive } = insuredStates;
   const [searchActive, setSearchActive] = useState(false);
 
   const handleInputOnChange = (e) => {
@@ -36,246 +31,219 @@ const Insured = ({ store }) => {
   };
 
   return (
-      <div>
-        <SuryaSelect
-          options={agentOptions}
-          placeholder="Agent"
-          label="Agent"
-          value={values.agent}
-          onChange={(e) => {
-            setValues({ ...values, agent: e.target.value });
-          }}
-        />
-        <Section>
-          <SectionTitle>{insuredText}</SectionTitle>
-          <ButtonFlex>
-            <SearchInsuredButton onClick={() => {
+    <div>
+      <SuryaSelect
+        label="Agent"
+        onChange={(e) => {
+          setValues({ ...values, agent: e.target.value });
+        }}
+        options={agentOptions}
+        placeholder="Agent"
+        value={values.agent}
+      />
+      <Section>
+        <SectionTitle>{insuredText}</SectionTitle>
+        <ButtonFlex>
+          <SearchInsuredButton
+            onClick={() => {
               setSearchActive(true);
-            }}>{search}</SearchInsuredButton>
-            <NewInsuredButton onClick={() => {
+            }}
+          >
+            {search}
+          </SearchInsuredButton>
+          <NewInsuredButton
+            onClick={() => {
               setAddActive(true);
-            }}>{add}</NewInsuredButton>
-          </ButtonFlex>
-        </Section>
-        { isAddActive && (
+            }}
+          >
+            {add}
+          </NewInsuredButton>
+        </ButtonFlex>
+      </Section>
+      {isAddActive && (
         <Section>
           <SectionTitle>New Insured</SectionTitle>
 
           <NewInsuredSection
-              setInactive={() => {
-                setAddActive(false);
-              }}
-              values={values}
-              setValues={setValues}
-              handleInputOnChange={handleInputOnChange}
-            />
-        </Section>) 
-        }
-        <Overlay show={searchActive}>
-          <SearchOverlay
-            close={() => {
-              setSearchActive(false);
+            handleInputOnChange={handleInputOnChange}
+            setInactive={() => {
+              setAddActive(false);
             }}
+            setValues={setValues}
+            values={values}
           />
-        </Overlay>
-      </div>
+        </Section>
+      )}
+      <Overlay show={searchActive}>
+        <SearchOverlay
+          close={() => {
+            setSearchActive(false);
+          }}
+        />
+      </Overlay>
+    </div>
   );
 };
 
-const NewInsuredSection = ({
-  values,
-  setValues,
-  handleInputOnChange,
-  setInactive,
-}) => {
-
-  return  (
+const NewInsuredSection = ({ values, setValues, handleInputOnChange, setInactive }) => {
+  return (
     <>
       <Section>
         <Flex>
           <SuryaSelect
-            options={entityTypeOptions}
-            placeholder="Entity"
             label="What entity?"
-            value={values.entity}
             onChange={(e) => {
               setValues({ ...values, entity: e.target.value });
             }}
+            options={entityTypeOptions}
+            placeholder="Entity"
+            value={values.entity}
           />
         </Flex>
       </Section>
 
-      {
-        values.entity?.value === 'Corporation' && (
-          <Section>
-              <SectionTitle>{corpTitle}</SectionTitle>
-              <Flex>
-                <InputWrapper>
-                  <SuryaInput
-                    name="corporationName"
-                    label="Corporation Name"
-                    placeholder=""
-                    value={values.corporationName}
-                    onChange={handleInputOnChange}
-                  />
-               </InputWrapper>
-               <InputWrapper>
-                  <SuryaInput
-                    name="taxIdNumber"
-                    label="Tax ID Number"
-                    placeholder=""
-                    value={values.taxIdNumber}
-                    onChange={handleInputOnChange}
-                  />
-               </InputWrapper>
-            </Flex>
-
-          </Section>
-        )
-
-      }
-
-
-
-      {
-        values.entity?.value === 'Individual' &&
-      (
-      <Section>
-        <SectionTitle>{personTitle}</SectionTitle>
-        <Flex> 
+      {values.entity?.value === 'Corporation' && (
+        <Section>
+          <SectionTitle>{corpTitle}</SectionTitle>
+          <Flex>
             <InputWrapper>
               <SuryaInput
-                name="firstName"
+                label="Corporation Name"
+                name="corporationName"
+                onChange={handleInputOnChange}
+                placeholder=""
+                value={values.corporationName}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <SuryaInput
+                label="Tax ID Number"
+                name="taxIdNumber"
+                onChange={handleInputOnChange}
+                placeholder=""
+                value={values.taxIdNumber}
+              />
+            </InputWrapper>
+          </Flex>
+        </Section>
+      )}
+
+      {values.entity?.value === 'Individual' && (
+        <Section>
+          <SectionTitle>{personTitle}</SectionTitle>
+          <Flex>
+            <InputWrapper>
+              <SuryaInput
                 label="First Name"
+                name="firstName"
+                onChange={handleInputOnChange}
                 placeholder=""
                 value={values.firstName}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaInput
-                name="lastName"
                 label="Last Name"
+                name="lastName"
+                onChange={handleInputOnChange}
                 placeholder=""
                 value={values.lastName}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaInput
-                name="middleName"
                 label="Middle Name **optional**"
+                name="middleName"
+                onChange={handleInputOnChange}
                 placeholder=""
                 value={values.middleName}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaInput
-                name="dob"
                 label="Date Of Birth mm/dd/yyyy"
+                name="dob"
+                onChange={handleInputOnChange}
                 placeholder="mm/dd/yyyy"
                 value={values.dob}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaInput
-                name="suffix"
                 label="Suffix **optional**"
+                name="suffix"
+                onChange={handleInputOnChange}
                 placeholder=""
                 value={values.suffix}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
-            <SuryaSelect
-              options={[{value: 'Male', label: 'Male'},{value: 'Female', label: 'Female'}, ]}
-              placeholder="Gender"
-              label="Choose gender"
-              value={values.gender}
-              onChange={(e) => {
-                setValues({ ...values, gender: e.target.value });
-              }}
-            />
-          </InputWrapper>
-        </Flex>
-        <Flex>
-          <SuryaInput
-            name="ssn"
-            label="SSN"
-            placeholder=""
-            value={values.ssn}
-            onChange={handleInputOnChange}
-          />
-        </Flex>
-      </Section>)
-      }
+              <SuryaSelect
+                label="Choose gender"
+                onChange={(e) => {
+                  setValues({ ...values, gender: e.target.value });
+                }}
+                options={[
+                  { value: 'Male', label: 'Male' },
+                  { value: 'Female', label: 'Female' },
+                ]}
+                placeholder="Gender"
+                value={values.gender}
+              />
+            </InputWrapper>
+          </Flex>
+          <Flex>
+            <SuryaInput label="SSN" name="ssn" onChange={handleInputOnChange} placeholder="" value={values.ssn} />
+          </Flex>
+        </Section>
+      )}
       <Section>
         <Flex>
           <SuryaInput
-            name="address1"
             label="Address Line 1"
+            name="address1"
+            onChange={handleInputOnChange}
             placeholder=""
             value={values.address1}
-            onChange={handleInputOnChange}
           />
         </Flex>
         <Flex>
           <InputWrapper>
             <SuryaInput
-              name="address2"
               label="Address Line 2"
+              name="address2"
+              onChange={handleInputOnChange}
               placeholder=""
               value={values.address2}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
-            <SuryaInput
-              name="city"
-              label="City"
-              placeholder=""
-              value={values.city}
-              onChange={handleInputOnChange}
-            />
+            <SuryaInput label="City" name="city" onChange={handleInputOnChange} placeholder="" value={values.city} />
           </InputWrapper>
           <InputWrapper>
-            <SuryaInput
-              name="state"
-              label="State"
-              placeholder=""
-              value={values.state}
-              onChange={handleInputOnChange}
-            />
+            <SuryaInput label="State" name="state" onChange={handleInputOnChange} placeholder="" value={values.state} />
           </InputWrapper>
         </Flex>
         <Flex>
           <InputWrapper>
             <SuryaInput
-              name="zipCode"
               label="Zip Code"
+              name="zipCode"
+              onChange={handleInputOnChange}
               placeholder=""
               value={values.zipCode}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
-            <SuryaInput
-              name="email"
-              label="Email"
-              placeholder=""
-              value={values.email}
-              onChange={handleInputOnChange}
-            />
+            <SuryaInput label="Email" name="email" onChange={handleInputOnChange} placeholder="" value={values.email} />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="phoneNumber"
               label="Phone Number"
+              name="phoneNumber"
+              onChange={handleInputOnChange}
               placeholder=""
               value={values.phoneNumber}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
         </Flex>
@@ -286,40 +254,39 @@ const NewInsuredSection = ({
           <InputWrapper>
             <SuryaSelect
               label="License State"
-              placeholder="State"
-              options={statesOptions}
-              value={values.licenseState}
               onChange={(e) => {
                 setValues({ ...values, licenseState: e.target.value });
               }}
+              options={statesOptions}
+              placeholder="State"
+              value={values.licenseState}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="licenseNumber"
               label="License Number"
+              name="licenseNumber"
+              onChange={handleInputOnChange}
               placeholder="#"
               value={values.licenseNumber}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              value={values.licenseEffDate}
-              onChange={handleInputOnChange}
               label="License Effective Date"
-              placeholder="MM/DD/YYYY"
               name="licenseEffDate"
-
+              onChange={handleInputOnChange}
+              placeholder="MM/DD/YYYY"
+              value={values.licenseEffDate}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              value={values.licenseExpDate}
+              label="License Expiration Date"
               name="licenseExpDate"
               onChange={handleInputOnChange}
-              label="License Expiration Date"
               placeholder="MM/DD/YYYY"
+              value={values.licenseExpDate}
             />
           </InputWrapper>
         </Flex>
@@ -329,48 +296,48 @@ const NewInsuredSection = ({
         <Flex>
           <InputWrapper>
             <SuryaInput
-              name="contactName"
               label="Contact Name"
+              name="contactName"
+              onChange={handleInputOnChange}
               placeholder=""
               value={values.contactName}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="contactNumber"
               label="Contact Phone Number"
+              name="contactNumber"
+              onChange={handleInputOnChange}
               placeholder=""
               value={values.contactNumber}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="contactEmail"
               label="Contact Email"
+              name="contactEmail"
+              onChange={handleInputOnChange}
               placeholder=""
               value={values.contactEmail}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
         </Flex>
       </Section>
       <ButtonHolderStyled>
-        <CancelButton onClick={() => {
-          setInactive();
-        }}>Cancel </CancelButton>
+        <CancelButton
+          onClick={() => {
+            setInactive();
+          }}
+        >
+          Cancel{' '}
+        </CancelButton>
       </ButtonHolderStyled>
     </>
   );
 };
 
 const NewInsuredButton = styled.button`
-  background: linear-gradient(
-    116.57deg,
-    rgba(52, 152, 194, 0.1) 0%,
-    rgba(3, 205, 174, 0.1) 83.33%
-  );
+  background: linear-gradient(116.57deg, rgba(52, 152, 194, 0.1) 0%, rgba(3, 205, 174, 0.1) 83.33%);
   mix-blend-mode: normal;
   border: 1px solid ${Colors.green};
   box-sizing: border-box;

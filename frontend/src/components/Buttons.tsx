@@ -1,8 +1,7 @@
-import styled, { css } from 'styled-components';
 import { Colors, transitionCss } from '../styles/styles';
+import styled, { css } from 'styled-components';
 
-const CreateNewPolicyButton = ({ onClick, textOverride }: {
-   onClick?: any, textOverride?: string}) => {
+const CreateNewPolicyButton = ({ onClick, textOverride }: { onClick?: any; textOverride?: string }) => {
   const text = 'Create new Policy' || textOverride;
   return (
     <CreateButton onClick={onClick}>
@@ -15,62 +14,62 @@ const CreateNewPolicyButton = ({ onClick, textOverride }: {
 };
 
 export const CreateButton = styled.button`
-    background: linear-gradient(90deg, #F7FCFF 0.64%, #F7FEFB 97.71%);
-    border-radius: 28.5px;
-    padding: 8px 16px;
-    min-width: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ${transitionCss}
-    color: ${Colors.green};
-    font: inherit;
-    font-weight: 500;
-    font-size: 14px;
-    margin-left: 50px;
-    :hover {
-        transform: scale(1.01);
-    }
+  background: linear-gradient(90deg, #f7fcff 0.64%, #f7fefb 97.71%);
+  border-radius: 28.5px;
+  padding: 8px 16px;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${transitionCss}
+  color: ${Colors.green};
+  font: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  margin-left: 50px;
+  :hover {
+    transform: scale(1.01);
+  }
 `;
 
 const Span = styled.span`
-    margin-right: 6px;
+  margin-right: 6px;
 `;
 
 const Plus = styled.img`
-    width: 26;
-    height: 26px;
-    object-fit: contain;
+  width: 26;
+  height: 26px;
+  object-fit: contain;
 `;
 
 const buttonBaseCss = css`
-    border-radius: 28px;
-    font-size: 16px;
-    text-align: center;
-    padding: 18px 24px;
-    flex: 1 1 auto;
-    margin: 0 4px;
+  border-radius: 28px;
+  font-size: 16px;
+  text-align: center;
+  padding: 18px 24px;
+  flex: 1 1 auto;
+  margin: 0 4px;
 `;
 
 export const Save = styled.button`
-    ${transitionCss}
-    background: rgba(89, 195, 179, 0.125683);
-    ${buttonBaseCss}
-    color: #59C3B3;
+  ${transitionCss}
+  background: rgba(89, 195, 179, 0.125683);
+  ${buttonBaseCss}
+  color: #59C3B3;
 
-    :hover {
-        background: rgba(89, 195, 179, 0.4125683);
-    }
+  :hover {
+    background: rgba(89, 195, 179, 0.4125683);
+  }
 `;
 
 export const Cancel = styled.button`
-    ${transitionCss}
-    background: rgba(249, 250, 250, 1);
-    ${buttonBaseCss}
-    color: ${Colors.text};
-    :hover {
-        background: rgba(100, 100, 100, .7);
-    }
+  ${transitionCss}
+  background: rgba(249, 250, 250, 1);
+  ${buttonBaseCss}
+  color: ${Colors.text};
+  :hover {
+    background: rgba(100, 100, 100, 0.7);
+  }
 `;
 
 export const Close = styled.button`
@@ -89,9 +88,8 @@ export const Close = styled.button`
   text-transform: uppercase;
 
   :hover {
-    opacity: .68;
-}
-
+    opacity: 0.68;
+  }
 `;
 
 const Buttons = {

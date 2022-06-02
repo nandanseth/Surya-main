@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
 import { Header, Title } from '../styles/styles';
 import Layout from '../utils/withLayout';
+import React from 'react';
+import styled from 'styled-components';
 
 const title = 'Claims';
 
@@ -18,7 +18,7 @@ const Home = () => (
 );
 
 const Wrapper = styled.div`
-    padding: 24px;
+  padding: 24px;
 `;
 const Content = styled.div`
   height: 100%;

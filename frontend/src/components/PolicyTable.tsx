@@ -1,24 +1,15 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
-import React, { useMemo, useState } from 'react';
+import { SortByHeader, Table, TD, Th, TR } from '../styles/styles';
 import { useHistory } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import {
-  SortByHeader, Table, TD, Th, TR
-} from '../styles/styles';
 
-const headers = [
-  'Name',
-  'Insured',
-  'Broker',
-  'Period',
-  'Gross Billed',
-  'Net Billed',
-];
+const headers = ['Name', 'Insured', 'Broker', 'Period', 'Gross Billed', 'Net Billed'];
 
 const useSortableData = (items: Policy[], config = null) => {
   const [sortConfig, setSortConfig] = useState<{
-    key: string
-    direction: string
+    key: string;
+    direction: string;
   } | null>(config);
 
   const sortedItems = useMemo(() => {
@@ -66,7 +57,7 @@ const useSortableData = (items: Policy[], config = null) => {
 const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
   //const { items, requestSort, sortConfig } = useSortableData(policies);
   const items = policies;
-  let sortConfig = undefined;
+  const sortConfig = undefined;
   const history = useHistory();
   console.log(items, 'test');
 
@@ -95,14 +86,12 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
             return (
               <Th key={i}>
                 <SortByHeader
-                  type="button"
                   green={green}
+                  type="button"
                   //onClick={() => requestSort(name)}
                 >
                   {name}
-                  {getAttribute(name)?.direction
-                    ? getArrow(getAttribute(name).direction)
-                    : null}
+                  {getAttribute(name)?.direction ? getArrow(getAttribute(name).direction) : null}
                 </SortByHeader>
               </Th>
             );
@@ -110,27 +99,23 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
         </tr>
       </thead>
       <tbody>
-        {items.map(
-          ({
-            created_at, id
-          }, i) => (
-            //        <StyledLink to={`/policies/${encodeURI(name)}`} key={name}>
-            <TR
-              key={i}
-              onClick={() => {
-                //@ts-ignore
-                history.push(`/policies/${encodeURI(id)}`);
-              }}
-            >
-              <Name>{id}</Name>
-              <TD>tbd</TD>
-              <TD>{created_at}</TD>
-              <TD>tbd</TD>
-              <TD>tbd</TD>
-              <TD>tbd</TD>
-            </TR>
-          ),
-        )}
+        {items.map(({ created_at, id }, i) => (
+          //        <StyledLink to={`/policies/${encodeURI(name)}`} key={name}>
+          <TR
+            key={i}
+            onClick={() => {
+              //@ts-ignore
+              history.push(`/policies/${encodeURI(id)}`);
+            }}
+          >
+            <Name>{id}</Name>
+            <TD>tbd</TD>
+            <TD>{created_at}</TD>
+            <TD>tbd</TD>
+            <TD>tbd</TD>
+            <TD>tbd</TD>
+          </TR>
+        ))}
       </tbody>
     </Table>
   );
@@ -141,16 +126,16 @@ const Name = styled(TD)`
 `;
 
 interface IObjectKeys {
-  [key: string]: string | number | undefined
+  [key: string]: string | number | undefined;
 }
 
 interface Policy extends IObjectKeys {
-  name: string
-  insured: string
-  broker: string
-  period: string
-  grossBilled: string
-  netBilled: string
+  name: string;
+  insured: string;
+  broker: string;
+  period: string;
+  grossBilled: string;
+  netBilled: string;
 }
 
 export const makeSampleInfo = (num: number) => {

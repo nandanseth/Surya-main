@@ -1,55 +1,51 @@
+import { CreateButton } from '../Buttons';
 import { Document, Page, PDFDownloadLink, StyleSheet, Text, View } from '@react-pdf/renderer';
-import React from 'react';
-import styled from 'styled-components';
 import { Form } from '../../styles/styles';
 import documentOptions from '../../utils/documents/documents';
-import { CreateButton } from '../Buttons';
+import React from 'react';
+import styled from 'styled-components';
 import SuryaSelect from '../PolicyFormSelect';
 
-
 const { Section, Flex } = Form;
-
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
+    backgroundColor: '#E4E4E4',
   },
   section: {
     margin: 10,
     padding: 10,
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
-
 
 const DocumentsSection = ({ store }) => {
   const { documents: docStates } = store;
-  const  { values: document, setValues: setDocument } = docStates;
+  const { values: document, setValues: setDocument } = docStates;
 
   const validate = () => document !== undefined;
 
-    // Create Document Component
+  // Create Document Component
 
   const makeDoc = (document) => {
     return (
       <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text>Document #1</Text>
-        </View>
-        <View style={styles.section}>
-          <Text>Stuff about me #2</Text>
-        </View>
-        <View style={styles.section}>
-          <Text>44{document?.value} </Text>
-        </View>
-
-      </Page>
-    </Document>
-    )
-  }
+        <Page size="A4" style={styles.page}>
+          <View style={styles.section}>
+            <Text>Document #1</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Stuff about me #2</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>44{document?.value} </Text>
+          </View>
+        </Page>
+      </Document>
+    );
+  };
 
   console.log(document, document?.value);
 
@@ -58,23 +54,27 @@ const DocumentsSection = ({ store }) => {
       <Section>
         <Flex>
           <SuryaSelect
-            options={documentOptions}
-            placeholder="Type Of Document"
             label="Document"
-            value={document}
             onChange={(v) => {
               setDocument(v);
             }}
+            options={documentOptions}
+            placeholder="Type Of Document"
+            value={document}
           />
         </Flex>
         <Flex>
           <Upload> Upload </Upload>
         </Flex>
         <Upload>
-          <PDFDownloadLink document={makeDoc(document)} fileName="example.pdf" style={{width: '100%', height: '100%'}}>
+          <PDFDownloadLink
+            document={makeDoc(document)}
+            fileName="example.pdf"
+            style={{ width: '100%', height: '100%' }}
+          >
             Sample Download (Try me)
           </PDFDownloadLink>
-          </Upload>
+        </Upload>
       </Section>
     </div>
   );

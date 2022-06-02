@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { Documents, Endorsments, Home, Info, Ratings } from './InfoSections';
+import { GenericSearch } from '../../components/Search';
+import { Header } from '../../styles/styles';
 import { Link, useParams } from 'react-router-dom';
+import backArrow from '../../images/back-arrow.png';
+import Layout from '../../utils/withLayout';
+import MenuItem from './MenuItem';
+import PolicyTitle from '../../components/PolicyTitle';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SubHeader from '../../components/PolicyHomeSubHeader';
-import PolicyTitle from '../../components/PolicyTitle';
-import { GenericSearch } from '../../components/Search';
 import VehicleOverlay from '../../components/VehicleOverlay';
 import VehiclesTable, { makeSampleInfo } from '../../components/VehiclesTable';
-import backArrow from '../../images/back-arrow.png';
-import { Header } from '../../styles/styles';
-import Layout from '../../utils/withLayout';
-import { Documents, Endorsments, Home, Info, Ratings } from './InfoSections';
-import MenuItem from './MenuItem';
 const [subtitle, title] = ['Name', 'Name Here'];
 
 const fields = [
@@ -29,8 +29,8 @@ const fields = [
 const home = { name: 'Home', to: '#home', component: Home };
 const policySectionMenu = [
   home,
-  { name: 'Info', to: '#info', component: Info},
-  { name: 'Documents', to: '#documents', component: Documents},
+  { name: 'Info', to: '#info', component: Info },
+  { name: 'Documents', to: '#documents', component: Documents },
   { name: 'Ratings', to: '#ratings', component: Ratings },
   { name: 'Endorsements', to: '#endorsements', component: Endorsments },
 ];
@@ -45,7 +45,7 @@ const Policy = () => {
   const menuOnclick = (val) => {
     setSection(val);
   };
-  
+
   const close = () => {
     setShow(false);
   };
@@ -56,16 +56,14 @@ const Policy = () => {
     const headers = {};
     const getPolicy = async () => {
       try {
-      // const res = await fetch(policyUrl, headers);
-      // setData(res.data)
-      }
-      catch(error) {
-        alert(error)
+        // const res = await fetch(policyUrl, headers);
+        // setData(res.data)
+      } catch (error) {
+        alert(error);
       }
     };
     getPolicy();
   }, []);
-  
 
   const policyMenu = (
     <>
@@ -76,12 +74,7 @@ const Policy = () => {
       </Link>
       <PolicySubMenuWrapper>
         {policySectionMenu?.map((item) => (
-          <MenuItem 
-            item={item}
-            key={item}
-            active={section}
-            onClick={menuOnclick}
-          />
+          <MenuItem active={section} item={item} key={item} onClick={menuOnclick} />
         ))}
       </PolicySubMenuWrapper>
     </>
@@ -95,26 +88,18 @@ const Policy = () => {
         <Header>
           <PolicyTitle id={slug} />
         </Header>
-        <SubHeader
-          insured="test insured"
-          agent="agent"
-          period="DATE - DATE "
-          totalPremium="$$$"
-        />
+        <SubHeader agent="agent" insured="test insured" period="DATE - DATE " totalPremium="$$$" />
         <Div>
-        {<CurrentSection />}
+          {<CurrentSection />}
           <Flex>
             <Title>Vehicles</Title>
-            <GenericSearch
-              style={{ marginLeft: 'auto' }}
-              placeholder="Search Vehicles"
-            />
+            <GenericSearch placeholder="Search Vehicles" style={{ marginLeft: 'auto' }} />
           </Flex>
           <VehiclesTable
-            vehicles={makeSampleInfo(10)}
             open={() => {
               setShow(true);
             }}
+            vehicles={makeSampleInfo(10)}
           />
           {show && <VehicleOverlay close={close} show={show} />}
         </Div>

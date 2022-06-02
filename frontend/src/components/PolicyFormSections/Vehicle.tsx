@@ -1,27 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
 import { ButtonHolder, Form } from '../../styles/styles';
+import { Save } from '../Buttons';
 import { statesOptions } from '../../utils/policies';
 import fuelTypeOptions from '../../utils/vehicle/fuelType';
-import vehicleCategoryOptions, {
-  optionsMap
-} from '../../utils/vehicle/getVehicleCategory';
-import vehicleTypes from '../../utils/vehicle/getVehicleType';
 import getWeightSelects from '../../utils/vehicle/getWeightSelects';
-import { Save } from '../Buttons';
 import Input from '../PolicyFormInput';
+import React from 'react';
+import styled from 'styled-components';
 import SuryaSelect from '../PolicyFormSelect';
+import vehicleCategoryOptions, { optionsMap } from '../../utils/vehicle/getVehicleCategory';
+import vehicleTypes from '../../utils/vehicle/getVehicleType';
 
-const {
-  Section, SectionTitle, Flex, InputWrapper,
-} = Form;
+const { Section, SectionTitle, Flex, InputWrapper } = Form;
 
 const title = 'Vehicles';
 const vITitle = 'Vehicle Info';
 
 const VehicleSection = ({ store }) => {
   const { vehicles: vehicleStates } = store;
-  const  { values, setValues, defaultValue, yesNoValues, yesNoOptions, defaults } = vehicleStates;
+  const { values, setValues, defaultValue, yesNoValues, yesNoOptions, defaults } = vehicleStates;
 
   const addFields = () => {
     setValues([...values, { ...defaults }]);
@@ -40,7 +36,7 @@ const VehicleSection = ({ store }) => {
 
   const vQ = 'Is this vehicle used for something other than the category/classification stated in Policy Info';
 
-  const DefaultFields = ({ num = 0 } : { num?: number }) => {
+  const DefaultFields = ({ num = 0 }: { num?: number }) => {
     const handleInputOnChange = (e) => {
       const copy = [...values];
       copy[num][e.target.name] = e.target.value;
@@ -48,12 +44,12 @@ const VehicleSection = ({ store }) => {
     };
 
     const handleSelectOnChange = (e, propertyName) => {
-      const copy = [ ...values ];
+      const copy = [...values];
       copy[num][propertyName] = e.target.value;
       setValues(copy);
-    }
+    };
 
-    console.log(optionsMap[values[num].category], '123å', values[num].category)
+    console.log(optionsMap[values[num].category], '123å', values[num].category);
 
     return (
       <div>
@@ -61,13 +57,13 @@ const VehicleSection = ({ store }) => {
           <SectionTitle>{vQ}</SectionTitle>
           <Flex>
             <RadioGroup
-              values={yesNoValues}
+              currentValue={values[num].yesNo}
               setValue={(v) => {
-                const copy = [ ...values ];
+                const copy = [...values];
                 copy[num].yesNo = v;
                 setValues(copy);
               }}
-              currentValue={values[num].yesNo}
+              values={yesNoValues}
             />
           </Flex>
           <Flex>
@@ -76,16 +72,16 @@ const VehicleSection = ({ store }) => {
                 <Flex>
                   <InputWrapper>
                     <SuryaSelect
-                      options={vehicleCategoryOptions}
-                      placeholder="Category"
                       label="Vehicle Category"
-                      value={values[num].category}
                       onChange={(e) => {
-                        const copy = [ ...values ];
+                        const copy = [...values];
                         copy[num].category = e.target.value;
                         copy[num].vehicleCategory = optionsMap[values[num].category].value;
                         setValues(copy);
                       }}
+                      options={vehicleCategoryOptions}
+                      placeholder="Category"
+                      value={values[num].category}
                     />
                   </InputWrapper>
                 </Flex>
@@ -93,13 +89,13 @@ const VehicleSection = ({ store }) => {
                   {values[num].category !== null || values[num].category === '' ? (
                     <InputWrapper>
                       <SuryaSelect
-                        options={optionsMap[values[num].category]}
-                        placeholder="Sub Category"
                         label="Sub Vehicle Category"
-                        value={values[num].vehicleCategory}
                         onChange={(v) => {
                           handleSelectOnChange(v, 'vehicleCategory');
                         }}
+                        options={optionsMap[values[num].category]}
+                        placeholder="Sub Category"
+                        value={values[num].vehicleCategory}
                       />
                     </InputWrapper>
                   ) : null}
@@ -113,108 +109,98 @@ const VehicleSection = ({ store }) => {
           <Flex>
             <InputWrapper>
               <SuryaSelect
+                label="Vehicle Type"
+                onChange={(v) => {
+                  handleSelectOnChange(v, 'vehicleType');
+                }}
                 options={vehicleTypes}
                 placeholder="Type"
-                label="Vehicle Type"
                 value={values[num].vehicleType}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'vehicleType')
-                }}
               />
             </InputWrapper>
             <InputWrapper>
-              <Input
-                placeholder="VIN"
-                label="Vin"
-                value={values[num].vin}
-                onChange={handleInputOnChange}
-              />
+              <Input label="Vin" onChange={handleInputOnChange} placeholder="VIN" value={values[num].vin} />
             </InputWrapper>
             <div>auto gene make, model, etc.</div>
             <InputWrapper>
-              <Input
-                placeholder="Make"
-                label="Vehicle Make"
-                value={values[num].make}
-                onChange={handleInputOnChange}
-              />
+              <Input label="Vehicle Make" onChange={handleInputOnChange} placeholder="Make" value={values[num].make} />
             </InputWrapper>
             <InputWrapper>
               <Input
-                placeholder="Model"
                 label="Vehicle Model"
+                onChange={handleInputOnChange}
+                placeholder="Model"
                 value={values[num].model}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                placeholder="Year"
                 label="Vehicle Model Year"
-                value={values[num].modelYear}
                 onChange={handleInputOnChange}
+                placeholder="Year"
+                value={values[num].modelYear}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                placeholder="Seating Capacity"
                 label="Seating"
-                value={values[num].seating}
                 onChange={handleInputOnChange}
+                placeholder="Seating Capacity"
+                value={values[num].seating}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
+                label="Wheelchair Accessible?"
+                onChange={(v) => {
+                  handleSelectOnChange(v, 'wheelChair');
+                }}
                 options={yesNoOptions}
                 placeholder="Yes/No"
-                label="Wheelchair Accessible?"
                 value={values[num].wheelChair}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'wheelChair')
-                }}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
+                label="Vehicle Weight"
+                onChange={(v) => {
+                  handleSelectOnChange(v, 'vehicleWeight');
+                }}
                 options={getWeightSelects}
                 placeholder="Weight"
-                label="Vehicle Weight"
                 value={values[num].vehicleWeight}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'vehicleWeight')
-                }}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
+                label="Vehicle Type"
+                onChange={(v) => {
+                  handleSelectOnChange(v, 'vehicleType');
+                }}
                 options={vehicleTypes}
                 placeholder="Type"
-                label="Vehicle Type"
                 value={values[num].vehicleType}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'vehicleType')
-                }}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name='plateNumber'
-                placeholder="Plate Number"
                 label="Plate"
-                value={values[num].plateNumber}
+                name="plateNumber"
                 onChange={handleInputOnChange}
+                placeholder="Plate Number"
+                value={values[num].plateNumber}
               />
             </InputWrapper>
-  
+
             <InputWrapper>
               <SuryaSelect
+                label="Fuel Type"
+                onChange={(v) => {
+                  handleSelectOnChange(v, 'fuelType');
+                }}
                 options={fuelTypeOptions}
                 placeholder="Type"
-                label="Fuel Type"
                 value={values[num].fuelType}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'fuelType')
-                }}
               />
             </InputWrapper>
           </Flex>
@@ -224,40 +210,40 @@ const VehicleSection = ({ store }) => {
           <Flex>
             <InputWrapper>
               <Input
-                name="garageZipCode"
-                placeholder="XXXXX"
                 label="Garage Zip Code (5 Digit)"
-                value={values[num].garageZipCode}
+                name="garageZipCode"
                 onChange={handleInputOnChange}
+                placeholder="XXXXX"
+                value={values[num].garageZipCode}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name="zoneCode"
-                placeholder="Zone Code"
                 label="Zone Code"
-                value={values[num].zoneCode}
+                name="zoneCode"
                 onChange={handleInputOnChange}
+                placeholder="Zone Code"
+                value={values[num].zoneCode}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
-                options={yesNoOptions}
-                placeholder="Yes/No"
                 label="Fleet"
-                value={values[num].fleet}
                 onChange={(v) => {
                   handleSelectOnChange(v, 'fleet');
                 }}
+                options={yesNoOptions}
+                placeholder="Yes/No"
+                value={values[num].fleet}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name="rateClassCode"
-                placeholder="Code"
                 label="Rate Class Code"
-                value={values[num].rateClassCode}
+                name="rateClassCode"
                 onChange={handleInputOnChange}
+                placeholder="Code"
+                value={values[num].rateClassCode}
               />
             </InputWrapper>
           </Flex>
@@ -267,53 +253,53 @@ const VehicleSection = ({ store }) => {
           <Flex>
             <InputWrapper>
               <Input
-                name="baseName"
-                placeholder="Name"
                 label="Base Name"
-                value={values[num].baseName}
+                name="baseName"
                 onChange={handleInputOnChange}
+                placeholder="Name"
+                value={values[num].baseName}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
+                label="Base Type"
+                onChange={(v) => {
+                  handleSelectOnChange(v, 'baseType');
+                }}
                 options={[
                   { value: 'Black Car', label: 'Black Car' },
                   { value: 'Livery', label: 'Livery' },
                   { value: 'N/A', label: 'N/A' },
                 ]}
                 placeholder="type"
-                label="Base Type"
                 value={values[num].baseType}
-                onChange={(v) => {
-                  handleSelectOnChange(v, 'baseType')
-                }}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
+                label="Base Number"
                 name="baseNumber"
+                onChange={handleInputOnChange}
                 placeholder="#"
-                label="Base Number"
                 value={values[num].baseNumber}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name="baseExpDate"
-                placeholder="MM/DD/YYYY"
                 label="Base Number"
-                value={values[num].baseExpDate}
+                name="baseExpDate"
                 onChange={handleInputOnChange}
+                placeholder="MM/DD/YYYY"
+                value={values[num].baseExpDate}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name="shl"
-                placeholder="SHL"
                 label="SHL Permit"
-                value={values[num].shl}
+                name="shl"
                 onChange={handleInputOnChange}
+                placeholder="SHL"
+                value={values[num].shl}
               />
             </InputWrapper>
           </Flex>
@@ -323,76 +309,77 @@ const VehicleSection = ({ store }) => {
           <Flex>
             <InputWrapper>
               <Input
-                name="garageAddress1"
-                placeholder="address"
                 label="Address Line 1"
-                value={values[num].garageAddress1}
+                name="garageAddress1"
                 onChange={handleInputOnChange}
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <Input
-                name='garageAddress2'
                 placeholder="address"
+                value={values[num].garageAddress1}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <Input
                 label="Address Line 2"
+                name="garageAddress2"
+                onChange={handleInputOnChange}
+                placeholder="address"
                 value={values[num].garageAddress2}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name='garageZipCode2'
-                placeholder="zip"
                 label="Zip Code"
+                name="garageZipCode2"
+                onChange={handleInputOnChange}
+                placeholder="zip"
                 value={values[num].garageZipCode2}
-                onChange={handleInputOnChange}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name='garageCity'
-                placeholder="city"
                 label="City"
-                value={values[num].garageCity}
+                name="garageCity"
                 onChange={handleInputOnChange}
+                placeholder="city"
+                value={values[num].garageCity}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name='garageCounty'
-                placeholder="county"
                 label="county"
-                value={values[num].garageCounty}
+                name="garageCounty"
                 onChange={handleInputOnChange}
+                placeholder="county"
+                value={values[num].garageCounty}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
-                placeholder="State"
                 label="State"
-                options={statesOptions}
-                value={values[num].garageState}
                 onChange={(v) => {
-                  handleSelectOnChange(v, 'garageState')
+                  handleSelectOnChange(v, 'garageState');
                 }}
+                options={statesOptions}
+                placeholder="State"
+                value={values[num].garageState}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
-                name="garageCountry"
-                placeholder="country"
                 label="country"
-                value={values[num].garageCountry}
+                name="garageCountry"
                 onChange={handleInputOnChange}
+                placeholder="country"
+                value={values[num].garageCountry}
               />
             </InputWrapper>
           </Flex>
         </Section>
         <Flex>
           <div style={{ marginLeft: 'auto' }}>
-            <StyledCancel onClick={() => {
-              removeFields(num);
-            }}
+            <StyledCancel
+              onClick={() => {
+                removeFields(num);
+              }}
             >
               Cancel
             </StyledCancel>
@@ -400,60 +387,44 @@ const VehicleSection = ({ store }) => {
         </Flex>
       </div>
     );
-  }
+  };
 
   return (
     <Wrapper>
       <Center>
-        <StyledTitle>
-          {title}
-        </StyledTitle>
+        <StyledTitle>{title}</StyledTitle>
         <StyledHolder>
           <Add onClick={addFields}>+ Add Vehicle</Add>
         </StyledHolder>
       </Center>
       <div>
-      {values.map((key, i) => {
-        const toReturn = DefaultFields({ num: i });
-        return (
-          <React.Fragment key={i}>
-            { toReturn }
-          </React.Fragment>
-        );
-      })}
-
+        {values.map((key, i) => {
+          const toReturn = DefaultFields({ num: i });
+          return <React.Fragment key={i}>{toReturn}</React.Fragment>;
+        })}
       </div>
     </Wrapper>
   );
 };
 
-const RadioGroup = ({
-  values,
-  setValue,
-  currentValue,
-}: {
-  currentValue?: string
-  values: string[]
-  setValue: any
-}) => (
+const RadioGroup = ({ values, setValue, currentValue }: { currentValue?: string; values: string[]; setValue: any }) => (
   <Flex>
     {values.map((item) => (
       <RadioLabel key={item}>
         <Span>{item}</Span>
         <input
-          type="radio"
-          name={item}
           checked={currentValue === item}
+          name={item}
           onChange={() => {
             setValue(item);
           }}
+          type="radio"
           value={item}
         />
       </RadioLabel>
     ))}
   </Flex>
 );
-
 
 const RadioLabel = styled.label`
   font: inherit;
@@ -469,8 +440,8 @@ const Span = styled.span`
 `;
 
 const Wrapper = styled.div`
-    padding: 8px;
-    width: 100%;
+  padding: 8px;
+  width: 100%;
 `;
 
 const Add = styled(Save)`
@@ -503,7 +474,7 @@ const StyledCancel = styled(Add)`
   color: #3a5665;
 
   &:hover {
-    background: rgba(89,195,179,0.125683);
+    background: rgba(89, 195, 179, 0.125683);
   }
 `;
 

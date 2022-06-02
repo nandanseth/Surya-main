@@ -22,7 +22,8 @@ export const Colors = {
 
 export const ColorsCSS = {
   gradientCSS: 'background: linear-gradient(135deg, #3498C2 0%, #03CDAE 100%);',
-  gradientTransCSS: 'background: linear-gradient(116.57deg, rgba(52, 152, 194, 0.1) 0%, rgba(3, 205, 174, 0.1) 83.33%);',
+  gradientTransCSS:
+    'background: linear-gradient(116.57deg, rgba(52, 152, 194, 0.1) 0%, rgba(3, 205, 174, 0.1) 83.33%);',
 };
 
 export const Block = styled.div`
@@ -141,12 +142,11 @@ export const Content = styled.div`
   background: white;
   flex: 1 1 auto;
   padding-left: ${sidebarWidth}px;
-
 `;
 
 export const Footer = styled.footer`
   width: 100%;
-  background: #FDFDFD;
+  background: #fdfdfd;
   padding: 12px;
 `;
 
@@ -173,7 +173,6 @@ export const Th = styled.th`
   border-bottom: 1px solid #97979736;
   font: inherit;
   padding-bottom: 12px;
-
 `;
 
 export const TD = styled.td`
@@ -202,69 +201,69 @@ export const TR = styled.tr`
   }
   :hover td {
     color: ${Colors.text};
-    opacity: .68;
-
+    opacity: 0.68;
   }
 `;
 
 export const SortByHeader = styled.button<{ green?: boolean }>`
-    outline: none;
-    border: none;
-    font: inherit;
-    text-align: center;
-    font-weight: 500;
-    font-size: 12px;
-    padding: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-items: center;
-    flex: 1 1 auto;
-    width: 100%;
+  outline: none;
+  border: none;
+  font: inherit;
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+  flex: 1 1 auto;
+  width: 100%;
 
-    ${({ green }) => green && `
+  ${({ green }) =>
+    green &&
+    `
     
     color: ${Colors.green};
     font-weight: 600;
   `}
-
-  `;
+`;
 
 export const ButtonHolder = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    align-content: center;
-    width: 100%;
-    margin: auto;
-    max-width: 400px;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+  width: 100%;
+  margin: auto;
+  max-width: 400px;
 `;
 
 const Section = styled.div`
-    width: 100%;
-    flex: 1 1 auto;
-    margin-top: 4px;
+  width: 100%;
+  flex: 1 1 auto;
+  margin-top: 4px;
 `;
 
 const SectionTitle = styled.h2`
-    width: 100%;
-    margin-bottom: 2px;
-    margin-top: 10px;
-    font-weight: 600;
-    font-size: 18px;
-    color: ${Colors.text};
+  width: 100%;
+  margin-bottom: 2px;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  color: ${Colors.text};
 `;
 
 const Flex = styled.div`
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-content: flex-start;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
 `;
 
 const InputWrapper = styled.div`
-    flex: 1 1 auto;
-    margin: 4px 12px 4px 0px;
-    width: 32%;
+  flex: 1 1 auto;
+  margin: 4px 12px 4px 0px;
+  width: 32%;
 `;
 
 export const Form = {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { Block, Colors, ColorsCSS } from '../styles/styles';
 import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
 import Input from '../components/Input';
-import { Block, Colors, ColorsCSS } from '../styles/styles';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const validateEmail = (email: string) => {
   const re = /\S+@\S+\.\S+/;
@@ -13,9 +13,9 @@ const validateEmail = (email: string) => {
 const validatePassword = (password: string) => password.length > 6;
 
 type State = {
-  email: string
-  password: string
-  error?: { validEmail?: boolean; validPassword?: boolean }
+  email: string;
+  password: string;
+  error?: { validEmail?: boolean; validPassword?: boolean };
 };
 
 const SignIn = () => {
@@ -29,10 +29,7 @@ const SignIn = () => {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const { email, password } = form;
-    const [validEmail, validPassword] = [
-      validateEmail(email),
-      validatePassword(password),
-    ];
+    const [validEmail, validPassword] = [validateEmail(email), validatePassword(password)];
     if (!validEmail || !validPassword) {
       setInput({ ...form, error: { validEmail, validPassword } });
       return;
@@ -44,8 +41,8 @@ const SignIn = () => {
     <StyledBlock>
       <Helmet>
         <title>Surya Sign In</title>
-        <meta name="description" content="Surya admin sign in" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta content="Surya admin sign in" name="description" />
+        <link href="/favicon.ico" rel="icon" />
       </Helmet>
 
       <Main>
@@ -60,9 +57,12 @@ const SignIn = () => {
           <InputFields>
             <MarginDiv>
               <Input
+                error={
+                  form.error?.validEmail !== undefined && !form.error?.validEmail
+                    ? { message: 'Please enter valid email' }
+                    : undefined
+                }
                 label="email"
-                placeholder="email"
-                value={form.email}
                 onChange={(e) => {
                   setInput({
                     ...form,
@@ -70,19 +70,19 @@ const SignIn = () => {
                     error: undefined,
                   });
                 }}
-                error={
-                  form.error?.validEmail !== undefined
-                  && !form.error?.validEmail
-                    ? { message: 'Please enter valid email' }
-                    : undefined
-                }
+                placeholder="email"
+                value={form.email}
               />
             </MarginDiv>
             <MarginDiv>
               <Input
+                error={
+                  form.error?.validPassword !== undefined && !form.error?.validPassword
+                    ? { message: 'Please enter valid password' }
+                    : undefined
+                }
+                isPassword
                 label="password"
-                placeholder="password"
-                value={form.password}
                 onChange={(e) => {
                   setInput({
                     ...form,
@@ -90,13 +90,8 @@ const SignIn = () => {
                     error: undefined,
                   });
                 }}
-                error={
-                  form.error?.validPassword !== undefined
-                  && !form.error?.validPassword
-                    ? { message: 'Please enter valid password' }
-                    : undefined
-                }
-                isPassword
+                placeholder="password"
+                value={form.password}
               />
             </MarginDiv>
             <Button onClick={submit}>{signInText}</Button>

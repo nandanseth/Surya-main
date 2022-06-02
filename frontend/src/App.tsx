@@ -1,6 +1,4 @@
-import {
-  BrowserRouter as Router, Route, Switch
-} from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Claims from './pages/claims';
 import PolicyHome from './pages/home';
 import PolicyPage from './pages/policies/policy';
@@ -11,15 +9,15 @@ import UrlProvider from './context/url-context';
 function App() {
   return (
     <UrlProvider>
-    <Router>
-      <Switch>
-        <Route path="/claims" component={Claims} title="Claims | Surya" />
-        <Route path="/reports" component={Reports} title="Reports | Surya" />
-        <Route path="/home" component={PolicyHome} title="Home | Surya" />
-        <Route path="/policies/:slug" component={PolicyPage} title="Policies | Surya" />
-        <Route exact path="/" component={SignIn} title="Sign In | Surya" />
-      </Switch>
-    </Router>
+      <Router>
+        <Switch>
+          <Route component={Claims} path="/claims" title="Claims | Surya" />
+          <Route component={Reports} path="/reports" title="Reports | Surya" />
+          <Route component={PolicyHome} path="/home" title="Home | Surya" />
+          <Route component={PolicyPage} path="/policies/:slug" title="Policies | Surya" />
+          <Route component={SignIn} exact path="/" title="Sign In | Surya" />
+        </Switch>
+      </Router>
     </UrlProvider>
   );
 }

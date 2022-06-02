@@ -1,37 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { ButtonHolder, Form } from '../../styles/styles';
-import { statesOptions } from '../../utils/policies';
 import { Save } from '../Buttons';
+import { statesOptions } from '../../utils/policies';
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import SuryaInput from '../PolicyFormInput';
 import SuryaSelect from '../PolicyFormSelect';
 
-const {
-  Section, SectionTitle, Flex, InputWrapper,
-} = Form;
+const { Section, SectionTitle, Flex, InputWrapper } = Form;
 
 const title = 'Drivers';
 
-const driversOptions = [];
-
-
 const DriversSection = ({ store }) => {
   const { drivers: driverStates } = store;
-  const  { values, setValues, defaults } = driverStates;
-
-  const [test, setTest] = useState("{ anyKey: 'anyvalue'}")
+  const { values, setValues, defaults } = driverStates;
 
   useEffect(() => {
-    setValues([{ ...defaults, states: 'Oregon'}]);
-    setTest('yo yo yo we mounted and set shit')
-  }, [])
+    setValues([{ ...defaults, states: 'Oregon' }]);
+  }, []);
 
   const addFields = () => {
-    setValues([...values, { ...defaults, states: 'Oregon'}]);
+    setValues([...values, { ...defaults, states: 'Oregon' }]);
   };
   const removeFields = (i) => {
     if (values.length <= 0) {
-      setValues([{ ...defaults, states: 'Oregon'}]);
+      setValues([{ ...defaults, states: 'Oregon' }]);
       return;
     }
 
@@ -40,7 +32,7 @@ const DriversSection = ({ store }) => {
     setValues(newArray);
   };
 
-  const DefaultFields = ({ num = 0 } : { num?: number }) => {
+  const DefaultFields = ({ num = 0 }: { num?: number }) => {
     const handleInputOnChange = (e) => {
       const copy = [...values];
       copy[num][e.target.name] = e.target.value;
@@ -48,10 +40,10 @@ const DriversSection = ({ store }) => {
     };
 
     const handleSelectOnChange = (e, propertyName) => {
-      const copy = [ ...values ];
+      const copy = [...values];
       copy[num][propertyName] = e.target.value;
       setValues(copy);
-    }
+    };
 
     return (
       <div>
@@ -60,59 +52,60 @@ const DriversSection = ({ store }) => {
             <InputWrapper>
               <SuryaInput
                 //options={driversOptions}
-                placeholder="Driver Name"
                 label="What is the name of the driver?"
-                value={values[num].driverName}
-                onChange={handleInputOnChange}
                 name="driverName"
+                onChange={handleInputOnChange}
+                placeholder="Driver Name"
+                value={values[num].driverName}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaSelect
-                options={statesOptions}
-                placeholder=" state"
                 label="Driver state"
-                value={values[num].states}
                 onChange={(v) => {
                   handleSelectOnChange(v, 'states');
                 }}
+                options={statesOptions}
+                placeholder=" state"
+                value={values[num].states}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaInput
                 label="License Number"
+                name="licenseNumber"
+                onChange={handleInputOnChange}
                 placeholder="License Number"
                 value={values[num].licenseNumber}
-                onChange={handleInputOnChange}
-                name="licenseNumber"
               />
             </InputWrapper>
           </Flex>
           <Flex>
             <InputWrapper>
               <SuryaInput
-                value={values[num].licenseEffDate}
-                placeholder="MM/DD/YYYY"
-                onChange={handleInputOnChange}
                 label="License Effective Date"
                 name="licenseEffDate"
+                onChange={handleInputOnChange}
+                placeholder="MM/DD/YYYY"
+                value={values[num].licenseEffDate}
               />
             </InputWrapper>
             <InputWrapper>
               <SuryaInput
-                placeholder="MM/DD/YYYY"
-                value={values[num].licenseExpDate}
-                onChange={handleInputOnChange}
                 label="License Expiration Date"
                 name="licenseExpDate"
+                onChange={handleInputOnChange}
+                placeholder="MM/DD/YYYY"
+                value={values[num].licenseExpDate}
               />
             </InputWrapper>
           </Flex>
           <Flex>
             <div style={{ marginLeft: 'auto' }}>
-              <StyledCancel onClick={() => {
-                removeFields(num);
-              }}
+              <StyledCancel
+                onClick={() => {
+                  removeFields(num);
+                }}
               >
                 Cancel
               </StyledCancel>
@@ -120,27 +113,21 @@ const DriversSection = ({ store }) => {
           </Flex>
         </Section>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <Wrapper>
       <Center>
-        <StyledTitle>
-          {title}
-        </StyledTitle>
+        <StyledTitle>{title}</StyledTitle>
         <StyledHolder>
-        <Add onClick={addFields}>+ Add Driver</Add>
+          <Add onClick={addFields}>+ Add Driver</Add>
         </StyledHolder>
       </Center>
       <div>
         {values.map((key, i) => {
           const toReturn = DefaultFields({ num: i });
-          return (
-            <React.Fragment key={i}>
-              { toReturn }
-            </React.Fragment>
-          );
+          return <React.Fragment key={i}>{toReturn}</React.Fragment>;
         })}
       </div>
     </Wrapper>
@@ -148,8 +135,8 @@ const DriversSection = ({ store }) => {
 };
 
 const Wrapper = styled.div`
-    padding: 8px;
-    width: 100%;
+  padding: 8px;
+  width: 100%;
 `;
 
 const Add = styled(Save)`
@@ -182,7 +169,7 @@ const StyledCancel = styled(Add)`
   color: #3a5665;
 
   &:hover {
-    background: rgba(89,195,179,0.125683);
+    background: rgba(89, 195, 179, 0.125683);
   }
 `;
 export default DriversSection;

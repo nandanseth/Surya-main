@@ -1,23 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
-import { yesNoOptions } from '../../context/insured-context';
 import { ButtonHolder, Form } from '../../styles/styles';
 import { Save } from '../Buttons';
+import { yesNoOptions } from '../../context/insured-context';
+import React from 'react';
+import styled from 'styled-components';
 import SuryaInput from '../PolicyFormInput';
 import SuryaSelect from '../PolicyFormSelect';
 
-const {
-  Section,
-  SectionTitle,
-  Flex,
-  InputWrapper,
-} = Form;
+const { Section, SectionTitle, Flex, InputWrapper } = Form;
 
 const title = 'Loss History';
 
 const LossHistory = ({ store }) => {
   const { lossHistory: lossStates } = store;
-  const  { values, setValues, defaults }  = lossStates;
+  const { values, setValues, defaults } = lossStates;
 
   const removeFields = (i) => {
     if (values.length <= 0) {
@@ -36,7 +31,7 @@ const LossHistory = ({ store }) => {
 
   const dTitle = 'Loss History';
 
-  const DefaultFields = ({ num = 0 } : { num?: number }) => {
+  const DefaultFields = ({ num = 0 }: { num?: number }) => {
     // render regular HTML input elemen
 
     const handleInputOnChange = (e) => {
@@ -51,149 +46,159 @@ const LossHistory = ({ store }) => {
         <Flex>
           <InputWrapper>
             <SuryaInput
-              value={values[num].accidentDate}
-              onChange={handleInputOnChange}
-              name="accidentDate"
               label="Accident Date"
+              name="accidentDate"
+              onChange={handleInputOnChange}
               placeholder="MM/DD/YYYY"
+              value={values[num].accidentDate}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              value={values[num].reportedDate}
-              onChange={handleInputOnChange}
-              name="reportedDate"
               label="Reported Date"
+              name="reportedDate"
+              onChange={handleInputOnChange}
               placeholder="MM/DD/YYYY"
+              value={values[num].reportedDate}
             />
           </InputWrapper>
         </Flex>
         <Flex>
           <InputWrapper>
             <SuryaInput
-              name="claimNumber"
               label="Claim Number"
+              name="claimNumber"
+              onChange={handleInputOnChange}
               placeholder="claim number"
               value={values[num].claimNumber}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="subClaimNumber"
               label="Sub - Claim Number"
+              name="subClaimNumber"
+              onChange={handleInputOnChange}
               placeholder="sub-claim number"
               value={values[num].subClaimNumber}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaSelect
               label="Claim Type"
-              placeholder="Claim Type"
-              options={[{ value: 'Body Injury', label: 'Body Injury'}, { value: 'Property Damage', label: 'Property Damage'},
-              { value: 'Medical', label: 'Medical'}, { value: 'Uninsured Motorist', label: 'Uninsured Motorist'},
-            ]}
-              value={values[num].claimType}
               onChange={(e) => {
                 const copy = [...values];
                 copy[num].claimType = e.target.value;
                 setValues(copy);
               }}
+              options={[
+                { value: 'Body Injury', label: 'Body Injury' },
+                { value: 'Property Damage', label: 'Property Damage' },
+                { value: 'Medical', label: 'Medical' },
+                { value: 'Uninsured Motorist', label: 'Uninsured Motorist' },
+              ]}
+              placeholder="Claim Type"
+              value={values[num].claimType}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="totalIncurred"
               label="Total Incurred"
+              name="totalIncurred"
+              onChange={handleInputOnChange}
               placeholder="claimType"
               value={values[num].totalIncurred}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
         </Flex>
         <Flex>
           <SuryaSelect
-            options={yesNoOptions}
-            placeholder="Status"
             label="Open Or Closed Status"
-            value={values[num].status}
             onChange={(e) => {
               const copy = [...values];
               copy[num].status = e.target.value;
               setValues(copy);
             }}
+            options={yesNoOptions}
+            placeholder="Status"
+            value={values[num].status}
           />
         </Flex>
         <Flex>
           <InputWrapper>
             <SuryaInput
-              name="previousPolicyNumber"
               label="Previous Policy Number"
+              name="previousPolicyNumber"
+              onChange={handleInputOnChange}
               placeholder="Prev Policy #"
               value={values[num].previousPolicyNumber}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              name="priorCarrierName"
               label="Prior Carrier Name"
+              name="priorCarrierName"
+              onChange={handleInputOnChange}
               placeholder="Prev Policy #"
               value={values[num].priorCarrierName}
-              onChange={handleInputOnChange}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              value={values[num].originalInceptionDate}
-              onChange={handleInputOnChange}
-              name="originalInceptionDate"
               label="Original Inception Date"
+              name="originalInceptionDate"
+              onChange={handleInputOnChange}
               placeholder="MM/DD/YYYY"
+              value={values[num].originalInceptionDate}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaInput
-              value={values[num].expirationDate}
-              onChange={handleInputOnChange}
-              name="expirationDate"
               label="Expiration Date"
+              name="expirationDate"
+              onChange={handleInputOnChange}
               placeholder="MM/DD/YYYY"
+              value={values[num].expirationDate}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaSelect
-              options={[{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }]}
-              placeholder="Yes/No"
               label="Is Experience Mode"
-              value={values[num].isExperienceMode}
               onChange={(e) => {
                 const copy = [...values];
                 copy[num].isExperienceMode = e.target.value;
                 setValues(copy);
               }}
+              options={[
+                { value: 'Yes', label: 'Yes' },
+                { value: 'No', label: 'No' },
+              ]}
+              placeholder="Yes/No"
+              value={values[num].isExperienceMode}
             />
           </InputWrapper>
           <InputWrapper>
             <SuryaSelect
-              options={[{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }]}
-              placeholder="Yes/No"
               label="Is Policy Transferred"
-              value={values[num].isPolicyTransferred}
               onChange={(e) => {
                 const copy = [...values];
-                copy[num].isPolicyTransferred =  e.target.value;
+                copy[num].isPolicyTransferred = e.target.value;
                 setValues(copy);
               }}
+              options={[
+                { value: 'Yes', label: 'Yes' },
+                { value: 'No', label: 'No' },
+              ]}
+              placeholder="Yes/No"
+              value={values[num].isPolicyTransferred}
             />
           </InputWrapper>
         </Flex>
         <Flex>
           <div style={{ marginLeft: 'auto' }}>
-            <StyledCancel onClick={() => {
-              removeFields(num);
-            }}
+            <StyledCancel
+              onClick={() => {
+                removeFields(num);
+              }}
             >
               Cancel
             </StyledCancel>
@@ -206,38 +211,31 @@ const LossHistory = ({ store }) => {
   return (
     <Wrapper>
       <Center>
-        <StyledTitle>
-          {title}
-        </StyledTitle>
+        <StyledTitle>{title}</StyledTitle>
         <StyledHolder>
           <Add onClick={addFields}>+ Add Loss</Add>
         </StyledHolder>
       </Center>
       <div>
-      {values.map((key, i) => {
-        const toReturn = DefaultFields({ num: i });
-        return (
-          <React.Fragment key={i}>
-            { toReturn }
-          </React.Fragment>
-        );
-      })}
-
+        {values.map((key, i) => {
+          const toReturn = DefaultFields({ num: i });
+          return <React.Fragment key={i}>{toReturn}</React.Fragment>;
+        })}
       </div>
     </Wrapper>
   );
 };
 
 const DarkSection = styled(Section)`
-    border: solid 1px #0000001a;
-    background: #00000003;
-    padding: 10px;
-    border-radius: 4px;
+  border: solid 1px #0000001a;
+  background: #00000003;
+  padding: 10px;
+  border-radius: 4px;
 `;
 
 const Wrapper = styled.div`
-    padding: 8px;
-    width: 100%;
+  padding: 8px;
+  width: 100%;
 `;
 
 const Add = styled(Save)`
@@ -270,7 +268,7 @@ const StyledCancel = styled(Add)`
   color: #3a5665;
 
   &:hover {
-    background: rgba(89,195,179,0.125683);
+    background: rgba(89, 195, 179, 0.125683);
   }
 `;
 

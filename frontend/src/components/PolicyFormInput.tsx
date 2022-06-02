@@ -1,20 +1,17 @@
-import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
 
-const SuryaInput = ({
-  label = '', placeholder, value, onChange, style = {}, name = '', ...rest
-}) => (
-
+const SuryaInput = ({ label = '', placeholder, value, onChange, style = {}, name = '', ...rest }) => (
   <Wrapper style={style}>
     <TextField
-      label={label}
-      variant="outlined"
-      value={value}
-      placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
       fullWidth
+      label={label}
       name={name}
       onChange={onChange}
+      placeholder={placeholder}
+      value={value}
+      variant="outlined"
       {...rest}
     />
   </Wrapper>

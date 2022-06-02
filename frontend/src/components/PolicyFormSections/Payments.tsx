@@ -1,12 +1,24 @@
-import React from 'react';
 import { Form } from '../../styles/styles';
-import reinsuranceOptions, { zero } from '../../utils/reinsurance/getReinsurer';
 import Input from '../Input';
+import React from 'react';
+import reinsuranceOptions, { zero } from '../../utils/reinsurance/getReinsurer';
 import SuryaSelect from '../PolicyFormSelect';
 
+const PaymentsSection = ({ store }) => {
+  const { coverage, payments } = store;
+  const coverageValues = coverage.values;
+  const {
+    overallPremium,
+    personalInjuryProtectionPremium,
+    medicalPaymentsPremium,
+    underinsuredMotoristPremium,
+    uninsuredMotoristPremium,
+    hiredCSLPremium,
+    nonOwnedCSLPremium,
+  } = coverageValues;
+  const { values, setValues } = payments;
 
-const PaymentsSection = () => {
-
-}
+  const total = {};
+};
 
 export default PaymentsSection;

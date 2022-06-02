@@ -1,16 +1,19 @@
+import { Colors } from '../../styles/styles';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Colors } from '../../styles/styles';
 
-const MenuItem = ({item, active, onClick }) => {  
-    const { name, to } = item;
-    return (
-      <NavItem active={active === name} onClick={() => {
+const MenuItem = ({ item, active, onClick }) => {
+  const { name, to } = item;
+  return (
+    <NavItem
+      active={active === name}
+      onClick={() => {
         onClick(item);
-      }}>
-        <StyledLink to={to}>{name}</StyledLink>
-      </NavItem>
-    );
+      }}
+    >
+      <StyledLink to={to}>{name}</StyledLink>
+    </NavItem>
+  );
 };
 
 const NavItem = styled.div<{ active: boolean }>`

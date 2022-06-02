@@ -1,25 +1,18 @@
-import TextField from '@material-ui/core/TextField';
+import { InputContainer } from './Input';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import styled from 'styled-components';
-import { InputContainer } from './Input';
+import TextField from '@material-ui/core/TextField';
 
-const SuryaSelect = ({
-  label = '',
-  options,
-  placeholder,
-  value,
-  onChange,
-  style = {},
-}) => (
+const SuryaSelect = ({ label = '', options, placeholder, value, onChange, style = {} }) => (
   <Wrapper style={style}>
     <label>{label}</label>
     <InputContainer className="select-container">
-        <select value={value === null ? '' : value} onChange={onChange}>
-            {options.map((option) => (
-              <option value={option.value}>{option.label}</option>
-            ))}
-        </select>
-  </InputContainer>
+      <select onChange={onChange} value={value === null ? '' : value}>
+        {options.map((option) => (
+          <option value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </InputContainer>
   </Wrapper>
 );
 
