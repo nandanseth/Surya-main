@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form } from '../../styles/styles';
-import reinsuranceOptions from '../../utils/reinsurance/getReinsurer';
+import reinsuranceOptions, { zero } from '../../utils/reinsurance/getReinsurer';
 import Input from '../Input';
 import SuryaSelect from '../PolicyFormSelect';
 
 const {
   Section,
-  SectionTitle,
   Flex,
   InputWrapper,
 } = Form;
 
-const ReSection = () => {
-  const [reIns, setReIns] = useState(undefined);
-  const [resInsAmmout, setAmount] = useState('');
+const ReinusranceSection = ({ store }) => {
+  const { reinsurance: reinsuranceStates } = store;
+  const  { values, setValues } = reinsuranceStates; 
+  const { reinsuranceType, resInsAmmout } = values;
 
-  const inputLabel = reIns === 'Price Forbes' ? 'Reinsurance Percentage' : 'Reinsurance Amount';
+  const inputLabel = reinsuranceType === 'Price Forbes' ? 'Reinsurance Percentage' : 'Reinsurance Amount';
 
   return (
     <div>
@@ -26,24 +26,24 @@ const ReSection = () => {
               options={reinsuranceOptions}
               placeholder="Reinsurer"
               label="Reinsurer"
-              onChange={(val) => {
-                setReIns(val);
+              onChange={(e) => {
+                setValues({ ...values, reinsuranceType: e.target.value });
               }}
-              value={reIns}
+              value={reinsuranceType}
             />
           </InputWrapper>
           </Flex>
           <Flex>
 
           {
-            reIns !== undefined && (
+            reinsuranceType !== undefined && reinsuranceType !== zero && (
               <InputWrapper>
                 <Input
                   value={resInsAmmout}
                   label={inputLabel}
                   placeholder={inputLabel}
                   onChange={(e) => {
-                    setAmount(e.target.value);
+                    setValues({ ...values, resInsAmmout: e.target.value });
                   }}
                 />
               </InputWrapper>
@@ -55,4 +55,4 @@ const ReSection = () => {
   );
 };
 
-export default ReSection;
+export default ReinusranceSection;

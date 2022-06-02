@@ -9,6 +9,7 @@ import fuelTypeOptions from '../utils/vehicle/fuelType';
 import { bussinessUseClasses, classCodes, radius, sizeClasses } from "../utils/policies/getCommercial";
 import { bodyPerAccident, bodyPerPerson, limits, propertyDamage } from "../utils/coverage/getLimit";
 import { auto } from "../utils/coverage/getAutoSymbolEntry";
+import { reinsurer } from "../utils/reinsurance/getReinsurer";
 
 
 export const yesNoOptions = [
@@ -193,6 +194,11 @@ const vehicleState = {
     garageCountry: null,
 };
 
+const reinsuranceState = {
+    reinsuranceType: reinsurer[0],
+    resInsAmmout: null,
+};
+
 export const FormContext = createContext(null);
 
 export const FormContextProvider = ({ children }) => {
@@ -205,6 +211,7 @@ export const FormContextProvider = ({ children }) => {
     const [coverageErrors, setCoverageErrors] = useState([]);
     const [document, setDocument] = useState(undefined);
     const [vehicleValues, setVehicleValues] = useState([{ ...vehicleState }]);
+    const [reinsuranceValues, setReinsuranceValues] = useState(reinsuranceState);
 
 
     const store = {
@@ -217,6 +224,7 @@ export const FormContextProvider = ({ children }) => {
         documents: { values: document, setValues: setDocument},
         vehicles: { values: vehicleValues, setValues: setVehicleValues, defaultValue,  yesNoValues, yesNoOptions, defaults: vehicleState },
         payment: { values: {}},
+        reinsurance: { values: reinsuranceValues, setValues: setReinsuranceValues },
         reset: () => {
             setPolicyValues(policyInitialState);
             setInsuredValues(insuredInitialState);
@@ -227,6 +235,7 @@ export const FormContextProvider = ({ children }) => {
             setCoverageErrors([]);
             setDocument(undefined);
             setVehicleValues([{ ...vehicleState }]);
+            setReinsuranceValues(reinsuranceState);
             return;
         }
     };

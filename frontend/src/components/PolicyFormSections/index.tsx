@@ -6,4 +6,5 @@ export { default as LossHistorySection } from './LossHistory';
 export { default as PolicySection } from './Policy';
 export { default as ReinsuranceSection } from './Reinsurance';
 export { default as VehicleSection } from './Vehicle';
-
+export { default as ResinuranceSection } from './Reinsurance';
+export { default as PaymentsSection } from './Payments';

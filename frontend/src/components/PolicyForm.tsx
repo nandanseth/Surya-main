@@ -8,6 +8,8 @@ import insuredIcon from '../images/insured icon.png';
 import lossHistoryIcon from '../images/loss history icon.png';
 import policyIcon from '../images/policy icon.png';
 import vehicleIcon from '../images/vehicle icon.png';
+import reinsuranceIcon from '../images/reinsurance icon.png';
+import paymentsIcon from '../images/payments icon.png';
 import { Colors, Title, transitionCss } from '../styles/styles';
 import { urls, preSubmit } from '../shared';
 import {
@@ -16,7 +18,10 @@ import {
   DriversSection,
   InsuredSection,
   LossHistorySection,
-  PolicySection, VehicleSection
+  PolicySection, 
+  VehicleSection,
+  ResinuranceSection,
+  PaymentsSection,
 } from './PolicyFormSections';
 
 const PolicyForm = ({ close }) => {
@@ -31,6 +36,8 @@ const PolicyForm = ({ close }) => {
     loss: { page: LossHistorySection, name: 'Loss History' },
     coverage: { page: CoverageSection, name: 'Coverage' },
     documents: { page: DocumentsSection, name: 'Documents' },
+    reinsurance: { page: ResinuranceSection, name: 'Reinsurance'},
+    payments: { page: PaymentsSection, name: 'Payments'}
   };
 
   const total = Object.keys(Pages).length;
@@ -43,6 +50,8 @@ const PolicyForm = ({ close }) => {
     loss: 5 / total,
     coverage: 6 / total,
     documents: 7 / total,
+    reinsurance: 8 / total,
+    payments: 9 / total,
   };
 
   const [current, setCurrent] = useState('insured');
@@ -143,6 +152,25 @@ const PolicyForm = ({ close }) => {
       >
         <StyledImg src={documentsIcon} />
       </StyledIcon>
+
+      <StyledIcon
+        onClick={() => {
+          setCurrent('reinsurnace');
+        }}
+        active={current === 'reinsurnace'}
+        title="Reinsurance"
+      >
+        <StyledImg src={reinsuranceIcon} />
+      </StyledIcon>
+      <StyledIcon
+        onClick={() => {
+          setCurrent('payments');
+        }}
+        active={current === 'payments'}
+        title="Payments"
+      >
+        <StyledImg src={paymentsIcon} />
+      </StyledIcon>
     </Nav>
   );
 
@@ -168,8 +196,11 @@ const FormHead = ({
   percent?: number
   name?: string
   reset?: any,
-  onSubmit: () => boolean;
-}) => (
+  onSubmit: () => Promise<boolean>;
+}) => {
+
+  const [loading, setLoading] = useState(false);
+return (
   <Header>
     <ProgressContainer>
       <Background />
@@ -183,19 +214,25 @@ const FormHead = ({
       <Right>
         <SaveDraft onClick={close}>Save as Draft</SaveDraft>
         <Submit
-          onClick={() => {
-            if(onSubmit()) {
+          onClick={async () => {
+            setLoading(true);
+            const check = await onSubmit();
+            if(check) {
+              setLoading(false);
               close();
               reset();
             }
+            setLoading(false);
           }}
+          disabled={loading}
         >
-          Submit
+          {loading? 'Loading':  'Submit'}
         </Submit>
       </Right>
     </HeaderContent>
   </Header>
-);
+)
+};
 
 const ProgressContainer = styled.div`
   height: 7px;
