@@ -289,6 +289,11 @@ class Policy(BaseModel):
 
 @app.get("/")
 def home():
+    """Basic hello-world for a ping.
+
+    Returns:
+        str: JSON-formatted string with a friendly message.
+    """
     return {"status": "ok"}
 
 
@@ -302,10 +307,24 @@ def get_policies(
     title: Optional[str] = None,
     date: Optional[str] = None,
     premium: Optional[str] = None,
-):
+) -> JSONResponse:
+    """Returns all existing policies. WARNING: This can cause huge bottleneck
+    if the number of policies increases dramatically. Consider limiting response
+    via pagination and offering a page_size:str query string parameter.
+
+    Args:
+        title (Optional[str], optional): Filter by Policy title. Defaults to None.
+        date (Optional[str], optional): Filter by date created. Defaults to None.
+        premium (Optional[str], optional): Filter by premium. Defaults to None.
+
+    Returns:
+        JSONResponse: JSONResponse object containing a list of Policy JSON objects.
+    """
     _policies = db.collection("policies").stream()
 
+    # TODO This will grow to be huge. Beware.
     policies = []
+
     for p in _policies:
         p_id = p.id
         p = p.to_dict()
@@ -313,11 +332,23 @@ def get_policies(
         p["id"] = p_id
         p["created_at"] = p["created_at"].timestamp()
         policies.append(p)
+
+    # TODO Filters taken out because FE wanted to do the filtering instead.
+    # TODO This will eventually cause issue on the FE since the size of this will grow huge.
+    # TODO Re-implement filters. ex: (_policies.where(...).order_by(...))
     return JSONResponse(content=policies)
 
 
 @app.get("/policies/{policy_id}/", response_model=Policy)
 def get_policy(policy_id: str):
+    """Fetch a Policy based on a UUID string.
+
+    Args:
+        policy_id (str): UUID of a Policy
+
+    Returns:
+        JSONResponse: JSONResponse object containing a Policy JSON object string.
+    """
     policy_ref = db.collection("policies").document(policy_id)
     policy = policy_ref.get()
     if policy.exists:
@@ -331,6 +362,22 @@ def get_policy(policy_id: str):
 
 @app.post("/policies/", response_model=Policy)
 def create_policy(policy_payload: Policy):
+    """Create a Policy and store it in the database via POST method.
+
+    Args:
+        policy_payload (Policy): Contains everything necessary to store policy info.
+
+    Returns:
+        JSONResponse: JSONResponse object containing the created Policy.
+        Format:
+        {
+            "created": bool,
+            "policy_id": str||None,
+            "payload": Type[Policy],
+            "error": str||None,
+        }
+
+    """
     policies = db.collection("policies")
     policy_uuid = str(uuid.uuid4())
     policy = json.loads(policy_payload.json())
