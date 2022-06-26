@@ -1,5 +1,4 @@
 import json
-from sqlite3 import Date
 import uuid
 from datetime import datetime
 from typing import List, Optional
@@ -273,6 +272,10 @@ class Vehicles(BaseModel):
     values: Optional[List[VehicleState]]
 
 
+class Payment(BaseModel):
+    premium: Optional[str]
+
+
 class Policy(BaseModel):
     policy: Optional[PolicyMeta]
     insured: Optional[Insured]
@@ -281,6 +284,7 @@ class Policy(BaseModel):
     documents: Optional[dict]
     coverage: Optional[Coverage]
     vehicles: Optional[Vehicles]
+    payment: Optional[Payment]
 
 
 @app.get("/")
@@ -305,8 +309,7 @@ def get_policies(
     for p in _policies:
         p_id = p.id
         p = p.to_dict()
-        # p["created_at"] = _datetime_with_nanosecs_to_str(p["created_at"])
-        # p["created_at"] = p["created_at"].strftime("%A, %d. %B %Y %I:%M%p")
+        # p["created_at"] = datetime_with_nanosecs_to_str(p["created_at"])
         p["id"] = p_id
         p["created_at"] = p["created_at"].timestamp()
         policies.append(p)
