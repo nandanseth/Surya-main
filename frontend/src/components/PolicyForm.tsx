@@ -152,7 +152,7 @@ const PolicyForm = ({ close }) => {
             </StyledIcon>
 
             <StyledIcon
-                active={current === 'reinsurnace'}
+                active={current === 'reinsurance'}
                 onClick={() => {
                     setCurrent('reinsurance')
                 }}

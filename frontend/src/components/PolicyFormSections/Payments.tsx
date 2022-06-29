@@ -26,12 +26,14 @@ const PaymentsSection = ({ store }) => {
         uninsuredMotoristPremium,
         hiredCSLPremium,
         nonOwnedCSLPremium,
-    ].reduce((partialSum, a) => partialSum + a, 0)
+    ].reduce((partialSum, a) => (partialSum) + parseInt(a), 0);
 
-    if (total === NaN) {
+    console.log({ total })
+
+    if (isNaN(total)) {
         return (
             <Section>
-                <h1>Add Premium</h1>
+                <h1 style={{fontSize: 42, color: "#d40048"}}>Please Add Premium to continue</h1>
             </Section>
         )
     }
@@ -40,12 +42,12 @@ const PaymentsSection = ({ store }) => {
         <Section>
             <Flex>
                 <SuryaSelect
-                    label="Agent"
+                    label="Payment Type"
                     onChange={(e) => {
-                        setValues({ ...values, agent: e.target.value })
+                        setValues({ ...values, payment: e.target.value })
                     }}
                     options={payment}
-                    placeholder="Agent"
+                    placeholder="Payment Type"
                     value={values.payment}
                 />
             </Flex>
