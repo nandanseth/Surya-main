@@ -6,7 +6,7 @@ import SuryaSelect from '../PolicyFormSelect'
 const { Section, Flex, InputWrapper } = Form
 
 const ReinusranceSection = ({ store }) => {
-    console.log(store);
+    console.log(store)
     const { reinsurance: reinsuranceStates } = store
     const { values, setValues } = reinsuranceStates
     const { reinsuranceType, resInsAmmout } = values

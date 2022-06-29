@@ -1043,6 +1043,19 @@ const CoverageSection = ({ store }) => {
                             value={csl}
                         />
                     </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            label="Hired CSL Premium"
+                            value={hiredCSLPremium}
+                            placeholder=""
+                            onChange={(e) => {
+                                setValues({
+                                    ...values,
+                                    hiredCSLPremium: e.target.value,
+                                })
+                            }}
+                        />
+                    </InputWrapper>
                 </Flex>
             </Section>
             <Section>
@@ -1063,6 +1076,19 @@ const CoverageSection = ({ store }) => {
                             ]}
                             placeholder="Choose Non Owned CSL Coverage"
                             value={nonOwnedCSL}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            label="Non Owned CSL Premium"
+                            value={nonOwnedCSLPremium}
+                            placeholder=""
+                            onChange={(e) => {
+                                setValues({
+                                    ...values,
+                                    nonOwnedCSLPremium: e.target.value,
+                                })
+                            }}
                         />
                     </InputWrapper>
                 </Flex>

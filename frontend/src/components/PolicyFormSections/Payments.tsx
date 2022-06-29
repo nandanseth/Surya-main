@@ -1,4 +1,4 @@
-import { Form } from '../../styles/styles'
+import { Colors, Form } from '../../styles/styles'
 import SuryaSelect from '../PolicyFormSelect'
 import payment from '../../utils/policies/getPayment'
 const { Section, Flex } = Form
@@ -26,14 +26,18 @@ const PaymentsSection = ({ store }) => {
         uninsuredMotoristPremium,
         hiredCSLPremium,
         nonOwnedCSLPremium,
-    ].reduce((partialSum, a) => (partialSum) + parseInt(a), 0);
+    ].reduce((partialSum, a) => {
+        return partialSum + parseFloat(a)
+    }, 0)
 
     console.log({ total })
 
     if (isNaN(total)) {
         return (
             <Section>
-                <h1 style={{fontSize: 42, color: "#d40048"}}>Please Add Premium to continue</h1>
+                <h1 style={{ fontSize: 42, color: '#d40048' }}>
+                    Please Add Premium to continue
+                </h1>
             </Section>
         )
     }
@@ -51,6 +55,9 @@ const PaymentsSection = ({ store }) => {
                     value={values.payment}
                 />
             </Flex>
+            <h1 style={{ fontSize: 42, color: Colors.electricBlue }}>
+                Premium: ${total}
+            </h1>
         </Section>
     )
 }

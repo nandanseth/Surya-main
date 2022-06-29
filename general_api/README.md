@@ -1,9 +1,8 @@
 # General Surya API
 
-
 This is a RESTful API meant for handling all operations that don't fall into a particular category but serve the Surya app.
 
-# Setup 
+# Setup
 
 ## Requirements
 
@@ -32,15 +31,14 @@ Your app should start running at [localhost:8000](http://localhost:8000/).
 
 # Service
 
-| Environment | URL |
-| ----------- | --- |
-| Prod | https://general-api-dot-surya-systems.uc.r.appspot.com/ |
-| Dev  |  N/A  |
+| Environment | URL                                                     |
+| ----------- | ------------------------------------------------------- |
+| Prod        | https://general-api-dot-surya-systems.uc.r.appspot.com/ |
+| Dev         | N/A                                                     |
 
 # Endpoints
 
 The following endpoints are available in this service.
-
 
 **Demo**
 
@@ -322,4 +320,3 @@ GET /demo
   }
 }
 ```
-

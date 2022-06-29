@@ -1,7 +1,4 @@
-import {
-    Document,
-    StyleSheet,
-} from '@react-pdf/renderer'
+import { Document, StyleSheet } from '@react-pdf/renderer'
 
 // const styles = StyleSheet.create({
 //     /* Control the left side */
@@ -337,7 +334,7 @@ import {
 //     },
 // })
 function Shareholder({ policyNumber, policy }) {
-   //  const current = new Date()
+    //  const current = new Date()
     // const date = `${
     //     current.getMonth() + 1
     // }/${current.getDate()}/${current.getFullYear()}`

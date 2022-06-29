@@ -43,12 +43,11 @@ const PoliciesSection = ({ store }) => {
         name,
     } = values
 
-
     return (
         <>
             <Section>
                 <Flex>
-                <InputWrapper>
+                    <InputWrapper>
                         <SuryaInput
                             label="Name"
                             onChange={(e) => {
