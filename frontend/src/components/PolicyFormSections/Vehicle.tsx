@@ -154,7 +154,7 @@ const VehicleSection = ({ store }) => {
                                 value={values[num].vin}
                             />
                         </InputWrapper>
-                        <div>auto gene make, model, etc.</div>
+                        {/* <div>auto gene make, model, etc.</div> */}
                         <InputWrapper>
                             <Input
                                 label="Vehicle Make"
