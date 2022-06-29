@@ -1,3 +1,3 @@
-export const underwritingCode = ['New Business', 'Renewal'];
+export const underwritingCode = ['New Business', 'Renewal']
 
-export default underwritingCode.map((item) => ({ value: item, label: item }));
+export default underwritingCode.map((item) => ({ value: item, label: item }))

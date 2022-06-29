@@ -1,25 +1,32 @@
-import { InputContainer } from './Input';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import styled from 'styled-components';
-import TextField from '@material-ui/core/TextField';
+import { InputContainer } from './Input'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import styled from 'styled-components'
+import TextField from '@material-ui/core/TextField'
 
-const SuryaSelect = ({ label = '', options, placeholder, value, onChange, style = {} }) => (
-  <Wrapper style={style}>
-    <label>{label}</label>
-    <InputContainer className="select-container">
-      <select onChange={onChange} value={value === null ? '' : value}>
-        {options.map((option) => (
-          <option value={option.value}>{option.label}</option>
-        ))}
-      </select>
-    </InputContainer>
-  </Wrapper>
-);
+const SuryaSelect = ({
+    label = '',
+    options,
+    placeholder,
+    value,
+    onChange,
+    style = {},
+}) => (
+    <Wrapper style={style}>
+        <label>{label}</label>
+        <InputContainer className="select-container">
+            <select onChange={onChange} value={value === null ? '' : value}>
+                {options.map((option) => (
+                    <option value={option.value}>{option.label}</option>
+                ))}
+            </select>
+        </InputContainer>
+    </Wrapper>
+)
 
 const Wrapper = styled.div`
-  margin: 12px 0;
-  width: 100%;
-`;
+    margin: 12px 0;
+    width: 100%;
+`
 
 /*
 
@@ -52,4 +59,4 @@ const Label = styled.label`
     font-weight: 400;
 `; */
 
-export default SuryaSelect;
+export default SuryaSelect

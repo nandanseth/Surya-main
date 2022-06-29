@@ -3,11 +3,11 @@ runtime: nodejs14
 instance_class: F4
 service: default
 inbound_services:
-- warmup
+    - warmup
 automatic_scaling:
     min_idle_instances: 1
     min_instances: 1
 handlers:
-  - url: /.*
-    secure: always
-    script: auto
+    - url: /.*
+      secure: always
+      script: auto

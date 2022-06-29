@@ -1,3 +1,3 @@
-export const gender = ['Male', 'Female', 'Other'];
+export const gender = ['Male', 'Female', 'Other']
 
-export default gender.map((item) => ({ value: item, label: item }));
+export default gender.map((item) => ({ value: item, label: item }))
