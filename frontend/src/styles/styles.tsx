@@ -11,11 +11,11 @@ export const Colors = {
     menu: '#F7F8F9',
     electricBlue: '#2899FF',
     lightBackground: 'rgba(102, 200, 185, 0.04)',
-    lightBlue: '#3A5664',
+    lightBlue: '#090e11',
     paleBlue: '#f8f8f9',
     light: '#F8FDFF',
     purple: '#4E73F4',
-    text: '#3A5664',
+    text: '#090e11',
     black: '#1F3038',
     grey: '#fdfdfd',
 }

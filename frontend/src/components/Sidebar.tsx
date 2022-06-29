@@ -61,7 +61,7 @@ console.log(iconMap)
 const SidebarItem = ({ link, active }: { link: string; active?: boolean }) => (
     <Link style={{ display: 'inherit' }} to={LinkMap[link]}>
         <IconHolder active={active}>
-            <Icon src={active ? iconMap[link].active : iconMap[link].default} />
+            {/* <Icon src={active ? iconMap[link].active : iconMap[link].default} /> */}
             <Label>{link}</Label>
         </IconHolder>
     </Link>
