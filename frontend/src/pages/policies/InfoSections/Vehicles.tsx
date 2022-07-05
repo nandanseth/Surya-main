@@ -3,7 +3,7 @@ import { Section, Flex, Title, TileItem, SubSection } from '../shared'
 const Vehicles = ({ vehiclesList }) => {
     return (
         <Section>
-            <Title>Vehicles</Title>
+            <Title>Vehicles (Total: {vehiclesList.length})</Title>
             {vehiclesList.map((vehicle, i) => {
                 const {
                     category,
@@ -78,21 +78,13 @@ const Vehicles = ({ vehiclesList }) => {
                             <TileItem title="Fuel Type" value={fuelType} />
                             <TileItem title="Vin" value={vin} />
                             <TileItem title="Make" value={make} />
-                            <TileItem title="Make" value={model} />
-                            <TileItem title="Make" value={modelYear} />
+                            <TileItem title="Model" value={model} />
+                            <TileItem title="Model Year" value={modelYear} />
                             <TileItem title="Seating" value={seating} />
                             <TileItem title="Wheelchair" value={wheelChair} />
                             <TileItem
                                 title="Plate Number"
                                 value={plateNumber}
-                            />
-                        </Flex>
-                        <Flex>
-                            <TileItem title="shl" value={shl} />
-                            <TileItem title="Zone Code" value={zoneCode} />
-                            <TileItem
-                                title="Rate Class Code"
-                                value={rateClassCode}
                             />
                         </Flex>
                         <Flex>

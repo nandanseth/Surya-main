@@ -1,4 +1,4 @@
-import { Section, Flex, Tile, TitleTitle, TitleInfo, Title } from '../shared'
+import { Section, Flex, Tile, TitleTitle, TitleInfo, Title, Accordion, AccordionHeader, AccordionContent, Label } from '../shared'
 
 const Coverage = ({ coverage }) => {
     const {
@@ -63,7 +63,9 @@ const Coverage = ({ coverage }) => {
 
     return (
         <Section>
-            <Title>Coverage</Title>
+            
+            <Title>Coverage Premium</Title>
+        
             <Flex>
                 <Tile>
                     <TitleTitle>Overall Premium</TitleTitle>
@@ -99,7 +101,9 @@ const Coverage = ({ coverage }) => {
                         <b>{coverage?.uninsuredMotoristPremium}</b>
                     </TitleInfo>
                 </Tile>
-
+            </Flex>
+            <Title>Overall Coverages</Title>
+            <Flex>
                 <Tile>
                     <TitleTitle>Overall</TitleTitle>
                     <TitleInfo>{overall}</TitleInfo>
@@ -140,6 +144,13 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Split Section Auto Entry</TitleTitle>
                     <TitleInfo>{splitSectionAutoEntryOptions}</TitleInfo>
                 </Tile>
+            </Flex>
+            <Title>Personal Injury Protection</Title>
+            <Flex>
+                <Tile>
+                    <TitleTitle>Personal Injury</TitleTitle>
+                    <TitleInfo>{personalInjury}</TitleInfo>
+                </Tile>
                 <Tile>
                     <TitleTitle>
                         Personal Injury Protections Single Limit
@@ -177,7 +188,13 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Personal Injury Split Auto </TitleTitle>
                     <TitleInfo>{pIProtectionSplitAutoEntry}</TitleInfo>
                 </Tile>
-
+            </Flex>
+            <Title>Medical Payments</Title>
+            <Flex>
+                <Tile>
+                    <TitleTitle>Medical Payments</TitleTitle>
+                    <TitleInfo>{medicalPayments}</TitleInfo>
+                </Tile>
                 <Tile>
                     <TitleTitle>Medical Single Limit</TitleTitle>
                     <TitleInfo>{medicalSingleLimit}</TitleInfo>
@@ -207,11 +224,13 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Medical Split Auto</TitleTitle>
                     <TitleInfo>{medicalSplitAutoEntry}</TitleInfo>
                 </Tile>
-
-                <Title>
+            </Flex>
+            <Title>Underinsured Motorist</Title>
+            <Flex>
+                <Tile>
                     <TitleTitle>Underinsured Motorist</TitleTitle>
                     <TitleInfo>{underinsuredMotorist}</TitleInfo>
-                </Title>
+                </Tile>
 
                 <Tile>
                     <TitleTitle>Underinsured Motorist Single Limit</TitleTitle>
@@ -243,7 +262,7 @@ const Coverage = ({ coverage }) => {
                     </TitleTitle>
                     <TitleInfo>{underMotoristBodyPerAccident}</TitleInfo>
                 </Tile>
-
+            
                 <Tile>
                     <TitleTitle>Underinsured Motorist Property</TitleTitle>
                     <TitleInfo>{underMotoristProperty}</TitleInfo>
@@ -253,10 +272,12 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Underinsured Motorist Auto</TitleTitle>
                     <TitleInfo>{underMotoristAuto}</TitleInfo>
                 </Tile>
-
+            </Flex>
+            <Title>Uninsured Motorist</Title>
+            <Flex>
                 {/* now the uninsured section  */}
                 <Tile>
-                    <Title>Uninsured Motorist</Title>
+                    <TitleTitle>Uninsured Motorist</TitleTitle>
                     <TitleInfo>{uninsuredMotorist}</TitleInfo>
                 </Tile>
 
@@ -279,7 +300,7 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Uninsured Motorist Body Per Person</TitleTitle>
                     <TitleInfo>{unMotoristBodyPerPerson}</TitleInfo>
                 </Tile>
-
+            
                 <Tile>
                     <TitleTitle>
                         Uninsured Motorist Body Per Accident
@@ -308,7 +329,7 @@ const Coverage = ({ coverage }) => {
                 </Tile>
 
                 <Tile>
-                    <TitleTitle>CSL Boder Per Person</TitleTitle>
+                    <TitleTitle>CSL Body Per Person</TitleTitle>
                     <TitleInfo>{cslBodyPerPerson}</TitleInfo>
                 </Tile>
 
@@ -357,15 +378,9 @@ const Coverage = ({ coverage }) => {
                     <TitleInfo>{nonCslSplitAuto}</TitleInfo>
                 </Tile>
 
-                <Tile>
-                    <TitleTitle>Personal Injury</TitleTitle>
-                    <TitleInfo>{personalInjury}</TitleInfo>
-                </Tile>
+                
 
-                <Tile>
-                    <TitleTitle>Medical Payments</TitleTitle>
-                    <TitleInfo>{medicalPayments}</TitleInfo>
-                </Tile>
+                
 
                 <Tile>
                     <TitleTitle>CSL</TitleTitle>

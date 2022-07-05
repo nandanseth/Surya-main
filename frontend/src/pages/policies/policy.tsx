@@ -18,17 +18,19 @@ import VehiclesSection from './InfoSections/Vehicles'
 import LossHistorySection from './InfoSections/LossHistory'
 import DriversSection from './InfoSections/Drivers'
 
-import { Title } from './shared'
+import { Title, Nav, NavItem, SubSection } from './shared'
 import Drivers from './InfoSections/Drivers'
 
-//const home = { name: 'Home', to: '#home', component: Home }
-// const policySectionMenu = [
-//     home,
-//     { name: 'Info', to: '#info', component: Info },
-//     { name: 'Documents', to: '#documents', component: Documents },
-//     { name: 'Ratings', to: '#ratings', component: Ratings },
-//     { name: 'Endorsements', to: '#endorsements', component: Endorsments },
-// ]
+const home = { name: 'Home', to: '#home', component: PolicySection }
+const policySectionMenu = [
+    // home,
+    { name: 'Policy', to: '#policy', component: PolicySection },
+    { name: 'Coverage', to: '#coverage', component: CoverageSection },
+    { name: 'Insured', to: '#insured', component: InsuredSection },
+    { name: 'Vehicles', to: '#vehicles', component: VehiclesSection },
+    { name: 'Loss History', to: '#losshistory', component: LossHistorySection },
+    { name: 'Drivers', to: '#drivers', component: DriversSection }
+]
 
 const Policy = () => {
     const params = useParams()
@@ -38,11 +40,11 @@ const Policy = () => {
     const { slug } = params
 
     const [show, setShow] = useState(false)
-    // const [section, setSection] = useState(home)
+    const [section, setSection] = useState(home)
 
-    // const menuOnclick = (val) => {
-    //     setSection(val)
-    // }
+    const menuOnclick = (val) => {
+        setSection(val)
+    }
 
     // const close = () => {
     //     setShow(false)
@@ -74,7 +76,7 @@ const Policy = () => {
                     <Back src={backArrow} />
                 </a>
             </Link>
-            {/* <PolicySubMenuWrapper>
+            <PolicySubMenuWrapper>
                 {policySectionMenu?.map((item, i) => (
                     <MenuItem
                         active={section}
@@ -83,7 +85,7 @@ const Policy = () => {
                         onClick={menuOnclick}
                     />
                 ))}
-            </PolicySubMenuWrapper> */}
+            </PolicySubMenuWrapper>
         </>
     )
 
@@ -97,9 +99,32 @@ const Policy = () => {
         }
         const { policy, coverage, insured, vehicles, loss_history, drivers } =
             data
+        
+        const PolicyRender = <PolicySection policy={policy} />
+        const CoverageRender = <CoverageSection coverage={coverage} />
+        const InsuredRender = <InsuredSection insured={insured} />
+        const VehiclesRender = <VehiclesSection vehiclesList={vehicles?.values ?? []} />
+        const LossHistoryRender = <LossHistorySection lossHistoryList={loss_history?.values ?? []} />
+        const DriversRender = <DriversSection driversList={drivers?.values ?? []} /> 
 
         return (
             <>
+                    <div className={section.name}>
+                    {
+                    section.name === "Policy" ? PolicyRender : 
+                    section.name === "Coverage" ? CoverageRender :
+                    section.name === "Insured" ? InsuredRender :
+                    section.name === "Vehicles" ? VehiclesRender :
+                    section.name === "Loss History" ? LossHistoryRender :
+                    section.name === "Drivers" ? DriversRender : ''
+                    }
+                    </div>
+            
+
+            </>
+                
+                /* 
+                <>
                 <PolicySection policy={policy} />
                 <CoverageSection coverage={coverage} />
                 <InsuredSection insured={insured} />
@@ -107,8 +132,11 @@ const Policy = () => {
                 <LossHistorySection
                     lossHistoryList={loss_history?.values ?? []}
                 />
-                <DriversSection driversList={drivers?.values ?? []} />
-            </>
+                <DriversSection driversList={drivers?.values ?? []} /> 
+                </>
+                */
+                
+            
         )
     }
 

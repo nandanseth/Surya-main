@@ -2,11 +2,12 @@ import { Section, Flex, Tile, TitleTitle, TitleInfo, Title } from '../shared'
 
 const Policy = ({ policy }) => {
     const {
+        policyNumber,
+        effectiveDate,
         expirationDate,
         coverageTerm,
         radius,
         sizeClass,
-        effectiveDate,
         lineOfBusiness,
         agent,
         underwritingCode,
@@ -20,8 +21,16 @@ const Policy = ({ policy }) => {
 
     return (
         <Section>
-            <Title>Policy</Title>
+            <Title>Policy {policyNumber}</Title>
             <Flex>
+                <Tile>
+                    <TitleTitle>Policy Number</TitleTitle>
+                    <TitleInfo>{policyNumber}</TitleInfo>
+                </Tile>
+                <Tile>
+                    <TitleTitle>Effective Date</TitleTitle>
+                    <TitleInfo>{effectiveDate}</TitleInfo>
+                </Tile>
                 <Tile>
                     <TitleTitle>Expiration Date</TitleTitle>
                     <TitleInfo>{expirationDate}</TitleInfo>
@@ -37,10 +46,6 @@ const Policy = ({ policy }) => {
                 <Tile>
                     <TitleTitle>Size Class</TitleTitle>
                     <TitleInfo>{sizeClass}</TitleInfo>
-                </Tile>
-                <Tile>
-                    <TitleTitle>Effective Date</TitleTitle>
-                    <TitleInfo>{effectiveDate}</TitleInfo>
                 </Tile>
                 <Tile>
                     <TitleTitle>Line of Business</TitleTitle>

@@ -27,6 +27,7 @@ const Nav = styled.nav`
     align-items: center;
     background: white;
     box-sizing: border-box;
+    cursor: pointer;
     /*box-shadow: 0 2px 2px #00000008;  use for scroll?*/
 `
 

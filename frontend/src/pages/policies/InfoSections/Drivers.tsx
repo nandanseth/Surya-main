@@ -3,7 +3,7 @@ import { Section, Flex, Title, TileItem, SubSection } from '../shared'
 const Drivers = ({ driversList }) => {
     return (
         <Section>
-            <Title>drivers</Title>
+            <Title>Drivers (Total: {driversList.length})</Title>
             {driversList.map((vehicle, i) => {
                 const {
                     driverName,

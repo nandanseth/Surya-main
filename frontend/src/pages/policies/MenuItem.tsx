@@ -22,12 +22,20 @@ const NavItem = styled.div<{ active: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    
 `
 
 const StyledLink = styled(Link)`
     font-weight: 500;
     font-size: 14px;
     color: #000000;
+    text-decoration:none !important;
+    &:hover {
+    font-weight: bold;
+    }
+    &:active {
+        text-decoration: none;
+    }
 `
 
 export default MenuItem
