@@ -3,8 +3,19 @@ import RRGDecFile from './components/RRGDecFile'
 import Shareholder from './components/Shareholder'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 import policyJSON from './components/PDFs/pretty.js'
+import styled from 'styled-components'
 
-const RenderDocuments = ({ policyNumber }) => {
+const DownloadButton = styled.button`
+    border-radius: 2rem;
+    padding: 10px;
+    border: 1px solid black;
+    &:hover {
+        box-sizing: border-box;
+        box-shadow: 2px 2px 2px 2px grey;
+    }
+`
+
+const RenderDocuments = ({ policy }) => {
     //const policyNumber = '21NJ0000189'
 
     const showJson = () => {
@@ -12,23 +23,53 @@ const RenderDocuments = ({ policyNumber }) => {
     }
     return (
         <div className="App">
+            <div style={{fontWeight: "bold", fontStyle: "italic"}}>Download Files</div> 
+            <br></br>
+            <br></br>
             <PDFDownloadLink
-                document={<PDFFile policyNumber={policyNumber} />}
+                document={<PDFFile policy={policy} />}
                 fileName="FORM"
             >
                 {({ loading }) =>
                     loading ? (
-                        <button>Loading Document...</button>
+                        <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <button>Download</button>
+                        <DownloadButton>Download your Policy Form</DownloadButton>
                     )
                 }
             </PDFDownloadLink>
-            <PDFViewer
+            <br></br>
+            <br></br>
+            <PDFDownloadLink
+                document={<RRGDecFile policy={policy} />}
+                fileName="FORM"
+            >
+                {({ loading }) =>
+                    loading ? (
+                        <DownloadButton>Loading Document...</DownloadButton>
+                    ) : (
+                        <DownloadButton>Download your RRG Declaration Form</DownloadButton>
+                    )
+                }
+            </PDFDownloadLink>
+            <br></br>
+            <br></br>
+            <PDFDownloadLink
+                document={<Shareholder policy={policy} />}
+                fileName="FORM"
+            >
+                {({ loading }) =>
+                    loading ? (
+                        <DownloadButton>Loading Document...</DownloadButton>
+                    ) : (
+                        <DownloadButton>Download your Shareholder Agreement Form</DownloadButton>
+                    )
+                }
+            </PDFDownloadLink>
+            {/* <PDFViewer
                 children={
                     <PDFFile
-                        policyNumber={policyNumber}
-                        policy={policyJSON[0]}
+                        policy={policy}
                     />
                 }
                 height="1000"
@@ -37,7 +78,6 @@ const RenderDocuments = ({ policyNumber }) => {
             <PDFViewer
                 children={
                     <RRGDecFile
-                        policyNumber={policyNumber}
                         policy={policyJSON[0]}
                     />
                 }
@@ -47,13 +87,12 @@ const RenderDocuments = ({ policyNumber }) => {
             <PDFViewer
                 children={
                     <Shareholder
-                        policyNumber={policyNumber}
                         policy={policyJSON[0]}
                     />
                 }
                 height="1000"
                 width="1000"
-            ></PDFViewer>
+            ></PDFViewer> */}
         </div>
     )
 }

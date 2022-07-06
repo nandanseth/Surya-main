@@ -8,7 +8,6 @@ import {
     StyleSheet,
 } from '@react-pdf/renderer'
 import LebronStretch from '../photos/lebron_transparent.png'
-import '../fonts/times-new-roman-grassetto.ttf'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import Button from 'react-bootstrap/Button'
 import { writeFileSync, readFileSync } from 'fs'
@@ -351,7 +350,7 @@ const styles = StyleSheet.create({
         color: 'neutralDark',
     },
 })
-function RRGDecFile({ policyNumber, policy }) {
+function RRGDecFile({ policy }) {
     const current = new Date()
     const date = `${
         current.getMonth() + 1

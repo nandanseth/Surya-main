@@ -333,7 +333,7 @@ import { Document, StyleSheet } from '@react-pdf/renderer'
 //         color: 'neutralDark',
 //     },
 // })
-function Shareholder({ policyNumber, policy }) {
+function Shareholder({ policy }) {
     //  const current = new Date()
     // const date = `${
     //     current.getMonth() + 1
