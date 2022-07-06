@@ -17,6 +17,7 @@ import InsuredSection from './InfoSections/Insured'
 import VehiclesSection from './InfoSections/Vehicles'
 import LossHistorySection from './InfoSections/LossHistory'
 import DriversSection from './InfoSections/Drivers'
+import DocumentsSection from '../../components/RenderDocuments/RenderDocuments'
 
 import { Title, Nav, NavItem, SubSection } from './shared'
 import Drivers from './InfoSections/Drivers'
@@ -29,7 +30,8 @@ const policySectionMenu = [
     { name: 'Insured', to: '#insured', component: InsuredSection },
     { name: 'Vehicles', to: '#vehicles', component: VehiclesSection },
     { name: 'Loss History', to: '#losshistory', component: LossHistorySection },
-    { name: 'Drivers', to: '#drivers', component: DriversSection }
+    { name: 'Drivers', to: '#drivers', component: DriversSection },
+    { name: 'Documents', to: '#documents', component: DocumentsSection }
 ]
 
 const Policy = () => {
@@ -106,6 +108,7 @@ const Policy = () => {
         const VehiclesRender = <VehiclesSection vehiclesList={vehicles?.values ?? []} />
         const LossHistoryRender = <LossHistorySection lossHistoryList={loss_history?.values ?? []} />
         const DriversRender = <DriversSection driversList={drivers?.values ?? []} /> 
+        const DocumentsRender = <DocumentsSection policy={data} /> 
 
         return (
             <>
@@ -116,7 +119,8 @@ const Policy = () => {
                     section.name === "Insured" ? InsuredRender :
                     section.name === "Vehicles" ? VehiclesRender :
                     section.name === "Loss History" ? LossHistoryRender :
-                    section.name === "Drivers" ? DriversRender : ''
+                    section.name === "Drivers" ? DriversRender :
+                    section.name === "Documents" ? DocumentsRender : ''
                     }
                     </div>
             
