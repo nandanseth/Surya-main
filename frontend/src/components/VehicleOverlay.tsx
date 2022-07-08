@@ -19,25 +19,76 @@ const year = '2004'
 
 const VehicleOverlay = ({
     options = {},
-    mainInfo = '',
-    subInfo = '',
-    sideInfo = '',
+    vehicle,
+    // mainInfo = '',
+    // subInfo = '',
+    // sideInfo = '',
     close,
     show,
 }) => (
+    // <OverlayWrapper show={show}>
+    //     <Overlay>
+    //         <Container>
+    //             <Sidebar>
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //                 <SideInfo text="INFO HERE" type="type" />
+    //             </Sidebar>
+    //             <Main>
+    //                 <HeaderContainer>
+    //                     <Frame>
+    //                         <FrameImg src={carIcon} />
+    //                     </Frame>
+
+    //                     <HeaderInfo>
+    //                         <CarTitle>{cartitle}</CarTitle>
+    //                         <CarVin>{vinText}</CarVin>
+    //                         <CarYear>{year}</CarYear>
+    //                     </HeaderInfo>
+    //                 </HeaderContainer>
+
+    //                 <StyledDiv>
+    //                     <BasicInformation>Basic Information</BasicInformation>
+    //                     <Items>
+    //                         {items.map(({ title, info }, i) => (
+    //                             <VehicleInfo
+    //                                 info={info}
+    //                                 key={`${title} + ${i}`}
+    //                                 title={title}
+    //                             />
+    //                         ))}
+    //                     </Items>
+    //                 </StyledDiv>
+    //                 <Close
+    //                     onClick={close}
+    //                     style={{ alignSelf: 'flex-end', marginTop: 'auto' }}
+    //                 >
+    //                     Close
+    //                 </Close>
+    //             </Main>
+    //         </Container>
+    //     </Overlay>
+    // </OverlayWrapper>
+
     <OverlayWrapper show={show}>
         <Overlay>
             <Container>
                 <Sidebar>
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
-                    <SideInfo text="INFO HERE" type="type" />
+                    <SideInfo text={vehicle.category} type="Category" />
+                    <SideInfo text={vehicle.state} type="State" />
+                    <SideInfo text={vehicle.classification} type="Classification" />
+                    <SideInfo text={vehicle.seating} type="Seating" />
+                    <SideInfo text={vehicle.plateNumber} type="Plate Number" />
+                    <SideInfo text={vehicle.garageAddress1} type="Address" />
+                    <SideInfo text={vehicle.fuelType} type="Fuel Type" />
+                    <SideInfo text={vehicle.zoneCode} type="Zone Code" />
+                    <SideInfo text={vehicle.rateClassCode} type="Class Code" />
                 </Sidebar>
                 <Main>
                     <HeaderContainer>
@@ -46,22 +97,35 @@ const VehicleOverlay = ({
                         </Frame>
 
                         <HeaderInfo>
-                            <CarTitle>{cartitle}</CarTitle>
-                            <CarVin>{vinText}</CarVin>
-                            <CarYear>{year}</CarYear>
+                            <CarTitle>{vehicle.make} {vehicle.model}</CarTitle>
+                            <CarVin>{vehicle.vin}</CarVin>
+                            <CarYear>{vehicle.modelYear}</CarYear>
                         </HeaderInfo>
                     </HeaderContainer>
 
                     <StyledDiv>
                         <BasicInformation>Basic Information</BasicInformation>
                         <Items>
-                            {items.map(({ title, info }, i) => (
-                                <VehicleInfo
-                                    info={info}
-                                    key={`${title} + ${i}`}
-                                    title={title}
-                                />
-                            ))}
+                            <VehicleInfo
+                                info={vehicle.fleet}
+                                title="Fleet"
+                            />
+                            <VehicleInfo
+                                info={vehicle.fleet}
+                                title="Fleet"
+                            />
+                            <VehicleInfo
+                                info={vehicle.fleet}
+                                title="Fleet"
+                            />
+                            <VehicleInfo
+                                info={vehicle.fleet}
+                                title="Fleet"
+                            />
+                            <VehicleInfo
+                                info={vehicle.fleet}
+                                title="Fleet"
+                            />
                         </Items>
                     </StyledDiv>
                     <Close

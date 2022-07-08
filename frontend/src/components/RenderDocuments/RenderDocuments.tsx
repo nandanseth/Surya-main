@@ -1,6 +1,7 @@
 import PDFFile from './components/PDFFile'
 import RRGDecFile from './components/RRGDecFile'
 import Shareholder from './components/Shareholder'
+import RateCard from './components/RateCard'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 import policyJSON from './components/PDFs/pretty.js'
 import styled from 'styled-components'
@@ -12,6 +13,7 @@ const DownloadButton = styled.button`
     &:hover {
         box-sizing: border-box;
         box-shadow: 2px 2px 2px 2px grey;
+        font-weight: bold;
     }
 `
 
@@ -23,7 +25,7 @@ const RenderDocuments = ({ policy }) => {
     }
     return (
         <div className="App">
-            <div style={{fontWeight: "bold", fontStyle: "italic"}}>Download Files</div> 
+            <div style={{fontWeight: "bold", fontStyle: "italic", fontSize: "20px"}}>Dynamic Documents</div> 
             <br></br>
             <br></br>
             <PDFDownloadLink
@@ -34,7 +36,7 @@ const RenderDocuments = ({ policy }) => {
                     loading ? (
                         <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <DownloadButton>Download your Policy Form</DownloadButton>
+                        <DownloadButton>Policy Form</DownloadButton>
                     )
                 }
             </PDFDownloadLink>
@@ -48,7 +50,7 @@ const RenderDocuments = ({ policy }) => {
                     loading ? (
                         <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <DownloadButton>Download your RRG Declaration Form</DownloadButton>
+                        <DownloadButton>RRG Declaration Form</DownloadButton>
                     )
                 }
             </PDFDownloadLink>
@@ -62,20 +64,34 @@ const RenderDocuments = ({ policy }) => {
                     loading ? (
                         <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <DownloadButton>Download your Shareholder Agreement Form</DownloadButton>
+                        <DownloadButton>Shareholder Agreement Form</DownloadButton>
+                    )
+                }
+            </PDFDownloadLink>
+            <br></br>
+            <br></br>
+            <PDFDownloadLink
+                document={<RateCard policy={policy} />}
+                fileName="FORM"
+            >
+                {({ loading }) =>
+                    loading ? (
+                        <DownloadButton>Loading Document...</DownloadButton>
+                    ) : (
+                        <DownloadButton>Vehicle Rate Card</DownloadButton>
                     )
                 }
             </PDFDownloadLink>
             {/* <PDFViewer
                 children={
-                    <PDFFile
+                    <RateCard
                         policy={policy}
                     />
                 }
                 height="1000"
                 width="1000"
-            ></PDFViewer>
-            <PDFViewer
+            ></PDFViewer> */}
+            {/* <PDFViewer
                 children={
                     <RRGDecFile
                         policy={policyJSON[0]}
@@ -84,15 +100,7 @@ const RenderDocuments = ({ policy }) => {
                 height="1000"
                 width="1000"
             ></PDFViewer>
-            <PDFViewer
-                children={
-                    <Shareholder
-                        policy={policyJSON[0]}
-                    />
-                }
-                height="1000"
-                width="1000"
-            ></PDFViewer> */}
+             */}
         </div>
     )
 }
