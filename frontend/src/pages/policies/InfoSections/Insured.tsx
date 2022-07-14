@@ -22,7 +22,6 @@ const Insured = ({ insured }) => {
         contactNumber,
         entity,
         isAddActive,
-
         corporationName,
         licenseNumber,
         licenseState,

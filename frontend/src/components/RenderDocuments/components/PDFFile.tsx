@@ -245,7 +245,6 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         flexGrow: 0,
         flexShrink: 0,
-        flexBasis: 37,
         marginRight: 5,
     },
     cell: {
@@ -337,7 +336,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
@@ -436,7 +435,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
@@ -710,7 +709,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
@@ -800,7 +799,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
@@ -875,7 +874,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
@@ -951,7 +950,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
@@ -997,7 +996,7 @@ function PDFFile({ policy }: any) {
                     }}
                 >
                     <Text style={styles.policyNumber}>
-                        Policy Number: {policy.policy.policyNumber}
+                        Policy Number: {policy.policy.policyNum}
                     </Text>
                     <Text style={styles.AutoDec}>
                         Business Auto Declarations{'\n'}
