@@ -1,4 +1,4 @@
-import { Section, Flex, Tile, TitleTitle, TitleInfo, Title } from '../shared'
+import { Flex, Section, Tile, Title, TitleInfo, TitleTitle } from '../shared'
 
 const Policy = ({ policy }) => {
     const {

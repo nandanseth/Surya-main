@@ -11,15 +11,15 @@ import SubHeader from '../../components/PolicyHomeSubHeader'
 // import VehicleOverlay from '../../components/VehicleOverlay'
 // import VehiclesTable, { makeSampleInfo } from '../../components/VehiclesTable'
 import { urls } from '../../shared'
-import PolicySection from './InfoSections/Policy'
 import CoverageSection from './InfoSections/Coverage'
-import InsuredSection from './InfoSections/Insured'
-import VehiclesSection from './InfoSections/Vehicles'
-import LossHistorySection from './InfoSections/LossHistory'
-import DriversSection from './InfoSections/Drivers'
 import DocumentsSection from '../../components/RenderDocuments/RenderDocuments'
+import DriversSection from './InfoSections/Drivers'
+import InsuredSection from './InfoSections/Insured'
+import LossHistorySection from './InfoSections/LossHistory'
+import PolicySection from './InfoSections/Policy'
+import VehiclesSection from './InfoSections/Vehicles'
 
-import { Title, Nav, NavItem, SubSection } from './shared'
+import { Nav, NavItem, SubSection, Title } from './shared'
 import Drivers from './InfoSections/Drivers'
 
 const home = { name: 'Home', to: '#home', component: PolicySection }
@@ -31,7 +31,7 @@ const policySectionMenu = [
     { name: 'Vehicles', to: '#vehicles', component: VehiclesSection },
     { name: 'Loss History', to: '#losshistory', component: LossHistorySection },
     { name: 'Drivers', to: '#drivers', component: DriversSection },
-    { name: 'Documents', to: '#documents', component: DocumentsSection }
+    { name: 'Documents', to: '#documents', component: DocumentsSection },
 ]
 
 const Policy = () => {
@@ -101,33 +101,43 @@ const Policy = () => {
         }
         const { policy, coverage, insured, vehicles, loss_history, drivers } =
             data
-        
+
         const PolicyRender = <PolicySection policy={policy} />
         const CoverageRender = <CoverageSection coverage={coverage} />
         const InsuredRender = <InsuredSection insured={insured} />
-        const VehiclesRender = <VehiclesSection vehiclesList={vehicles?.values ?? []} />
-        const LossHistoryRender = <LossHistorySection lossHistoryList={loss_history?.values ?? []} />
-        const DriversRender = <DriversSection driversList={drivers?.values ?? []} /> 
-        const DocumentsRender = <DocumentsSection policy={data} /> 
+        const VehiclesRender = (
+            <VehiclesSection vehiclesList={vehicles?.values ?? []} />
+        )
+        const LossHistoryRender = (
+            <LossHistorySection lossHistoryList={loss_history?.values ?? []} />
+        )
+        const DriversRender = (
+            <DriversSection driversList={drivers?.values ?? []} />
+        )
+        const DocumentsRender = <DocumentsSection policy={data} />
 
         return (
             <>
-                    <div className={section.name}>
-                    {
-                    section.name === "Policy" ? PolicyRender : 
-                    section.name === "Coverage" ? CoverageRender :
-                    section.name === "Insured" ? InsuredRender :
-                    section.name === "Vehicles" ? VehiclesRender :
-                    section.name === "Loss History" ? LossHistoryRender :
-                    section.name === "Drivers" ? DriversRender :
-                    section.name === "Documents" ? DocumentsRender : ''
-                    }
-                    </div>
-            
-
+                <div className={section.name}>
+                    {section.name === 'Policy'
+                        ? PolicyRender
+                        : section.name === 'Coverage'
+                        ? CoverageRender
+                        : section.name === 'Insured'
+                        ? InsuredRender
+                        : section.name === 'Vehicles'
+                        ? VehiclesRender
+                        : section.name === 'Loss History'
+                        ? LossHistoryRender
+                        : section.name === 'Drivers'
+                        ? DriversRender
+                        : section.name === 'Documents'
+                        ? DocumentsRender
+                        : ''}
+                </div>
             </>
-                
-                /* 
+
+            /* 
                 <>
                 <PolicySection policy={policy} />
                 <CoverageSection coverage={coverage} />
@@ -139,8 +149,6 @@ const Policy = () => {
                 <DriversSection driversList={drivers?.values ?? []} /> 
                 </>
                 */
-                
-            
         )
     }
 

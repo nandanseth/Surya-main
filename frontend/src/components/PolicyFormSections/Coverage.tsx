@@ -1046,14 +1046,14 @@ const CoverageSection = ({ store }) => {
                     <InputWrapper>
                         <SuryaInput
                             label="Hired CSL Premium"
-                            value={hiredCSLPremium}
-                            placeholder=""
                             onChange={(e) => {
                                 setValues({
                                     ...values,
                                     hiredCSLPremium: e.target.value,
                                 })
                             }}
+                            placeholder=""
+                            value={hiredCSLPremium}
                         />
                     </InputWrapper>
                 </Flex>
@@ -1081,14 +1081,14 @@ const CoverageSection = ({ store }) => {
                     <InputWrapper>
                         <SuryaInput
                             label="Non Owned CSL Premium"
-                            value={nonOwnedCSLPremium}
-                            placeholder=""
                             onChange={(e) => {
                                 setValues({
                                     ...values,
                                     nonOwnedCSLPremium: e.target.value,
                                 })
                             }}
+                            placeholder=""
+                            value={nonOwnedCSLPremium}
                         />
                     </InputWrapper>
                 </Flex>

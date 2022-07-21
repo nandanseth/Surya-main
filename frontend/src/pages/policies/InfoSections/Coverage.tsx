@@ -1,4 +1,15 @@
-import { Section, Flex, Tile, TitleTitle, TitleInfo, Title, Accordion, AccordionHeader, AccordionContent, Label } from '../shared'
+import {
+    Accordion,
+    AccordionContent,
+    AccordionHeader,
+    Flex,
+    Label,
+    Section,
+    Tile,
+    Title,
+    TitleInfo,
+    TitleTitle,
+} from '../shared'
 
 const Coverage = ({ coverage }) => {
     const {
@@ -63,9 +74,8 @@ const Coverage = ({ coverage }) => {
 
     return (
         <Section>
-            
             <Title>Coverage Premium</Title>
-        
+
             <Flex>
                 <Tile>
                     <TitleTitle>Overall Premium</TitleTitle>
@@ -262,7 +272,7 @@ const Coverage = ({ coverage }) => {
                     </TitleTitle>
                     <TitleInfo>{underMotoristBodyPerAccident}</TitleInfo>
                 </Tile>
-            
+
                 <Tile>
                     <TitleTitle>Underinsured Motorist Property</TitleTitle>
                     <TitleInfo>{underMotoristProperty}</TitleInfo>
@@ -300,7 +310,7 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Uninsured Motorist Body Per Person</TitleTitle>
                     <TitleInfo>{unMotoristBodyPerPerson}</TitleInfo>
                 </Tile>
-            
+
                 <Tile>
                     <TitleTitle>
                         Uninsured Motorist Body Per Accident
@@ -377,10 +387,6 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Non-CSL Split Auto</TitleTitle>
                     <TitleInfo>{nonCslSplitAuto}</TitleInfo>
                 </Tile>
-
-                
-
-                
 
                 <Tile>
                     <TitleTitle>CSL</TitleTitle>

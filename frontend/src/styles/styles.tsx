@@ -18,6 +18,7 @@ export const Colors = {
     text: '#090e11',
     black: '#1F3038',
     grey: '#fdfdfd',
+    red: '#ff0054',
 }
 
 export const ColorsCSS = {
@@ -44,6 +45,12 @@ export const fonts = {
         medium: 500,
         bold: 600,
         heavy: 700,
+    },
+    size: {
+        default: '16px',
+        medium: '24px',
+        large: '32px',
+        xl: '44px',
     },
 }
 

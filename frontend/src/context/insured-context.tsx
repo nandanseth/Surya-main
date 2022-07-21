@@ -110,11 +110,6 @@ const lossHistoryState = {
     isPolicyTransferred: yesNoOptions[0].value,
 }
 
-const defaultVal = {
-    value: 'Combined Single Limit',
-    label: 'Combined Single Limit',
-}
-
 const coverageState = {
     overall: 'Combined Single Limit',
     deductable: null,
@@ -218,7 +213,7 @@ const vehicleState = {
 
 const reinsuranceState = {
     reinsuranceType: reinsurer[0],
-    resInsAmmout: null,
+    resInsAmount: null,
 }
 
 const paymentState = {

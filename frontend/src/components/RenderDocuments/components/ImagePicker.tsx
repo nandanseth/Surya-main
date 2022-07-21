@@ -96,8 +96,8 @@ const ImagePicker = () => {
                         {logo ? (
                             <div className={classes.button}>
                                 <p
-                                    onClick={deleteImage}
                                     className={classes.buttonText}
+                                    onClick={deleteImage}
                                 >
                                     Delete Image
                                 </p>
@@ -108,9 +108,9 @@ const ImagePicker = () => {
                         <span>
                             <div className={classes.pictureContainer}>
                                 <img
+                                    alt="logo"
                                     className={classes.picture}
                                     src={logo}
-                                    alt="logo"
                                 />
                             </div>
                         </span>
@@ -118,12 +118,12 @@ const ImagePicker = () => {
                 </label>
             </div>
             <input
-                id="contained-button-file"
-                type="file"
                 accept="image/*, png, jpeg, jpg"
-                style={{ display: 'none' }}
+                id="contained-button-file"
                 name="logo"
                 onChange={handleCreateBase64}
+                style={{ display: 'none' }}
+                type="file"
             />
         </div>
     )

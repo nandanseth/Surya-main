@@ -78,13 +78,13 @@ export const Nav = styled.nav`
 export const NavItem = styled.div`
     cursor: pointer;
     padding: 10px;
-    
+
     padding: 5px;
     &:hover {
-    box-sizing: border-box;
-    box-shadow: 2px 2px 2px 2px #00000008;
-    font-weight: bold;
-  }
+        box-sizing: border-box;
+        box-shadow: 2px 2px 2px 2px #00000008;
+        font-weight: bold;
+    }
 `
 
 export const Accordion = styled.div`
@@ -94,7 +94,7 @@ export const Accordion = styled.div`
     transform: translate(-50%, -50%);
     width: 50%;
     padding-top: 50px;
-    box-shadow: 0 1px 8px rgba(#000,.25);
+    box-shadow: 0 1px 8px rgba(#000, 0.25);
 `
 
 export const AccordionContent = styled.div`
@@ -102,14 +102,20 @@ export const AccordionContent = styled.div`
     height: 0px;
     position: relative;
     padding: 0 1.5em;
-    box-shadow: inset 4px 0 0 0 $highlight-color, inset 0 3px 6px rgba(#000,.75);
+    box-shadow: inset 4px 0 0 0 $highlight-color,
+        inset 0 3px 6px rgba(#000, 0.75);
     background: $dark-grey;
-    background: linear-gradient(to bottom, rgba(68,68,68,1) 0%,rgba(34,34,34,1) 100%);
+    background: linear-gradient(
+        to bottom,
+        rgba(68, 68, 68, 1) 0%,
+        rgba(34, 34, 34, 1) 100%
+    );
     color: $light-grey;
     transition: height $timing $ease;
-    
+
     &:not(:last-of-type) {
-    box-shadow: inset 0 -2px 2px rgba(#000,.25), inset 4px 0 0 0 $highlight-color, inset 0 3px 6px rgba(#000,.75);
+        box-shadow: inset 0 -2px 2px rgba(#000, 0.25),
+            inset 4px 0 0 0 $highlight-color, inset 0 3px 6px rgba(#000, 0.75);
     }
 `
 
@@ -125,35 +131,40 @@ export const Label = styled.div`
     position: relative;
     display: block;
     padding: 1em;
-    background: linear-gradient(to bottom, rgba(254,254,254,1) 0%,rgba(209,209,209,1) 50%,rgba(219,219,219,1) 55%,rgba(226,226,226,1) 100%);
+    background: linear-gradient(
+        to bottom,
+        rgba(254, 254, 254, 1) 0%,
+        rgba(209, 209, 209, 1) 50%,
+        rgba(219, 219, 219, 1) 55%,
+        rgba(226, 226, 226, 1) 100%
+    );
     border-top: 1px solid #fff;
-    border-bottom: 1px solid rgba(#000,.15);
+    border-bottom: 1px solid rgba(#000, 0.15);
     box-shadow: inset 0 2px 0 #fff;
     font-size: 1.5em;
-    text-shadow: 0 1px 0 rgba(#fff,.75);
+    text-shadow: 0 1px 0 rgba(#fff, 0.75);
     color: $med-grey;
     cursor: pointer;
     transition: all $timing $ease;
-    
+
     &:after {
-      content: '+';
-      position: absolute;
-      right: 1em;
-      width: 1em;
-      height: 1em;
-      color: $light-grey;
-      text-align: center;
-      border-radius: 50%;
-      background: grey;
-      box-shadow: inset 0 1px 6px rgba(#000,.5), 0 1px 0 #fff;
-      text-shadow: 0 1px 0 rgba(#000,.75);     
+        content: '+';
+        position: absolute;
+        right: 1em;
+        width: 1em;
+        height: 1em;
+        color: $light-grey;
+        text-align: center;
+        border-radius: 50%;
+        background: grey;
+        box-shadow: inset 0 1px 6px rgba(#000, 0.5), 0 1px 0 #fff;
+        text-shadow: 0 1px 0 rgba(#000, 0.75);
     }
-    
+
     &:hover {
-      color: green;
+        color: green;
     }
 `
-
 
 export const TileItem = ({ title, value }) => {
     return (

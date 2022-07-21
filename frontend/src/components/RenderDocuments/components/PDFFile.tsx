@@ -1,5 +1,5 @@
+import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 import React from 'react'
-import { View, Page, Text, Document, StyleSheet } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
     /* Control the left side */

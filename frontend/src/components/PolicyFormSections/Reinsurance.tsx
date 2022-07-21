@@ -9,7 +9,7 @@ const ReinusranceSection = ({ store }) => {
     console.log(store)
     const { reinsurance: reinsuranceStates } = store
     const { values, setValues } = reinsuranceStates
-    const { reinsuranceType, resInsAmmout } = values
+    const { reinsuranceType, resInsAmount } = values
 
     const inputLabel =
         reinsuranceType === 'Price Forbes'
@@ -43,11 +43,11 @@ const ReinusranceSection = ({ store }) => {
                                 onChange={(e) => {
                                     setValues({
                                         ...values,
-                                        resInsAmmout: e.target.value,
+                                        resInsAmount: e.target.value,
                                     })
                                 }}
                                 placeholder={inputLabel}
-                                value={resInsAmmout}
+                                value={resInsAmount}
                             />
                         </InputWrapper>
                     )}

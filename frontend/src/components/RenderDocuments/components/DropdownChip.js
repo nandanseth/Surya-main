@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { useTheme } from '@mui/material/styles'
+import _without from 'lodash/without'
 import Box from '@mui/material/Box'
-import OutlinedInput from '@mui/material/OutlinedInput'
+import CancelIcon from '@material-ui/icons/Cancel'
+import Chip from '@mui/material/Chip'
+import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import Select from '@mui/material/Select'
-import Chip from '@mui/material/Chip'
-import CancelIcon from '@material-ui/icons/Cancel'
-import _without from 'lodash/without'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -67,23 +67,20 @@ export default function MultipleSelectChip() {
             <FormControl sx={{ m: 1, width: 300 }}>
                 <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
                 <Select
-                    labelId="demo-multiple-chip-label"
+                    MenuProps={MenuProps}
                     id="demo-multiple-chip"
-                    multiple
-                    value={personName}
-                    onChange={handleChange}
                     input={
                         <OutlinedInput id="select-multiple-chip" label="Chip" />
                     }
+                    labelId="demo-multiple-chip-label"
+                    multiple
+                    onChange={handleChange}
                     renderValue={(selected) => (
                         <Box
                             sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
                         >
                             {selected.map((value) => (
                                 <Chip
-                                    key={value}
-                                    label={value}
-                                    style={{ margin: '3px' }}
                                     clickable
                                     deleteIcon={
                                         <CancelIcon
@@ -92,18 +89,21 @@ export default function MultipleSelectChip() {
                                             }
                                         />
                                     }
+                                    key={value}
+                                    label={value}
                                     onDelete={(e) => handleDelete(e, value)}
+                                    style={{ margin: '3px' }}
                                 />
                             ))}
                         </Box>
                     )}
-                    MenuProps={MenuProps}
+                    value={personName}
                 >
                     {names.map((name) => (
                         <MenuItem
                             key={name}
-                            value={name}
                             style={getStyles(name, personName, theme)}
+                            value={name}
                         >
                             {name}
                         </MenuItem>

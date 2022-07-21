@@ -1,8 +1,8 @@
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 import PDFFile from './components/PDFFile'
+import policyJSON from './components/PDFs/pretty.js'
 import RRGDecFile from './components/RRGDecFile'
 import Shareholder from './components/Shareholder'
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
-import policyJSON from './components/PDFs/pretty.js'
 import styled from 'styled-components'
 
 const DownloadButton = styled.button`
@@ -23,7 +23,9 @@ const RenderDocuments = ({ policy }) => {
     }
     return (
         <div className="App">
-            <div style={{fontWeight: "bold", fontStyle: "italic"}}>Download Files</div> 
+            <div style={{ fontWeight: 'bold', fontStyle: 'italic' }}>
+                Download Files
+            </div>
             <br></br>
             <br></br>
             <PDFDownloadLink
@@ -34,7 +36,9 @@ const RenderDocuments = ({ policy }) => {
                     loading ? (
                         <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <DownloadButton>Download your Policy Form</DownloadButton>
+                        <DownloadButton>
+                            Download your Policy Form
+                        </DownloadButton>
                     )
                 }
             </PDFDownloadLink>
@@ -48,7 +52,9 @@ const RenderDocuments = ({ policy }) => {
                     loading ? (
                         <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <DownloadButton>Download your RRG Declaration Form</DownloadButton>
+                        <DownloadButton>
+                            Download your RRG Declaration Form
+                        </DownloadButton>
                     )
                 }
             </PDFDownloadLink>
@@ -62,7 +68,9 @@ const RenderDocuments = ({ policy }) => {
                     loading ? (
                         <DownloadButton>Loading Document...</DownloadButton>
                     ) : (
-                        <DownloadButton>Download your Shareholder Agreement Form</DownloadButton>
+                        <DownloadButton>
+                            Download your Shareholder Agreement Form
+                        </DownloadButton>
                     )
                 }
             </PDFDownloadLink>

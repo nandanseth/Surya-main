@@ -9,7 +9,7 @@ const Input = ({
     value,
     error,
     placeholder,
-    isPassword,
+    type,
 }: {
     onChange?: any
     name?: string
@@ -18,7 +18,7 @@ const Input = ({
     value?: any
     error?: { message?: string }
     placeholder?: string
-    isPassword?: boolean
+    type?: string
 }) => {
     if (error) {
         console.log(error)
@@ -33,7 +33,7 @@ const Input = ({
                 onChange={onChange}
                 placeholder={placeholder || `${label}`}
                 style={style}
-                type={isPassword ? 'password' : 'text'}
+                type={type ? type : 'text'}
                 value={value}
             />
             {hasError ? <ErrorText>{error?.message} </ErrorText> : null}

@@ -1,16 +1,16 @@
-import React from 'react'
 import {
-    View,
-    Page,
-    Text,
-    Image,
     Document,
+    Image,
+    Page,
     StyleSheet,
+    Text,
+    View,
 } from '@react-pdf/renderer'
-import LebronStretch from '../photos/lebron_transparent.png'
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
+import { readFileSync, writeFileSync } from 'fs'
 import Button from 'react-bootstrap/Button'
-import { writeFileSync, readFileSync } from 'fs'
+import LebronStretch from '../photos/lebron_transparent.png'
+import React from 'react'
 
 const styles = StyleSheet.create({
     /* Control the left side */

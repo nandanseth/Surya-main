@@ -92,7 +92,6 @@ const SignIn = () => {
                                           }
                                         : undefined
                                 }
-                                isPassword
                                 label="password"
                                 onChange={(e) => {
                                     setInput({
@@ -102,6 +101,7 @@ const SignIn = () => {
                                     })
                                 }}
                                 placeholder="password"
+                                type="password"
                                 value={form.password}
                             />
                         </MarginDiv>

@@ -1,4 +1,4 @@
-import { Section, Flex, Title, TileItem, SubSection } from '../shared'
+import { Flex, Section, SubSection, TileItem, Title } from '../shared'
 
 const LossHistory = ({ lossHistoryList }) => {
     return (

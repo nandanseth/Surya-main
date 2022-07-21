@@ -1,4 +1,4 @@
-import { Section, Flex, Tile, TitleTitle, TitleInfo, Title } from '../shared'
+import { Flex, Section, Tile, Title, TitleInfo, TitleTitle } from '../shared'
 
 const Insured = ({ insured }) => {
     const {
@@ -92,15 +92,7 @@ const Insured = ({ insured }) => {
                 <Tile>
                     <TitleTitle>Address</TitleTitle>
                     <TitleInfo>
-                        {address1 +
-                            ' ' +
-                            address2 +
-                            ', ' +
-                            city +
-                            ', ' +
-                            state +
-                            ', ' +
-                            zipCode}
+                        {`${address1} ${address2}, ${city}, ${state}, ${zipCode}`}
                     </TitleInfo>
                 </Tile>
             </Flex>

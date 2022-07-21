@@ -1,4 +1,4 @@
-import { Section, Flex, Title, TileItem, SubSection } from '../shared'
+import { Flex, Section, SubSection, TileItem, Title } from '../shared'
 
 const Vehicles = ({ vehiclesList }) => {
     return (
@@ -98,21 +98,7 @@ const Vehicles = ({ vehiclesList }) => {
                         <Flex>
                             <TileItem
                                 title="Garage Address"
-                                value={
-                                    garageAddress1 +
-                                    ', ' +
-                                    garageAddress2 +
-                                    ', ' +
-                                    garageZipCode +
-                                    ', ' +
-                                    garageCity +
-                                    ', ' +
-                                    garageCounty +
-                                    ', ' +
-                                    garageState +
-                                    ', ' +
-                                    garageCountry
-                                }
+                                value={`${garageAddress1}, ${garageAddress2}, ${garageZipCode}, ${garageCity}, ${garageCounty}, ${garageState}, ${garageCountry}`}
                             />
                             <TileItem
                                 title="Garage Zip Code 3"
