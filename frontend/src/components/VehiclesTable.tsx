@@ -2,8 +2,9 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
 import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { makeStyles } from '@material-ui/core'
 
-const headers = ['Vin', 'Model', 'Insured', 'Period', 'Seating', 'Net Billed']
+const headers = ['Vin', 'Make', 'Model', 'Model Year', 'Seating', 'Net Billed']
 
 interface IObjectKeys {
     [key: string]: string | number | undefined
@@ -11,9 +12,9 @@ interface IObjectKeys {
 
 interface Vehicle extends IObjectKeys {
     vin: string
-    insured: string
+    make: string
     model: string
-    period: string
+    modelYear: string
     seating: string | number
     totalPremium: string
 }
@@ -119,16 +120,16 @@ const VehiclesTable = ({
                     ({
                         vin,
                         model,
-                        insured,
-                        period,
+                        make,
+                        modelYear,
                         seating,
                         totalPremium,
-                    }) => (
-                        <TR key={vin} onClick={open}>
+                    }, i) => (
+                        <TR key={vin} onClick={() => open(i)}>
                             <Name>{vin}</Name>
+                            <TD>{make}</TD>
                             <TD>{model}</TD>
-                            <TD>{insured}</TD>
-                            <TD>{period}</TD>
+                            <TD>{modelYear}</TD>
                             <TD>{seating}</TD>
                             <TD>{totalPremium}</TD>
                         </TR>
@@ -147,16 +148,16 @@ export const makeSampleInfo = (num: number) => {
     const sample: Vehicle[] = []
     for (let i = 0; i <= num; i += 1) {
         const vin = `21PAT00083 - 0${i}`
-        const insured = `POCONO MOUNTAIN TRANSPORTATION, INC.${i}`
+        const make = `MERCEDES${i}`
         const model = 'BENZ'
-        const period = '05/16/2021 - 05/16/2022'
+        const modelYear = '2005'
         const seating = 4
         const totalPremium = `$${(750.12 + i) * (i + 1)}`
         sample.push({
             vin,
             model,
-            insured,
-            period,
+            make,
+            modelYear,
             seating,
             totalPremium,
         })

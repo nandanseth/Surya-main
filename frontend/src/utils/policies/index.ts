@@ -9,6 +9,7 @@ import policyCategoryOptions, {
 } from './getPolicyCategory'
 import policyLineItemOptions, { policyLineItem } from './getPolicyLineItem'
 import statesOptions, { states } from './getStates'
+import driverStatesOptions, { driverStates } from './getDriverStates'
 import underwritingCodeOptions, {
     underwritingCode,
 } from './getUnderwritingCode'
@@ -16,6 +17,8 @@ import underwritingCodeOptions, {
 export {
     states,
     statesOptions,
+    driverStates,
+    driverStatesOptions,
     coverageTermOptions,
     coverageTerm,
     policyCategoryOptions,

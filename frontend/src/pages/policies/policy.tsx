@@ -22,7 +22,7 @@ import VehiclesSection from './InfoSections/Vehicles'
 import { Nav, NavItem, SubSection, Title } from './shared'
 import Drivers from './InfoSections/Drivers'
 
-const home = { name: 'Home', to: '#home', component: PolicySection }
+const policy = { name: 'Policy', to: '#policy', component: PolicySection }
 const policySectionMenu = [
     // home,
     { name: 'Policy', to: '#policy', component: PolicySection },
@@ -42,7 +42,7 @@ const Policy = () => {
     const { slug } = params
 
     const [show, setShow] = useState(false)
-    const [section, setSection] = useState(home)
+    const [section, setSection] = useState(policy)
 
     const menuOnclick = (val) => {
         setSection(val)
@@ -102,6 +102,7 @@ const Policy = () => {
         const { policy, coverage, insured, vehicles, loss_history, drivers } =
             data
 
+        
         const PolicyRender = <PolicySection policy={policy} />
         const CoverageRender = <CoverageSection coverage={coverage} />
         const InsuredRender = <InsuredSection insured={insured} />

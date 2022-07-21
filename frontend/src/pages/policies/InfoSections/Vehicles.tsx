@@ -1,8 +1,18 @@
-import { Flex, Section, SubSection, TileItem, Title } from '../shared'
+import { Section, Flex, Title, TileItem, SubSection } from '../shared'
+import VehicleOverlay from '../../../components/VehicleOverlay'
+import VehiclesTable, { makeSampleInfo } from '../../../components/VehiclesTable'
+import { GenericSearch } from '../../../components/Search'
+import React, { useEffect, useState } from 'react'
 
 const Vehicles = ({ vehiclesList }) => {
+    const [show, setShow] = useState(false)
+    const [vehicleId, setVehicleId] = useState(0)
+    const close = () => {
+        setShow(false)
+    }
     return (
-        <Section>
+        <>
+        {/* <Section>
             <Title>Vehicles (Total: {vehiclesList.length})</Title>
             {vehiclesList.map((vehicle, i) => {
                 const {
@@ -111,7 +121,24 @@ const Vehicles = ({ vehiclesList }) => {
                     </SubSection>
                 )
             })}
+        </Section> */}
+        <Section>
+            <Flex>
+                <Title>Vehicles (Total: {vehiclesList.length})</Title>
+                <GenericSearch
+                    placeholder="Search Vehicles"
+                    style={{ marginLeft: 'auto' }}
+                />
+            </Flex>
+            <VehiclesTable
+                open={(id) => {
+                    setShow(true); setVehicleId(id);
+                }}
+                vehicles={vehiclesList}
+            />
+            {show && <VehicleOverlay vehicle={vehiclesList[vehicleId]} close={close} show={show} />}
         </Section>
+    </>
     )
 }
 
