@@ -4,8 +4,8 @@ import styled from 'styled-components'
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         heading: {
-            fontSize: theme.typography.pxToRem(15),
-            fontWeight: theme.typography.fontWeightRegular,
+            fontSize: 24,
+            fontWeight: 300,
         },
     })
 )

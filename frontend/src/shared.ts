@@ -1,12 +1,17 @@
+let host = 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com';
+
+// for dev comment this out
+host = 'http://127.0.0.1:8000/';
+
 export const urls = {
     getAllPoliciesUrl:
-        'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/policies/',
+        `${host}/policies/`,
     createPoliciesUrl:
-        'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/policies/',
+        `${host}/policies/`,
     getPolicy: (id) =>
-        `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/policies/${id}/`,
+        `${host}/policies/${id}/`,
     updatePolicy: (id) =>
-        `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com/policies/${id}/`,
+        `${host}/policies/${id}/`,
 }
 
 export const testPolicies = [
