@@ -735,5 +735,5 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
         </div>
     )
 }
-
+// in the future use map for this and a hashmap
 export default CoverageSection

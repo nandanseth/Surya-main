@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         heading: {
-            fontSize: theme.typography.pxToRem(15),
-            fontWeight: theme.typography.fontWeightRegular,
+            fontSize: 18,
+            fontWeight: 300,
         },
     })
 )

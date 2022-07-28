@@ -1,6 +1,6 @@
 import { ButtonHolder, Form } from '../../styles/styles'
 import { Save } from '../Buttons'
-import { driverStatesOptions } from '../../utils/policies'
+import { statesOptions } from '../../utils/policies'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import SuryaInput from '../PolicyFormInput'
@@ -65,7 +65,7 @@ const DriversSection = ({ store }) => {
                                 onChange={(v) => {
                                     handleSelectOnChange(v, 'states')
                                 }}
-                                options={driverStatesOptions}
+                                options={statesOptions}
                                 placeholder=" state"
                                 value={values[num].states}
                             />
