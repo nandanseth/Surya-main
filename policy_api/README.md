@@ -22,7 +22,7 @@ Manage policies through these endpoints.
   5. Restart your terminal or run `source ~/.bashrc`.
 
 
-- `dev_appserver.py` exists. Run `which dev_appserver.py`.
+- `dev_appserver.py` exists. Run `which dev_appserver.py` to determine if it exists.
 
 **How to run this service with live data from GCP...**
 
@@ -44,7 +44,7 @@ Running this service without the need to read from GCP services is pretty straig
 
 *You should see `uvicorn` messages indicating that the server is running.*
 
-# Service
+# Service Info
 
 | Environment | URL                                                          |
 | ----------- | ------------------------------------------------------------ |

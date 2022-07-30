@@ -1,8 +1,4 @@
 steps:
-    - name: 'node:16'
-      entrypoint: 'yarn'
-      args: ['install']
-      dir: 'frontend'
     - name: 'node'
       entrypoint: 'yarn'
       args: ['build']
