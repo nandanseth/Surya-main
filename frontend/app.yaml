@@ -1,5 +1,5 @@
 env: flex
-runtime: nodejs
+runtime: nodejs16
 instance_class: F4
 service: default
 inbound_services:
