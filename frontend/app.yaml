@@ -4,6 +4,8 @@ instance_class: F4
 service: default
 inbound_services:
     - warmup
+manual_scaling:
+  instances: 1
 resources:
   cpu: 2
   memory_gb: 2.0
