@@ -1,9 +1,9 @@
 steps:
-    - name: 'nodejs'
+    - name: 'node'
       entrypoint: 'yarn'
       args: ['install', '--production']
       dir: 'frontend'
-    - name: 'nodejs'
+    - name: 'node'
       entrypoint: 'yarn'
       args: ['build']
       dir: 'frontend'
