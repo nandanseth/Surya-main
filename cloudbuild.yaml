@@ -8,7 +8,7 @@ steps:
       args: ['build']
       dir: 'frontend'
     - name: 'gcr.io/cloud-builders/gcloud'
-      args: ['app', 'deploy', 'frontend/app.yaml']
+      args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
 timeout: '600s'
 options:
