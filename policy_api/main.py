@@ -13,10 +13,13 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 app = FastAPI()
 
+# Manage CORS
+LOCAL_PORT = 3000
+PRODUCTION_ORIGIN = "https://delta-pagoda-337917.ue.r.appspot.com"
+
 origins = [
-    "localhost",
-    "localhost:3000",
-    "https://delta-pagoda-337917.ue.r.appspot.com",
+    f"http://localhost:{LOCAL_PORT}",  # This is strictly for local development.
+    PRODUCTION_ORIGIN,
 ]
 
 app.add_middleware(
@@ -27,6 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Initiate a firestore client instance for storing anf fetching data.
 db = firestore.Client()
 
 

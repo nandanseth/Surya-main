@@ -1,7 +1,7 @@
-let host = 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com';
-
-// for dev comment this out
-host = 'http://127.0.0.1:8000/';
+const RUNTIME_ENV = process.env.NODE_ENV;
+const POLICY_API_LOCALHOST = 'http://localhost:3001';
+const POLICY_API_PROD = 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com';
+let host:string = RUNTIME_ENV === 'development' ? POLICY_API_LOCALHOST : POLICY_API_PROD;
 
 export const urls = {
     getAllPoliciesUrl:

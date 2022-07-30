@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
 SHELL := $(shell which bash)
 .SHELLFLAGS = -c
+.ONESHELL: ;
 
+GCP_PROJECT_ID="delta-pagoda-337917"
+GCP_DEV_APPSERVER := $(shell which dev_appserver.py)
+GCP_DEV_APPSERVER_POLICY_API_PORT=3001
 
 .PHONY: help
 help:
@@ -12,6 +15,11 @@ help:
 run:
 	@echo -e "Running server..."
 	uvicorn main:app --reload
+
+.PHONY: run-gcp
+run-gcp:
+	@"Running server via GCloud's dev_server.py..."
+	python2 ${GCP_DEV_APPSERVER} --application=${GCP_PROJECT_ID} app.yaml --port="${GCP_DEV_APPSERVER_POLICY_API_PORT}"
 
 .PHONY: install
 install:
