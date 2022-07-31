@@ -1,6 +1,6 @@
 env: flex
 runtime: nodejs
-instance_class: F4
+# instance_class: F4
 service: default
 inbound_services:
     - warmup
