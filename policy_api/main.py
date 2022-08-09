@@ -231,6 +231,7 @@ class VehicleState(BaseModel):
     baseType: Optional[str]
     baseNumber: Optional[str]
     baseExpDate: Optional[str]
+    baseEffDate: Optional[str]
     shl: Optional[str]
     garageAddress1: Optional[str]
     garageAddress2: Optional[str]
@@ -388,9 +389,14 @@ def create_policy(policy_payload: Policy):
     policy_uuid = str(uuid.uuid4())
     policy = json.loads(policy_payload.json())
 
-    for i, _ in policy["drivers"]:
-        policy["drivers"][i]["driverEffDate"] = policy["effectiveDate"]
-        policy["drivers"][i]["driverEffDate"] = policy["expirationDate"]
+    for d in policy["drivers"]:
+        d["driverEffDate"] = policy["effectiveDate"]
+        d["driverExpDate"] = policy["expirationDate"]
+
+    for v in policy["vehicles"]:
+        for vehicle_state in v:
+            vehicle_state["baseEffDate"] = policy["effectiveDate"]
+            vehicle_state["baseExpDate"] = policy["expirationDate"]
 
     created_policy = policies.document(policy_uuid).set(
         {**policy, "created_at": datetime.utcnow()}
