@@ -155,6 +155,8 @@ class Driver(BaseModel):
     licenseNumber: Optional[str]
     licenseEffDate: Optional[str]
     licenseExpDate: Optional[str]
+    driverEffDate: Optional[str]
+    driverExpDate: Optional[str]
 
 
 class Drivers(BaseModel):
@@ -385,6 +387,11 @@ def create_policy(policy_payload: Policy):
     policies = db.collection("policies")
     policy_uuid = str(uuid.uuid4())
     policy = json.loads(policy_payload.json())
+
+    for i, _ in policy["drivers"]:
+        policy["drivers"][i]["driverEffDate"] = policy["effectiveDate"]
+        policy["drivers"][i]["driverEffDate"] = policy["expirationDate"]
+
     created_policy = policies.document(policy_uuid).set(
         {**policy, "created_at": datetime.utcnow()}
     )
