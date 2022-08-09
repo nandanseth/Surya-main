@@ -1,11 +1,7 @@
 const RUNTIME_ENV = process.env.NODE_ENV;
 const POLICY_API_LOCALHOST = 'http://localhost:3001';
 const POLICY_API_PROD = 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com';
-let host:string = RUNTIME_ENV !== 'development' ? POLICY_API_PROD : POLICY_API_LOCALHOST;
-
-console.log(RUNTIME_ENV);
-
-console.log("NODE_ENV: " + RUNTIME_ENV);
+let host:string = RUNTIME_ENV === 'production' ? POLICY_API_PROD : POLICY_API_LOCALHOST;
 
 export const urls = {
     getAllPoliciesUrl:

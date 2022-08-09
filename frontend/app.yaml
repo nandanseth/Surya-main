@@ -1,5 +1,7 @@
 env: flex
 runtime: nodejs
+env_variables:
+  NODE_ENV: 'production'
 # instance_class: F4
 service: default
 inbound_services:
