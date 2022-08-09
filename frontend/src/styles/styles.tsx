@@ -11,7 +11,7 @@ export const Colors = {
     menu: '#F7F8F9',
     electricBlue: '#2899FF',
     lightBackground: 'rgba(102, 200, 185, 0.04)',
-    lightBlue: '#090e11',
+    lightBlue: '#009fff26;',
     paleBlue: '#f8f8f9',
     light: '#F8FDFF',
     purple: '#4E73F4',
@@ -35,7 +35,8 @@ export const Block = styled.div`
 `
 
 export const fonts = {
-    default: 'Brandon Grotesque',
+    // default: 'Brandon Grotesque',
+    default: 'Helvetica Neue',
     reading: 'Helvetica Neue',
     text: 'Helvetica Neue',
     weights: {
@@ -47,6 +48,8 @@ export const fonts = {
         heavy: 700,
     },
     size: {
+        xs: '12px',
+        small: '14px',
         default: '16px',
         medium: '24px',
         large: '32px',
@@ -135,21 +138,26 @@ export const Disabled = styled.a`
 `
 
 export const Title = styled.h1`
-    font-family: Montserrat;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 32px;
     /* identical to box height */
     color: #000000;
 `
 
+export const SubTitle = styled.p`
+    font-size: ${fonts.size.small};
+    font-weight: 400;
+    color: #0000005e;
+    margin-top: 8px;
+`
+
 export const sidebarWidth = 280
 
 export const Content = styled.div`
-    height: 100%;
-    min-height: 100vh;
-    background: white;
-    flex: 1 1 auto;
-    padding-left: ${sidebarWidth}px;
+    height: 100vh;
+    flex: 3;
+    overflow-y: scroll;
+    padding-bottom: 20px;
 `
 
 export const Footer = styled.footer`
@@ -165,12 +173,17 @@ export const Header = styled.header`
     align-items: center;
 `
 
+export const StyledDiv = styled.div`
+    padding: 0 0 18px 0;
+`
+
 export const Table = styled.table`
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
     border: none;
     font: inherit;
+    margin-top: 12px;
 `
 
 export const Th = styled.th`
@@ -187,8 +200,9 @@ export const TD = styled.td`
     font-size: 14px;
     color: #000000;
     font-weight: 500;
-    text-align: center;
-    padding: 12px 0;
+    text-align: left;
+    padding: 12px 16px;
+    padding-left: 6px;
     ${transitionCss}
     :first-child {
         border-radius: 10px 0 0 10px;
@@ -222,7 +236,7 @@ export const SortByHeader = styled.button<{ green?: boolean }>`
     font-size: 12px;
     padding: 4px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     align-items: center;
     flex: 1 1 auto;
@@ -232,7 +246,7 @@ export const SortByHeader = styled.button<{ green?: boolean }>`
         green &&
         `
     
-    color: ${Colors.green};
+    color: ${Colors.electricBlue};
     font-weight: 600;
   `}
 `
@@ -254,10 +268,9 @@ const Section = styled.div`
 
 const SectionTitle = styled.h2`
     width: 100%;
-    margin-bottom: 2px;
-    margin-top: 10px;
+    margin: 12px 0px;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 20px;
     color: ${Colors.text};
 `
 
@@ -271,7 +284,11 @@ const Flex = styled.div`
 const InputWrapper = styled.div`
     flex: 1 1 auto;
     margin: 4px 12px 4px 0px;
-    width: 32%;
+`
+
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: auto auto auto;
 `
 
 export const Form = {
@@ -279,4 +296,5 @@ export const Form = {
     SectionTitle,
     Flex,
     InputWrapper,
+    Grid,
 }

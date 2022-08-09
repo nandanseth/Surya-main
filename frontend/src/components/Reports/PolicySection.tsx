@@ -1,16 +1,16 @@
 import { Container, useStyles } from './shared'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Checkbox from '../Form/Checkbox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 
-const PolicySection = ({ policy, setPolicy }: any) => {
+const PolicySection = ({ policy, setPolicy, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
-            <Accordion>
+            <Accordion {...rest}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     expandIcon={<ExpandMoreIcon />}
@@ -23,7 +23,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.name}
                             labelText="Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({ ...policy, name: !policy.name })
                             }}
                         />
@@ -31,7 +31,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.policyNum}
                             labelText="Policy Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     policyNum: !policy.policyNum,
@@ -42,7 +42,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.states}
                             labelText="State"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({ ...policy, states: !policy.states })
                             }}
                         />
@@ -50,7 +50,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.classification}
                             labelText="Classification"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     classification: !policy.classification,
@@ -61,7 +61,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.lineOfBusiness}
                             labelText="Line Of Business"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     lineOfBusiness: !policy.lineOfBusiness,
@@ -72,7 +72,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.coverageTerm}
                             labelText="Coverage Term"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     coverageTerm: !policy.coverageTerm,
@@ -83,7 +83,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.policyCategory}
                             labelText="Policy Category"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     policyCategory: !policy.policyCategory,
@@ -94,7 +94,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.underwritingCode}
                             labelText="Underwriting Code"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     underwritingCode: !policy.underwritingCode,
@@ -105,7 +105,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.agent}
                             labelText="Agent"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({ ...policy, agent: !policy.agent })
                             }}
                         />
@@ -113,7 +113,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.effectiveDate}
                             labelText="Effective Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     effectiveDate: !policy.effectiveDate,
@@ -124,7 +124,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.expirationDate}
                             labelText="Expiration Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     expirationDate: !policy.expirationDate,
@@ -135,7 +135,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.radius}
                             labelText="Radius"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({ ...policy, radius: !policy.radius })
                             }}
                         />
@@ -143,7 +143,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.classCode}
                             labelText="Class Code"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     classCode: !policy.classCode,
@@ -154,7 +154,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.businessUseClass}
                             labelText="Business Use Class"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     businessUseClass: !policy.businessUseClass,
@@ -165,7 +165,7 @@ const PolicySection = ({ policy, setPolicy }: any) => {
                         <Checkbox
                             checked={policy.sizeClass}
                             labelText="Size Class"
-                            onClick={() => {
+                            onChange={() => {
                                 setPolicy({
                                     ...policy,
                                     sizeClass: !policy.sizeClass,

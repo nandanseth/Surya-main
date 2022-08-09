@@ -49,7 +49,7 @@ const PolicyForm = ({ close }) => {
         vehicles: 3 / total,
         loss: 5 / total,
         coverage: 6 / total,
-        documents: 7 / total,
+        // documents: 7 / total,
         reinsurance: 8 / total,
         payments: 9 / total,
     }
@@ -141,7 +141,7 @@ const PolicyForm = ({ close }) => {
                 <StyledImg src={coverageIcon} />
             </StyledIcon>
 
-            <StyledIcon
+            {/* <StyledIcon
                 active={current === 'documents'}
                 onClick={() => {
                     setCurrent('documents')
@@ -149,7 +149,7 @@ const PolicyForm = ({ close }) => {
                 title="Documents"
             >
                 <StyledImg src={documentsIcon} />
-            </StyledIcon>
+            </StyledIcon> */}
 
             <StyledIcon
                 active={current === 'reinsurance'}
@@ -215,7 +215,7 @@ const FormHead = ({
                     <Title>{name}</Title>
                 </Left>
                 <Right>
-                    <SaveDraft onClick={close}>Save as Draft</SaveDraft>
+                    <Close onClick={close}>Close</Close>
                     <Submit
                         disabled={loading}
                         onClick={async () => {
@@ -279,9 +279,9 @@ const HeaderContent = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    align-items: flex-start;
     padding: 12px;
     box-shadow: 0px 2px 3px #0000001a;
+    align-items: stretch;
 `
 
 const Left = styled.div`
@@ -293,6 +293,9 @@ const Right = styled.div`
     margin-left: auto;
     flex: 1 1 auto;
     text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 `
 
 const NewApplication = styled.div`
@@ -301,26 +304,32 @@ const NewApplication = styled.div`
     margin-bottom: 6px;
 `
 
-const SaveDraft = styled.button`
-    font-weight: 500;
-    font-size: 12px;
-    color: #3a5664;
-    background: rgba(58, 86, 100, 0.06);
-    margin-bottom: 4px;
-    margin-left: auto;
-    width: auto;
-    display: block;
-    padding: 2px 5px;
-`
-
 const Submit = styled.button`
     font-weight: 600;
     font-size: 16px;
     color: #00aeff;
     text-align: center;
     background: #00aeff12;
-    padding: 4px 15px;
-    border-radius: 3px;
+    padding: 8px 16px;
+    marigin-left: 8px;
+    border-radius: 10px;
+    height: 40px;
+    min-width: 200px;
+    margin: 12px;
+    ${transitionCss};
+
+    :hover {
+        background: ${Colors.electricBlue};
+        color: white;
+    }
+`
+
+const Close = styled(Submit)`
+    background: rgba(58, 86, 100, 0.06);
+    color: black;
+        :hover {
+            background black;
+        }
 `
 
 const Container = styled.div`
@@ -328,7 +337,6 @@ const Container = styled.div`
     width: 85%;
     align-self: center;
     height: 100%;
-    right: 0px;
     position: fixed;
     padding: 4px 12px;
 `
@@ -347,7 +355,7 @@ const Nav = styled.nav`
     height: 80px;
     position: absolute;
     bottom: 4px;
-    background: white;
+    background: #f0f0f1;
     padding: 0 20px;
     display: flex;
     justify-content: center;

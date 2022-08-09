@@ -1,0 +1,8 @@
+export { default as CoverageSection } from './CoverageSection'
+export { default as DriversSection } from './DriversSection'
+export { default as InsuredSection } from './InsuredSection'
+export { default as LossHistorySection } from './LossSection'
+export { default as PolicySection } from './PolicySection'
+export { default as ReinsuranceSection } from './ReinsuranceSection'
+export { default as VehicleSection } from './VehicleSection'
+export { default as PaymentsSection } from './PaymentsSection'

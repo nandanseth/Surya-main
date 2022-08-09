@@ -1,16 +1,16 @@
 import { Container, useStyles } from './shared'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Checkbox from '../Form/Checkbox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 
-const CoverageSection = ({ coverage, setCoverage }: any) => {
+const CoverageSection = ({ coverage, setCoverage, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
-            <Accordion>
+            <Accordion {...rest}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     expandIcon={<ExpandMoreIcon />}
@@ -25,7 +25,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.overall}
                             labelText="Overall"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     overall: !coverage.overall,
@@ -36,7 +36,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.deductable}
                             labelText="Deductible"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     deductable: !coverage.deductable,
@@ -47,7 +47,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.deductableAmount}
                             labelText="Deductible Amount"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     deductableAmount:
@@ -59,7 +59,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.deductableAutoEntry}
                             labelText="Deductible Auto Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     deductableAutoEntry:
@@ -71,7 +71,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.combinedSectionLimit}
                             labelText="Combined Section Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     combinedSectionLimit:
@@ -83,7 +83,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.combinedSectionEntry}
                             labelText="Combined Section Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     combinedSectionEntry:
@@ -95,7 +95,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.splitSectionBodyPerPerson}
                             labelText="Split Section Body Per Person"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     splitSectionBodyPerPerson:
@@ -109,7 +109,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                                 coverage.splitSectionBodyPerAccidentOptions
                             }
                             labelText="Split Section Body Per Accident Options"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     splitSectionBodyPerAccidentOptions:
@@ -121,7 +121,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.splitSectionPropertyDamageOptions}
                             labelText="Split Section Property Damage Options"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     splitSectionPropertyDamageOptions:
@@ -133,7 +133,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.splitSectionAutoEntryOptions}
                             labelText="Split Section Auto Entry Options"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     splitSectionAutoEntryOptions:
@@ -145,7 +145,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalSingleLimit}
                             labelText="Medical Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalSingleLimit:
@@ -157,7 +157,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalSingleEntry}
                             labelText="Medical Single Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalSingleEntry:
@@ -169,7 +169,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalSplitBodyPerPerson}
                             labelText="Medical Split Body Per Person"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalSplitBodyPerPerson:
@@ -181,7 +181,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalSplitBodyPerAccident}
                             labelText="Medical Split Body Per Accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalSplitBodyPerAccident:
@@ -193,7 +193,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalSplitPropertyDamage}
                             labelText="Medical Split Property Damage"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalSplitPropertyDamage:
@@ -205,7 +205,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalSplitAutoEntry}
                             labelText="Medical Split Auto Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalSplitAutoEntry:
@@ -217,7 +217,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.pIProtectionSingleLimit}
                             labelText="Personal Injury Protection Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     pIProtectionSingleLimit:
@@ -229,7 +229,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.pIProtectionSingleEntry}
                             labelText="Personal Injury Protection Single Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     pIProtectionSingleEntry:
@@ -241,7 +241,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.pIProtectionSplitBodyPerPerson}
                             labelText="Personal Injury Protection Split Body Per Person"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     pIProtectionSplitBodyPerAccident:
@@ -253,7 +253,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.pIProtectionSplitBodyPerAccident}
                             labelText="Personal Injury Protection Split Body Per accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     pIProtectionSplitBodyPerAccident:
@@ -265,7 +265,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.pIProtectionSplitPropertyDamage}
                             labelText="Personal Injury Protection Split Property Damage"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     pIProtectionSplitPropertyDamage:
@@ -277,7 +277,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.pIProtectionSplitAutoEntry}
                             labelText="Personal Injury Protection Split Auto Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     pIProtectionSplitAutoEntry:
@@ -289,7 +289,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underinsuredMotoristSingleLimit}
                             labelText="Underinsured Motorist Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underinsuredMotoristSingleLimit:
@@ -301,7 +301,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underMotoristAuto}
                             labelText="Underinsured Motorist Auto"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underMotoristAuto:
@@ -315,7 +315,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                                 coverage.underinsuredMotoristSingleAutoEntry
                             }
                             labelText="Underinsured Motorist Single Auto Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underinsuredMotoristSingleAutoEntry:
@@ -327,7 +327,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underMotoristBodyPerPerson}
                             labelText="Underinsured Motorist Body Per Person"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underMotoristBodyPerPerson:
@@ -339,7 +339,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underMotoristBodyPerAccident}
                             labelText="Underinsured Motorist Body Per Accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underMotoristBodyPerAccident:
@@ -351,7 +351,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underMotoristProperty}
                             labelText="Underinsured Motorist Property Damage"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underMotoristProperty:
@@ -363,7 +363,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.unMotoristAuto}
                             labelText="Uninsured Motorist Auto"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     unMotoristAuto: !coverage.unMotoristAuto,
@@ -374,7 +374,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.unMotoristBodyPerAccident}
                             labelText="Uninsured Motorist Body Per Accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     unMotoristBodyPerAccident:
@@ -386,7 +386,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.unMotoristBodyPerPerson}
                             labelText="Uninsured Motorist Body Per Person"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     unMotoristBodyPerPerson:
@@ -398,7 +398,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.unMotoristProperty}
                             labelText="Uninsured Motorist Property"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     unMotoristProperty:
@@ -410,7 +410,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.uninsuredMotoristSingleAutoEntry}
                             labelText="Uninsured Motorist Single Auto Entry"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     uninsuredMotoristSingleAutoEntry:
@@ -422,7 +422,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.uninsuredMotoristSingleLimit}
                             labelText="Uninsured Motorist Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     uninsuredMotoristSingleLimit:
@@ -434,7 +434,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.personalInjury}
                             labelText="Personal Injury"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     personalInjury: !coverage.personalInjury,
@@ -445,7 +445,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalPayments}
                             labelText="Medical Payments"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalPayments: !coverage.medicalPayments,
@@ -456,7 +456,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underinsuredMotorist}
                             labelText="Underinsured Motorist"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underinsuredMotorist:
@@ -468,7 +468,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.uninsuredMotorist}
                             labelText="Uninsured Motorist"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     uninsuredMotorist:
@@ -480,7 +480,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.csl}
                             labelText="CSL"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     csl: !coverage.csl,
@@ -491,7 +491,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonOwnedCSL}
                             labelText="Non Owned CSL"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonOwnedCSL: !coverage.nonOwnedCSL,
@@ -502,7 +502,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslSingleLimit}
                             labelText="CSL Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslSingleLimit: !coverage.cslSingleLimit,
@@ -513,7 +513,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslSingleLimit}
                             labelText="CSL Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslSingleLimit: !coverage.cslSingleLimit,
@@ -524,7 +524,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslBodyPerAccident}
                             labelText="CSL Body Per Accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslBodyPerAccident:
@@ -536,7 +536,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslBodyPerPerson}
                             labelText="CSL Body Per Person"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslBodyPerPerson:
@@ -548,7 +548,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslSingleAuto}
                             labelText="CSL Single Auto"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslSingleAuto: !coverage.cslSingleAuto,
@@ -559,7 +559,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslSplitAuto}
                             labelText="CSL Split Auto"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslSplitAuto: !coverage.cslSplitAuto,
@@ -570,7 +570,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslProperty}
                             labelText="CSL Property Damage"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     cslProperty: !coverage.cslProperty,
@@ -581,7 +581,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonCslSingleAuto}
                             labelText="Non-CSL Single Auto"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslSingleAuto:
@@ -593,7 +593,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonCslSplitAuto}
                             labelText="Non-CSL Split Auto"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslSplitAuto: !coverage.nonCslSplitAuto,
@@ -604,7 +604,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonCslSingleLimit}
                             labelText="Non-CSL Single Limit"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslSingleLimit:
@@ -616,7 +616,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonCslBodyPerAccident}
                             labelText="Non-CSL Body Per Accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslBodyPerAccident:
@@ -628,7 +628,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonCslProperty}
                             labelText="Non-CSL Property Damage"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslProperty: !coverage.nonCslProperty,
@@ -639,7 +639,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonCslBodyPerPerson}
                             labelText="Non-CSL Body Per Accident"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslBodyPerPerson:
@@ -651,7 +651,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.cslProperty}
                             labelText="Non-CSL Property Damage"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonCslProperty: !coverage.nonCslProperty,
@@ -662,7 +662,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.overallPremium}
                             labelText="Overall Premium"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     overallPremium: !coverage.overallPremium,
@@ -673,7 +673,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.personalInjuryProtectionPremium}
                             labelText="Personal Injury Protection Premium"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     personalInjuryProtectionPremium:
@@ -685,7 +685,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.medicalPaymentsPremium}
                             labelText="Medical Payments Premium"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     medicalPaymentsPremium:
@@ -697,7 +697,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.underinsuredMotoristPremium}
                             labelText="Underinsured Motorist Premium"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     underinsuredMotoristPremium:
@@ -709,7 +709,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.uninsuredMotoristPremium}
                             labelText="Uninsured Motorist Premium"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     uninsuredMotoristPremium:
@@ -721,7 +721,7 @@ const CoverageSection = ({ coverage, setCoverage }: any) => {
                         <Checkbox
                             checked={coverage.nonOwnedCSLPremium}
                             labelText="Non-owned CSL Premium"
-                            onClick={() => {
+                            onChange={() => {
                                 setCoverage({
                                     ...coverage,
                                     nonOwnedCSLPremium:

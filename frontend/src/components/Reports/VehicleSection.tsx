@@ -1,16 +1,16 @@
 import { Container, useStyles } from './shared'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Checkbox from '../Form/Checkbox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 
-const VehicleSection = ({ vehicles, setVehicles }: any) => {
+const VehicleSection = ({ vehicles, setVehicles, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
-            <Accordion>
+            <Accordion {...rest}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     expandIcon={<ExpandMoreIcon />}
@@ -25,7 +25,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.category}
                             labelText="Category"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     category: !vehicles.category,
@@ -36,7 +36,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.classification}
                             labelText="Classification"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     classification: !vehicles.classification,
@@ -47,7 +47,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.vehicleCategory}
                             labelText="Vehicle Classification"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     vehicleCategory: !vehicles.vehicleCategory,
@@ -58,7 +58,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.vehicleType}
                             labelText="Vehicle Type"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     vehicleType: !vehicles.vehicleType,
@@ -69,7 +69,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.state}
                             labelText="state"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     state: !vehicles.state,
@@ -80,7 +80,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.vehicleState}
                             labelText="state"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     vehicleState: !vehicles.vehicleState,
@@ -91,7 +91,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.vehicleWeight}
                             labelText="Vehicle Weight"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     vehicleWeight: !vehicles.vehicleWeight,
@@ -102,7 +102,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.fuelType}
                             labelText="Fuel Type"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     fuelType: !vehicles.fuelType,
@@ -113,7 +113,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.fleet}
                             labelText="Fleet"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     fleet: !vehicles.fleet,
@@ -124,7 +124,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.vin}
                             labelText="VIN"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     vin: !vehicles.vin,
@@ -135,7 +135,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.make}
                             labelText="Make"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     make: !vehicles.make,
@@ -146,7 +146,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.model}
                             labelText="Model"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     model: !vehicles.model,
@@ -157,7 +157,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.modelYear}
                             labelText="Model Year"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     modelYear: !vehicles.modelYear,
@@ -168,7 +168,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.seating}
                             labelText="Seating"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     seating: !vehicles.seating,
@@ -179,7 +179,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.wheelChair}
                             labelText="Wheelchair"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     wheelChair: !vehicles.wheelChair,
@@ -190,7 +190,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.plateNumber}
                             labelText="Plate Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     plateNumber: !vehicles.plateNumber,
@@ -201,7 +201,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.plateNumber}
                             labelText="Plate Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     plateNumber: !vehicles.plateNumber,
@@ -212,7 +212,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageAddress1}
                             labelText="Garage Address1"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageAddress1: !vehicles.garageAddress1,
@@ -223,7 +223,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageAddress2}
                             labelText="Garage Address2"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageAddress2: !vehicles.garageAddress2,
@@ -234,7 +234,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageCity}
                             labelText="Garage City"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageCity: !vehicles.garageCity,
@@ -245,7 +245,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageCounty}
                             labelText="Garage County"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageCounty: !vehicles.garageCounty,
@@ -256,7 +256,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageState}
                             labelText="Garage State"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageState: !vehicles.garageState,
@@ -267,7 +267,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageZipCode}
                             labelText="Garage Zip Code"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageZipCode: !vehicles.garageZipCode,
@@ -278,7 +278,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageZipCode2}
                             labelText="Garage Zip Code2"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageZipCode2: !vehicles.garageZipCode2,
@@ -289,7 +289,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.garageCountry}
                             labelText="Garage Country"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     garageCountry: !vehicles.garageCountry,
@@ -300,7 +300,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.zoneCode}
                             labelText="Zone Code"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     zoneCode: !vehicles.zoneCode,
@@ -311,7 +311,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.rateClassCode}
                             labelText="Rate Class Code"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     rateClassCode: !vehicles.rateClassCode,
@@ -322,7 +322,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.baseName}
                             labelText="Base Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     baseName: !vehicles.baseName,
@@ -333,7 +333,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.baseType}
                             labelText="Base Type"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     baseType: !vehicles.baseType,
@@ -344,7 +344,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.baseNumber}
                             labelText="Base Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     baseNumber: !vehicles.baseNumber,
@@ -355,7 +355,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.baseExpDate}
                             labelText="Base Exp Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     baseExpDate: !vehicles.baseExpDate,
@@ -366,7 +366,7 @@ const VehicleSection = ({ vehicles, setVehicles }: any) => {
                         <Checkbox
                             checked={vehicles.shl}
                             labelText="shl"
-                            onClick={() => {
+                            onChange={() => {
                                 setVehicles({
                                     ...vehicles,
                                     shl: !vehicles.shl,

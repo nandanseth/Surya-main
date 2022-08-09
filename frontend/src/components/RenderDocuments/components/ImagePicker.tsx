@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core'
 import { useCallback, useState } from 'react'
+import makeStyles from '@mui/styles/makeStyles'
 
 const useStyles = makeStyles(() => ({
     labelLogo: {

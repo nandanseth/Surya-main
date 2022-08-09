@@ -1,16 +1,16 @@
 import { Container, useStyles } from './shared'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Checkbox from '../Form/Checkbox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 
-const LossSection = ({ lossHistory, setLossHistory }: any) => {
+const LossSection = ({ lossHistory, setLossHistory, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
-            <Accordion>
+            <Accordion {...rest}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     expandIcon={<ExpandMoreIcon />}
@@ -25,10 +25,10 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.accidentDate}
                             labelText="Accident Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
-                                    states: !lossHistory.accidentDate,
+                                    accidentDate: !lossHistory.accidentDate,
                                 })
                             }}
                         />
@@ -36,7 +36,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.reportedDate}
                             labelText="Reported Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     reportedDate: !lossHistory.reportedDate,
@@ -47,7 +47,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.claimNumber}
                             labelText="Claim Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     claimNumber: !lossHistory.claimNumber,
@@ -58,7 +58,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.claimType}
                             labelText="Claim Type"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     claimType: !lossHistory.claimType,
@@ -69,7 +69,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.subClaimNumber}
                             labelText="Sub-Claim Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     subClaimNumber: !lossHistory.subClaimNumber,
@@ -78,20 +78,9 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         />
 
                         <Checkbox
-                            checked={lossHistory.claimType}
-                            labelText="Claim Type"
-                            onClick={() => {
-                                setLossHistory({
-                                    ...lossHistory,
-                                    claimType: !lossHistory.claimType,
-                                })
-                            }}
-                        />
-
-                        <Checkbox
                             checked={lossHistory.totalIncurred}
                             labelText="Total Incurred"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     totalIncurred: !lossHistory.totalIncurred,
@@ -102,7 +91,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.liabilityPaid}
                             labelText="Liability Paid"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     liabilityPaid: !lossHistory.liabilityPaid,
@@ -113,18 +102,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.openReserve}
                             labelText="Open Reserve"
-                            onClick={() => {
-                                setLossHistory({
-                                    ...lossHistory,
-                                    openReserve: !lossHistory.openReserve,
-                                })
-                            }}
-                        />
-
-                        <Checkbox
-                            checked={lossHistory.openReserve}
-                            labelText="Open Reserve"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     openReserve: !lossHistory.openReserve,
@@ -135,7 +113,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.status}
                             labelText="Status"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     status: !lossHistory.status,
@@ -146,7 +124,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.previousPolicyNumber}
                             labelText="Previous Policy Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     previousPolicyNumber:
@@ -158,7 +136,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.priorCarrierName}
                             labelText="Prior Carrier Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     priorCarrierName:
@@ -170,7 +148,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.originalInceptionDate}
                             labelText="Original Inception date"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     originalInceptionDate:
@@ -182,7 +160,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.expirationDate}
                             labelText="Expiration Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     expirationDate: !lossHistory.expirationDate,
@@ -193,7 +171,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.isExperienceMode}
                             labelText="Experience Mode"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     isExperienceMode:
@@ -205,7 +183,7 @@ const LossSection = ({ lossHistory, setLossHistory }: any) => {
                         <Checkbox
                             checked={lossHistory.isPolicyTransferred}
                             labelText="Policy Transferred"
-                            onClick={() => {
+                            onChange={() => {
                                 setLossHistory({
                                     ...lossHistory,
                                     isPolicyTransferred:

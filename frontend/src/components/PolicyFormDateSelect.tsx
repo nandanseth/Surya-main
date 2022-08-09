@@ -1,14 +1,11 @@
 import 'date-fns'
-import {
-    KeyboardDatePicker,
-    MuiPickersUtilsProvider,
-} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import React from 'react'
+import DatePicker from '@mui/lab/DatePicker'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
 const Picker = ({ value, onChange, label }) => (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
+    <LocalizationProvider utils={DateFnsUtils}>
+        <DatePicker
             KeyboardButtonProps={{
                 'aria-label': 'change date',
             }}
@@ -19,7 +16,7 @@ const Picker = ({ value, onChange, label }) => (
             onChange={onChange}
             value={value}
         />
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
 )
 
 export default Picker

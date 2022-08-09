@@ -1,16 +1,16 @@
 import { Container, useStyles } from './shared'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Checkbox from '../Form/Checkbox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 
-const InsuredSection = ({ insured, setInsured }: any) => {
+const InsuredSection = ({ insured, setInsured, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
-            <Accordion>
+            <Accordion {...rest}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     expandIcon={<ExpandMoreIcon />}
@@ -23,7 +23,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.agent}
                             labelText="Agent"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     agent: !insured.agent,
@@ -34,7 +34,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.entity}
                             labelText="Entity"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     entity: !insured.entity,
@@ -45,7 +45,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.firstName}
                             labelText="First Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     firstName: !insured.firstName,
@@ -56,7 +56,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.middleName}
                             labelText="Middle Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     middleName: !insured.middleName,
@@ -67,7 +67,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.lastName}
                             labelText="Last Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     lastName: !insured.lastName,
@@ -78,7 +78,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.dob}
                             labelText="Date of Birth"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({ ...insured, dob: !insured.dob })
                             }}
                         />
@@ -86,7 +86,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.suffix}
                             labelText="Suffix"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     suffix: !insured.suffix,
@@ -97,7 +97,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.gender}
                             labelText="Gender"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     gender: !insured.gender,
@@ -108,7 +108,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.ssn}
                             labelText="SSN"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({ ...insured, ssn: !insured.ssn })
                             }}
                         />
@@ -116,7 +116,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.policyNum}
                             labelText="Address 1"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     address1: !insured.address1,
@@ -127,7 +127,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.address2}
                             labelText="Address 2"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     address2: !insured.address2,
@@ -138,7 +138,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.city}
                             labelText="City"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     city: !insured.city,
@@ -149,7 +149,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.state}
                             labelText="State"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     state: !insured.state,
@@ -160,7 +160,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.zipCode}
                             labelText="Zip Code"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     zipCode: !insured.zipCode,
@@ -171,7 +171,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.email}
                             labelText="Email"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     email: !insured.email,
@@ -182,7 +182,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.phoneNumber}
                             labelText="Phone Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     phoneNumber: !insured.phoneNumber,
@@ -193,7 +193,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.licenseNumber}
                             labelText="License Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     licenseNumber: !insured.licenseNumber,
@@ -204,7 +204,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.licenseEff}
                             labelText="License Effective Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     licenseEff: !insured.licenseEff,
@@ -215,7 +215,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.licenseExp}
                             labelText="License Expiration Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     licenseExp: !insured.licenseExp,
@@ -226,7 +226,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.contactNumber}
                             labelText="Contact Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     contactNumber: !insured.contactNumber,
@@ -237,7 +237,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.contactEmail}
                             labelText="Contact Email"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     contactEmail: !insured.contactEmail,
@@ -248,7 +248,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.corporationName}
                             labelText="Corporation Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     corporationName: !insured.corporationName,
@@ -259,7 +259,7 @@ const InsuredSection = ({ insured, setInsured }: any) => {
                         <Checkbox
                             checked={insured.taxIdNumber}
                             labelText="Tax Id Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setInsured({
                                     ...insured,
                                     taxIdNumber: !insured.taxIdNumber,

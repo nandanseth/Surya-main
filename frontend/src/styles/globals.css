@@ -10,13 +10,15 @@
     background: transparent;
     box-sizing: border-box;
     position: relative;
+    font-family: inherit;
+
 }
 
 html,
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, 'Montserrat', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
 }
 
 a {
@@ -60,4 +62,18 @@ button {
     font: inherit;
     box-sizing: border-box;
     border-radius: 2px;
+}
+
+.MuiAccordionSummary-root {
+    border-bottom: solid 1px #0000001a !important;
+    padding: 0 24px !important;;
+}
+
+.MuiCollapse-wrapper {
+    display: flex !important;;
+    background: #fbfbfb !important;;
+}
+
+.MuiSlider-colorPrimary {
+    color: #2899FF !important;
 }

@@ -4,7 +4,6 @@ import SuryaSelect from '../PolicyFormSelect'
 const { Section, Flex } = Form
 
 const PaymentsSection = ({ store }) => {
-    console.log(store)
     const { coverage, payments } = store
     const coverageValues = coverage.values
     const {

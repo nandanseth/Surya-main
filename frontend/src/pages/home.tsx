@@ -1,21 +1,46 @@
 import { FormContextProvider } from '../context/insured-context'
 import { Header, Title } from '../styles/styles'
-import { testPolicies, urls } from '../shared'
+import { testItem, testPolicies, urls } from '../shared'
+import { useEffect, useState } from 'react'
 import Buttons from '../components/Buttons'
 import Layout from '../utils/withLayout'
 import Overlay from '../components/Overlay'
 import PolicyForm from '../components/PolicyForm'
-import PolicyTable, { makeSampleInfo } from '../components/PolicyTable'
-import React, { useEffect, useState } from 'react'
+import PolicyTable from '../components/PolicyTable'
 import Search from '../components/Search'
 import styled from 'styled-components'
 
 const title = 'Policies'
 
-const Home = (props) => {
+const checkAllKeys = ({ object, check }) => {
+    const keys = Object.keys(object ?? {})
+    return keys.some((key) => {
+        return String(object[key]).includes(check)
+    })
+}
+
+const Home = () => {
     const [show, setShow] = useState(false)
-    const [policies, setPolicies] = useState([])
-    console.log(policies, 'these are the policies')
+    const [policies, setPolicies] = useState([testItem])
+    const [search, setSearch] = useState('')
+
+    // could be wrapped in a useMemo
+    const searchFiter = (currentPolicies) => {
+        if (search === '') {
+            return currentPolicies
+        }
+
+        return currentPolicies?.filter((item) => {
+            const policy = item?.policy
+            const insured = item?.insured
+            const id = item?.id
+            return (
+                checkAllKeys({ object: policy, check: search }) ||
+                checkAllKeys({ object: insured, check: search }) ||
+                id?.includes(search)
+            )
+        })
+    }
 
     useEffect(() => {
         const headers = {}
@@ -36,7 +61,8 @@ const Home = (props) => {
     const close = () => {
         setShow(false)
     }
-    const sample = makeSampleInfo(4)
+
+    const policiesToShow = searchFiter(policies)
     // this will be the list
     return (
         <FormContextProvider>
@@ -51,12 +77,19 @@ const Home = (props) => {
                                 }}
                             />
                             <Search
+                                clear={() => {
+                                    setSearch('')
+                                }}
+                                onChange={(e) => {
+                                    setSearch(e.target.value)
+                                }}
                                 placeholder="Search Policies"
                                 style={{ marginLeft: 'auto' }}
+                                value={search}
                             />
                         </Header>
                         <Section>
-                            <PolicyTable policies={policies ?? testPolicies} />
+                            <PolicyTable policies={policiesToShow} />
                         </Section>
                     </ContentMain>
                     <Side />
@@ -117,10 +150,18 @@ const Exit = styled.div`
     position: absolute;
     right: 20px;
     top: 20px;
-    font-weight: 700;
-    font-size: 40px;
+    font-weight: 400;
+    font-size: 24px;
     text-align: right;
     color: #ffffff;
+    cursor: pointer;
+    background: #ffffff36;
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 export default Home

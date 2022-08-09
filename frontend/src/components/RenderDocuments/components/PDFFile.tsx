@@ -1,5 +1,5 @@
+// @ts-nocheck
 import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
-import React from 'react'
 
 const styles = StyleSheet.create({
     /* Control the left side */

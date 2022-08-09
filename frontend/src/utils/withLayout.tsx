@@ -1,6 +1,5 @@
 import { Content } from '../styles/styles'
 import Menu from '../components/Menu'
-import React from 'react'
 import Sidebar from '../components/Sidebar'
 import styled from 'styled-components'
 
@@ -25,7 +24,6 @@ const Main = styled.main`
 
 const Flex = styled.div`
     display: flex;
-    flex-direction: column;
     height: 100%;
 `
 

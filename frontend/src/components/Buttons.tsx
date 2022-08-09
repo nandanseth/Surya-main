@@ -1,4 +1,4 @@
-import { Colors, transitionCss } from '../styles/styles'
+import { Colors, fonts, transitionCss } from '../styles/styles'
 import styled, { css } from 'styled-components'
 
 const CreateNewPolicyButton = ({
@@ -8,33 +8,27 @@ const CreateNewPolicyButton = ({
     onClick?: any
     textOverride?: string
 }) => {
-    const text = 'Create new Policy' || textOverride
-    return (
-        <CreateButton onClick={onClick}>
-            <Span>
-                <Plus src="/plus.png" />
-            </Span>
-            {text}
-        </CreateButton>
-    )
+    const text = '+ Create new Policy' || textOverride
+    return <CreateButton onClick={onClick}>{text}</CreateButton>
 }
 
-export const CreateButton = styled.button`
-    background: linear-gradient(90deg, #f7fcff 0.64%, #f7fefb 97.71%);
-    border-radius: 28.5px;
-    padding: 8px 16px;
+export const CreateButton = styled.button<{ disabled?: boolean }>`
+    background: transparent;
+    border-radius: 10px;
+    padding: 8px 6px;
     min-width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     ${transitionCss}
-    color: ${Colors.green};
-    font: inherit;
-    font-weight: 500;
-    font-size: 14px;
-    margin-left: 50px;
+    color: ${({ disabled }) => (disabled ? Colors.grey : Colors.electricBlue)};
+    font-weight: 600;
+    font-size: ${fonts.size.default};
+    margin-left: 32px;
+    box-shadow: 2px 2px 2px rgb(0 0 0 / 2%);
     :hover {
-        transform: scale(1.01);
+        transform: scale(1.03);
+        background: #e0f0ff;
     }
 `
 

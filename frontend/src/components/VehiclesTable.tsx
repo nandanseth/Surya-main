@@ -1,8 +1,8 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
+import makeStyles from '@mui/styles/makeStyles'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { makeStyles } from '@material-ui/core'
 
 const headers = ['Vin', 'Make', 'Model', 'Model Year', 'Seating', 'Net Billed']
 
@@ -117,14 +117,10 @@ const VehiclesTable = ({
             </thead>
             <tbody>
                 {items.map(
-                    ({
-                        vin,
-                        model,
-                        make,
-                        modelYear,
-                        seating,
-                        totalPremium,
-                    }, i) => (
+                    (
+                        { vin, model, make, modelYear, seating, totalPremium },
+                        i
+                    ) => (
                         <TR key={vin} onClick={() => open(i)}>
                             <Name>{vin}</Name>
                             <TD>{make}</TD>
