@@ -240,6 +240,13 @@ class VehicleState(BaseModel):
     garageCounty: Optional[str]
     garageState: Optional[str]
     garageCountry: Optional[str]
+    overallPremium: Optional[str]
+    personalInjuryProtectionPremium: Optional[str]
+    medicalPaymentsPremium: Optional[str]
+    underinsuredMotoristPremium: Optional[str]
+    uninsuredMotoristPremium: Optional[str]
+    hiredCSLPremium: Optional[str]
+    nonOwnedCSLPremium: Optional[str]
 
 class VehicleDefaults(BaseModel):
     yesNo: Optional[str]
