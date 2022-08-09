@@ -1,5 +1,5 @@
 import { Colors, transitionCss } from '../styles/styles'
-import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import styled from 'styled-components'
 import useComponentVisible from '../hooks/useComponentVisible'
 
@@ -42,8 +42,10 @@ const AccountSwitch = ({ title }) => {
 
 const Spacer = styled.div``
 
+// rgba(58, 86, 100, 0.0398);
 const Container = styled.div`
-    background: rgba(58, 86, 100, 0.0398);
+    background: #f7f7f7;
+
     border-radius: 20px;
     padding: 3px 8px;
     min-width: 100px;

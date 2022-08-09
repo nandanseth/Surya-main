@@ -37,6 +37,4 @@ export const optionsMap = {
     Ambulance: [].map(mapFunc),
 }
 
-console.log(optionsMap, 'hii')
-
 export default types.map((item) => ({ value: item, label: item }))

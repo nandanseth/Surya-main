@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Checkbox = ({ checked, labelText, ...props }) => (
     <StyledDiv>
-        <label>
+        <Label>
             <CheckboxContainer>
                 <HiddenCheckbox checked={checked} {...props} />
                 <StyledCheckbox checked={checked}>
@@ -13,13 +13,16 @@ const Checkbox = ({ checked, labelText, ...props }) => (
                 </StyledCheckbox>
             </CheckboxContainer>
             <StyledSpan>{labelText}</StyledSpan>
-        </label>
+        </Label>
     </StyledDiv>
 )
 
 const StyledDiv = styled.div`
     margin-top: 6px;
     margin-bottom: 8px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
 `
 
 const CheckboxContainer = styled.div`
@@ -48,25 +51,35 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 `
 
 const StyledCheckbox = styled.div<{ checked?: boolean }>`
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: ${({ checked }) => (checked ? Colors.electricBlue : 'papayawhip')}
-  border-radius: 3px;
-  transition: all 150ms;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: ${({ checked }) =>
+        checked ? Colors.electricBlue : '#2899ff38'};
+    border-radius: 3px;
+    transition: all 150ms;
+    border: solid 1px #2899ff12;
 
-  ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 0 3px ${Colors.lightBlue};
-  }
+    ${HiddenCheckbox}:focus + & {
+        box-shadow: 0 0 0 3px ${Colors.purple};
+    }
 
-  ${Icon} {
-    visibility: ${(props) => (props.checked ? 'visible' : 'hidden')}
-  }
+    ${Icon} {
+        visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
+    }
 `
 
 const StyledSpan = styled.span`
-    margin-left: 8px;
+    margin-left: ${fonts.size.small};
     font-size: ${fonts.size.default};
+    font-weight: ${fonts.weights.regular};
+    color: #030407;
+`
+
+const Label = styled.label`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 `
 
 export default Checkbox

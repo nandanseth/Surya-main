@@ -19,13 +19,10 @@ const Sidebar = () => {
     const { pathname } = useLocation()
     const links = ['policies', 'reports', 'claims', 'settings']
     const check = (s) => {
-        console.log(s, pathname)
         if (pathname === '/home' && s === 'policies') {
-            console.log('test')
             return true
         }
         if (pathname.includes('/policies') && s === 'policies') {
-            console.log('test2')
             return true
         }
         return `/${s}` === pathname
@@ -56,8 +53,6 @@ const iconMap = {
     settings: { default: settingsIcon, active: settingsActiveIcon },
 }
 
-console.log(iconMap)
-
 const SidebarItem = ({ link, active }: { link: string; active?: boolean }) => (
     <Link style={{ display: 'inherit' }} to={LinkMap[link]}>
         <IconHolder active={active}>
@@ -75,13 +70,13 @@ const StyledHolder = styled.div`
 
 const IconHolder = styled.div<{ active?: boolean }>`
     padding: 8px 12px;
-    ${({ active }) => (active ? ColorsCSS.gradientTransCSS : null)}
+    ${({ active }) => (active ? `background: ${Colors.lightBlue} ;` : null)}
     cursor: pointer;
     display: flex;
     flex-flow: row;
     justify-content: center;
     align-items: center;
-    border-radius: 30px;
+    border-radius: 10px;
     min-width: 200px;
     color: black;
     width: auto;
@@ -91,7 +86,7 @@ const IconHolder = styled.div<{ active?: boolean }>`
         active &&
         `
     > h1 {
-        color: ${Colors.green};
+        color: ${Colors.electricBlue};
         
     }
   `}
@@ -113,19 +108,18 @@ const Label = styled.h1`
 `
 
 const Side = styled.div`
-    width: ${sidebarWidth}px;
-    position: fixed;
-    left: 0%;
-    top: 0%;
-    bottom: 0%;
-    background: #fdfdfd;
-    border-right: solid 1px rgba(196, 196, 196, 0.27);
+    max-width: ${sidebarWidth}px;
+    height: 100%;
+    min-height: 100vh;
+    //background: #fdfdfd;
+    background: #fcfeff;
     padding: 20px 0;
     background-image: url('${blurredBg}');
     background-position: right bottom; /*Positioning*/
     background-repeat: no-repeat; /*Prevent showing multiple background images*/
     background-size: 216%;
     z-index: 1;
+    flex: 1;
 `
 
 const Logo = styled.img`

@@ -1,12 +1,13 @@
-import React from 'react'
+// @ts-nocheck
 import {
-    View,
-    Page,
-    Text,
-    Image,
     Document,
+    Image,
+    Page,
     StyleSheet,
-} from '@react-pdf/renderer';
+    Text,
+    View,
+} from '@react-pdf/renderer'
+import React from 'react'
 
 const styles = StyleSheet.create({
     /* Control the left side */
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: 'Times-Roman',
     },
-
 
     textSmallCenter: {
         fontSize: 10,
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         alignSelf: 'stretch',
     },
-    
+
     headerCell: {
         borderColor: 'black',
         borderStyle: 'solid',
@@ -397,74 +397,89 @@ function RateCard({ policy }) {
     }/${current.getDate()}/${current.getFullYear()}`
 
     const indexFormula = (indexNumber) => {
-        return indexNumber["index"]+1
+        return indexNumber['index'] + 1
     }
 
     const SubFee = (premium) => {
         console.log(premium)
-        return (premium*0.12).toFixed(2)
+        return (premium * 0.12).toFixed(2)
     }
 
     const StateTax = (premium) => {
         const states = {
             'New Jersey': 0.05,
-            'Texas': 0.036,
-            'California': 0.036,
-            'Ohio': 0.05,
-            'Pennsylvania': 0.036,
-            'Arizona': 0.036,
-            'Virginia': 0.036,
-            'Alabama': 0.036,
-            'Oregon': 0.036,
-            'Connecticut': 0.04
-            }
+            Texas: 0.036,
+            California: 0.036,
+            Ohio: 0.05,
+            Pennsylvania: 0.036,
+            Arizona: 0.036,
+            Virginia: 0.036,
+            Alabama: 0.036,
+            Oregon: 0.036,
+            Connecticut: 0.04,
+        }
         const TaxFee = states[policy.policy.states]
-        return (premium*TaxFee).toFixed(2)
+        return (premium * TaxFee).toFixed(2)
     }
 
     const TotalPremium = () => {
-        return(policy.coverage.overallPremium+policy.coverage.personalInjuryProtectionPremium+policy.coverage.medicalPaymentsPremium+policy.coverage.underinsuredMotoristPremium+policy.coverage.uninsuredMotoristPremium)
+        return (
+            policy.coverage.overallPremium +
+            policy.coverage.personalInjuryProtectionPremium +
+            policy.coverage.medicalPaymentsPremium +
+            policy.coverage.underinsuredMotoristPremium +
+            policy.coverage.uninsuredMotoristPremium
+        )
     }
 
     const StateTaxNumber = () => {
         const states = {
             'New Jersey': 0.05,
-            'Texas': 0.036,
-            'California': 0.036,
-            'Ohio': 0.05,
-            'Pennsylvania': 0.036,
-            'Arizona': 0.036,
-            'Virginia': 0.036,
-            'Alabama': 0.036,
-            'Oregon': 0.036,
-            'Connecticut': 0.04
-            }
-        return ((states[policy.policy.states])*100).toFixed(2)
+            Texas: 0.036,
+            California: 0.036,
+            Ohio: 0.05,
+            Pennsylvania: 0.036,
+            Arizona: 0.036,
+            Virginia: 0.036,
+            Alabama: 0.036,
+            Oregon: 0.036,
+            Connecticut: 0.04,
+        }
+        return (states[policy.policy.states] * 100).toFixed(2)
     }
-  
+
     const Total = (premium) => {
-        console.log(premium, parseFloat(StateTax(premium)), parseFloat(SubFee(premium)))
-        return (parseFloat(premium)+parseFloat(StateTax(premium))+parseFloat(SubFee(premium))).toFixed(2)
+        console.log(
+            premium,
+            parseFloat(StateTax(premium)),
+            parseFloat(SubFee(premium))
+        )
+        return (
+            parseFloat(premium) +
+            parseFloat(StateTax(premium)) +
+            parseFloat(SubFee(premium))
+        ).toFixed(2)
     }
 
     return (
         <Document>
             <Page style={styles.body}>
-                <View style={{paddingTop: "300px"}}>
+                <View style={{ paddingTop: '300px' }}>
                     <Text style={styles.boldTitle}>
-                    SURYA INSURANCE COMPANY, INC. RRG{'\n'}{'\n'}
+                        SURYA INSURANCE COMPANY, INC. RRG{'\n'}
+                        {'\n'}
                     </Text>
                     <Text style={styles.textSmallCenter}>
-                    608 Fifth Ave Suite #901, New York, NY 10020{'\n'}
-                    Phone: 212-489-5300     Fax: 212-489-0420{'\n'}{'\n'}
+                        608 Fifth Ave Suite #901, New York, NY 10020{'\n'}
+                        Phone: 212-489-5300 Fax: 212-489-0420{'\n'}
+                        {'\n'}
                     </Text>
                     <Text style={styles.miniBoldTitle}>
-                    Rate Worksheet{'\n'}
+                        Rate Worksheet{'\n'}
                     </Text>
-                    
                 </View>
             </Page>
-                {policy.vehicles.values.map((value, index) => (
+            {policy.vehicles.values.map((value, index) => (
                 <Page style={styles.body}>
                     <View>
                         <View style={[styles.titleRow]}>
@@ -513,15 +528,11 @@ function RateCard({ policy }) {
                             <Text style={[styles.titleCellBold]}>
                                 Territory Code:
                             </Text>
-                            <Text style={[styles.titleCell]}>
-                                
-                            </Text>
+                            <Text style={[styles.titleCell]}></Text>
                             <Text style={[styles.titleCellBold]}>
                                 Zone Code:
                             </Text>
-                            <Text style={[styles.titleCell]}>
-                                
-                            </Text>
+                            <Text style={[styles.titleCell]}></Text>
                         </View>
                         <View style={[styles.titleRow]}>
                             <Text style={[styles.titleCellBold]}>
@@ -530,12 +541,8 @@ function RateCard({ policy }) {
                             <Text style={[styles.titleCell]}>
                                 {value.rateClassCode}
                             </Text>
-                            <Text style={[styles.titleCellBold]}>
-                                
-                            </Text>
-                            <Text style={[styles.titleCell]}>
-                                
-                            </Text>
+                            <Text style={[styles.titleCellBold]}></Text>
+                            <Text style={[styles.titleCell]}></Text>
                         </View>
                         <View style={[styles.titleRow]}>
                             <Text style={[styles.titleCellBold]}>
@@ -553,24 +560,21 @@ function RateCard({ policy }) {
                         </View>
                         <View>
                             <Text style={styles.boldTextCenterHelvetica}>
-                                {'\n'}{'\n'}
+                                {'\n'}
+                                {'\n'}
                                 Applicable Discounts and Surcharges
-                                {'\n'}{'\n'}{'\n'}
+                                {'\n'}
+                                {'\n'}
+                                {'\n'}
                             </Text>
                         </View>
                         <View style={[styles.row]}>
-                            <Text style={[styles.cellBoldSmall]}>
-                                SI. No
-                            </Text>
+                            <Text style={[styles.cellBoldSmall]}>SI. No</Text>
                             <Text style={[styles.cellBoldSmall]}>
                                 Coverage Type
                             </Text>
-                            <Text style={[styles.cellBoldSmall]}>
-                                Limits
-                            </Text>
-                            <Text style={[styles.cellBoldSmall]}>
-                                Formula
-                            </Text>
+                            <Text style={[styles.cellBoldSmall]}>Limits</Text>
+                            <Text style={[styles.cellBoldSmall]}>Formula</Text>
                             <Text style={[styles.cellBoldSmall]}>
                                 Formula Value
                             </Text>
@@ -583,17 +587,30 @@ function RateCard({ policy }) {
 
                         <View style={[styles.row]}>
                             <Text style={[styles.cell]}>
-                                {indexFormula({index})}
+                                {indexFormula({ index })}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {(policy.coverage.combinedSectionLimit !== "0") ? ("Combined Single Limit") : ("Split Limit")}
+                                {policy.coverage.combinedSectionLimit !== '0'
+                                    ? 'Combined Single Limit'
+                                    : 'Split Limit'}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {(policy.coverage.combinedSectionLimit !== "0") ? (policy.coverage.combinedSectionLimit) : ((policy.coverage.splitSectionBodyPerPerson).slice(0,2)/(policy.coverage.splitSectionBodyPerAccidentOptions).slice(0,2)/(policy.coverage.splitSectionPropertyDamageOptions).slice(0,2))}
+                                {policy.coverage.combinedSectionLimit !== '0'
+                                    ? policy.coverage.combinedSectionLimit
+                                    : policy.coverage.splitSectionBodyPerPerson.slice(
+                                          0,
+                                          2
+                                      ) /
+                                      policy.coverage.splitSectionBodyPerAccidentOptions.slice(
+                                          0,
+                                          2
+                                      ) /
+                                      policy.coverage.splitSectionPropertyDamageOptions.slice(
+                                          0,
+                                          2
+                                      )}
                             </Text>
-                            <Text style={[styles.cell]}>
-                                Base Rate
-                            </Text>
+                            <Text style={[styles.cell]}>Base Rate</Text>
                             <Text style={[styles.cell]}>
                                 {value.overallPremium}
                             </Text>
@@ -603,158 +620,206 @@ function RateCard({ policy }) {
                         </View>
 
                         {/* pIProtection */}
-                        { (policy.coverage.personalInjuryProtectionPremium !== "0") ? (
-                        <View style={[styles.row]}>
-                            <Text style={[styles.cell]}>
-                                {indexFormula({index})}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.pIProtectionSingleLimit !== "0") ? ("Personal Injury Protection CSL") : ("Personal Injury Protection Split Limit")}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.pIProtectionSingleLimit !== "0") ? (policy.coverage.pIProtectionSingleLimit) : ((policy.coverage.pIProtectionSplitBodyPerPerson).slice(0,2)/(policy.coverage.pIProtectionSplitBodyPerAccident).slice(0,2)/(policy.coverage.pIProtectionSplitPropertyDamage).slice(0,2))}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                Base Rate
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {value.personalInjuryProtectionPremium}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                ${value.personalInjuryProtectionPremium}.00
-                            </Text>
-                        </View>
-                        ) : (<></>)}
+                        {policy.coverage.personalInjuryProtectionPremium !==
+                        '0' ? (
+                            <View style={[styles.row]}>
+                                <Text style={[styles.cell]}>
+                                    {indexFormula({ index })}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage.pIProtectionSingleLimit !==
+                                    '0'
+                                        ? 'Personal Injury Protection CSL'
+                                        : 'Personal Injury Protection Split Limit'}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage.pIProtectionSingleLimit !==
+                                    '0'
+                                        ? policy.coverage
+                                              .pIProtectionSingleLimit
+                                        : policy.coverage.pIProtectionSplitBodyPerPerson.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.pIProtectionSplitBodyPerAccident.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.pIProtectionSplitPropertyDamage.slice(
+                                              0,
+                                              2
+                                          )}
+                                </Text>
+                                <Text style={[styles.cell]}>Base Rate</Text>
+                                <Text style={[styles.cell]}>
+                                    {value.personalInjuryProtectionPremium}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    ${value.personalInjuryProtectionPremium}.00
+                                </Text>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
 
                         {/* medical Payments */}
 
-                        { (policy.coverage.medicalPaymentsPremium !== "0") ? (
-                        <View style={[styles.row]}>
-                            <Text style={[styles.cell]}>
-                                {indexFormula({index})}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.medicalSingleLimit !== "0") ? ("Medical Payments CSL") : ("Medical Payments Split Limit")}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.medicalSingleLimit !== "0") ? (policy.coverage.medicalSingleLimit) : ((policy.coverage.medicalSplitBodyPerPerson).slice(0,2)/(policy.coverage.medicalSplitBodyPerAccident).slice(0,2)/(policy.coverage.medicalSplitPropertyDamage).slice(0,2))}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                Base Rate
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {value.medicalPaymentsPremium}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                ${value.medicalPaymentsPremium}.00
-                            </Text>
-                        </View>
-                        ) : (<></>)}
+                        {policy.coverage.medicalPaymentsPremium !== '0' ? (
+                            <View style={[styles.row]}>
+                                <Text style={[styles.cell]}>
+                                    {indexFormula({ index })}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage.medicalSingleLimit !== '0'
+                                        ? 'Medical Payments CSL'
+                                        : 'Medical Payments Split Limit'}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage.medicalSingleLimit !== '0'
+                                        ? policy.coverage.medicalSingleLimit
+                                        : policy.coverage.medicalSplitBodyPerPerson.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.medicalSplitBodyPerAccident.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.medicalSplitPropertyDamage.slice(
+                                              0,
+                                              2
+                                          )}
+                                </Text>
+                                <Text style={[styles.cell]}>Base Rate</Text>
+                                <Text style={[styles.cell]}>
+                                    {value.medicalPaymentsPremium}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    ${value.medicalPaymentsPremium}.00
+                                </Text>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
 
                         {/* Underinsured Motorist */}
 
-                        { (policy.coverage.underinsuredMotoristPremium !== "0") ? (
-                        <View style={[styles.row]}>
-                            <Text style={[styles.cell]}>
-                                {indexFormula({index})}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.underinsuredMotoristSingleLimit !== "0") ? ("Underinsured Motorist CSL") : ("Underinsured Motorist Split Limit")}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.underinsuredMotoristSingleLimit !== "0") ? (policy.coverage.underinsuredMotoristSingleLimit) : ((policy.coverage.underMotoristBodyPerPerson).slice(0,2)/(policy.coverage.underMotoristBodyPerAccident).slice(0,2)/(policy.coverage.underMotoristProperty).slice(0,2))}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                Base Rate
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {value.underinsuredMotoristPremium}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                ${value.underinsuredMotoristPremium}.00
-                            </Text>
-                        </View>
-                        ) : (<></>)}
+                        {policy.coverage.underinsuredMotoristPremium !== '0' ? (
+                            <View style={[styles.row]}>
+                                <Text style={[styles.cell]}>
+                                    {indexFormula({ index })}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage
+                                        .underinsuredMotoristSingleLimit !== '0'
+                                        ? 'Underinsured Motorist CSL'
+                                        : 'Underinsured Motorist Split Limit'}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage
+                                        .underinsuredMotoristSingleLimit !== '0'
+                                        ? policy.coverage
+                                              .underinsuredMotoristSingleLimit
+                                        : policy.coverage.underMotoristBodyPerPerson.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.underMotoristBodyPerAccident.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.underMotoristProperty.slice(
+                                              0,
+                                              2
+                                          )}
+                                </Text>
+                                <Text style={[styles.cell]}>Base Rate</Text>
+                                <Text style={[styles.cell]}>
+                                    {value.underinsuredMotoristPremium}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    ${value.underinsuredMotoristPremium}.00
+                                </Text>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
 
                         {/* Uninsured Motorist */}
 
-                        { (policy.coverage.uninsuredMotoristPremium !== "0") ? (
+                        {policy.coverage.uninsuredMotoristPremium !== '0' ? (
+                            <View style={[styles.row]}>
+                                <Text style={[styles.cell]}>
+                                    {indexFormula({ index })}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage
+                                        .uninsuredMotoristSingleLimit !== '0'
+                                        ? 'Uninsured Motorist CSL'
+                                        : 'Uninsured Motorist Split Limit'}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage
+                                        .uninsuredMotoristSingleLimit !== '0'
+                                        ? policy.coverage
+                                              .uninsuredMotoristSingleLimit
+                                        : policy.coverage.unMotoristBodyPerPerson.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.unMotoristBodyPerAccident.slice(
+                                              0,
+                                              2
+                                          ) /
+                                          policy.coverage.unMotoristProperty.slice(
+                                              0,
+                                              2
+                                          )}
+                                </Text>
+                                <Text style={[styles.cell]}>Base Rate</Text>
+                                <Text style={[styles.cell]}>
+                                    {value.uninsuredMotoristPremium}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    ${value.uninsuredMotoristPremium}.00
+                                </Text>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
                         <View style={[styles.row]}>
-                            <Text style={[styles.cell]}>
-                                {indexFormula({index})}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.uninsuredMotoristSingleLimit !== "0") ? ("Uninsured Motorist CSL") : ("Uninsured Motorist Split Limit")}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {(policy.coverage.uninsuredMotoristSingleLimit !== "0") ? (policy.coverage.uninsuredMotoristSingleLimit) : ((policy.coverage.unMotoristBodyPerPerson).slice(0,2)/(policy.coverage.unMotoristBodyPerAccident).slice(0,2)/(policy.coverage.unMotoristProperty).slice(0,2))}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                Base Rate
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                {value.uninsuredMotoristPremium}
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                ${value.uninsuredMotoristPremium}.00
-                            </Text>
-                        </View>
-                        ) : (<></>)}
-                        <View style={[styles.row]}>
-                            <Text style={[styles.cell]}>
-                            </Text>
-                            <Text style={[styles.cellBoldSmall]}>
-                                Total
-                            </Text>
-                            <Text style={[styles.cell]}>
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                -
-                            </Text>
-                            <Text style={[styles.cell]}>
-                                -
-                            </Text>
+                            <Text style={[styles.cell]}></Text>
+                            <Text style={[styles.cellBoldSmall]}>Total</Text>
+                            <Text style={[styles.cell]}></Text>
+                            <Text style={[styles.cell]}>-</Text>
+                            <Text style={[styles.cell]}>-</Text>
                             <Text style={[styles.cellBoldSmall]}>
                                 ${TotalPremium()}.00
                             </Text>
                         </View>
                     </View>
                 </Page>
-                ))}
-                <Page style={styles.body}>
-                    <View style={[styles.row]}>
-                        <Text style={[styles.cellBold]}>
-                            Total Premium
-                        </Text>
-                        <Text style={[styles.cellBold]}>
-                            $30.00
-                        </Text>
-                    </View>
-                    <View style={[styles.row]}>
-                        <Text style={[styles.cellBold]}>
-                            Subscription Fees 12%
-                        </Text>
-                        <Text style={[styles.cellBold]}>
-                            ${SubFee(30)}
-                        </Text>
-                    </View>
-                    <View style={[styles.row]}>
-                        <Text style={[styles.cellBold]}>
-                            Tax {StateTaxNumber()}%
-                        </Text>
-                        <Text style={[styles.cellBold]}>
-                            ${StateTax(30)}
-                        </Text>
-                    </View>
-                    <View style={[styles.row]}>
-                        <Text style={[styles.cellBold]}>
-                            Total 
-                        </Text>
-                        <Text style={[styles.cellBold]}>
-                            ${Total(30)}
-                        </Text>
-                    </View>
-                </Page>
+            ))}
+            <Page style={styles.body}>
+                <View style={[styles.row]}>
+                    <Text style={[styles.cellBold]}>Total Premium</Text>
+                    <Text style={[styles.cellBold]}>$30.00</Text>
+                </View>
+                <View style={[styles.row]}>
+                    <Text style={[styles.cellBold]}>Subscription Fees 12%</Text>
+                    <Text style={[styles.cellBold]}>${SubFee(30)}</Text>
+                </View>
+                <View style={[styles.row]}>
+                    <Text style={[styles.cellBold]}>
+                        Tax {StateTaxNumber()}%
+                    </Text>
+                    <Text style={[styles.cellBold]}>${StateTax(30)}</Text>
+                </View>
+                <View style={[styles.row]}>
+                    <Text style={[styles.cellBold]}>Total</Text>
+                    <Text style={[styles.cellBold]}>${Total(30)}</Text>
+                </View>
+            </Page>
         </Document>
     )
 }

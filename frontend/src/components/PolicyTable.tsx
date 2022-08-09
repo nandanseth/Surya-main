@@ -1,19 +1,13 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import { PolicyType } from '../shared'
 import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
 import { useHistory } from 'react-router-dom'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-const headers = [
-    'Name',
-    'Insured',
-    'Broker',
-    'Period',
-    'Gross Billed',
-    'Net Billed',
-]
+const headers = ['Policy Name', 'ID', 'Insured Name', 'Created At', 'Premium']
 
-const useSortableData = (items: Policy[], config = null) => {
+const useSortableData = (items: PolicyType[], config = null) => {
     const [sortConfig, setSortConfig] = useState<{
         key: string
         direction: string
@@ -61,12 +55,11 @@ const useSortableData = (items: Policy[], config = null) => {
     return { items: sortedItems, requestSort, sortConfig }
 }
 
-const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
+const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
     //const { items, requestSort, sortConfig } = useSortableData(policies);
     const items = policies
     const sortConfig = undefined
     const history = useHistory()
-    console.log(items, 'test')
 
     // add this in there to sort when getting the info
     const getAttribute = (name: string) => {
@@ -110,23 +103,24 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
                 </tr>
             </thead>
             <tbody>
-                {items.map(({ created_at, id }, i) => (
-                    //        <StyledLink to={`/policies/${encodeURI(name)}`} key={name}>
-                    <TR
-                        key={i}
-                        onClick={() => {
-                            //@ts-ignore
-                            history.push(`/policies/${encodeURI(id)}`)
-                        }}
-                    >
-                        <Name>{id}</Name>
-                        <TD>tbd</TD>
-                        <TD>{created_at}</TD>
-                        <TD>tbd</TD>
-                        <TD>tbd</TD>
-                        <TD>tbd</TD>
-                    </TR>
-                ))}
+                {items.map(
+                    ({ created_at, id, policy, insured, coverage }, i) => (
+                        //        <StyledLink to={`/policies/${encodeURI(name)}`} key={name}>
+                        <TR
+                            key={i}
+                            onClick={() => {
+                                //@ts-ignore
+                                history.push(`/policies/${encodeURI(id)}`)
+                            }}
+                        >
+                            <Name>{policy.name}</Name>
+                            <TD>{id}</TD>
+                            <TD>{`${insured.firstName} ${insured.lastName}`}</TD>
+                            <TD>{created_at}</TD>
+                            <TD>{coverage.overallPremium}</TD>
+                        </TR>
+                    )
+                )}
             </tbody>
         </Table>
     )
@@ -135,39 +129,5 @@ const PoliciesTable = ({ policies }: { policies: Policy[] }) => {
 const Name = styled(TD)`
     font-weight: 600;
 `
-
-interface IObjectKeys {
-    [key: string]: string | number | undefined
-}
-
-interface Policy extends IObjectKeys {
-    name: string
-    insured: string
-    broker: string
-    period: string
-    grossBilled: string
-    netBilled: string
-}
-
-export const makeSampleInfo = (num: number) => {
-    const sample: Policy[] = []
-    for (let i = 0; i <= num; i += 1) {
-        const name = `21PAT00083 - 0${i}`
-        const insured = `POCONO MOUNTAIN TRANSPORTATION, INC.${i}`
-        const broker = `QRSBRK${i}`
-        const period = '05/16/2021 - 05/16/2022'
-        const grossBilled = `$${(750.12 + i) * (i + 1)}`
-        const netBilled = `$${(750.12 + i) * (i + 1)}`
-        sample.push({
-            name,
-            insured,
-            broker,
-            period,
-            grossBilled,
-            netBilled,
-        })
-    }
-    return sample
-}
 
 export default PoliciesTable

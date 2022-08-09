@@ -3,140 +3,168 @@ const POLICY_API_LOCALHOST = `http://localhost:3001`;
 const POLICY_API_PROD = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com`;
 let host:string = RUNTIME_ENV === `production` ? POLICY_API_PROD : POLICY_API_LOCALHOST;
 
+
 export const urls = {
-    getAllPoliciesUrl:
-        `${host}/policies/`,
-    createPoliciesUrl:
-        `${host}/policies/`,
-    getPolicy: (id) =>
-        `${host}/policies/${id}/`,
-    updatePolicy: (id) =>
-        `${host}/policies/${id}/`,
+    getAllPoliciesUrl: `${host}/policies/`,
+    createPoliciesUrl: `${host}/policies/`,
+    getPolicy: (id) => `${host}/policies/${id}/`,
+    updatePolicy: (id) => `${host}/policies/${id}/`,
 }
 
 export const testPolicies = [
     {
-        insured: {
-            zipCode: null,
-            contactName: null,
-            state: null,
-            firstName: null,
-            licenseEff: [null],
-            suffix: null,
-            licenseNumber: null,
-            taxIdNumber: null,
-            email: null,
-            ssn: null,
-            licenseExp: null,
-            middleName: null,
-            contactEmail: null,
-            entity: null,
-            lastName: null,
-            corporationName: null,
-            city: null,
-            address1: null,
-            phoneNumber: null,
-            address2: null,
-            agent: null,
-            dob: null,
-            contactNumber: null,
-            licenseState: null,
-            isAddActive: false,
-            gender: null,
+        documents: {},
+        policy: {
+            expirationDate: null,
+            coverageTerm: 'Annual',
+            radius: 'Local',
+            sizeClass: 'Light Trucks ',
+            effectiveDate: null,
+            lineOfBusiness: 'Commercial',
+            agent: 'Quantum Risk Solutions (QRSBRK)',
+            underwritingCode: 'New Business',
+            states: 'Oregon',
+            classification: null,
+            policyLineItem: 'Owner Operator',
+            businessUseClass: 'Service',
+            policyCategory: 'Taxicabs and Limousines',
+            classCode: 'Non-fleet',
         },
+        created_at: 1651859369.697056,
+        coverage: {
+            overall: 'Combined Single Limit',
+            nonCslSingleAuto: 'Excluded',
+            nonCslSingleLimit: '35,000',
+            splitSectionAutoEntryOptions: 'Excluded',
+            deductableAutoEntry: null,
+            medicalSingleEntry: 'Excluded',
+            unMotoristProperty: '10,000',
+            cslProperty: '10,000',
+            nonCslSplitAuto: 'Excluded',
+            medicalSingleLimit: '35,000',
+            medicalPayments: 'Combined Single Limit',
+            medicalSplitBodyPerAccident: '25,000',
+            errors: null,
+            personalInjury: 'Combined Single Limit',
+            pIProtectionSplitPropertyDamage: '10,000',
+            nonCslBodyPerAccident: '25,000',
+            cslBodyPerPerson: '25,000',
+            uninsuredMotoristSingleAutoEntry: 'Excluded',
+            underMotoristBodyPerPerson: '25,000',
+            unMotoristAuto: 'Excluded',
+            uninsuredMotorist: 'Combined Single Limit',
+            csl: 'Yes',
+            underinsuredMotorist: 'Combined Single Limit',
+            cslBodyPerAccident: '25,000',
+            nonCslBodyPerPerson: '25,000',
+            splitSectionBodyPerPerson: '25,000',
+            pIProtectionSplitBodyPerPerson: '25,000',
+            uninsuredMotoristSingleLimit: '35,000',
+            nonCslProperty: '10,000',
+            splitSectionPropertyDamageOptions: '10,000',
+            underMotoristProperty: '10,000',
+            nonOwnedCSL: 'Yes',
+            splitSectionBodyPerAccidentOptions: '25,000',
+            deductable: null,
+            pIProtectionSingleEntry: 'Excluded',
+            pIProtectionSingleLimit: '35,000',
+            underinsuredMotoristSingleAutoEntry: 'Excluded',
+            pIProtectionSplitAutoEntry: 'Excluded',
+            pIProtectionSplitBodyPerAccident: '25,000',
+            medicalSplitBodyPerPerson: '25,000',
+            combinedSectionLimit: '35,000',
+            medicalSplitAutoEntry: 'Excluded',
+            underMotoristBodyPerAccident: '25,000',
+            unMotoristBodyPerPerson: '25,000',
+            unMotoristBodyPerAccident: '25,000',
+            cslSingleAuto: 'Excluded',
+            medicalSplitPropertyDamage: '10,000',
+            underinsuredMotoristSingleLimit: '35,000',
+            underMotoristAuto: 'Excluded',
+            cslSingleLimit: '35,000',
+            cslSplitAuto: 'Excluded',
+            deductableAmount: null,
+            combinedSectionEntry: 'Excluded',
+        },
+        insured: {
+            licenseState: 'Oregon',
+            gender: 'Male',
+            contactName: null,
+            lastName: null,
+            isAddActive: null,
+            suffix: null,
+            email: null,
+            middleName: null,
+            address1: null,
+            contactNumber: null,
+            address2: null,
+            corporationName: null,
+            licenseNumber: null,
+            ssn: null,
+            firstName: null,
+            entity: 'Individual',
+            dob: null,
+            state: 'Oregon',
+            zipCode: null,
+            licenseExp: null,
+            city: null,
+            taxIdNumber: null,
+            contactEmail: null,
+            agent: 'Quantum Risk Solutions (QRSBRK)',
+            phoneNumber: null,
+            licenseEff: null,
+        },
+        vehicles: {
+            values: [
+                {
+                    garageAddress2: null,
+                    seating: null,
+                    wheelChair: 'Yes',
+                    garageCountry: null,
+                    baseType: 'Black Car',
+                    garageCounty: null,
+                    rateClassCode: null,
+                    vin: null,
+                    zoneCode: null,
+                    garageState: 'Oregon',
+                    vehicleWeight: '0 - 10,000',
+                    state: 'Oregon',
+                    shl: null,
+                    vehicleType: 'Car Service',
+                    category: 'Taxicabs and Limousines',
+                    fuelType: 'Gas',
+                    classification: null,
+                    plateNumber: null,
+                    make: null,
+                    baseName: null,
+                    modelYear: null,
+                    garageCity: null,
+                    yesNo: 'No',
+                    model: null,
+                    baseNumber: null,
+                    baseExpDate: null,
+                    garageZipCode2: null,
+                    vehicleState: null,
+                    vehicleCategory: 'Taxicab - Owner-Driver',
+                    garageZipCode: null,
+                    garageAddress1: null,
+                },
+            ],
+        },
+        loss_history: null,
         drivers: {
             values: [
                 {
+                    states: 'Oregon',
+                    licenseNumber: null,
                     licenseExpDate: null,
                     driverName: null,
-                    licenseNumber: null,
                     licenseEffDate: null,
-                    states: null,
                 },
             ],
-            defaults: {
-                licenseEffDate: null,
-                states: null,
-                licenseExpDate: null,
-                licenseNumber: null,
-                driverName: null,
-            },
+            defaults: null,
         },
-        loss_history: null,
-        created_at: 1650414436.24517,
-        policy: {
-            effectiveDate: null,
-            sizeClass: null,
-            expirationDate: null,
-            underwritingCode: null,
-            classCode: null,
-            classification: null,
-            lineOfBusiness: null,
-            states: null,
-            policyCategory: null,
-            policyLineItem: null,
-            businessUseClass: null,
-            radius: null,
-            coverageTerm: null,
-            agent: null,
-        },
-        documents: {},
-        coverage: {
-            csl: null,
-            cslSplitAuto: null,
-            unMotoristBodyPerAccident: null,
-            pIProtectionSplitBodyPerPerson: null,
-            deductable: null,
-            medicalSingleEntry: null,
-            nonCslSingleAuto: null,
-            medicalSplitBodyPerPerson: null,
-            medicalPayments: null,
-            underMotoristBodyPerAccident: null,
-            cslSingleLimit: null,
-            splitSectionAutoEntryOptions: null,
-            nonCslProperty: null,
-            pIProtectionSplitBodyPerAccident: null,
-            splitSectionBodyPerPerson: null,
-            medicalSplitAutoEntry: null,
-            nonCslSingleLimit: null,
-            uninsuredMotoristSingleLimit: null,
-            splitSectionBodyPerAccidentOptions: null,
-            nonOwnedCSL: null,
-            uninsuredMotoristSingleAutoEntry: null,
-            deductableAmount: null,
-            underMotoristAuto: null,
-            cslSingleAuto: null,
-            underMotoristBodyPerPerson: null,
-            splitSectionPropertyDamageOptions: null,
-            personalInjury: null,
-            medicalSingleLimit: null,
-            deductableAutoEntry: null,
-            underinsuredMotorist: null,
-            combinedSectionLimit: null,
-            unMotoristProperty: null,
-            underMotoristProperty: null,
-            unMotoristAuto: null,
-            pIProtectionSplitPropertyDamage: null,
-            combinedSectionEntry: null,
-            nonCslSplitAuto: null,
-            unMotoristBodyPerPerson: null,
-            cslBodyPerPerson: null,
-            medicalSplitPropertyDamage: null,
-            cslProperty: null,
-            overall: null,
-            underinsuredMotoristSingleAutoEntry: null,
-            pIProtectionSingleLimit: null,
-            errors: [],
-            pIProtectionSplitAutoEntry: null,
-            medicalSplitBodyPerAccident: null,
-            pIProtectionSingleEntry: null,
-            uninsuredMotorist: null,
-            underinsuredMotoristSingleLimit: null,
-            cslBodyPerAccident: null,
-            nonCslBodyPerPerson: null,
-            nonCslBodyPerAccident: null,
-        },
-        id: '90b6c796-5d7d-4417-a2b5-b7ee725a639e',
+        id: '17264e26-fa53-48da-a450-c477cb456687',
     },
 ]
 
@@ -372,3 +400,278 @@ export const preSubmit = (store) => {
 }
 
 */
+
+export interface PolicyType {
+    policy: {
+        name: string
+        lineOfBusiness: string
+        agent: string
+        underwritingCode: string
+        states: string
+        classification: string
+        policyLineItem: string
+        businessUseClass: string
+        policyCategory: string
+        classCode: string
+    }
+    created_at: number
+    coverage: {
+        overall: string
+        nonCslSingleAuto: string
+        nonCslSingleLimit: string
+        splitSectionAutoEntryOptions: string
+        deductableAutoEntry: string
+        medicalSingleEntry: string
+        unMotoristProperty: string
+        cslProperty: string
+        nonCslSplitAuto: string
+        medicalSingleLimit: string
+        medicalPayments: string
+        medicalSplitBodyPerAccident: string
+        errors: string
+        personalInjury: string
+        pIProtectionSplitPropertyDamage: string
+        nonCslBodyPerAccident: string
+        cslBodyPerPerson: string
+        uninsuredMotoristSingleAutoEntry: string
+        underMotoristBodyPerPerson: string
+        unMotoristAuto: string
+        uninsuredMotorist: string
+        csl: string
+        underinsuredMotorist: string
+        cslBodyPerAccident: string
+        nonCslBodyPerPerson: string
+        splitSectionBodyPerPerson: string
+        pIProtectionSplitBodyPerPerson: string
+        uninsuredMotoristSingleLimit: string
+        nonCslProperty: string
+        splitSectionPropertyDamageOptions: string
+        underMotoristProperty: string
+        nonOwnedCSL: string
+        splitSectionBodyPerAccidentOptions: string
+        deductable: string
+        pIProtectionSingleEntry: string
+        pIProtectionSingleLimit: string
+        underinsuredMotoristSingleAutoEntry: string
+        pIProtectionSplitAutoEntry: string
+        pIProtectionSplitBodyPerAccident: string
+        medicalSplitBodyPerPerson: string
+        combinedSectionLimit: string
+        medicalSplitAutoEntry: string
+        underMotoristBodyPerAccident: string
+        unMotoristBodyPerPerson: string
+        unMotoristBodyPerAccident: string
+        cslSingleAuto: string
+        medicalSplitPropertyDamage: string
+        underinsuredMotoristSingleLimit: string
+        underMotoristAuto: string
+        cslSingleLimit: string
+        cslSplitAuto: string
+        deductableAmount: string
+        combinedSectionEntry: string
+        overallPremium: string
+        personalInjuryProtectionPremium: string
+        medicalPaymentsPremium: string
+        underinsuredMotoristPremium: string
+        uninsuredMotoristPremium: string
+        hiredCSLPremium: string
+        nonOwnedCSLPremium: string
+    }
+    insured: {
+        licenseState: string
+        gender: string
+        contactName: string
+        lastName: string
+        isAddActive: string
+        suffix: string
+        email: string
+        middleName: string
+        address1: string
+        contactNumber: string
+        address2: string
+        corporationName: string
+        licenseNumber: string
+        ssn: string
+        firstName: string
+        entity: string
+        dob: string
+        state: string
+        zipCode: string
+        licenseExp: string
+        city: string
+        taxIdNumber: string
+        contactEmail: string
+        agent: string
+        phoneNumber: string
+        licenseEff: string
+    }
+
+    vehicles: {
+        values: any[]
+    }
+    loss_history: any
+    drivers: any
+    id: string
+}
+
+export const testItem = {
+    documents: {},
+    policy: {
+        expirationDate: null,
+        coverageTerm: 'Annual',
+        radius: 'Local',
+        sizeClass: 'Light Trucks ',
+        effectiveDate: null,
+        lineOfBusiness: 'Commercial',
+        agent: 'Quantum Risk Solutions (QRSBRK)',
+        underwritingCode: 'New Business',
+        states: 'Oregon',
+        classification: null,
+        policyLineItem: 'Owner Operator',
+        businessUseClass: 'Service',
+        policyCategory: 'Taxicabs and Limousines',
+        classCode: 'Non-fleet',
+    },
+    created_at: 1651859369.697056,
+    coverage: {
+        overall: 'Combined Single Limit',
+        nonCslSingleAuto: 'Excluded',
+        nonCslSingleLimit: '35,000',
+        splitSectionAutoEntryOptions: 'Excluded',
+        deductableAutoEntry: null,
+        medicalSingleEntry: 'Excluded',
+        unMotoristProperty: '10,000',
+        cslProperty: '10,000',
+        nonCslSplitAuto: 'Excluded',
+        medicalSingleLimit: '35,000',
+        medicalPayments: 'Combined Single Limit',
+        medicalSplitBodyPerAccident: '25,000',
+        errors: null,
+        personalInjury: 'Combined Single Limit',
+        pIProtectionSplitPropertyDamage: '10,000',
+        nonCslBodyPerAccident: '25,000',
+        cslBodyPerPerson: '25,000',
+        uninsuredMotoristSingleAutoEntry: 'Excluded',
+        underMotoristBodyPerPerson: '25,000',
+        unMotoristAuto: 'Excluded',
+        uninsuredMotorist: 'Combined Single Limit',
+        csl: 'Yes',
+        underinsuredMotorist: 'Combined Single Limit',
+        cslBodyPerAccident: '25,000',
+        nonCslBodyPerPerson: '25,000',
+        splitSectionBodyPerPerson: '25,000',
+        pIProtectionSplitBodyPerPerson: '25,000',
+        uninsuredMotoristSingleLimit: '35,000',
+        nonCslProperty: '10,000',
+        splitSectionPropertyDamageOptions: '10,000',
+        underMotoristProperty: '10,000',
+        nonOwnedCSL: 'Yes',
+        splitSectionBodyPerAccidentOptions: '25,000',
+        deductable: null,
+        pIProtectionSingleEntry: 'Excluded',
+        pIProtectionSingleLimit: '35,000',
+        underinsuredMotoristSingleAutoEntry: 'Excluded',
+        pIProtectionSplitAutoEntry: 'Excluded',
+        pIProtectionSplitBodyPerAccident: '25,000',
+        medicalSplitBodyPerPerson: '25,000',
+        combinedSectionLimit: '35,000',
+        medicalSplitAutoEntry: 'Excluded',
+        underMotoristBodyPerAccident: '25,000',
+        unMotoristBodyPerPerson: '25,000',
+        unMotoristBodyPerAccident: '25,000',
+        cslSingleAuto: 'Excluded',
+        medicalSplitPropertyDamage: '10,000',
+        underinsuredMotoristSingleLimit: '35,000',
+        underMotoristAuto: 'Excluded',
+        cslSingleLimit: '35,000',
+        cslSplitAuto: 'Excluded',
+        deductableAmount: null,
+        combinedSectionEntry: 'Excluded',
+    },
+    insured: {
+        licenseState: 'Oregon',
+        gender: 'Male',
+        contactName: null,
+        lastName: null,
+        isAddActive: null,
+        suffix: null,
+        email: null,
+        middleName: null,
+        address1: null,
+        contactNumber: null,
+        address2: null,
+        corporationName: null,
+        licenseNumber: null,
+        ssn: null,
+        firstName: null,
+        entity: 'Individual',
+        dob: null,
+        state: 'Oregon',
+        zipCode: null,
+        licenseExp: null,
+        city: null,
+        taxIdNumber: null,
+        contactEmail: null,
+        agent: 'Quantum Risk Solutions (QRSBRK)',
+        phoneNumber: null,
+        licenseEff: null,
+    },
+    vehicles: {
+        values: [
+            {
+                garageAddress2: null,
+                seating: null,
+                wheelChair: 'Yes',
+                garageCountry: null,
+                baseType: 'Black Car',
+                garageCounty: null,
+                rateClassCode: null,
+                vin: null,
+                zoneCode: null,
+                garageState: 'Oregon',
+                vehicleWeight: '0 - 10,000',
+                state: 'Oregon',
+                shl: null,
+                vehicleType: 'Car Service',
+                category: 'Taxicabs and Limousines',
+                fuelType: 'Gas',
+                classification: null,
+                plateNumber: null,
+                make: null,
+                baseName: null,
+                modelYear: null,
+                garageCity: null,
+                yesNo: 'No',
+                model: null,
+                baseNumber: null,
+                baseExpDate: null,
+                garageZipCode2: null,
+                vehicleState: null,
+                vehicleCategory: 'Taxicab - Owner-Driver',
+                garageZipCode: null,
+                garageAddress1: null,
+            },
+        ],
+    },
+    loss_history: null,
+    drivers: {
+        values: [
+            {
+                states: 'Oregon',
+                licenseNumber: null,
+                licenseExpDate: null,
+                driverName: null,
+                licenseEffDate: null,
+            },
+            {
+              states: 'Oregon',
+              licenseNumber: null,
+              licenseExpDate: null,
+              driverName: 'Omari Powell',
+              licenseEffDate: null,
+          },
+        ],
+        defaults: null,
+    },
+    id: '17264e26-fa53-48da-a450-c477cb456687',
+}

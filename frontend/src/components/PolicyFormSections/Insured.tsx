@@ -45,7 +45,7 @@ const Insured = ({ store }) => {
                 placeholder="Agent"
                 value={values.agent}
             />
-            <Section>
+            {/* <Section>
                 <SectionTitle>{insuredText}</SectionTitle>
                 <ButtonFlex>
                     <SearchInsuredButton
@@ -63,8 +63,8 @@ const Insured = ({ store }) => {
                         {add}
                     </NewInsuredButton>
                 </ButtonFlex>
-            </Section>
-            {isAddActive && (
+            </Section> */}
+            {true && (
                 <Section>
                     <SectionTitle>New Insured</SectionTitle>
 

@@ -82,7 +82,10 @@ const VehicleOverlay = ({
                 <Sidebar>
                     <SideInfo text={vehicle.category} type="Category" />
                     <SideInfo text={vehicle.state} type="State" />
-                    <SideInfo text={vehicle.classification} type="Classification" />
+                    <SideInfo
+                        text={vehicle.classification}
+                        type="Classification"
+                    />
                     <SideInfo text={vehicle.seating} type="Seating" />
                     <SideInfo text={vehicle.plateNumber} type="Plate Number" />
                     <SideInfo text={vehicle.garageAddress1} type="Address" />
@@ -97,7 +100,9 @@ const VehicleOverlay = ({
                         </Frame>
 
                         <HeaderInfo>
-                            <CarTitle>{vehicle.make} {vehicle.model}</CarTitle>
+                            <CarTitle>
+                                {vehicle.make} {vehicle.model}
+                            </CarTitle>
                             <CarVin>{vehicle.vin}</CarVin>
                             <CarYear>{vehicle.modelYear}</CarYear>
                         </HeaderInfo>
@@ -106,26 +111,11 @@ const VehicleOverlay = ({
                     <StyledDiv>
                         <BasicInformation>Basic Information</BasicInformation>
                         <Items>
-                            <VehicleInfo
-                                info={vehicle.fleet}
-                                title="Fleet"
-                            />
-                            <VehicleInfo
-                                info={vehicle.fleet}
-                                title="Fleet"
-                            />
-                            <VehicleInfo
-                                info={vehicle.fleet}
-                                title="Fleet"
-                            />
-                            <VehicleInfo
-                                info={vehicle.fleet}
-                                title="Fleet"
-                            />
-                            <VehicleInfo
-                                info={vehicle.fleet}
-                                title="Fleet"
-                            />
+                            <VehicleInfo info={vehicle.fleet} title="Fleet" />
+                            <VehicleInfo info={vehicle.fleet} title="Fleet" />
+                            <VehicleInfo info={vehicle.fleet} title="Fleet" />
+                            <VehicleInfo info={vehicle.fleet} title="Fleet" />
+                            <VehicleInfo info={vehicle.fleet} title="Fleet" />
                         </Items>
                     </StyledDiv>
                     <Close

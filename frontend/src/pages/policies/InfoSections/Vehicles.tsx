@@ -1,8 +1,10 @@
-import { Section, Flex, Title, TileItem, SubSection } from '../shared'
-import VehicleOverlay from '../../../components/VehicleOverlay'
-import VehiclesTable, { makeSampleInfo } from '../../../components/VehiclesTable'
+import { Flex, Section, SubSection, TileItem, Title } from '../shared'
 import { GenericSearch } from '../../../components/Search'
 import React, { useEffect, useState } from 'react'
+import VehicleOverlay from '../../../components/VehicleOverlay'
+import VehiclesTable, {
+    makeSampleInfo,
+} from '../../../components/VehiclesTable'
 
 const Vehicles = ({ vehiclesList }) => {
     const [show, setShow] = useState(false)
@@ -12,7 +14,7 @@ const Vehicles = ({ vehiclesList }) => {
     }
     return (
         <>
-        {/* <Section>
+            {/* <Section>
             <Title>Vehicles (Total: {vehiclesList.length})</Title>
             {vehiclesList.map((vehicle, i) => {
                 const {
@@ -122,23 +124,30 @@ const Vehicles = ({ vehiclesList }) => {
                 )
             })}
         </Section> */}
-        <Section>
-            <Flex>
-                <Title>Vehicles (Total: {vehiclesList.length})</Title>
-                <GenericSearch
-                    placeholder="Search Vehicles"
-                    style={{ marginLeft: 'auto' }}
+            <Section>
+                <Flex>
+                    <Title>Vehicles (Total: {vehiclesList.length})</Title>
+                    <GenericSearch
+                        placeholder="Search Vehicles"
+                        style={{ marginLeft: 'auto' }}
+                    />
+                </Flex>
+                <VehiclesTable
+                    open={(id) => {
+                        setShow(true)
+                        setVehicleId(id)
+                    }}
+                    vehicles={vehiclesList}
                 />
-            </Flex>
-            <VehiclesTable
-                open={(id) => {
-                    setShow(true); setVehicleId(id);
-                }}
-                vehicles={vehiclesList}
-            />
-            {show && <VehicleOverlay vehicle={vehiclesList[vehicleId]} close={close} show={show} />}
-        </Section>
-    </>
+                {show && (
+                    <VehicleOverlay
+                        close={close}
+                        show={show}
+                        vehicle={vehiclesList[vehicleId]}
+                    />
+                )}
+            </Section>
+        </>
     )
 }
 

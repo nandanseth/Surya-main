@@ -9,7 +9,6 @@ import {
 } from '@react-pdf/renderer'
 import { Form } from '../../styles/styles'
 import documentOptions from '../../utils/documents/documents'
-import React from 'react'
 import styled from 'styled-components'
 import SuryaSelect from '../PolicyFormSelect'
 
@@ -36,25 +35,25 @@ const DocumentsSection = ({ store }) => {
 
     // Create Document Component
 
-    const makeDoc = (document) => {
-        return (
-            <Document>
-                <Page size="A4" style={styles.page}>
-                    <View style={styles.section}>
-                        <Text>Document #1</Text>
-                    </View>
-                    <View style={styles.section}>
-                        <Text>Stuff about me #2</Text>
-                    </View>
-                    <View style={styles.section}>
-                        <Text>44{documents?.value} </Text>
-                    </View>
-                </Page>
-            </Document>
-        )
-    }
+    // const makeDoc = (document) => {
+    //     return (
+    //         <Document>
+    //             <Page size="A4" style={styles.page}>
+    //                 <View style={styles.section}>
+    //                     <Text>Document #1</Text>
+    //                 </View>
+    //                 <View style={styles.section}>
+    //                     <Text>Stuff about me #2</Text>
+    //                 </View>
+    //                 <View style={styles.section}>
+    //                     <Text>44{documents?.value} </Text>
+    //                 </View>
+    //             </Page>
+    //         </Document>
+    //     )
+    // }
 
-    console.log(documents, documents?.value)
+    // const makeDoc = () => {}
 
     return (
         <div>
@@ -73,7 +72,7 @@ const DocumentsSection = ({ store }) => {
                 <Flex>
                     <Upload> Upload </Upload>
                 </Flex>
-                <Upload>
+                {/* <Upload>
                     <PDFDownloadLink
                         document={makeDoc(document)}
                         fileName="example.pdf"
@@ -81,7 +80,7 @@ const DocumentsSection = ({ store }) => {
                     >
                         Sample Download (Try me)
                     </PDFDownloadLink>
-                </Upload>
+                </Upload> */}
             </Section>
         </div>
     )

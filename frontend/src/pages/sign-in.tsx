@@ -1,5 +1,4 @@
 import { Block, Colors, ColorsCSS } from '../styles/styles'
-import { Helmet } from 'react-helmet'
 import { useHistory } from 'react-router-dom'
 import Input from '../components/Input'
 import React, { useState } from 'react'
@@ -42,11 +41,11 @@ const SignIn = () => {
     const signInText = 'SIGN IN'
     return (
         <StyledBlock>
-            <Helmet>
+            <head>
                 <title>Surya Sign In</title>
                 <meta content="Surya admin sign in" name="description" />
                 <link href="/favicon.ico" rel="icon" />
-            </Helmet>
+            </head>
 
             <Main>
                 <LogoDiv>

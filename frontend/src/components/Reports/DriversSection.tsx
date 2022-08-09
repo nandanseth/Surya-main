@@ -1,16 +1,16 @@
 import { Container, useStyles } from './shared'
-import Accordion from '@material-ui/core/Accordion'
-import AccordionDetails from '@material-ui/core/AccordionDetails'
-import AccordionSummary from '@material-ui/core/AccordionSummary'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Checkbox from '../Form/Checkbox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Typography from '@mui/material/Typography'
 
-const DriversSection = ({ drivers, setDrivers }: any) => {
+const DriversSection = ({ drivers, setDrivers, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
-            <Accordion>
+            <Accordion {...rest}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     expandIcon={<ExpandMoreIcon />}
@@ -23,7 +23,7 @@ const DriversSection = ({ drivers, setDrivers }: any) => {
                         <Checkbox
                             checked={drivers.driverName}
                             labelText="Name"
-                            onClick={() => {
+                            onChange={() => {
                                 setDrivers({
                                     ...drivers,
                                     driverName: !drivers.driverName,
@@ -34,7 +34,7 @@ const DriversSection = ({ drivers, setDrivers }: any) => {
                         <Checkbox
                             checked={drivers.states}
                             labelText="State"
-                            onClick={() => {
+                            onChange={() => {
                                 setDrivers({
                                     ...drivers,
                                     states: !drivers.states,
@@ -45,7 +45,7 @@ const DriversSection = ({ drivers, setDrivers }: any) => {
                         <Checkbox
                             checked={drivers.licenseNumber}
                             labelText="License Number"
-                            onClick={() => {
+                            onChange={() => {
                                 setDrivers({
                                     ...drivers,
                                     licenseNumber: !drivers.licenseNumber,
@@ -56,7 +56,7 @@ const DriversSection = ({ drivers, setDrivers }: any) => {
                         <Checkbox
                             checked={drivers.licenseEffDate}
                             labelText="Effective Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setDrivers({
                                     ...drivers,
                                     licenseEffDate: !drivers.licenseEffDate,
@@ -67,7 +67,7 @@ const DriversSection = ({ drivers, setDrivers }: any) => {
                         <Checkbox
                             checked={drivers.licenseExpDate}
                             labelText="Expiration Date"
-                            onClick={() => {
+                            onChange={() => {
                                 setDrivers({
                                     ...drivers,
                                     licenseExpDate: !drivers.licenseExpDate,

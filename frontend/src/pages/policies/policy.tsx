@@ -102,7 +102,6 @@ const Policy = () => {
         const { policy, coverage, insured, vehicles, loss_history, drivers } =
             data
 
-        
         const PolicyRender = <PolicySection policy={policy} />
         const CoverageRender = <CoverageSection coverage={coverage} />
         const InsuredRender = <InsuredSection insured={insured} />
@@ -196,6 +195,7 @@ const Wrapper = styled.div`
 
 const Div = styled.div`
     width: 100%;
+    margin-top: 12px;
 `
 
 const Col = styled.div`

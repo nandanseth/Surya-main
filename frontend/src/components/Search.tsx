@@ -1,26 +1,30 @@
 import { Colors, transitionCss } from '../styles/styles'
 import searchIcon from '../images/search-icon.png'
 import styled from 'styled-components'
-import useSearchPolicies from '../hooks/useSearchPolicies'
 
 const Search = ({
     value,
     placeholder,
     style,
+    onChange,
+    clear,
 }: {
     value?: any
     placeholder?: string
     style?: any
+    onChange: any
+    clear: any
 }) => {
-    const { onChange, inputValue } = useSearchPolicies(value)
+    const isActive = value.length >= 1
     return (
         <Container style={{ ...style }}>
             <Icon src="search-icon.png" />
             <SearchInput
                 onChange={onChange}
                 placeholder={placeholder}
-                value={inputValue}
+                value={value}
             />
+            {isActive && <Exit onClick={clear}>X</Exit>}
         </Container>
     )
 }
@@ -59,8 +63,7 @@ const Icon = styled.img`
 const Container = styled.div`
     position: relative;
     width: auto;
-    max-width: 300px;
-    min-width: 270px;
+    margin-left: auto;
 `
 
 const SearchInput = styled.input`
@@ -68,27 +71,50 @@ const SearchInput = styled.input`
     font: inherit;
     width: 100%;
     font-size: 18px;
-    background: ${Colors.paleBlue};
+    background: #f7f7f7;
     mix-blend-mode: normal;
-    border: 1px solid #97979700;
+    border: 2px solid #97979700;
     box-sizing: border-box;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 8px;
     padding: 8px;
+    padding-right: 40px;
     outline: none;
     padding-left: 26px;
+
+    border: solid 2px #0000000d;
+    color: ${Colors.black};
+    font-weight: 500;
+
     ${transitionCss}
 
-    :focus {
-        color: black;
+    &:focus {
+        ${Colors.electricBlue};
         background: white;
-        border: solid 1px ${Colors.purple};
+        border: solid 2px ${Colors.electricBlue};
         box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05);
     }
 
     ::placeholder {
-        color: rgba(0, 0, 0, 0.21);
-        font-weight: 300;
+        color: rgba(0, 0, 0, 0.31);
+        font-weight: 400;
     }
+`
+
+const Exit = styled.div`
+    position: absolute;
+    top: 10px;
+    right: 6px;
+    height: 24px;
+    width: 24px;
+    border-radius: 32px;
+    background: #0000001c;
+    color: #00000052;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
 `
 
 export default Search

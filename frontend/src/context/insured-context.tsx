@@ -37,7 +37,7 @@ export const yesNoOptions = [
     { label: 'No', value: 'No' },
 ]
 
-const policyInitialState = {
+export const policyInitialState = {
     name: '',
     policyNum: null,
     states: states[0],
@@ -56,7 +56,7 @@ const policyInitialState = {
     sizeClass: sizeClasses[0],
 }
 
-const insuredInitialState = {
+export const insuredInitialState = {
     agent: agent[0],
     entity: entityType[0],
     firstName: null,
@@ -84,7 +84,7 @@ const insuredInitialState = {
     taxIdNumber: null,
 }
 
-const driversInitialState = {
+export const driversInitialState = {
     driverName: null,
     states: states[0],
     licenseNumber: null,
@@ -92,7 +92,7 @@ const driversInitialState = {
     licenseExpDate: null,
 }
 
-const lossHistoryState = {
+export const lossHistoryState = {
     accidentDate: null,
     reportedDate: null,
     claimNumber: null,
@@ -110,7 +110,7 @@ const lossHistoryState = {
     isPolicyTransferred: yesNoOptions[0].value,
 }
 
-const coverageState = {
+export const coverageState = {
     overall: 'Combined Single Limit',
     deductable: null,
     deductableAmount: null,
@@ -176,7 +176,7 @@ const coverageState = {
 const defaultValue = 'No'
 const yesNoValues = ['Yes', defaultValue]
 
-const vehicleState = {
+export const vehicleState = {
     yesNo: defaultValue,
     category: vehicleCategoryOptions[0].value,
     classification: null,
@@ -211,12 +211,12 @@ const vehicleState = {
     garageCountry: null,
 }
 
-const reinsuranceState = {
+export const reinsuranceState = {
     reinsuranceType: reinsurer[0],
     resInsAmount: null,
 }
 
-const paymentState = {
+export const paymentState = {
     payment: '100% DEPOSIT',
 }
 

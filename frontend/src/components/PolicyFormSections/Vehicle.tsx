@@ -4,7 +4,6 @@ import { statesOptions } from '../../utils/policies'
 import fuelTypeOptions from '../../utils/vehicle/fuelType'
 import getWeightSelects from '../../utils/vehicle/getWeightSelects'
 import Input from '../PolicyFormInput'
-import React from 'react'
 import styled from 'styled-components'
 import SuryaSelect from '../PolicyFormSelect'
 import vehicleCategoryOptions, {
@@ -33,7 +32,7 @@ const VehicleSection = ({ store }) => {
     }
 
     const removeFields = (i) => {
-        if (values.length <= 0) {
+        if (values.length <= 1) {
             setValues([{ ...defaults }])
             return
         }
@@ -58,12 +57,6 @@ const VehicleSection = ({ store }) => {
             copy[num][propertyName] = e.target.value
             setValues(copy)
         }
-
-        console.log(
-            optionsMap[values[num].category],
-            '123å',
-            values[num].category
-        )
 
         return (
             <div>
@@ -438,7 +431,7 @@ const VehicleSection = ({ store }) => {
             <div>
                 {values.map((key, i) => {
                     const toReturn = DefaultFields({ num: i })
-                    return <React.Fragment key={i}>{toReturn}</React.Fragment>
+                    return <StyledSection key={i}>{toReturn}</StyledSection>
                 })}
             </div>
         </Wrapper>
@@ -471,6 +464,12 @@ const RadioGroup = ({
         ))}
     </Flex>
 )
+
+const StyledSection = styled.div`
+    border-bottom: solid 1px #00000017;
+    margin-bottom: 42px;
+    padding-bottom: 24px;
+`
 
 const RadioLabel = styled.label`
     font: inherit;
