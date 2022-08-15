@@ -31,6 +31,16 @@ install:
 	@echo -e "Installing Python dependencies..."
 	pip install -r requirements.txt
 
+.PHONY: install_dev
+install_dev:
+	@if [[ -z $$VIRTUAL_ENV ]]; then \
+	    echo -e "No virtual env has been activated..."; \
+	    exit 1; \
+	fi;
+
+	@echo -e "Installing Python dependencies..."
+	pip install -r dev_requirements.txt
+
 .PHONY: build
 build:
 	$(MAKE) install

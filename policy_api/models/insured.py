@@ -1,0 +1,31 @@
+from pydantic import BaseModel
+from typing import Optional
+
+
+class Insured(BaseModel):
+    agent: Optional[str]
+    entity: Optional[str]
+    firstName: Optional[str]
+    lastName: Optional[str]
+    middleName: Optional[str]
+    dob: Optional[str]
+    suffix: Optional[str]
+    gender: Optional[str]
+    ssn: Optional[str]
+    address1: Optional[str]
+    address2: Optional[str]
+    city: Optional[str]
+    state: Optional[str]
+    zipCode: Optional[str]
+    email: Optional[str]
+    phoneNumber: Optional[str]
+    licenseState: Optional[str]
+    licenseNumber: Optional[str]
+    licenseEff: Optional[str]
+    licenseExp: Optional[str]
+    contactName: Optional[str]
+    contactNumber: Optional[str]
+    contactEmail: Optional[str]
+    corporationName: Optional[str]
+    taxIdNumber: Optional[str]
+    isAddActive: Optional[bool]
