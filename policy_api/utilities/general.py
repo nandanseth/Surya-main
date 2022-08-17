@@ -13,7 +13,6 @@ def datetime_with_nanosecs_to_str(v: DatetimeWithNanoseconds):
     return f"{v.year},{v.month},{v.day},{v.hour}, {v.minute}, {v.second}, {v.tzinfo}"
 
 
-
 def get_dict_updates(old: dict, new: dict) -> dict:
     """Determines the updates made to a dictionary.
 
