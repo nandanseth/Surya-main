@@ -152,18 +152,19 @@ def add_endorsement_to_db(policy_id: str, old_policy: dict, new_policy: dict):
     # Verify that a policy exists with the policy ID supplied by the caller.
     policy = db.collection("policies").document(policy_id)
     if policy:
+        endorsement_uuid = str(uuid.uuid4())
         endorsement = {
+            "id": endorsement_uuid,
+            "policy_id": policy_id,
+            "created_at": datetime.utcnow(),
             "old": old_policy,
             "new": new_policy,
             "changes": get_dict_updates(old_policy, new_policy),
         }
         endorsements = db.collection("endorsements")
-        endorsement_uuid = str(uuid.uuid4())
 
         # Add an endorsement to the endorsements collection.
-        endorsements.document(endorsement_uuid).set(
-            {**endorsement, "id": endorsement_uuid, "created_at": datetime.utcnow()}
-        )
+        endorsements.document(endorsement_uuid).set({**endorsement})
 
 
 @app.put("/policies/{policy_id}/", response_model=models.Policy)
@@ -173,7 +174,8 @@ def update_policy(policy_id: str, policy_payload: models.Policy):
 
     if policy.exists:
         try:
-            policy.update(policy_payload)
+            policy.update({**policy_payload, "last_modified": datetime.utcnow()})
+            add_endorsement_to_db(policy_id, policy, policy_payload)
             return JSONResponse(
                 content={"updated": True, "policy_id": policy_id, "error": None}
             )
@@ -186,3 +188,27 @@ def update_policy(policy_id: str, policy_payload: models.Policy):
                     "error": "There was a problem updating the policy. Check the payload submitted.",
                 }
             )
+
+
+@app.get("/policies/{policy_id}/endorsements")
+def get_endorsements(policy_id: str, policy_payload: models.Policy):
+    endorsements_ref = db.collection("endorsements").where("policy_id", "==", policy_id)
+    endorsements = endorsements_ref.order_by("created_at")
+
+    # TODO Finish pagination; the responses are going to be huge. Will cause FE hanging.
+    # per_page_limit = 50
+    # init_q = endorsements_ref.order_by("created_at").limit(per_page_limit)
+    # endorsements = init_q.stream()
+    # last_endorsement = list(endorsements)[-1]
+
+    endorsement_objects = []
+
+    for e in endorsements:
+        endorsement_objects.append(e)
+
+    return JSONResponse(
+        content={
+            "message": "Endorsements retrieved successfully",
+            "endorsements": endorsement_objects,
+        }
+    )
