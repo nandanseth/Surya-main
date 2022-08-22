@@ -82,7 +82,7 @@ def get_policy(policy_id: str):
         policy["id"] = policy_id
         policy["created_at"] = policy["created_at"].timestamp()
         return JSONResponse(content=policy)
-    return JSONResponse(content={"error": "Document not found."})
+    return JSONResponse(content={"success": False, "error": "Document not found."})
 
 
 @app.post("/policies/", response_model=models.Policy)
@@ -122,6 +122,7 @@ def create_policy(policy_payload: models.Policy):
     if created_policy:
         return JSONResponse(
             content={
+                "success": True,
                 "created": True,
                 "policy_id": policy_uuid,
                 "error": None,
@@ -130,6 +131,7 @@ def create_policy(policy_payload: models.Policy):
         )
     return JSONResponse(
         content={
+            "success": False,
             "created": False,
             "policy_id": None,
             "payload": policy_payload,
@@ -139,7 +141,7 @@ def create_policy(policy_payload: models.Policy):
 
 
 def add_endorsement_to_db(policy_id: str, old_policy: dict, new_policy: dict):
-    """Creates an endorsement object in the endorsements collection within Firestore.
+    """Creates an endorsement document in the endorsements collection within Firestore.
     This function assumes the policy is being updated entirely. The whole new policy
     dictionary is required for this function to work as intended.
 
@@ -177,11 +179,17 @@ def update_policy(policy_id: str, policy_payload: models.Policy):
             policy.update({**policy_payload, "last_modified": datetime.utcnow()})
             add_endorsement_to_db(policy_id, policy, policy_payload)
             return JSONResponse(
-                content={"updated": True, "policy_id": policy_id, "error": None}
+                content={
+                    "success": True,
+                    "updated": True,
+                    "policy_id": policy_id,
+                    "error": None
+                }
             )
         except Exception as e:
             return JSONResponse(
                 content={
+                    "success": False,
                     "created": False,
                     "policy_id": None,
                     "payload_was": policy_payload,
@@ -208,7 +216,36 @@ def get_endorsements(policy_id: str, policy_payload: models.Policy):
 
     return JSONResponse(
         content={
+            "success": True,
             "message": "Endorsements retrieved successfully",
             "endorsements": endorsement_objects,
+        }
+    )
+
+
+@app.delete("/policies/{policy_id}/")
+def delete_policies(policy_id: str):
+    """Hard-deletes (permanent) a policy document.
+
+    Args:
+        policy_id (str): the UUID of a policy document
+
+    Returns:
+            JSONResponse: A success message in JSON format if the policy was deleted.
+    """
+    try:
+        db.collection(u'policies').document(policy_id).delete()
+    except Exception as e:
+        return JSONResponse(
+            content={
+                "success": False,
+                "message": f"Server error. Endorsement ({policy_id}) was not deleted."
+            }
+        )
+
+    return JSONResponse(
+        content={
+            "success": False,
+            "message": f"Endorsement ({policy_id}) was deleted successfully."
         }
     )
