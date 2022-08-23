@@ -10,12 +10,12 @@ manual_scaling:
   instances: 1
 resources:
   cpu: 2
-  memory_gb: 3.0
-  disk_size_gb: 15
+  memory_gb: 4.0
+  disk_size_gb: 30
   volumes:
   - name: ramdisk1
     volume_type: tmpfs
-    size_gb: 1.0
+    size_gb: 2.0
 handlers:
     - url: /.*
       secure: always
