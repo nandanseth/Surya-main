@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from . import Insured, Drivers, LossHistory, Coverage, Vehicles, Payment
 
 import models
 
@@ -22,11 +23,11 @@ class PolicyMeta(BaseModel):
 
 
 class Policy(BaseModel):
-    policy: Optional[models.PolicyMeta]
-    insured: Optional[models.Insured]
-    drivers: Optional[models.Drivers]
-    loss_history: Optional[models.LossHistory]
+    policy: Optional[PolicyMeta]
+    insured: Optional[Insured]
+    drivers: Optional[Drivers]
+    loss_history: Optional[LossHistory]
     documents: Optional[dict]
-    coverage: Optional[models.Coverage]
-    vehicles: Optional[models.Vehicles]
-    payment: Optional[models.Payment]
+    coverage: Optional[Coverage]
+    vehicles: Optional[Vehicles]
+    payment: Optional[Payment]
