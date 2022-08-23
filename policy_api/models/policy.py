@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 from typing import Optional
-from . import Insured, Drivers, LossHistory, Coverage, Vehicles, Payment
-
-import models
-
+from models.insured import Insured
+from models.drivers import Drivers
+from models.loss_history import LossHistory
+from models.coverage import Coverage
+from models.vehicles import Vehicles
+from models.payment import Payment
 
 class PolicyMeta(BaseModel):
     states: Optional[str]
