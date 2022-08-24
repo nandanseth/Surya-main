@@ -1,5 +1,5 @@
 steps:
-    - name: 'node:18'
+    - name: 'node:14'
       entrypoint: 'yarn'
       args: ['build', '--verbose']
       dir: 'frontend'
