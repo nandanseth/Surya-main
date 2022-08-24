@@ -55,6 +55,12 @@
                 "ignoreMemberSort": false,
                 "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
             }
-        ]
+        ],
+        "no-restricted-imports": [
+            "error",
+            {
+              "patterns": ["@mui/*/*/*", "!@mui/material/test-utils/*"]
+            }
+          ]
     }
 }
