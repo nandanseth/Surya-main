@@ -5,7 +5,7 @@ const host: string =
     RUNTIME_ENV === `production` ? POLICY_API_PROD : POLICY_API_LOCALHOST
 
 console.log(`NODE_ENV: ${RUNTIME_ENV}`)
-
+console.log('TESTTTTT');
 export const urls = {
     getAllPoliciesUrl: `${host}/policies/`,
     createPoliciesUrl: `${host}/policies/`,
