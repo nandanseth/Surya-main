@@ -1,7 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
-import makeStyles from '@mui/styles/makeStyles'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 const headers = ['Vin', 'Make', 'Model', 'Model Year', 'Seating', 'Net Billed']

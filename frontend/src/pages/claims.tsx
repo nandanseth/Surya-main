@@ -1,6 +1,5 @@
 import { Header, Title } from '../styles/styles'
 import Layout from '../utils/withLayout'
-import React from 'react'
 import styled from 'styled-components'
 
 const title = 'Claims'

@@ -10,7 +10,7 @@ const styles = {
         flexFlow: 'row wrap',
     } as CSSProperties,
 }
-const Overlay = ({ show, children, style = {} }) => {
+const Overlay = ({ show, children = null, style = {} }) => {
     const [render, setRender] = useState(show)
 
     useEffect(() => {

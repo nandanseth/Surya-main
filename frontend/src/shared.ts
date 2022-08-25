@@ -1,15 +1,17 @@
-const RUNTIME_ENV = process.env.NODE_ENV;
-const POLICY_API_LOCALHOST = `http://localhost:3001`;
-const POLICY_API_PROD = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com`;
-let host:string = RUNTIME_ENV === `production` ? POLICY_API_PROD : POLICY_API_LOCALHOST;
+const RUNTIME_ENV = process.env.NODE_ENV
+const POLICY_API_LOCALHOST = `http://localhost:3001`
+const POLICY_API_PROD = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com`
+const host: string =
+    RUNTIME_ENV === `production` ? POLICY_API_PROD : POLICY_API_LOCALHOST
 
-console.log("NODE_ENV: " + RUNTIME_ENV);
+console.log(`NODE_ENV: ${RUNTIME_ENV}`)
 
 export const urls = {
     getAllPoliciesUrl: `${host}/policies/`,
     createPoliciesUrl: `${host}/policies/`,
     getPolicy: (id) => `${host}/policies/${id}/`,
     updatePolicy: (id) => `${host}/policies/${id}/`,
+    getEndorsments: (id) => `${host}/policies/${id}/endorsements/`,
 }
 
 export const testPolicies = [
@@ -665,12 +667,12 @@ export const testItem = {
                 licenseEffDate: null,
             },
             {
-              states: 'Oregon',
-              licenseNumber: null,
-              licenseExpDate: null,
-              driverName: 'Omari Powell',
-              licenseEffDate: null,
-          },
+                states: 'Oregon',
+                licenseNumber: null,
+                licenseExpDate: null,
+                driverName: 'Omari Powell',
+                licenseEffDate: null,
+            },
         ],
         defaults: null,
     },

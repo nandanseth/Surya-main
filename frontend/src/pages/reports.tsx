@@ -327,45 +327,45 @@ const Home = () => {
                             </div>
                         </Header>
                         <ReportsMain>
-                                <Accordions>
-                                    <Explainer>select fields</Explainer>
+                            <Accordions>
+                                <Explainer>select fields</Explainer>
 
-                                    <PolicySection
-                                        policy={policy}
-                                        setPolicy={setPolicy}
-                                    />
-                                    <DriversSection
-                                        disabled={driversDisabled}
-                                        drivers={drivers}
-                                        setDrivers={handleDrivers}
-                                    />
-                                    <LossHistorySection
-                                        disabled={lossDisabled}
-                                        lossHistory={lossHistory}
-                                        setLossHistory={handleLoss}
-                                    />
-                                    <InsuredSection
-                                        insured={insured}
-                                        setInsured={setInsured}
-                                    />
-                                    <PaymentsSection
-                                        payments={payments}
-                                        setPayments={setPayments}
-                                    />
-                                    <VehicleSection
-                                        disabled={vehiclesDisabled}
-                                        setVehicles={handleVehicles}
-                                        vehicles={vehicles}
-                                    />
-                                    <CoverageSection
-                                        coverage={coverage}
-                                        setCoverage={setCoverage}
-                                    />
-                                    <ReinsuranceSection
-                                        reinsurance={reinsurance}
-                                        setReinsurance={setReinsurance}
-                                    />
-                                </Accordions>
+                                <PolicySection
+                                    policy={policy}
+                                    setPolicy={setPolicy}
+                                />
+                                <DriversSection
+                                    disabled={driversDisabled}
+                                    drivers={drivers}
+                                    setDrivers={handleDrivers}
+                                />
+                                <LossHistorySection
+                                    disabled={lossDisabled}
+                                    lossHistory={lossHistory}
+                                    setLossHistory={handleLoss}
+                                />
+                                <InsuredSection
+                                    insured={insured}
+                                    setInsured={setInsured}
+                                />
+                                <PaymentsSection
+                                    payments={payments}
+                                    setPayments={setPayments}
+                                />
+                                <VehicleSection
+                                    disabled={vehiclesDisabled}
+                                    setVehicles={handleVehicles}
+                                    vehicles={vehicles}
+                                />
+                                <CoverageSection
+                                    coverage={coverage}
+                                    setCoverage={setCoverage}
+                                />
+                                <ReinsuranceSection
+                                    reinsurance={reinsurance}
+                                    setReinsurance={setReinsurance}
+                                />
+                            </Accordions>
                             <Right>
                                 <Explainer>select filters</Explainer>
 

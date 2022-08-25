@@ -6,7 +6,7 @@ const MenuItem = ({ item, active, onClick }) => {
     const { name, to } = item
     return (
         <NavItem
-            active={active === name}
+            active={active?.to === to}
             onClick={() => {
                 onClick(item)
             }}
@@ -18,10 +18,11 @@ const MenuItem = ({ item, active, onClick }) => {
 
 const NavItem = styled.div<{ active: boolean }>`
     padding: 2px 16px;
-    background: ${({ active }) => (active ? Colors.menu : 'transparent')};
+    background: ${({ active }) => (active ? Colors.lightBlack : 'transparent')};
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 8px;
 `
 
 const StyledLink = styled(Link)`

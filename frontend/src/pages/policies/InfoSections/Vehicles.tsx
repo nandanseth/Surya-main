@@ -1,10 +1,8 @@
-import { Flex, Section, SubSection, TileItem, Title } from '../shared'
+import { Flex, Section, Title } from '../shared'
 import { GenericSearch } from '../../../components/Search'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import VehicleOverlay from '../../../components/VehicleOverlay'
-import VehiclesTable, {
-    makeSampleInfo,
-} from '../../../components/VehiclesTable'
+import VehiclesTable from '../../../components/VehiclesTable'
 
 const Vehicles = ({ vehiclesList }) => {
     const [show, setShow] = useState(false)

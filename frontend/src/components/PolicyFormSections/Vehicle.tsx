@@ -237,6 +237,76 @@ const VehicleSection = ({ store }) => {
                     </Flex>
                 </Section>
                 <Section>
+                    <Flex>
+                        <InputWrapper>
+                            <Input
+                                label="Overall Premium"
+                                name="overallPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={values[num].overallPremium}
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <Input
+                                label="Personal Injury Protection Premium"
+                                name="personalInjuryProtectionPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={
+                                    values[num].personalInjuryProtectionPremium
+                                }
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <Input
+                                label="Medical Payments Premium"
+                                name="medicalPaymentsPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={values[num].medicalPaymentsPremium}
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <Input
+                                label="Underinsured Motorist Premium"
+                                name="underinsuredMotoristPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={values[num].underinsuredMotoristPremium}
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <Input
+                                label="Uninsured Motorist Premium"
+                                name="uninsuredMotoristPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={values[num].uninsuredMotoristPremium}
+                            />
+                        </InputWrapper>
+
+                        <InputWrapper>
+                            <Input
+                                label="Hired CSL Premium"
+                                name="hiredCSLPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={values[num].hiredCSLPremium}
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <Input
+                                label="Non Owned CSL Premium"
+                                name="nonOwnedCSLPremium"
+                                onChange={handleInputOnChange}
+                                placeholder=""
+                                value={values[num].nonOwnedCSLPremium}
+                            />
+                        </InputWrapper>
+                    </Flex>
+                </Section>
+                <Section>
                     <SectionTitle>Additional Info</SectionTitle>
                     <Flex>
                         <InputWrapper>
@@ -429,7 +499,7 @@ const VehicleSection = ({ store }) => {
                 </StyledHolder>
             </Center>
             <div>
-                {values.map((key, i) => {
+                {values.map((_, i) => {
                     const toReturn = DefaultFields({ num: i })
                     return <StyledSection key={i}>{toReturn}</StyledSection>
                 })}

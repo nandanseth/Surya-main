@@ -14,12 +14,12 @@ const Container = styled.div`
 
     :after {
         z-index: -1;
-        top: -10px;
-        background: rgba(89, 195, 179, 0.26);
+        top: -11px;
+        background: rgb(39 154 254 / 20%);
         width: 104%;
         content: ' ';
         display: block;
-        height: 9px;
+        height: 13px;
         border-radius: 3px;
         position: relative;
     }
