@@ -7,9 +7,9 @@ steps:
     #   entrypoint: 'yarn'
     #   args: ['build']
     #   dir: 'frontend'
-    - name: 'gcr.io/cloud-builders/gcloud'
-      args: ['app', 'deploy', 'app.yaml']
-      dir: 'frontend'
+    # - name: 'gcr.io/cloud-builders/gcloud'
+    #   args: ['app', 'deploy', 'app.yaml']
+    #   dir: 'frontend'
 timeout: '300s'
 options:
   logging: CLOUD_LOGGING_ONLY
