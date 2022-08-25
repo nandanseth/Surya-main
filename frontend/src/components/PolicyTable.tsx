@@ -2,7 +2,7 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import { PolicyType } from '../shared'
 import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
 import { useHistory } from 'react-router-dom'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 const headers = ['Policy Name', 'ID', 'Insured Name', 'Created At', 'Premium']

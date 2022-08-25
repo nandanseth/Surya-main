@@ -209,6 +209,13 @@ export const vehicleState = {
     garageCounty: null,
     garageState: statesOptions[0].value,
     garageCountry: null,
+    overallPremium: '',
+    personalInjuryProtectionPremium: '',
+    medicalPaymentsPremium: '',
+    underinsuredMotoristPremium: '',
+    uninsuredMotoristPremium: '',
+    hiredCSLPremium: '',
+    nonOwnedCSLPremium: '',
 }
 
 export const reinsuranceState = {

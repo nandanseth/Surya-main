@@ -28,6 +28,7 @@ const SuryaInput = ({
 const Wrapper = styled.div`
     margin: 12px 0;
     width: 100%;
+    flex: 1 1 auto;
 `
 
 export default SuryaInput

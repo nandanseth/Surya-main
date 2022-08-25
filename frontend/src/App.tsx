@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
@@ -7,7 +8,6 @@ import PolicyPage from './pages/policies/policy'
 import Reports from './pages/reports'
 import SignIn from './pages/sign-in'
 import UrlProvider from './context/url-context'
-import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     return (

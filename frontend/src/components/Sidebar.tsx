@@ -1,4 +1,4 @@
-import { Colors, ColorsCSS, sidebarWidth } from '../styles/styles'
+import { Colors, sidebarWidth } from '../styles/styles'
 import { Link } from 'react-router-dom'
 import {
     default as settingsActiveIcon,

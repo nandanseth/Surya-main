@@ -42,13 +42,19 @@ const Plus = styled.img`
     object-fit: contain;
 `
 
-const buttonBaseCss = css`
-    border-radius: 28px;
+export const buttonBaseCss = css`
+    font-family: inherit;
+    border-radius: 8px;
     font-size: 16px;
     text-align: center;
     padding: 18px 24px;
     flex: 1 1 auto;
     margin: 0 4px;
+    ${transitionCss};
+
+    :hover {
+        transform: scale(1.01);
+    }
 `
 
 export const Save = styled.button`

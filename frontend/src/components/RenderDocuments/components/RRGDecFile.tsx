@@ -1,17 +1,5 @@
 // @ts-nocheck
-import {
-    Document,
-    Image,
-    Page,
-    StyleSheet,
-    Text,
-    View,
-} from '@react-pdf/renderer'
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
-import { readFileSync, writeFileSync } from 'fs'
-import Button from 'react-bootstrap/Button'
-import LebronStretch from '../photos/lebron_transparent.png'
-import React from 'react'
+import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
     /* Control the left side */

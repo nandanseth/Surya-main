@@ -1,6 +1,6 @@
 import { FormContextProvider } from '../context/insured-context'
 import { Header, Title } from '../styles/styles'
-import { testItem, testPolicies, urls } from '../shared'
+import { testItem, urls } from '../shared'
 import { useEffect, useState } from 'react'
 import Buttons from '../components/Buttons'
 import Layout from '../utils/withLayout'

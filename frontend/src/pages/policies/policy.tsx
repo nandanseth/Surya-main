@@ -1,26 +1,24 @@
-import { GenericSearch } from '../../components/Search'
-import { Header } from '../../styles/styles'
+import { Colors, fonts, Header } from '../../styles/styles'
 import { Link, useParams } from 'react-router-dom'
-import backArrow from '../../images/back-arrow.png'
-import Layout from '../../utils/withLayout'
-import MenuItem from './MenuItem'
-import PolicyTitle from '../../components/PolicyTitle'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import SubHeader from '../../components/PolicyHomeSubHeader'
-// import VehicleOverlay from '../../components/VehicleOverlay'
-// import VehiclesTable, { makeSampleInfo } from '../../components/VehiclesTable'
 import { urls } from '../../shared'
+import { useEffect, useState } from 'react'
+import backArrow from '../../images/back-arrow.png'
 import CoverageSection from './InfoSections/Coverage'
 import DocumentsSection from '../../components/RenderDocuments/RenderDocuments'
 import DriversSection from './InfoSections/Drivers'
 import InsuredSection from './InfoSections/Insured'
+import Layout from '../../utils/withLayout'
 import LossHistorySection from './InfoSections/LossHistory'
+import MenuItem from './MenuItem'
 import PolicySection from './InfoSections/Policy'
+import PolicyTitle from '../../components/PolicyTitle'
+import styled from 'styled-components'
 import VehiclesSection from './InfoSections/Vehicles'
 
+import { buttonBaseCss } from '../../components/Buttons'
 import { Nav, NavItem, SubSection, Title } from './shared'
-import Drivers from './InfoSections/Drivers'
+import { useHistory } from 'react-router-dom'
+import Overlay from '../../components/Overlay'
 
 const policy = { name: 'Policy', to: '#policy', component: PolicySection }
 const policySectionMenu = [
@@ -36,8 +34,13 @@ const policySectionMenu = [
 
 const Policy = () => {
     const params = useParams()
+    const history = useHistory()
+
     const [data, setData] = useState(undefined)
     const [loading, setLoading] = useState(true)
+    const [_, setLoadingEndorsements] = useState(true)
+    const [endorsements, setEndorsements] = useState(undefined)
+    const [buttonLoading, setButtonLoading] = useState(false)
     const [error, setError] = useState(false)
     const { slug } = params
 
@@ -47,10 +50,6 @@ const Policy = () => {
     const menuOnclick = (val) => {
         setSection(val)
     }
-
-    // const close = () => {
-    //     setShow(false)
-    // }
 
     useEffect(() => {
         const policyUrl = urls.getPolicy(slug)
@@ -70,6 +69,42 @@ const Policy = () => {
         }
         getPolicy()
     }, [])
+
+    useEffect(() => {
+        const policyUrl = urls.getEndorsments(slug)
+
+        const getEndorsements = async () => {
+            try {
+                const res = await fetch(policyUrl)
+                const data = await res.json()
+                setEndorsements(data)
+                console.log(data)
+                setLoadingEndorsements(false)
+            } catch (error) {
+                // this isnt a breaking error but let the console know
+                setLoadingEndorsements(false)
+                console.log(error)
+            }
+        }
+        getEndorsements()
+    }, [])
+
+    const deletePolicy = () => {
+        const policyUrl = urls.getPolicy(slug)
+        const deleteReq = async () => {
+            try {
+                setButtonLoading(true)
+                await fetch(policyUrl, { method: 'DELETE' })
+                setButtonLoading(false)
+                history.push('/home')
+            } catch (error) {
+                console.log(error)
+                setButtonLoading(false)
+                alert(error)
+            }
+        }
+        deleteReq()
+    }
 
     const policyMenu = (
         <>
@@ -96,13 +131,16 @@ const Policy = () => {
             return <Title>Loading</Title>
         }
 
-        if (error) {
+        if (error && !data) {
             return <Title>Sorry there was an error: {error}</Title>
         }
+
         const { policy, coverage, insured, vehicles, loss_history, drivers } =
             data
 
-        const PolicyRender = <PolicySection policy={policy} />
+        const PolicyRender = (
+            <PolicySection endorsements={endorsements} policy={policy} />
+        )
         const CoverageRender = <CoverageSection coverage={coverage} />
         const InsuredRender = <InsuredSection insured={insured} />
         const VehiclesRender = (
@@ -117,38 +155,23 @@ const Policy = () => {
         const DocumentsRender = <DocumentsSection policy={data} />
 
         return (
-            <>
-                <div className={section.name}>
-                    {section.name === 'Policy'
-                        ? PolicyRender
-                        : section.name === 'Coverage'
-                        ? CoverageRender
-                        : section.name === 'Insured'
-                        ? InsuredRender
-                        : section.name === 'Vehicles'
-                        ? VehiclesRender
-                        : section.name === 'Loss History'
-                        ? LossHistoryRender
-                        : section.name === 'Drivers'
-                        ? DriversRender
-                        : section.name === 'Documents'
-                        ? DocumentsRender
-                        : ''}
-                </div>
-            </>
-
-            /* 
-                <>
-                <PolicySection policy={policy} />
-                <CoverageSection coverage={coverage} />
-                <InsuredSection insured={insured} />
-                <VehiclesSection vehiclesList={vehicles?.values ?? []} />
-                <LossHistorySection
-                    lossHistoryList={loss_history?.values ?? []}
-                />
-                <DriversSection driversList={drivers?.values ?? []} /> 
-                </>
-                */
+            <div className={section.name}>
+                {section.name === 'Policy'
+                    ? PolicyRender
+                    : section.name === 'Coverage'
+                    ? CoverageRender
+                    : section.name === 'Insured'
+                    ? InsuredRender
+                    : section.name === 'Vehicles'
+                    ? VehiclesRender
+                    : section.name === 'Loss History'
+                    ? LossHistoryRender
+                    : section.name === 'Drivers'
+                    ? DriversRender
+                    : section.name === 'Documents'
+                    ? DocumentsRender
+                    : ''}
+            </div>
         )
     }
 
@@ -156,34 +179,38 @@ const Policy = () => {
         <Layout policyMenu={policyMenu}>
             <Wrapper>
                 <Header>
-                    <PolicyTitle id={slug} />
+                    <Row>
+                        <PolicyTitle id={slug} />
+                        <Delete onClick={() => setShow(!show)}>...</Delete>
+                    </Row>
                 </Header>
-                {/* <SubHeader
-                    agent="agent"
-                    insured="test insured"
-                    period="DATE - DATE "
-                    totalPremium="$$$"
-                /> */}
-                <Div>
-                    {/* {<CurrentSection />}
-                    <Flex>
-                        <Title>Vehicles</Title>
-                        <GenericSearch
-                            placeholder="Search Vehicles"
-                            style={{ marginLeft: 'auto' }}
-                        />
-                    </Flex>
-                    <VehiclesTable
-                        open={() => {
-                            setShow(true)
-                        }}
-                        vehicles={makeSampleInfo(10)}
-                    />
-                    {show && <VehicleOverlay close={close} show={show} />} */}
-                </Div>
             </Wrapper>
             <Div>
                 <Col>{renderInfo()}</Col>
+                <Overlay show={show}>
+                    <OverlayWrapper
+                        onClick={(e) => {
+                            if (e.currentTarget != e.target) return
+                            setShow(false)
+                        }}
+                    >
+                        <Modal>
+                            <Button
+                                disabled={buttonLoading}
+                                onClick={() => deletePolicy()}
+                            >
+                                {' '}
+                                Delete Policy
+                            </Button>
+                            <Cancel
+                                disabled={buttonLoading}
+                                onClick={() => setShow(false)}
+                            >
+                                Cancel
+                            </Cancel>
+                        </Modal>
+                    </OverlayWrapper>
+                </Overlay>
             </Div>
         </Layout>
     )
@@ -191,6 +218,71 @@ const Policy = () => {
 
 const Wrapper = styled.div`
     padding: 24px;
+    padding-bottom: 0;
+`
+
+const Row = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const Delete = styled(Row)`
+    margin-left: 24px;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 20px;
+`
+
+const Modal = styled(Row)`
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: white;
+    z-index: 6;
+    width: 80%;
+    height: 220px;
+    max-width: 600px;
+    border-radius: 8px;
+`
+
+const OverlayWrapper = styled(Row)`
+    width: 100%;
+    height: 100vh;
+    padding: 24px;
+    background: #0000003d;
+    justify-content: center;
+`
+
+const Button = styled.button`
+    width: 100%;
+    font-size: ${fonts.size.default};
+    font-weight: ${fonts.weights.medium};
+    color: ${Colors.red};
+    background: ${Colors.lightRed};
+    ${buttonBaseCss}
+    flex: unset;
+    margin-bottom: 12px;
+`
+
+const Cancel = styled(Button)`
+    color: ${Colors.black};
+    background: ${Colors.lightBlack};
+`
+
+const Exit = styled(Button)`
+    background: transparent;
+    border-radius: 20px;
+    height: 20px;
+    width: 20px;
+    margin-bottom: auto;
+    margin-left: auto;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    color: ${Colors.black};
 `
 
 const Div = styled.div`
