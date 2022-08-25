@@ -1,7 +1,7 @@
 steps:
     - name: 'node'
       entrypoint: 'yarn'
-      args: ['install', '--verbose']
+      args: ['install', '--production', '--verbose']
       dir: 'frontend'
     # - name: 'node:14'
     #   entrypoint: 'yarn'
@@ -10,6 +10,6 @@ steps:
     - name: 'gcr.io/cloud-builders/gcloud'
       args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
-timeout: '600s'
+timeout: '300s'
 options:
   logging: CLOUD_LOGGING_ONLY
