@@ -9,6 +9,6 @@ steps:
       args: ['run', 'build']
       dir: 'frontend'
       waitFor: ['yarn']
-timeout: '300s'
+timeout: '1800s'
 options:
   logging: CLOUD_LOGGING_ONLY
