@@ -6,7 +6,7 @@ steps:
       dir: 'frontend'
     - name: 'node'
       entrypoint: 'yarn'
-      args: ['build']
+      args: ['run', 'build']
       dir: 'frontend'
       waitFor: ['yarn']
 timeout: '300s'
