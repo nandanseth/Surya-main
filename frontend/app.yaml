@@ -1,25 +1,26 @@
-env: flex
-runtime: nodejs
-env_variables:
-  NODE_ENV: 'production'
-# instance_class: F4
-service: default
-inbound_services:
-    - warmup
-manual_scaling:
-  instances: 1
-resources:
-  cpu: 2
-  memory_gb: 4.0
-  disk_size_gb: 30
-  volumes:
-  - name: ramdisk1
-    volume_type: tmpfs
-    size_gb: 2.0
-handlers:
-    - url: /.*
-      secure: always
-      script: auto
+# env: flex
+# runtime: nodejs
+# env_variables:
+#   NODE_ENV: 'production'
+# # instance_class: F4
+# service: default
+# inbound_services:
+#     - warmup
+# manual_scaling:
+#   instances: 1
+# resources:
+#   cpu: 2
+#   memory_gb: 4.0
+#   disk_size_gb: 30
+#   volumes:
+#   - name: ramdisk1
+#     volume_type: tmpfs
+#     size_gb: 2.0
+# handlers:
+#     - url: /.*
+#       secure: always
+#       script: auto
+
 # env: standard
 # runtime: nodejs14
 # instance_class: F4
@@ -33,3 +34,24 @@ handlers:
 #   - url: /.*
 #     secure: always
 #     script: auto
+
+env: standard
+runtime: nodejs14
+instance_class: B1
+service: default
+# inbound_services:
+# - warmup
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 2
+  memory_gb: 4.0
+  disk_size_gb: 30
+  volumes:
+  - name: ramdisk1
+    volume_type: tmpfs
+    size_gb: 2.0
+handlers:
+  - url: /.*
+    secure: always
+    script: auto
