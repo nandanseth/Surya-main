@@ -1,15 +1,14 @@
 steps:
-    - name: 'node:14'
+    - name: 'node'
       entrypoint: 'yarn'
+      id: 'yarn'
       args: ['install', '--verbose']
       dir: 'frontend'
-    - name: 'node:14'
+    - name: 'node'
       entrypoint: 'yarn'
       args: ['build', '--verbose']
       dir: 'frontend'
-    # - name: 'gcr.io/cloud-builders/gcloud'
-    #   args: ['app', 'deploy', 'app.yaml']
-    #   dir: 'frontend'
+      waitFor: ['yarn']
 timeout: '300s'
 options:
   logging: CLOUD_LOGGING_ONLY
