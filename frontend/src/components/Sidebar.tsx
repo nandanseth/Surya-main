@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import blurredBg from '../images/blurred bg.png'
 import styled from 'styled-components'
+import icon from '../images/logo.png'
+
 
 const Sidebar = () => {
-    // <Logo src="/logo white.png" />
     const { pathname } = useLocation()
     const links = ['policies', 'reports', 'claims', 'settings']
     const check = (s) => {
@@ -19,7 +20,7 @@ const Sidebar = () => {
     }
     return (
         <Side>
-            <Logo src="/logo.png" />
+            <Logo src={icon} />
             <StyledHolder>
                 {links.map((item) => (
                     <SidebarItem active={check(item)} key={item} link={item} />

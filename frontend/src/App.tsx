@@ -1,4 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { positions, Provider } from 'react-alert'

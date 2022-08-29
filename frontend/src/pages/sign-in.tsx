@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Input from '../components/Input'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import icon from '../images/logo white.png'
+
 
 const validateEmail = (email: string) => {
     const re = /\S+@\S+\.\S+/
@@ -49,7 +51,7 @@ const SignIn = () => {
 
             <Main>
                 <LogoDiv>
-                    <Logo src="/logo white.png" />
+                    <Logo src={icon} />
                 </LogoDiv>
                 <SignInForm onSubmit={submit}>
                     <StyledDiv>
