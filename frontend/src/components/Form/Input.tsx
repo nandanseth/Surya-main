@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const Input = forwardRef(
     (
-        { error, loading, success, ...rest }: any,
+        { error, loading, ...rest }: any,
         ref?: ForwardedRef<HTMLInputElement>
     ) => {
         return (

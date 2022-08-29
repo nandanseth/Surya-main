@@ -1,5 +1,5 @@
 import { Block, Colors, ColorsCSS } from '../styles/styles'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Input from '../components/Input'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ type State = {
 }
 
 const SignIn = () => {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const [form, setInput] = useState<State>({
         email: '',
@@ -36,7 +36,7 @@ const SignIn = () => {
             setInput({ ...form, error: { validEmail, validPassword } })
             return
         }
-        history.push('/home')
+        navigate('/home')
     }
     const signInText = 'SIGN IN'
     return (

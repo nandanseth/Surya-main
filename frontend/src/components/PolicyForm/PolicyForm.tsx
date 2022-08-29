@@ -1,4 +1,4 @@
-import { Colors, Title, transitionCss } from '../styles/styles'
+import { Colors, Title, transitionCss } from '../../styles/styles'
 import {
     CoverageSection,
     DocumentsSection,
@@ -9,24 +9,27 @@ import {
     PolicySection,
     ResinuranceSection,
     VehicleSection,
-} from './PolicyFormSections'
-import { FormContext } from '../context/insured-context'
-import { preSubmit, urls } from '../shared'
+} from '../PolicyFormSections'
+import { FormContext } from '../../context/insured-context'
+import { preSubmit, urls } from '../../shared'
 import { useContext, useState } from 'react'
-import coverageIcon from '../images/coverage icon.png'
-import documentsIcon from '../images/documents icon.png'
-import driversIcon from '../images/drivers icon.png'
-import insuredIcon from '../images/insured icon.png'
-import lossHistoryIcon from '../images/loss history icon.png'
-import paymentsIcon from '../images/payments icon.png'
-import policyIcon from '../images/policy icon.png'
-import reinsuranceIcon from '../images/reinsurance icon.png'
+import coverageIcon from '../../images/coverage icon.png'
+// import documentsIcon from '../../images/documents icon.png'
+import { Submit } from '../Buttons'
+import { useAlert } from 'react-alert'
+import driversIcon from '../../images/drivers icon.png'
+import insuredIcon from '../../images/insured icon.png'
+import lossHistoryIcon from '../../images/loss history icon.png'
+import paymentsIcon from '../../images/payments icon.png'
+import policyIcon from '../../images/policy icon.png'
+import reinsuranceIcon from '../../images/reinsurance icon.png'
 import styled from 'styled-components'
-import vehicleIcon from '../images/vehicle icon.png'
+import vehicleIcon from '../../images/vehicle icon.png'
 
 const PolicyForm = ({ close }) => {
     const store = useContext(FormContext)
-    console.log(store)
+    const alert = useAlert()
+
     const { reset } = store
     const Pages = {
         policy: { page: PolicySection, name: 'Policy' },
@@ -73,7 +76,8 @@ const PolicyForm = ({ close }) => {
                 console.log({ data }, 'test')
                 return true
             } catch (error) {
-                alert(error)
+                alert.error('Error submitting')
+                console.log(error)
                 return false
             }
         }
@@ -304,26 +308,6 @@ const NewApplication = styled.div`
     margin-bottom: 6px;
 `
 
-const Submit = styled.button`
-    font-weight: 600;
-    font-size: 16px;
-    color: #00aeff;
-    text-align: center;
-    background: #00aeff12;
-    padding: 8px 16px;
-    marigin-left: 8px;
-    border-radius: 10px;
-    height: 40px;
-    min-width: 200px;
-    margin: 12px;
-    ${transitionCss};
-
-    :hover {
-        background: ${Colors.electricBlue};
-        color: white;
-    }
-`
-
 const Close = styled(Submit)`
     background: rgba(58, 86, 100, 0.06);
     color: black;
@@ -337,12 +321,12 @@ const Container = styled.div`
     width: 85%;
     align-self: center;
     height: 100%;
+    left: 0;
     position: fixed;
-    padding: 4px 12px;
 `
 
 const Main = styled.div`
-    padding: 20px 6px;
+    padding: 20px 12px;
     width: 100%;
     overflow-y: scroll;
     height: inherit;

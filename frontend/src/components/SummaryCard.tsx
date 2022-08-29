@@ -1,5 +1,4 @@
 import { Colors } from '../styles/styles'
-import React from 'react'
 import styled from 'styled-components'
 
 const Card = ({ title: summaryTitle, subtitle: subTitle, fields }) => (

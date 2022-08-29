@@ -1,7 +1,7 @@
-import { Colors, fonts, Header } from '../../styles/styles'
+import { Colors, fonts, Header, transitionCss } from '../../styles/styles'
 import { Link, useParams } from 'react-router-dom'
 import { urls } from '../../shared'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import backArrow from '../../images/back-arrow.png'
 import CoverageSection from './InfoSections/Coverage'
 import DocumentsSection from '../../components/RenderDocuments/RenderDocuments'
@@ -16,40 +16,27 @@ import styled from 'styled-components'
 import VehiclesSection from './InfoSections/Vehicles'
 
 import { buttonBaseCss } from '../../components/Buttons'
-import { Nav, NavItem, SubSection, Title } from './shared'
-import { useHistory } from 'react-router-dom'
+import { OverlayWrapper, policySectionMenu, Row, Title } from './shared'
+import { useNavigate } from 'react-router-dom'
+import Endorsements from '../../components/Endorsements'
 import Overlay from '../../components/Overlay'
 
 const policy = { name: 'Policy', to: '#policy', component: PolicySection }
-const policySectionMenu = [
-    // home,
-    { name: 'Policy', to: '#policy', component: PolicySection },
-    { name: 'Coverage', to: '#coverage', component: CoverageSection },
-    { name: 'Insured', to: '#insured', component: InsuredSection },
-    { name: 'Vehicles', to: '#vehicles', component: VehiclesSection },
-    { name: 'Loss History', to: '#losshistory', component: LossHistorySection },
-    { name: 'Drivers', to: '#drivers', component: DriversSection },
-    { name: 'Documents', to: '#documents', component: DocumentsSection },
-]
 
 const Policy = () => {
     const params = useParams()
-    const history = useHistory()
+    const navigate = useNavigate()
+    const { slug } = params
 
-    const [data, setData] = useState(undefined)
+    const [data, setData] = useState(testItem)
     const [loading, setLoading] = useState(true)
     const [_, setLoadingEndorsements] = useState(true)
     const [endorsements, setEndorsements] = useState(undefined)
     const [buttonLoading, setButtonLoading] = useState(false)
     const [error, setError] = useState(false)
-    const { slug } = params
-
     const [show, setShow] = useState(false)
     const [section, setSection] = useState(policy)
-
-    const menuOnclick = (val) => {
-        setSection(val)
-    }
+    const [toggleEndorsements, setToggleEndorsements] = useState(false)
 
     useEffect(() => {
         const policyUrl = urls.getPolicy(slug)
@@ -57,37 +44,41 @@ const Policy = () => {
         const getPolicy = async () => {
             try {
                 const res = await fetch(policyUrl)
-                const data = await res.json()
-                setData(data)
+                const policyData = await res.json()
+                setData(policyData)
+                // also make a deep copy
                 setLoading(false)
-            } catch (error) {
+            } catch (policyError) {
                 setError(true)
-                console.log(error)
+                console.log(policyError)
                 setLoading(false)
-                alert(error)
             }
         }
         getPolicy()
     }, [])
 
     useEffect(() => {
-        const policyUrl = urls.getEndorsments(slug)
+        const policyUrl = urls.getEndorsements(slug)
 
         const getEndorsements = async () => {
             try {
                 const res = await fetch(policyUrl)
-                const data = await res.json()
-                setEndorsements(data)
-                console.log(data)
+                const endorsementsData = await res.json()
+                setEndorsements(endorsementsData)
+                console.log(endorsementsData)
                 setLoadingEndorsements(false)
-            } catch (error) {
+            } catch (endError) {
                 // this isnt a breaking error but let the console know
                 setLoadingEndorsements(false)
-                console.log(error)
+                console.log(endError)
             }
         }
         getEndorsements()
-    }, [])
+    }, [slug])
+
+    const menuOnclick = (val) => {
+        setSection(val)
+    }
 
     const deletePolicy = () => {
         const policyUrl = urls.getPolicy(slug)
@@ -96,37 +87,32 @@ const Policy = () => {
                 setButtonLoading(true)
                 await fetch(policyUrl, { method: 'DELETE' })
                 setButtonLoading(false)
-                history.push('/home')
-            } catch (error) {
-                console.log(error)
+                navigate('/home')
+            } catch (deleteError) {
+                console.log(deleteError)
                 setButtonLoading(false)
-                alert(error)
             }
         }
         deleteReq()
     }
 
-    const policyMenu = (
-        <>
-            <Link to="/home">
-                <a>
-                    <Back src={backArrow} />
-                </a>
-            </Link>
-            <PolicySubMenuWrapper>
-                {policySectionMenu?.map((item, i) => (
-                    <MenuItem
-                        active={section}
-                        item={item}
-                        key={i}
-                        onClick={menuOnclick}
-                    />
-                ))}
-            </PolicySubMenuWrapper>
-        </>
-    )
+    const endorsementsToggle = () => {
+        setShow(false)
+        setToggleEndorsements(!toggleEndorsements)
+    }
 
-    const renderInfo = () => {
+    const menuItems = useMemo(() => {
+        return policySectionMenu?.map((item, i) => (
+            <MenuItem
+                active={section}
+                item={item}
+                key={i}
+                onClick={menuOnclick}
+            />
+        ))
+    }, [policySectionMenu, section])
+
+    const renderInfo = useMemo(() => {
         if (loading) {
             return <Title>Loading</Title>
         }
@@ -135,11 +121,21 @@ const Policy = () => {
             return <Title>Sorry there was an error: {error}</Title>
         }
 
-        const { policy, coverage, insured, vehicles, loss_history, drivers } =
-            data
+        const {
+            policy: currentPolicy,
+            coverage,
+            insured,
+            vehicles,
+            loss_history,
+            drivers,
+        } = data
 
         const PolicyRender = (
-            <PolicySection endorsements={endorsements} policy={policy} />
+            <PolicySection
+                endorsements={endorsements}
+                endorsementsOnclick={endorsementsToggle}
+                policy={currentPolicy}
+            />
         )
         const CoverageRender = <CoverageSection coverage={coverage} />
         const InsuredRender = <InsuredSection insured={insured} />
@@ -173,10 +169,19 @@ const Policy = () => {
                     : ''}
             </div>
         )
-    }
+    }, [loading, data, error, section])
 
     return (
-        <Layout policyMenu={policyMenu}>
+        <Layout
+            policyMenu={
+                <>
+                    <Link to="/home">
+                        <Back src={backArrow} />
+                    </Link>
+                    <PolicySubMenuWrapper>{menuItems}</PolicySubMenuWrapper>
+                </>
+            }
+        >
             <Wrapper>
                 <Header>
                     <Row>
@@ -186,31 +191,46 @@ const Policy = () => {
                 </Header>
             </Wrapper>
             <Div>
-                <Col>{renderInfo()}</Col>
+                <Col>{renderInfo}</Col>
                 <Overlay show={show}>
                     <OverlayWrapper
                         onClick={(e) => {
-                            if (e.currentTarget != e.target) return
+                            if (e.currentTarget !== e.target) return
                             setShow(false)
                         }}
                     >
                         <Modal>
-                            <Button
-                                disabled={buttonLoading}
-                                onClick={() => deletePolicy()}
-                            >
-                                {' '}
-                                Delete Policy
-                            </Button>
-                            <Cancel
-                                disabled={buttonLoading}
-                                onClick={() => setShow(false)}
-                            >
-                                Cancel
-                            </Cancel>
+                            <ModalHead>
+                                <Exit onClick={() => setShow(false)}>X</Exit>
+                            </ModalHead>
+                            <Padding>
+                                <EndorsementsButton
+                                    onClick={() => endorsementsToggle()}
+                                >
+                                    Edit Endorsements
+                                </EndorsementsButton>
+                                <Button
+                                    disabled={buttonLoading}
+                                    onClick={() => deletePolicy()}
+                                >
+                                    Delete Policy
+                                </Button>
+                                <Cancel
+                                    disabled={buttonLoading}
+                                    onClick={() => setShow(false)}
+                                >
+                                    Cancel
+                                </Cancel>
+                            </Padding>
                         </Modal>
                     </OverlayWrapper>
                 </Overlay>
+                <Endorsements
+                    endorsementsToggle={endorsementsToggle}
+                    policy={data}
+                    policyId={slug}
+                    toggleEndorsements={toggleEndorsements}
+                />
             </Div>
         </Layout>
     )
@@ -219,11 +239,6 @@ const Policy = () => {
 const Wrapper = styled.div`
     padding: 24px;
     padding-bottom: 0;
-`
-
-const Row = styled.div`
-    display: flex;
-    align-items: center;
 `
 
 const Delete = styled(Row)`
@@ -237,21 +252,25 @@ const Modal = styled(Row)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 24px;
     background: white;
     z-index: 6;
     width: 80%;
-    height: 220px;
+    min-height: 220px;
     max-width: 600px;
     border-radius: 8px;
 `
 
-const OverlayWrapper = styled(Row)`
+const ModalHead = styled.div`
     width: 100%;
-    height: 100vh;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: solid 1px #00000005;
+    background: ${Colors.blueGrey};
+`
+
+const Padding = styled.div`
     padding: 24px;
-    background: #0000003d;
-    justify-content: center;
 `
 
 const Button = styled.button`
@@ -262,12 +281,17 @@ const Button = styled.button`
     background: ${Colors.lightRed};
     ${buttonBaseCss}
     flex: unset;
-    margin-bottom: 12px;
+    margin: 8px 0;
 `
 
 const Cancel = styled(Button)`
-    color: ${Colors.black};
-    background: ${Colors.lightBlack};
+    color: white;
+    background: black;
+`
+
+const EndorsementsButton = styled(Button)`
+    color: ${Colors.electricBlue};
+    background: ${Colors.lightBlue};
 `
 
 const Exit = styled(Button)`
@@ -276,13 +300,19 @@ const Exit = styled(Button)`
     height: 20px;
     width: 20px;
     margin-bottom: auto;
-    margin-left: auto;
-    font-size: 12px;
+    font-size: 16px;
+    opacity: 0.4;
+    font-weight: ${fonts.weights.regular};
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 12px;
     color: ${Colors.black};
+    ${transitionCss}
+
+    :hover {
+        opacity: 1;
+    }
 `
 
 const Div = styled.div`
@@ -311,158 +341,293 @@ const PolicySubMenuWrapper = styled.div`
 `
 
 const testItem = {
-    documents: {},
+    id: 'test',
+    name: 'test',
     policy: {
-        expirationDate: null,
-        coverageTerm: 'Annual',
-        radius: 'Local',
-        sizeClass: 'Light Trucks ',
-        effectiveDate: null,
+        name: 'JOSE GUTIERREZ-MANRIQUEZ',
+        policyNum: '19AZT00002',
+        states: 'Arizona',
         lineOfBusiness: 'Commercial',
-        agent: 'Quantum Risk Solutions (QRSBRK)',
-        underwritingCode: 'New Business',
-        states: 'Oregon',
-        classification: null,
         policyLineItem: 'Owner Operator',
-        businessUseClass: 'Service',
+        coverageTerm: 'Annual',
         policyCategory: 'Taxicabs and Limousines',
+        underwritingCode: 'New Business',
+        agent: 'ABIBRK',
+        effectiveDate: '03/15/19',
+        expirationDate: '03/15/20',
+        radius: 'Local',
         classCode: 'Non-fleet',
-    },
-    created_at: 1651859369.697056,
-    coverage: {
-        overall: 'Combined Single Limit',
-        nonCslSingleAuto: 'Excluded',
-        nonCslSingleLimit: '35,000',
-        splitSectionAutoEntryOptions: 'Excluded',
-        deductableAutoEntry: null,
-        medicalSingleEntry: 'Excluded',
-        unMotoristProperty: '10,000',
-        cslProperty: '10,000',
-        nonCslSplitAuto: 'Excluded',
-        medicalSingleLimit: '35,000',
-        medicalPayments: 'Combined Single Limit',
-        medicalSplitBodyPerAccident: '25,000',
-        errors: null,
-        personalInjury: 'Combined Single Limit',
-        pIProtectionSplitPropertyDamage: '10,000',
-        nonCslBodyPerAccident: '25,000',
-        cslBodyPerPerson: '25,000',
-        uninsuredMotoristSingleAutoEntry: 'Excluded',
-        underMotoristBodyPerPerson: '25,000',
-        unMotoristAuto: 'Excluded',
-        uninsuredMotorist: 'Combined Single Limit',
-        csl: 'Yes',
-        underinsuredMotorist: 'Combined Single Limit',
-        cslBodyPerAccident: '25,000',
-        nonCslBodyPerPerson: '25,000',
-        splitSectionBodyPerPerson: '25,000',
-        pIProtectionSplitBodyPerPerson: '25,000',
-        uninsuredMotoristSingleLimit: '35,000',
-        nonCslProperty: '10,000',
-        splitSectionPropertyDamageOptions: '10,000',
-        underMotoristProperty: '10,000',
-        nonOwnedCSL: 'Yes',
-        splitSectionBodyPerAccidentOptions: '25,000',
-        deductable: null,
-        pIProtectionSingleEntry: 'Excluded',
-        pIProtectionSingleLimit: '35,000',
-        underinsuredMotoristSingleAutoEntry: 'Excluded',
-        pIProtectionSplitAutoEntry: 'Excluded',
-        pIProtectionSplitBodyPerAccident: '25,000',
-        medicalSplitBodyPerPerson: '25,000',
-        combinedSectionLimit: '35,000',
-        medicalSplitAutoEntry: 'Excluded',
-        underMotoristBodyPerAccident: '25,000',
-        unMotoristBodyPerPerson: '25,000',
-        unMotoristBodyPerAccident: '25,000',
-        cslSingleAuto: 'Excluded',
-        medicalSplitPropertyDamage: '10,000',
-        underinsuredMotoristSingleLimit: '35,000',
-        underMotoristAuto: 'Excluded',
-        cslSingleLimit: '35,000',
-        cslSplitAuto: 'Excluded',
-        deductableAmount: null,
-        combinedSectionEntry: 'Excluded',
+        businessUseClass: 'Service',
+        sizeClass: 'Light Trucks ',
     },
     insured: {
-        licenseState: 'Oregon',
-        gender: 'Male',
-        contactName: null,
-        lastName: null,
-        isAddActive: null,
-        suffix: null,
-        email: null,
-        middleName: null,
-        address1: null,
-        contactNumber: null,
-        address2: null,
-        corporationName: null,
-        licenseNumber: null,
-        ssn: null,
-        firstName: null,
+        agent: 'ABIBRK',
         entity: 'Individual',
-        dob: null,
-        state: 'Oregon',
-        zipCode: null,
-        licenseExp: null,
-        city: null,
-        taxIdNumber: null,
-        contactEmail: null,
-        agent: 'Quantum Risk Solutions (QRSBRK)',
-        phoneNumber: null,
-        licenseEff: null,
+        firstName: 'JOSE',
+        lastName: 'GUTIERREZ-MANRIQUEZ',
+        middleName: '',
+        dob: '12/26/73',
+        suffix: 'null',
+        gender: 'Male',
+        ssn: 'null',
+        address1: '19401 N 7TH ST',
+        address2: 'LOT 229',
+        city: 'PHOENIX',
+        state: 'Arizona',
+        zipCode: '85024',
+        email: '',
+        phoneNumber: '',
+        licenseState: 'Oregon',
+        licenseNumber: 'null',
+        licenseEff: 'null',
+        licenseExp: 'null',
+        contactName: 'null',
+        contactNumber: 'null',
+        contactEmail: 'null',
+        corporationName: 'null',
+        taxIdNumber: '',
     },
-    vehicles: {
-        values: [
-            {
-                garageAddress2: null,
-                seating: null,
-                wheelChair: 'Yes',
-                garageCountry: null,
-                baseType: 'Black Car',
-                garageCounty: null,
-                rateClassCode: null,
-                vin: null,
-                zoneCode: null,
-                garageState: 'Oregon',
-                vehicleWeight: '0 - 10,000',
-                state: 'Oregon',
-                shl: null,
-                vehicleType: 'Car Service',
-                category: 'Taxicabs and Limousines',
-                fuelType: 'Gas',
-                classification: null,
-                plateNumber: null,
-                make: null,
-                baseName: null,
-                modelYear: null,
-                garageCity: null,
-                yesNo: 'No',
-                model: null,
-                baseNumber: null,
-                baseExpDate: null,
-                garageZipCode2: null,
-                vehicleState: null,
-                vehicleCategory: 'Taxicab - Owner-Driver',
-                garageZipCode: null,
-                garageAddress1: null,
-            },
-        ],
-    },
-    loss_history: null,
     drivers: {
         values: [
             {
-                states: 'Oregon',
-                licenseNumber: null,
-                licenseExpDate: null,
-                driverName: null,
-                licenseEffDate: null,
+                driverName: 'ERNESTO LOPEZ',
+                states: 'AZ',
+                licenseNumber: 'D08560671',
+                licenseEffDate: '03/15/19',
+                licenseExpDate: '03/15/20',
+                driverEffDate: '05/03/19',
+                driverExpDate: '08/16/19',
+            },
+            {
+                driverName: 'VICTOR SANCHEZFLORES',
+                states: 'AZ',
+                licenseNumber: 'D07806915',
+                licenseEffDate: '03/15/19',
+                licenseExpDate: '03/15/20',
+                driverEffDate: '05/30/19',
+                driverExpDate: '08/28/19',
+            },
+            {
+                driverName: 'FRANCISCO PANIAGUAVALENCIA',
+                states: 'AZ',
+                licenseNumber: 'D02282926',
+                licenseEffDate: '01/01/19',
+                licenseExpDate: '01/01/20',
+                driverEffDate: '08/28/19',
+                driverExpDate: '09/04/19',
+            },
+            {
+                driverName: 'OSWALDO ZEVADACARDENAS',
+                states: 'AZ',
+                licenseNumber: 'D10301616',
+                licenseEffDate: '01/01/19',
+                licenseExpDate: '01/01/20',
+                driverEffDate: '09/04/19',
+                driverExpDate: '09/23/19',
+            },
+            {
+                driverName: 'JOSE GUTIERREZ-MANRIQUEZ',
+                states: 'AZ',
+                licenseNumber: 'D03223848',
+                licenseEffDate: '01/01/19',
+                licenseExpDate: '01/01/20',
+                driverEffDate: '03/15/19',
+                driverExpDate: '03/15/20',
+            },
+            {
+                driverName: 'ROBERTOJESUS RODRIGUEZMONTES',
+                states: 'AZ',
+                licenseNumber: 'D08823326',
+                licenseEffDate: '01/01/19',
+                licenseExpDate: '01/01/20',
+                driverEffDate: '09/23/19',
+                driverExpDate: '03/15/20',
+            },
+            {
+                driverName: 'ERNESTO RODRIGUEZLOPEZ',
+                states: 'AZ',
+                licenseNumber: 'D08560671',
+                licenseEffDate: '03/15/19',
+                licenseExpDate: '03/15/20',
+                driverEffDate: '05/03/19',
+                driverExpDate: '08/16/19',
             },
         ],
-        defaults: null,
     },
-    id: '17264e26-fa53-48da-a450-c477cb456687',
+    loss_history: {
+        values: [
+            {
+                accidentDate: 'null',
+                reportedDate: 'null',
+                claimNumber: 'null',
+                claimType: 'Body Injury',
+                subClaimNumber: 'null',
+                totalIncurred: 'null',
+                liabilityPaid: 'null',
+                openReserve: 'null',
+                status: 'Yes',
+                previousPolicyNumber: 'null',
+                priorCarrierName: 'null',
+                originalInceptionDate: 'null',
+                expirationDate: 'null',
+                isExperienceMode: 'Yes',
+                isPolicyTransferred: 'Yes',
+            },
+        ],
+    },
+    documents: {},
+    vehicles: {
+        values: [
+            {
+                yesNo: 'No',
+                category: 'Taxicabs and Limousines',
+                classification: 'null',
+                vehicleCategory: 'Taxicab - Owner-Driver',
+                vehicleType: 'Car Service',
+                state: 'Arizona',
+                vehicleState: 'Arizona',
+                vehicleWeight: '0 - 10,000',
+                fuelType: 'Gas',
+                fleet: 'Yes',
+                vin: 'JTDKN3DU0A1010158',
+                make: 'TOYOTA',
+                model: 'PRIUS',
+                modelYear: '2010',
+                seating: '5',
+                wheelChair: 'Yes',
+                plateNumber: 'null',
+                garageZipCode: 'null',
+                zoneCode: 'null',
+                rateClassCode: 'null',
+                baseName: 'null',
+                baseType: 'Black Car',
+                baseNumber: 'null',
+                baseEffDate: '03/15/19',
+                baseExpDate: '09/25/19',
+                shl: 'null',
+                garageAddress1: 'null',
+                garageAddress2: 'null',
+                garageZipCode2: 'null',
+                garageCity: 'null',
+                garageCounty: 'null',
+                garageState: 'Oregon',
+                garageCountry: 'null',
+                overallPremium: 2554.42,
+                personalInjuryProtectionPremium: 0,
+                medicalPaymentsPremium: 0,
+                underinsuredMotoristPremium: 32.95,
+                uninsuredMotoristPremium: 14.35,
+                hiredCSLPremium: '',
+                nonOwnedCSLPremium: '',
+            },
+            {
+                yesNo: 'No',
+                category: 'Taxicabs and Limousines',
+                classification: 'null',
+                vehicleCategory: 'Taxicab - Owner-Driver',
+                vehicleType: 'Car Service',
+                state: 'Arizona',
+                vehicleState: 'Arizona',
+                vehicleWeight: '0 - 10,000',
+                fuelType: 'Gas',
+                fleet: 'Yes',
+                vin: 'JTDKB20U987728520',
+                make: 'TOYOTA',
+                model: 'PRIUS',
+                modelYear: '2018',
+                seating: '7',
+                wheelChair: 'Yes',
+                plateNumber: 'null',
+                garageZipCode: 'null',
+                zoneCode: 'null',
+                rateClassCode: 'null',
+                baseName: 'null',
+                baseType: 'Black Car',
+                baseNumber: 'null',
+                baseEffDate: '09/25/19',
+                baseExpDate: '03/15/20',
+                shl: 'null',
+                garageAddress1: 'null',
+                garageAddress2: 'null',
+                garageZipCode2: 'null',
+                garageCity: 'null',
+                garageCounty: 'null',
+                garageState: 'Oregon',
+                garageCountry: 'null',
+                overallPremium: 2264.74,
+                personalInjuryProtectionPremium: 0,
+                medicalPaymentsPremium: 0,
+                underinsuredMotoristPremium: 12.72,
+                uninsuredMotoristPremium: 29.22,
+                hiredCSLPremium: '',
+                nonOwnedCSLPremium: '',
+            },
+        ],
+    },
+    payments: { payment: '100% DEPOSIT' },
+    reinsurance: { reinsuranceType: 'Price Forbes', resInsAmmout: '' },
+    coverage: {
+        overall: 'Combined Single Limit',
+        deductable: 'null',
+        deductableAmount: 'null',
+        deductableAutoEntry: 'null',
+        combinedSectionLimit: 250000.0,
+        combinedSectionEntry: 'Excluded',
+        splitSectionBodyPerPerson: 0,
+        splitSectionBodyPerAccidentOptions: 0,
+        splitSectionPropertyDamageOptions: 0,
+        splitSectionAutoEntryOptions: 'Excluded',
+        pIProtectionSingleLimit: 0,
+        pIProtectionSingleEntry: 'Excluded',
+        pIProtectionSplitBodyPerPerson: 0,
+        pIProtectionSplitBodyPerAccident: 0,
+        pIProtectionSplitPropertyDamage: 0,
+        pIProtectionSplitAutoEntry: 'Excluded',
+        medicalSingleLimit: 0,
+        medicalSingleEntry: 'Excluded',
+        medicalSplitBodyPerPerson: 0,
+        medicalSplitBodyPerAccident: 0,
+        medicalSplitPropertyDamage: '10,000',
+        medicalSplitAutoEntry: 'Excluded',
+        underinsuredMotoristSingleLimit: 250000.0,
+        underinsuredMotoristSingleAutoEntry: 'Excluded',
+        underMotoristBodyPerPerson: 0,
+        underMotoristBodyPerAccident: 0,
+        underMotoristProperty: 0,
+        underMotoristAuto: 'Excluded',
+        cslSingleLimit: '35,000',
+        cslBodyPerAccident: '25,000',
+        cslBodyPerPerson: '25,000',
+        cslSingleAuto: 'Excluded',
+        cslProperty: '10,000',
+        cslSplitAuto: 'Excluded',
+        nonCslBodyPerAccident: '25,000',
+        nonCslBodyPerPerson: '25,000',
+        nonCslProperty: '10,000',
+        nonCslSingleAuto: 'Excluded',
+        nonCslSingleLimit: '35,000',
+        nonCslSplitAuto: 'Excluded',
+        unMotoristAuto: 'Excluded',
+        unMotoristBodyPerAccident: 0,
+        unMotoristBodyPerPerson: 0,
+        unMotoristProperty: 0,
+        uninsuredMotoristSingleAutoEntry: 'Excluded',
+        uninsuredMotoristSingleLimit: 250000.0,
+        personalInjury: 'Combined Single Limit',
+        medicalPayments: 'Combined Single Limit',
+        underinsuredMotorist: 'Combined Single Limit',
+        uninsuredMotorist: 'Combined Single Limit',
+        csl: 'Yes',
+        nonOwnedCSL: 'Yes',
+        overallPremium: '',
+        personalInjuryProtectionPremium: '',
+        medicalPaymentsPremium: '',
+        underinsuredMotoristPremium: '',
+        uninsuredMotoristPremium: '',
+        hiredCSLPremium: '',
+        nonOwnedCSLPremium: '',
+        "medicalSplitPropertyDamage'": 0,
+    },
 }
 
 export default Policy

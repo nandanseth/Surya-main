@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components'
 
-export const transitonTime = 0.115
+export const transitonTime = 0.15
 export const padding = '71px'
 export const paddingSmall = '21px'
 
@@ -21,6 +21,7 @@ export const Colors = {
     lightBlack: '#1f30381c',
     grey: '#fdfdfd',
     red: '#ff0054',
+    blueGrey: '#f6f7fac4',
 }
 
 export const ColorsCSS = {

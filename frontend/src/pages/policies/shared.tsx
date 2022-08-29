@@ -1,4 +1,11 @@
+import CoverageSection from './InfoSections/Coverage'
+import DocumentsSection from '../../components/RenderDocuments/RenderDocuments'
+import DriversSection from './InfoSections/Drivers'
+import InsuredSection from './InfoSections/Insured'
+import LossHistorySection from './InfoSections/LossHistory'
+import PolicySection from './InfoSections/Policy'
 import styled from 'styled-components'
+import VehiclesSection from './InfoSections/Vehicles'
 
 export const Flex = styled.div`
     flex-flow: row wrap;
@@ -30,7 +37,7 @@ export const Tile = styled.div`
     flex-direction: column;
     margin: 8px;
     margin-left: 0px;
-    min-width: 120px;
+    min-width: 100px;
     min-height: 64px;
     align-items: center;
 `
@@ -174,3 +181,28 @@ export const TileItem = ({ title, value }) => {
         </Tile>
     )
 }
+
+export const policySectionMenu = [
+    // home,
+    { name: 'Policy', to: '#policy', component: PolicySection },
+    { name: 'Coverage', to: '#coverage', component: CoverageSection },
+    { name: 'Insured', to: '#insured', component: InsuredSection },
+    { name: 'Vehicles', to: '#vehicles', component: VehiclesSection },
+    { name: 'Loss History', to: '#losshistory', component: LossHistorySection },
+    { name: 'Drivers', to: '#drivers', component: DriversSection },
+    { name: 'Documents', to: '#documents', component: DocumentsSection },
+]
+
+export const Row = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+export const OverlayWrapper = styled(Row)`
+    width: 100%;
+    height: 100vh;
+    padding: 24px;
+    background: #0000003d;
+    justify-content: center;
+    overflow-y: scroll;
+`

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 export const AuthContext = React.createContext(null)
@@ -33,13 +32,14 @@ export const ContextProvider = (props) => {
 
         try {
             const res = await fetchLogin(email, password)
+            const json = await res.json()
             setState({
                 isLoginPending: false,
                 isLoggedIn: true,
                 loginError: undefined,
-                data: res.data,
+                data: json,
             })
-            localStorage.setItem(userStorageKey, res.data)
+            localStorage.setItem(userStorageKey, json)
         } catch (error) {
             setState({
                 isLoginPending: false,
@@ -72,8 +72,11 @@ const fetchLogin = async (email, password) => {
     // this is a sample api just for now
     // Work with Greg on this integreation
     const api = '/login'
-    return await axios.post(api, {
-        email,
-        password,
+    return await fetch(api, {
+        method: 'POST',
+        body: JSON.stringify({
+            email,
+            password,
+        }),
     })
 }

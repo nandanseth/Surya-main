@@ -1,3 +1,5 @@
+// This is copied over mainly from the PolicyForm Coverage
+
 import { Form } from '../../styles/styles'
 import autoEntryOptions from '../../utils/coverage/getAutoSymbolEntry'
 import CoverageOptions from '../../utils/coverage/getLimit'
@@ -23,9 +25,9 @@ const overallOptions = [
     { value: 'Split Limit', label: 'Split Limit' },
 ]
 
-const CoverageSection = ({ store }) => {
-    const { coverage: coverageStates } = store
-    const { values, setValues } = coverageStates
+const CoverageSection = ({ coverage, setCoverage }) => {
+    const values = coverage
+    const setValues = setCoverage
 
     const {
         overall,
@@ -886,180 +888,3 @@ const CoverageSection = ({ store }) => {
 }
 
 export default CoverageSection
-
-/**
- * 
-    const cslSingle = (
-        <>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Limit"
-                    onChange={(e) => {
-                        setValues({ ...values, cslSingleLimit: e.target.value })
-                    }}
-                    options={limitOptions}
-                    placeholder="Choose Limit"
-                    value={cslSingleLimit}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Choose Auto Symbol"
-                    onChange={(e) => {
-                        setValues({ ...values, cslSingleAuto: e.target.value })
-                    }}
-                    options={autoEntryOptions}
-                    placeholder="Covered Auto Symbol Entry"
-                    value={cslSingleAuto}
-                />
-            </InputWrapper>
-        </>
-    )
-
-    const cslSplit = (
-        <>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Body Injury Per Person"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            cslBodyPerPerson: e.target.value,
-                        })
-                    }}
-                    options={bodyPerPersonOptions}
-                    placeholder="Choose Amount"
-                    value={cslBodyPerPerson}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Body Injury Per Accident"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            cslBodyPerAccident: e.target.value,
-                        })
-                    }}
-                    options={bodyPerAccidentOptions}
-                    placeholder="Choose Amount"
-                    value={cslBodyPerAccident}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Property Damage"
-                    onChange={(e) => {
-                        setValues({ ...values, cslProperty: e.target.value })
-                    }}
-                    options={propertyDamageOptions}
-                    placeholder="Choose Amount"
-                    value={cslProperty}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Choose Auto Symbol"
-                    onChange={(e) => {
-                        setValues({ ...values, cslSplitAuto: e.target.value })
-                    }}
-                    options={autoEntryOptions}
-                    placeholder="Covered Auto Symbol Entry"
-                    value={cslSplitAuto}
-                />
-            </InputWrapper>
-        </>
-    )
-
-    const nonCslSingle = (
-        <>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Limit"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            nonCslSingleLimit: e.target.value,
-                        })
-                    }}
-                    options={limitOptions}
-                    placeholder="Choose Limit"
-                    value={nonCslSingleLimit}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Choose Auto Symbol"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            nonCslSingleAuto: e.target.value,
-                        })
-                    }}
-                    options={autoEntryOptions}
-                    placeholder="Covered Auto Symbol Entry"
-                    value={nonCslSingleAuto}
-                />
-            </InputWrapper>
-        </>
-    )
-
-    const nonCslSplit = (
-        <>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Body Injury Per Person"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            nonCslBodyPerPerson: e.target.value,
-                        })
-                    }}
-                    options={bodyPerPersonOptions}
-                    placeholder="Choose Amount"
-                    value={nonCslBodyPerPerson}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Body Injury Per Accident"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            nonCslBodyPerAccident: e.target.value,
-                        })
-                    }}
-                    options={bodyPerAccidentOptions}
-                    placeholder="Choose Amount"
-                    value={nonCslBodyPerAccident}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Property Damage"
-                    onChange={(e) => {
-                        setValues({ ...values, nonCslProperty: e.target.value })
-                    }}
-                    options={propertyDamageOptions}
-                    placeholder="Choose Amount"
-                    value={nonCslProperty}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                <SuryaSelect
-                    label="Choose Auto Symbol"
-                    onChange={(e) => {
-                        setValues({
-                            ...values,
-                            nonCslSplitAuto: e.target.value,
-                        })
-                    }}
-                    options={autoEntryOptions}
-                    placeholder="Covered Auto Symbol Entry"
-                    value={nonCslSplitAuto}
-                />
-            </InputWrapper>
-        </>
-    )
- * 
- */

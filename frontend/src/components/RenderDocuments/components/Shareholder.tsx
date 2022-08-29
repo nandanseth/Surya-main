@@ -1,5 +1,4 @@
 import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
-import { StylesProvider } from '@mui/styles'
 
 const styles = StyleSheet.create({
     /* Control the left side */

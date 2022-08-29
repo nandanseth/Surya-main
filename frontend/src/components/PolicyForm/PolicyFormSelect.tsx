@@ -1,29 +1,32 @@
-import { Colors, transitionCss } from '../styles/styles'
-import { InputContainer } from './Input'
+import { Colors, transitionCss } from '../../styles/styles'
+import { InputContainer } from '../Input'
 import styled from 'styled-components'
 
 const SuryaSelect = ({
     label = '',
     options,
-    placeholder,
     value,
     onChange,
     style = {},
     ...rest
 }) => (
     <Wrapper style={style}>
-        <StyledLabel htmlFor={label}>{label}</StyledLabel>
-        <InputContainer className="select-container">
-            <StyledSelect
-                name={label}
-                onChange={onChange}
-                value={value === null ? '' : value}
-            >
-                {options.map((option) => (
-                    <option value={option.value}>{option.label}</option>
-                ))}
-            </StyledSelect>
-        </InputContainer>
+        <StyledLabel htmlFor={label}>
+            <div>{label}</div>
+            <InputContainer className="select-container">
+                <StyledSelect
+                    name={label}
+                    onChange={onChange}
+                    value={value === null ? '' : value}
+                >
+                    {options.map((option, i) => (
+                        <option key={i} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </StyledSelect>
+            </InputContainer>
+        </StyledLabel>
     </Wrapper>
 )
 

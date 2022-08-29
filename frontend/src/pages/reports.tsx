@@ -29,6 +29,7 @@ import { CreateButton } from '../components/Buttons'
 import { CSVDownload, CSVLink } from 'react-csv'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { testItem, urls } from '../shared'
+import { useAlert } from 'react-alert'
 import { useEffect, useState } from 'react'
 import Checkbox from '../components/Form/Checkbox'
 import Layout from '../utils/withLayout'
@@ -83,7 +84,6 @@ const paymentsDefault = {
 const reinsuranceDefault = makeAllFalse(reinsuranceState)
 
 const generateText = 'Generate Report'
-const loadingText = 'Loading Report'
 
 // const makeHeaders
 
@@ -149,6 +149,8 @@ const filterPolicyList = ({
 }
 
 const Home = () => {
+    const alert = useAlert()
+
     const [policy, setPolicy] = useState(policyDefault)
     const [drivers, setDrivers] = useState(driversDefault)
     const [insured, setInsured] = useState(insuredDefault)
@@ -229,8 +231,15 @@ const Home = () => {
     const generateData = () => {
         setGenerating(true)
         // when we get the policies we will need to filter them
-        const filteredPolicies = [testItem]
-        // const filteredPolicies = filterPolicyList({ endDate, startDate, premiumRange, overallRange, isSplit, policies: enter policies here})
+        //const filteredPolicies = [testItem]
+        const filteredPolicies = filterPolicyList({
+            endDate,
+            startDate,
+            premiumRange,
+            overallRange,
+            isSplit,
+            policies,
+        })
         const [
             policyHeaders,
             insuredHeaders,
@@ -300,14 +309,13 @@ const Home = () => {
     }
 
     useEffect(() => {
-        const headers = {}
         const getPolicies = async () => {
             try {
                 const res = await fetch(urls.getAllPoliciesUrl)
                 const data = await res.json()
                 setPolicies(data)
             } catch (error) {
-                alert(error)
+                alert.error('Error getting policies')
                 console.log(error)
             }
         }
