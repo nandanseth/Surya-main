@@ -1,65 +1,65 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
-import { PolicyType } from '../shared'
-import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
-import { useHistory } from 'react-router-dom'
-import { useMemo, useState } from 'react'
+import { PolicyType } from '../../shared'
+import { SortByHeader, Table, TD, Th, TR } from '../../styles/styles'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const headers = ['Policy Name', 'ID', 'Insured Name', 'Created At', 'Premium']
 
-const useSortableData = (items: PolicyType[], config = null) => {
-    const [sortConfig, setSortConfig] = useState<{
-        key: string
-        direction: string
-    } | null>(config)
+// TODO: Reintroduce this at the request @Kush
+// const useSortableData = (items: PolicyType[], config = null) => {
+//     const [sortConfig, setSortConfig] = useState<{
+//         key: string
+//         direction: string
+//     } | null>(config)
 
-    const sortedItems = useMemo(() => {
-        const sortableItems = [...items]
-        if (sortConfig !== null) {
-            sortableItems.sort((a, b) => {
-                const { key } = sortConfig
-                const [valA, valB] = [a[key], b[key]]
-                if (valA === undefined) {
-                    return sortConfig.direction === 'ascending' ? 1 : -1
-                }
+//     const sortedItems = useMemo(() => {
+//         const sortableItems = [...items]
+//         if (sortConfig !== null) {
+//             sortableItems.sort((a, b) => {
+//                 const { key } = sortConfig
+//                 const [valA, valB] = [a[key], b[key]]
+//                 if (valA === undefined) {
+//                     return sortConfig.direction === 'ascending' ? 1 : -1
+//                 }
 
-                if (valB === undefined) {
-                    return sortConfig.direction === 'ascending' ? -1 : 1
-                }
-                if (valA < valB) {
-                    return sortConfig.direction === 'ascending' ? -1 : 1
-                }
-                if (valA > valB) {
-                    return sortConfig.direction === 'ascending' ? 1 : -1
-                }
-                return 0
-            })
-        }
-        return sortableItems
-    }, [items, sortConfig])
+//                 if (valB === undefined) {
+//                     return sortConfig.direction === 'ascending' ? -1 : 1
+//                 }
+//                 if (valA < valB) {
+//                     return sortConfig.direction === 'ascending' ? -1 : 1
+//                 }
+//                 if (valA > valB) {
+//                     return sortConfig.direction === 'ascending' ? 1 : -1
+//                 }
+//                 return 0
+//             })
+//         }
+//         return sortableItems
+//     }, [items, sortConfig])
 
-    const requestSort = (key: string) => {
-        if (sortConfig && sortConfig.key === key) {
-            const { direction } = sortConfig
-            if (direction === 'ascending') {
-                setSortConfig({ key, direction: 'descending' })
-                return
-            }
+//     const requestSort = (key: string) => {
+//         if (sortConfig && sortConfig.key === key) {
+//             const { direction } = sortConfig
+//             if (direction === 'ascending') {
+//                 setSortConfig({ key, direction: 'descending' })
+//                 return
+//             }
 
-            setSortConfig(null)
-            return
-        }
-        setSortConfig({ key, direction: 'ascending' })
-    }
+//             setSortConfig(null)
+//             return
+//         }
+//         setSortConfig({ key, direction: 'ascending' })
+//     }
 
-    return { items: sortedItems, requestSort, sortConfig }
-}
+//     return { items: sortedItems, requestSort, sortConfig }
+// }
 
 const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
     //const { items, requestSort, sortConfig } = useSortableData(policies);
     const items = policies
     const sortConfig = undefined
-    const history = useHistory()
+    const navigate = useNavigate()
 
     // add this in there to sort when getting the info
     const getAttribute = (name: string) => {
@@ -110,7 +110,7 @@ const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
                             key={i}
                             onClick={() => {
                                 //@ts-ignore
-                                history.push(`/policies/${encodeURI(id)}`)
+                                navigate(`/policies/${encodeURI(id)}`)
                             }}
                         >
                             <Name>{policy.name}</Name>

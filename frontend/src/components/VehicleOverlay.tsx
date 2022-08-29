@@ -4,19 +4,6 @@ import carIcon from '../images/car icon.png'
 import OverlayWrapper from './Overlay'
 import styled from 'styled-components'
 
-const items = [
-    { title: 'title', info: 'Info Here' },
-    { title: 'title', info: 'Info Here' },
-    { title: 'title', info: 'Info Here' },
-    { title: 'title', info: 'Info Here' },
-    { title: 'title', info: 'Info Here' },
-]
-
-const cartitle = 'LINCOLN- TOWN CAR'
-
-const vinText = '1LNHM83W14Y685313'
-const year = '2004'
-
 const VehicleOverlay = ({
     options = {},
     vehicle,

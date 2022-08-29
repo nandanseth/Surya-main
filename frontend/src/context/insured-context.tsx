@@ -23,10 +23,10 @@ import {
     radius,
     sizeClasses,
 } from '../utils/policies/getCommercial'
+import { createContext, useState } from 'react'
 import { reinsurer } from '../utils/reinsurance/getReinsurer'
 import fuelTypeOptions from '../utils/vehicle/fuelType'
 import getWeightSelects from '../utils/vehicle/getWeightSelects'
-import React, { createContext, useState } from 'react'
 import vehicleCategoryOptions, {
     optionsMap,
 } from '../utils/vehicle/getVehicleCategory'
@@ -90,6 +90,14 @@ export const driversInitialState = {
     licenseNumber: null,
     licenseEffDate: null,
     licenseExpDate: null,
+}
+
+export interface Driver {
+    driverName: string
+    states: string
+    licenseNumber: string
+    licenseEffDate: string
+    licenseExpDate: string
 }
 
 export const lossHistoryState = {

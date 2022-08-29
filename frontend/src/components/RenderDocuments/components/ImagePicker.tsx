@@ -1,3 +1,4 @@
+import { useAlert } from 'react-alert'
 import { useCallback, useState } from 'react'
 import makeStyles from '@mui/styles/makeStyles'
 
@@ -49,6 +50,7 @@ const useStyles = makeStyles(() => ({
 
 const ImagePicker = () => {
     const [logo, setLogo] = useState('')
+    const alert = useAlert()
 
     const classes = useStyles()
 
@@ -64,7 +66,7 @@ const ImagePicker = () => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader()
             if (!file) {
-                alert('Please select an image')
+                alert.error('Please select an image')
             } else {
                 fileReader.readAsDataURL(file)
                 fileReader.onload = () => {

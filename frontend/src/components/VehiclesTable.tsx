@@ -3,7 +3,7 @@ import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-const headers = ['Vin', 'Make', 'Model', 'Model Year', 'Seating', 'Net Billed']
+const headers = ['Vin', 'Make', 'Model', 'Model Year', 'Seating']
 
 interface IObjectKeys {
     [key: string]: string | number | undefined
@@ -116,19 +116,32 @@ const VehiclesTable = ({
             </thead>
             <tbody>
                 {items.map(
-                    (
-                        { vin, model, make, modelYear, seating, totalPremium },
-                        i
-                    ) => (
-                        <TR key={vin} onClick={() => open(i)}>
-                            <Name>{vin}</Name>
-                            <TD>{make}</TD>
-                            <TD>{model}</TD>
-                            <TD>{modelYear}</TD>
-                            <TD>{seating}</TD>
-                            <TD>{totalPremium}</TD>
-                        </TR>
-                    )
+                    ({
+                        vin,
+                        model,
+                        make,
+                        modelYear,
+                        seating,
+                        totalPremium,
+                    }) => {
+                        console.log(items)
+                        return (
+                            <TR
+                                key={vin}
+                                onClick={() => {
+                                    //open(i)
+                                    //TODO: lets clean this view up tremendously during the feedback period with a thoughtful view of exactly what we want.
+                                }}
+                            >
+                                <Name>{vin}</Name>
+                                <TD>{make}</TD>
+                                <TD>{model}</TD>
+                                <TD>{modelYear}</TD>
+                                <TD>{seating}</TD>
+                                {/* <TD>{totalPremium}</TD> */}
+                            </TR>
+                        )
+                    }
                 )}
             </tbody>
         </Table>

@@ -1,15 +1,4 @@
-import {
-    Accordion,
-    AccordionContent,
-    AccordionHeader,
-    Flex,
-    Label,
-    Section,
-    Tile,
-    Title,
-    TitleInfo,
-    TitleTitle,
-} from '../shared'
+import { Flex, Section, Tile, Title, TitleInfo, TitleTitle } from '../shared'
 
 const Coverage = ({ coverage }) => {
     const {

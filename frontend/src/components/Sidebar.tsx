@@ -1,17 +1,7 @@
 import { Colors, sidebarWidth } from '../styles/styles'
 import { Link } from 'react-router-dom'
-import {
-    default as settingsActiveIcon,
-    default as settingsIcon,
-} from '../images/settings icon.png'
 import { useLocation } from 'react-router-dom'
 import blurredBg from '../images/blurred bg.png'
-import claimsActiveIcon from '../images/claims-active icon.png'
-import claimsIcon from '../images/claims icon.png'
-import policiesActiveIcon from '../images/policies-active icon.png'
-import policiesIcon from '../images/policies icon.png'
-import reportsActiveIcon from '../images/reports-active icon.png'
-import reportsIcon from '../images/reports icon.png'
 import styled from 'styled-components'
 
 const Sidebar = () => {
@@ -44,13 +34,6 @@ const LinkMap: Record<string, string> = {
     reports: '/reports',
     claims: '/claims',
     settings: '/settings',
-}
-
-const iconMap = {
-    policies: { default: policiesIcon, active: policiesActiveIcon },
-    reports: { default: reportsIcon, active: reportsActiveIcon },
-    claims: { default: claimsIcon, active: claimsActiveIcon },
-    settings: { default: settingsIcon, active: settingsActiveIcon },
 }
 
 const SidebarItem = ({ link, active }: { link: string; active?: boolean }) => (
@@ -90,11 +73,6 @@ const IconHolder = styled.div<{ active?: boolean }>`
         
     }
   `}
-`
-
-const Icon = styled.img`
-    width: 14px;
-    height: 14px;
 `
 
 const Label = styled.h1`

@@ -1,6 +1,8 @@
+import { CreateButton } from '../../../components/Buttons'
 import { Flex, Section, Tile, Title, TitleInfo, TitleTitle } from '../shared'
+import styled from 'styled-components'
 
-const Policy = ({ policy, endorsements }) => {
+const Policy = ({ policy, endorsements, endorsementsOnclick }) => {
     const {
         policyNumber,
         effectiveDate,
@@ -121,11 +123,24 @@ const Policy = ({ policy, endorsements }) => {
                 </Flex>
             </Section>
             <Section>
-                <Title>Endorsements</Title>
+                <Row>
+                    <Title style={{ marginRight: 'unset' }}>
+                        Endorsements{' '}
+                    </Title>{' '}
+                    <CreateButton onClick={endorsementsOnclick}>
+                        {' '}
+                        + Edit Endorsements
+                    </CreateButton>
+                </Row>
                 <Flex>{renderEndorsements()}</Flex>
             </Section>
         </>
     )
 }
+
+const Row = styled.div`
+    display: flex;
+    align-items: center;
+`
 
 export default Policy

@@ -15,8 +15,8 @@ import {
 } from '../../utils/policies/getCommercial'
 import { classificationMap } from '../../utils/policies/getPolicyCategory'
 import { Form } from '../../styles/styles'
-import SuryaInput from '../PolicyFormInput'
-import SuryaSelect from '../PolicyFormSelect'
+import SuryaInput from '../PolicyForm/PolicyFormInput'
+import SuryaSelect from '../PolicyForm/PolicyFormSelect'
 
 const { Section, Flex, InputWrapper } = Form
 

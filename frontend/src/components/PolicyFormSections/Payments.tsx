@@ -1,6 +1,6 @@
 import { Colors, Form } from '../../styles/styles'
 import payment from '../../utils/policies/getPayment'
-import SuryaSelect from '../PolicyFormSelect'
+import SuryaSelect from '../PolicyForm/PolicyFormSelect'
 const { Section, Flex } = Form
 
 const PaymentsSection = ({ store }) => {

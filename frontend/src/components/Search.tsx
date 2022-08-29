@@ -18,7 +18,7 @@ const Search = ({
     const isActive = value.length >= 1
     return (
         <Container style={{ ...style }}>
-            <Icon src="search-icon.png" />
+            <Icon src={searchIcon} />
             <SearchInput
                 onChange={onChange}
                 placeholder={placeholder}

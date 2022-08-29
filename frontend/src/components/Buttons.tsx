@@ -27,24 +27,14 @@ export const CreateButton = styled.button<{ disabled?: boolean }>`
     margin-left: 32px;
     box-shadow: 2px 2px 2px rgb(0 0 0 / 2%);
     :hover {
-        transform: scale(1.03);
+        // transform: scale(1.03);
         background: #e0f0ff;
     }
 `
 
-const Span = styled.span`
-    margin-right: 6px;
-`
-
-const Plus = styled.img`
-    width: 26;
-    height: 26px;
-    object-fit: contain;
-`
-
 export const buttonBaseCss = css`
     font-family: inherit;
-    border-radius: 8px;
+    border-radius: 20px;
     font-size: 16px;
     text-align: center;
     padding: 18px 24px;
@@ -53,19 +43,23 @@ export const buttonBaseCss = css`
     ${transitionCss};
 
     :hover {
-        transform: scale(1.01);
+        opacity: 0.4;
     }
 `
 
 export const Save = styled.button`
     ${transitionCss}
-    background: rgba(89, 195, 179, 0.125683);
+    background: ${Colors.lightBlue};
     ${buttonBaseCss}
-    color: #59C3B3;
+    border-radius: 8px;
+    color: ${Colors.electricBlue};
+`
 
-    :hover {
-        background: rgba(89, 195, 179, 0.4125683);
-    }
+export const SmallSave = styled(Save)`
+    padding: 12px 40px;
+    min-width: 200px;
+    font-size: 14px;
+    font-weight: 500;
 `
 
 export const Cancel = styled.button`
@@ -96,6 +90,49 @@ export const Close = styled.button`
     :hover {
         opacity: 0.68;
     }
+`
+
+export const Add = styled(Save)`
+    max-width: 200px;
+    width: 100%;
+    margin-left: auto;
+    font-weight: 500;
+    padding: 12px;
+    font-size: 14px;
+`
+export const StyledCancel = styled(Add)`
+    background: #f4f5f6;
+    padding: 12px 40px;
+    min-width: 200px;
+    color: #3a5665;
+`
+
+export const Submit = styled.button`
+    font-weight: 600;
+    font-size: 16px;
+    color: #00aeff;
+    text-align: center;
+    background: #00aeff12;
+    padding: 8px 16px;
+    marigin-left: 8px;
+    border-radius: 20px;
+    height: 40px;
+    min-width: 200px;
+    margin: 12px;
+    ${transitionCss};
+
+    :hover {
+        background: ${Colors.electricBlue};
+        color: white;
+    }
+    :disabled {
+        background: #80808021;
+        color: #00000033;
+    }
+`
+export const DarkSubmit = styled(Submit)`
+    background: black;
+    color: white;
 `
 
 const Buttons = {

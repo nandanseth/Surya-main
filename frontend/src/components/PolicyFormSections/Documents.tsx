@@ -10,7 +10,7 @@ import {
 import { Form } from '../../styles/styles'
 import documentOptions from '../../utils/documents/documents'
 import styled from 'styled-components'
-import SuryaSelect from '../PolicyFormSelect'
+import SuryaSelect from '../PolicyForm/PolicyFormSelect'
 
 const { Section, Flex } = Form
 

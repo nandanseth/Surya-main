@@ -1,9 +1,8 @@
 import { createStyles, makeStyles } from '@mui/styles'
 import { fonts } from '../../styles/styles'
-import { Theme } from '@mui/material/styles'
 import styled from 'styled-components'
 
-export const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles(() =>
     createStyles({
         heading: {
             fontSize: 18,

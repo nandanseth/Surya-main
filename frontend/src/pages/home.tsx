@@ -1,28 +1,23 @@
+import { checkAllKeys, testItem, urls } from '../shared'
 import { FormContextProvider } from '../context/insured-context'
-import { Header, Title } from '../styles/styles'
-import { testItem, urls } from '../shared'
+import { Header, Title, transitionCss } from '../styles/styles'
+import { useAlert } from 'react-alert'
 import { useEffect, useState } from 'react'
 import Buttons from '../components/Buttons'
 import Layout from '../utils/withLayout'
 import Overlay from '../components/Overlay'
-import PolicyForm from '../components/PolicyForm'
-import PolicyTable from '../components/PolicyTable'
+import PolicyForm from '../components/PolicyForm/PolicyForm'
+import PolicyTable from '../components/PolicyForm/PolicyTable'
 import Search from '../components/Search'
 import styled from 'styled-components'
 
 const title = 'Policies'
 
-const checkAllKeys = ({ object, check }) => {
-    const keys = Object.keys(object ?? {})
-    return keys.some((key) => {
-        return String(object[key]).includes(check)
-    })
-}
-
 const Home = () => {
     const [show, setShow] = useState(false)
     const [policies, setPolicies] = useState([testItem])
     const [search, setSearch] = useState('')
+    const alert = useAlert()
 
     // could be wrapped in a useMemo
     const searchFiter = (currentPolicies) => {
@@ -43,7 +38,6 @@ const Home = () => {
     }
 
     useEffect(() => {
-        const headers = {}
         const getPolicies = async () => {
             try {
                 const res = await fetch(urls.getAllPoliciesUrl)
@@ -51,7 +45,7 @@ const Home = () => {
                 console.log(data, 'test')
                 setPolicies(data)
             } catch (error) {
-                alert(error)
+                alert.error('Error getting policies')
                 console.log(error)
             }
         }
@@ -151,17 +145,22 @@ const Exit = styled.div`
     right: 20px;
     top: 20px;
     font-weight: 400;
-    font-size: 24px;
+    font-weight: 300;
+    font-size: 60px;
     text-align: right;
-    color: #ffffff;
+    color: white;
+    opacity: 0.2;
     cursor: pointer;
-    background: #ffffff36;
     height: 40px;
     width: 40px;
     border-radius: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    ${transitionCss};
+    :hover {
+        opacity: 1;
+    }
 `
 
 export default Home

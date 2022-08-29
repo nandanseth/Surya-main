@@ -1,7 +1,7 @@
 import { Form } from '../../styles/styles'
-import Input from '../Input'
+import Input from '../PolicyForm/PolicyFormInput'
 import reinsuranceOptions, { zero } from '../../utils/reinsurance/getReinsurer'
-import SuryaSelect from '../PolicyFormSelect'
+import SuryaSelect from '../PolicyForm/PolicyFormSelect'
 
 const { Section, Flex, InputWrapper } = Form
 

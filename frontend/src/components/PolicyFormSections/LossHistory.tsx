@@ -3,8 +3,8 @@ import { Save } from '../Buttons'
 import { yesNoOptions } from '../../context/insured-context'
 import React from 'react'
 import styled from 'styled-components'
-import SuryaInput from '../PolicyFormInput'
-import SuryaSelect from '../PolicyFormSelect'
+import SuryaInput from '../PolicyForm/PolicyFormInput'
+import SuryaSelect from '../PolicyForm/PolicyFormSelect'
 
 const { Section, SectionTitle, Flex, InputWrapper } = Form
 

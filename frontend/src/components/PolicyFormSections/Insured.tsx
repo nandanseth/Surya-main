@@ -3,20 +3,16 @@ import {
     entityTypeOptions,
     statesOptions,
 } from '../../utils/policies'
-import { ButtonHolder, Colors, Form, transitionCss } from '../../styles/styles'
-import { Cancel, Save } from '../Buttons'
+import { ButtonHolder, Form } from '../../styles/styles'
+import { Cancel } from '../Buttons'
 import { useState } from 'react'
 import Overlay from '../Overlay'
 import SearchOverlay from '../SearchOverlay'
 import styled from 'styled-components'
-import SuryaInput from '../PolicyFormInput'
-import SuryaSelect from '../PolicyFormSelect'
+import SuryaInput from '../PolicyForm/PolicyFormInput'
+import SuryaSelect from '../PolicyForm/PolicyFormSelect'
 
 const { Section, SectionTitle, Flex, InputWrapper } = Form
-
-const search = '+ Search New Insured'
-const add = '+ Add New Insured'
-const insuredText = 'Choose Insured'
 
 const personTitle = 'Personal Info'
 const corpTitle = 'Coporation Info'
@@ -24,7 +20,7 @@ const corpTitle = 'Coporation Info'
 const Insured = ({ store }) => {
     const { insured: insuredStates } = store
 
-    const { values, setValues, isAddActive, setAddActive } = insuredStates
+    const { values, setValues, setAddActive } = insuredStates
     const [searchActive, setSearchActive] = useState(false)
 
     const handleInputOnChange = (e) => {
@@ -375,46 +371,30 @@ const NewInsuredSection = ({
     )
 }
 
-const NewInsuredButton = styled.button`
-    background: linear-gradient(
-        116.57deg,
-        rgba(52, 152, 194, 0.1) 0%,
-        rgba(3, 205, 174, 0.1) 83.33%
-    );
-    mix-blend-mode: normal;
-    border: 1px solid ${Colors.green};
-    box-sizing: border-box;
-    border-radius: 3px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    text-align: center;
-    color: ${Colors.green};
-    padding: 18px;
-    flex: 1 1 auto;
-    margin: 5px 10px;
-    margin-left: 0;
-    ${transitionCss}
-    :hover {
-        opacity: 0.7;
-    }
-`
-
-const SearchInsuredButton = styled(NewInsuredButton)`
-    background: transparent;
-`
-
-const ButtonFlex = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
-`
-
-const SaveButton = styled(Save)`
-    width: 100%;
-    margin: 0 10px;
-`
+// const NewInsuredButton = styled.button`
+//     background: linear-gradient(
+//         116.57deg,
+//         rgba(52, 152, 194, 0.1) 0%,
+//         rgba(3, 205, 174, 0.1) 83.33%
+//     );
+//     mix-blend-mode: normal;
+//     border: 1px solid ${Colors.green};
+//     box-sizing: border-box;
+//     border-radius: 3px;
+//     font-style: normal;
+//     font-weight: 600;
+//     font-size: 14px;
+//     text-align: center;
+//     color: ${Colors.green};
+//     padding: 18px;
+//     flex: 1 1 auto;
+//     margin: 5px 10px;
+//     margin-left: 0;
+//     ${transitionCss}
+//     :hover {
+//         opacity: 0.7;
+//     }
+// `
 
 const CancelButton = styled(Cancel)`
     width: 100%;
