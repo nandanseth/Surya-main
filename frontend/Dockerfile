@@ -7,7 +7,7 @@ COPY . /app/
 WORKDIR /app
 # RUN npm install --unsafe-perm --global typescript sync react-scripts webpack
 # RUN npm install -g typescript sync react-scripts webpack --verbose
-RUN yarn
+RUN yarn install --production=true
 ENV NODE_ENV=production
 RUN yarn build --production 
 

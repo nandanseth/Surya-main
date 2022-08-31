@@ -2,7 +2,7 @@ steps:
     - name: 'node:16'
       entrypoint: 'yarn'
       id: 'yarn'
-      args: ['install', '--production', '--verbose']
+      args: ['install', '--production']
       dir: 'frontend'
     - name: 'node:16'
       entrypoint: 'yarn'
