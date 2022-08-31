@@ -55,7 +55,7 @@ const Policy = () => {
             }
         }
         getPolicy()
-    }, [])
+    }, [slug])
 
     useEffect(() => {
         const policyUrl = urls.getEndorsements(slug)
@@ -110,7 +110,7 @@ const Policy = () => {
                 onClick={menuOnclick}
             />
         ))
-    }, [policySectionMenu, section])
+    }, [section])
 
     const renderInfo = useMemo(() => {
         if (loading) {
@@ -296,7 +296,6 @@ const EndorsementsButton = styled(Button)`
 
 const Exit = styled(Button)`
     background: transparent;
-    border-radius: 20px;
     height: 20px;
     width: 20px;
     margin-bottom: auto;

@@ -2,9 +2,8 @@ import { Colors, sidebarWidth } from '../styles/styles'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import blurredBg from '../images/blurred bg.png'
-import styled from 'styled-components'
 import icon from '../images/logo.png'
-
+import styled from 'styled-components'
 
 const Sidebar = () => {
     const { pathname } = useLocation()

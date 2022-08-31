@@ -19,40 +19,34 @@ const DriverItemEndorsements = ({
     } = values[num]
 
     return (
-        <div>
-            <Section>
-                <Flex>
-                    <Item>
-                        <Delete onClick={() => removeFields(num)}>X</Delete>
-                        <Col>
-                            <Title>Name</Title>
-                            <Info>
-                                <b>{driverName}</b>
-                            </Info>
-                        </Col>
-                        <Col>
-                            <Title>State</Title>
-                            <Info>{states}</Info>
-                        </Col>
+        <Item>
+            <Delete onClick={() => removeFields(num)}>X</Delete>
+            <Col>
+                <Title>Name</Title>
+                <Info>
+                    <b>{driverName}</b>
+                </Info>
+            </Col>
+            <Col>
+                <Title>State</Title>
+                <Info>{states}</Info>
+            </Col>
 
-                        <Col>
-                            <Title>License Number</Title>
-                            <Info>{licenseNumber}</Info>
-                        </Col>
+            <Col>
+                <Title>License Number</Title>
+                <Info>{licenseNumber}</Info>
+            </Col>
 
-                        <Col>
-                            <Title>License Effective Date</Title>
-                            <Info>{licenseEffDate}</Info>
-                        </Col>
+            <Col>
+                <Title>License Effective Date</Title>
+                <Info>{licenseEffDate}</Info>
+            </Col>
 
-                        <Col>
-                            <Title>License Expiration Date</Title>
-                            <Info>{licenseExpDate}</Info>
-                        </Col>
-                    </Item>
-                </Flex>
-            </Section>
-        </div>
+            <Col>
+                <Title>License Expiration Date</Title>
+                <Info>{licenseExpDate}</Info>
+            </Col>
+        </Item>
     )
 }
 

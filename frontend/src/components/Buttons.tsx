@@ -34,7 +34,7 @@ export const CreateButton = styled.button<{ disabled?: boolean }>`
 
 export const buttonBaseCss = css`
     font-family: inherit;
-    border-radius: 20px;
+    border-radius: 10px;
     font-size: 16px;
     text-align: center;
     padding: 18px 24px;
@@ -108,15 +108,14 @@ export const StyledCancel = styled(Add)`
 `
 
 export const Submit = styled.button`
-    font-weight: 600;
+    border-radius: 8px;
+    font-weight: 500;
     font-size: 16px;
-    color: #00aeff;
+    color: #ffffff;
+    text-transform: uppercase;
     text-align: center;
-    background: #00aeff12;
-    padding: 8px 16px;
-    marigin-left: 8px;
-    border-radius: 20px;
-    height: 40px;
+    background: #0084ff;
+    padding: 12px 24px;
     min-width: 200px;
     margin: 12px;
     ${transitionCss};

@@ -30,6 +30,9 @@ const PolicyForm = ({ close }) => {
     const store = useContext(FormContext)
     const alert = useAlert()
 
+    const [loading, setLoading] = useState(false)
+    const [current, setCurrent] = useState('insured')
+
     const { reset } = store
     const Pages = {
         policy: { page: PolicySection, name: 'Policy' },
@@ -57,8 +60,8 @@ const PolicyForm = ({ close }) => {
         payments: 9 / total,
     }
 
-    const [current, setCurrent] = useState('insured')
     const { name, page: Current } = Pages[current]
+
     const onSubmit = () => {
         const postStore = async () => {
             try {
@@ -86,104 +89,32 @@ const PolicyForm = ({ close }) => {
 
     const MenuFooter = () => (
         <Nav>
-            <StyledIcon
-                active={current === 'insured'}
-                onClick={() => {
-                    setCurrent('insured')
+            <Close onClick={close}>Close</Close>
+            <Submit
+                disabled={loading}
+                onClick={async () => {
+                    setLoading(true)
+                    const check = await onSubmit()
+                    if (check) {
+                        setLoading(false)
+                        close()
+                        reset()
+                    }
+                    setLoading(false)
                 }}
-                title="Insured Section"
             >
-                <StyledImg src={insuredIcon} />
-            </StyledIcon>
-            <StyledIcon
-                active={current === 'policy'}
-                onClick={() => {
-                    setCurrent('policy')
-                }}
-                style={{ backgroundImage: `url('${policyIcon}')` }}
-                title="Policy Section"
-            >
-                <StyledImg src={policyIcon} />
-            </StyledIcon>
-            <StyledIcon
-                active={current === 'vehicles'}
-                onClick={() => {
-                    setCurrent('vehicles')
-                }}
-                title="Vehicles Section"
-            >
-                <StyledImg src={vehicleIcon} />
-            </StyledIcon>
-
-            <StyledIcon
-                active={current === 'drivers'}
-                onClick={() => {
-                    setCurrent('drivers')
-                }}
-                title="Drivers Section"
-            >
-                <StyledImg src={driversIcon} />
-            </StyledIcon>
-
-            <StyledIcon
-                active={current === 'loss'}
-                onClick={() => {
-                    setCurrent('loss')
-                }}
-                title="Loss History"
-            >
-                <StyledImg src={lossHistoryIcon} />
-            </StyledIcon>
-
-            <StyledIcon
-                active={current === 'coverage'}
-                onClick={() => {
-                    setCurrent('coverage')
-                }}
-                title="Coverage"
-            >
-                <StyledImg src={coverageIcon} />
-            </StyledIcon>
-
-            {/* <StyledIcon
-                active={current === 'documents'}
-                onClick={() => {
-                    setCurrent('documents')
-                }}
-                title="Documents"
-            >
-                <StyledImg src={documentsIcon} />
-            </StyledIcon> */}
-
-            <StyledIcon
-                active={current === 'reinsurance'}
-                onClick={() => {
-                    setCurrent('reinsurance')
-                }}
-                title="Reinsurance"
-            >
-                <StyledImg src={reinsuranceIcon} />
-            </StyledIcon>
-            <StyledIcon
-                active={current === 'payments'}
-                onClick={() => {
-                    setCurrent('payments')
-                }}
-                title="Payments"
-            >
-                <StyledImg src={paymentsIcon} />
-            </StyledIcon>
+                {loading ? 'Loading' : 'Submit'}
+            </Submit>
         </Nav>
     )
 
     return (
         <Container>
             <FormHead
-                close={close}
+                current={current}
                 name={name}
-                onSubmit={onSubmit}
                 percent={percentMap[current]}
-                reset={reset}
+                setCurrent={setCurrent}
             />
             <Main>
                 <Current store={store} />
@@ -194,19 +125,16 @@ const PolicyForm = ({ close }) => {
 }
 
 const FormHead = ({
-    close,
     percent = 0,
     name = 'Name',
-    reset,
-    onSubmit,
+    current,
+    setCurrent,
 }: {
-    close: () => void
     percent?: number
+    current?: string
+    setCurrent: any
     name?: string
-    reset?: any
-    onSubmit: () => Promise<boolean>
 }) => {
-    const [loading, setLoading] = useState(false)
     return (
         <Header>
             <ProgressContainer>
@@ -219,22 +147,82 @@ const FormHead = ({
                     <Title>{name}</Title>
                 </Left>
                 <Right>
-                    <Close onClick={close}>Close</Close>
-                    <Submit
-                        disabled={loading}
-                        onClick={async () => {
-                            setLoading(true)
-                            const check = await onSubmit()
-                            if (check) {
-                                setLoading(false)
-                                close()
-                                reset()
-                            }
-                            setLoading(false)
+                    <StyledIcon
+                        active={current === 'insured'}
+                        onClick={() => {
+                            setCurrent('insured')
                         }}
+                        title="Insured Section"
                     >
-                        {loading ? 'Loading' : 'Submit'}
-                    </Submit>
+                        <StyledImg src={insuredIcon} />
+                    </StyledIcon>
+                    <StyledIcon
+                        active={current === 'policy'}
+                        onClick={() => {
+                            setCurrent('policy')
+                        }}
+                        style={{ backgroundImage: `url('${policyIcon}')` }}
+                        title="Policy Section"
+                    >
+                        <StyledImg src={policyIcon} />
+                    </StyledIcon>
+                    <StyledIcon
+                        active={current === 'vehicles'}
+                        onClick={() => {
+                            setCurrent('vehicles')
+                        }}
+                        title="Vehicles Section"
+                    >
+                        <StyledImg src={vehicleIcon} />
+                    </StyledIcon>
+
+                    <StyledIcon
+                        active={current === 'drivers'}
+                        onClick={() => {
+                            setCurrent('drivers')
+                        }}
+                        title="Drivers Section"
+                    >
+                        <StyledImg src={driversIcon} />
+                    </StyledIcon>
+
+                    <StyledIcon
+                        active={current === 'loss'}
+                        onClick={() => {
+                            setCurrent('loss')
+                        }}
+                        title="Loss History"
+                    >
+                        <StyledImg src={lossHistoryIcon} />
+                    </StyledIcon>
+
+                    <StyledIcon
+                        active={current === 'coverage'}
+                        onClick={() => {
+                            setCurrent('coverage')
+                        }}
+                        title="Coverage"
+                    >
+                        <StyledImg src={coverageIcon} />
+                    </StyledIcon>
+                    <StyledIcon
+                        active={current === 'reinsurance'}
+                        onClick={() => {
+                            setCurrent('reinsurance')
+                        }}
+                        title="Reinsurance"
+                    >
+                        <StyledImg src={reinsuranceIcon} />
+                    </StyledIcon>
+                    <StyledIcon
+                        active={current === 'payments'}
+                        onClick={() => {
+                            setCurrent('payments')
+                        }}
+                        title="Payments"
+                    >
+                        <StyledImg src={paymentsIcon} />
+                    </StyledIcon>
                 </Right>
             </HeaderContent>
         </Header>
@@ -252,39 +240,37 @@ const BaseBox = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    transition: width 1.2s ease-in-out;
+    transition: width 0.8s ease-in-out;
 `
 
 const Background = styled(BaseBox)`
-    background: linear-gradient(
-        90deg,
-        rgba(89, 195, 179, 0.394559) 0%,
-        rgb(0 209 255 / 64%) 180%
-    );
+    background: #83abd533;
     width: 100%;
     height: 8px;
 `
 
 const Progress = styled(BaseBox)<{ percent: number }>`
-    background: #03cdae;
+    background: ${Colors.electricBlue};
     border-radius: 0px 8px 8px 0px;
     width: ${({ percent }) => percent * 100}%;
 `
 
 const Header = styled.div`
     width: 100%;
-    width: 100%;
+    position: -webkit-sticky;
     position: sticky;
-    background: white;
-    z-index: 2;
+    background: #ffffff87;
+    z-index: 4;
+    backdrop-filter: blur(4px);
+    display: block;
+    top: 0;
 `
 
 const HeaderContent = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    padding: 12px;
-    box-shadow: 0px 2px 3px #0000001a;
+    padding: 24px 12px;
     align-items: stretch;
 `
 
@@ -309,44 +295,45 @@ const NewApplication = styled.div`
 `
 
 const Close = styled(Submit)`
-    background: rgba(58, 86, 100, 0.06);
-    color: black;
-        :hover {
-            background black;
-        }
+    color: white;
+    background: black;
+    :hover {
+        opacity: 0.4;
+        background: rgba(58, 86, 100, 0.06);
+        color: black;
+    }
 `
 
 const Container = styled.div`
     background: #ffffff;
-    width: 85%;
+    width: 100%;
     align-self: center;
     height: 100%;
-    left: 0;
-    position: fixed;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 `
 
 const Main = styled.div`
-    padding: 20px 12px;
+    padding: 20px 24px;
     width: 100%;
-    overflow-y: scroll;
-    height: inherit;
-    padding-bottom: 167px;
+    padding-bottom: 40px;
     padding-top: 12px;
 `
 
-const Nav = styled.nav`
+const Nav = styled.div`
     width: 100%;
-    height: 80px;
-    position: absolute;
-    bottom: 4px;
-    background: #f0f0f1;
-    padding: 0 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: sticky;
     border-top: solid 1px #0000001c;
+    backdrop-filter: blur(3px);
+    background: #ffffffc4;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     z-index: 2;
-    left: 0;
+    bottom: 0;
+    margin-top: auto;
+    padding: 12px 20px;
 `
 
 const StyledIcon = styled.div<{ active: boolean }>`
