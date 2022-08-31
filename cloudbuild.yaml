@@ -4,7 +4,7 @@ steps:
       id: 'yarn'
       args: ['install', '--production', '--verbose']
       dir: 'frontend'
-    - name: 'node:14'
+    - name: 'node:16'
       entrypoint: 'yarn'
       args: ['build', '--production']
       dir: 'frontend'
