@@ -1,10 +1,9 @@
 import { Block, Colors, ColorsCSS } from '../styles/styles'
 import { useNavigate } from 'react-router-dom'
+import icon from '../images/logo white.png'
 import Input from '../components/Input'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import icon from '../images/logo white.png'
-
 
 const validateEmail = (email: string) => {
     const re = /\S+@\S+\.\S+/

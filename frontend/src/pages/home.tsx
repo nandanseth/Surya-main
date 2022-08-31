@@ -93,11 +93,16 @@ const Home = () => {
                         show={show}
                         style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
                     >
-                        <Wrapper>
-                            <Exit onClick={close}>X</Exit>
+                        <Wrapper
+                            onClick={(e) => {
+                                if (e.currentTarget !== e.target) {
+                                    return
+                                }
+                                close()
+                            }}
+                        >
                             <PolicyForm
                                 close={() => {
-                                    console.log('hey')
                                     close()
                                 }}
                             />
@@ -138,6 +143,9 @@ const Wrapper = styled.div`
     flex: 1 1 auto;
     justify-content: center;
     align-items: center;
+    padding: 24px;
+    height: 100%;
+    width: 100%;
 `
 
 const Exit = styled.div`

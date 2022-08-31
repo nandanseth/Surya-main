@@ -4,7 +4,7 @@ import {
     statesOptions,
 } from '../../utils/policies'
 import { ButtonHolder, Form } from '../../styles/styles'
-import { Cancel } from '../Buttons'
+import { Cancel, StyledCancel } from '../Buttons'
 import { useState } from 'react'
 import Overlay from '../Overlay'
 import SearchOverlay from '../SearchOverlay'
@@ -358,15 +358,15 @@ const NewInsuredSection = ({
                     </InputWrapper>
                 </Flex>
             </Section>
-            <ButtonHolderStyled>
-                <CancelButton
+            {/* <ButtonHolderStyled>
+                <StyledCancel
                     onClick={() => {
                         setInactive()
                     }}
                 >
-                    Cancel{' '}
-                </CancelButton>
-            </ButtonHolderStyled>
+                    Cancel
+                </StyledCancel>
+            </ButtonHolderStyled> */}
         </>
     )
 }
@@ -395,11 +395,6 @@ const NewInsuredSection = ({
 //         opacity: 0.7;
 //     }
 // `
-
-const CancelButton = styled(Cancel)`
-    width: 100%;
-    margin: 0 10px;
-`
 
 const ButtonHolderStyled = styled(ButtonHolder)`
     margin: 0;
