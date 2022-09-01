@@ -19,3 +19,4 @@ node_modules/
 build
 !../.vscode/
 service-account.json
+package-lock.json

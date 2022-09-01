@@ -1,25 +1,23 @@
-env: flex
-# runtime: nodejs
-# env_variables:
-#   NODE_ENV: 'production'
+env: standard
+runtime: nodejs16
+# entrypoint: NODE_ENV=production npm i -g yarn --verbose
+env_variables:
+  NODE_ENV: 'production'
+# instance_class: F4
 service: default
-# manual_scaling:
-#   instances: 1
-# inbound_services:
-#     - warmup
-# # manual_scaling:
-# #   instances: 1
-# resources:
-#   cpu: 2
-#   memory_gb: 8.0
-#   disk_size_gb: 10
-#   volumes:
-#   - name: ramdisk1
-#     volume_type: tmpfs
-#     size_gb: 1.5
-# handlers:
-#     - url: /.*
-#       secure: always
-#       script: auto
-# runtime: custom
-runtime: nodejs
+inbound_services:
+    - warmup
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 2
+  memory_gb: 4.0
+  disk_size_gb: 30
+  volumes:
+  - name: ramdisk1
+    volume_type: tmpfs
+    size_gb: 2.0
+handlers:
+    - url: /.*
+      secure: always
+      script: auto
