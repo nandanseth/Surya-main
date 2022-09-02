@@ -15,8 +15,12 @@
 #   logging: CLOUD_LOGGING_ONLY
 steps:
     - name: 'node'
-      entrypoint: 'yarn'
+      entrypoint: 'npm'
       args: ['install', '--production', '--verbose']
+      dir: 'frontend'
+    - name: 'node'
+      entrypoint: 'yarn'
+      args: ['build', '--production', '--verbose']
       dir: 'frontend'
     # - name: 'node:14'
     #   entrypoint: 'yarn'
@@ -25,6 +29,6 @@ steps:
     - name: 'gcr.io/cloud-builders/gcloud'
       args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
-timeout: '600s'
+timeout: '3600s'
 options:
   logging: CLOUD_LOGGING_ONLY
