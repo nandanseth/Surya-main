@@ -1,13 +1,13 @@
 steps:
-    - id: 'restore cache'
-      name: gcr.io/${PROJECT_ID}/restore_cache
-      args:
-        [
-          '--bucket=gs://${_CACHE_BUCKET}',
-          '--key=node_modules-$( checksum yarn.lock )',
-          '--key_fallback=node_modules-',
-        ]
-      dir: 'frontend'
+    # - id: 'restore cache'
+    #   name: gcr.io/${PROJECT_ID}/restore_cache
+    #   args:
+    #     [
+    #       '--bucket=gs://${_CACHE_BUCKET}',
+    #       '--key=node_modules-$( checksum yarn.lock )',
+    #       '--key_fallback=node_modules-',
+    #     ]
+    #   dir: 'frontend'
 
     - id: 'yarn install'
       name: node:${_NODE_VERSION}-alpine
