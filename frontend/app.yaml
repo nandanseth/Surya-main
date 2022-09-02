@@ -1,5 +1,5 @@
 env: standard
-runtime: nodejs18
+runtime: nodejs17
 # entrypoint: NODE_ENV=production npm i -g yarn --verbose
 env_variables:
   NODE_ENV: 'production'
