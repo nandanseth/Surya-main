@@ -1,15 +1,30 @@
+# steps:
+#     - name: 'node'
+#       entrypoint: 'npm'
+#       id: 'npm'
+#       args: ['install', '--production', '--force']
+#       dir: 'frontend'
+#     - name: 'node'
+#       entrypoint: 'yarn'
+#       args: ['build', '--production']
+#       dir: 'frontend'
+#       waitFor: ['npm']
+# timeout: '3600s'
+
+# options:
+#   logging: CLOUD_LOGGING_ONLY
 steps:
     - name: 'node'
-      entrypoint: 'npm'
-      id: 'npm'
-      args: ['install', '--production', '--force']
-      dir: 'frontend'
-    - name: 'node'
       entrypoint: 'yarn'
-      args: ['build', '--production']
+      args: ['install', '--production', '--verbose']
       dir: 'frontend'
-      waitFor: ['npm']
-timeout: '3600s'
-
+    # - name: 'node:14'
+    #   entrypoint: 'yarn'
+    #   args: ['build']
+    #   dir: 'frontend'
+    - name: 'gcr.io/cloud-builders/gcloud'
+      args: ['app', 'deploy', 'app.yaml']
+      dir: 'frontend'
+timeout: '600s'
 options:
   logging: CLOUD_LOGGING_ONLY
