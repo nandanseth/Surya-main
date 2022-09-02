@@ -21,16 +21,16 @@
 #     - url: /.*
 #       secure: always
 #       script: auto
-env: standard
-runtime: nodejs14
+env: flex
+runtime: nodejs
 env_variables:
   NODE_ENV: 'production'
-instance_class: F4
+# instance_class: F4
 service: default
 inbound_services:
     - warmup
-manual_scaling:
-  instances: 1
+# manual_scaling:
+#   instances: 1
 # resources:
 #   cpu: 2
 #   memory_gb: 4.0
