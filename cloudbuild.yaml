@@ -1,10 +1,10 @@
 steps:
-    - name: 'node'
+    - name: 'Run NPM install prod'
       entrypoint: 'npm'
       id: 'npm'
-      args: ['install', '--production']
+      args: ['install', '--production', '--legacy-peer-deps']
       dir: 'frontend'
-    - name: 'node'
+    - name: 'Run Yarn Build'
       entrypoint: 'yarn'
       args: ['build', '--production']
       dir: 'frontend'
