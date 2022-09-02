@@ -1,18 +1,15 @@
 steps:
-    - name: 'node:${_NODE_VERSION}'
+    - name: 'node:16'
       entrypoint: 'node'
       id: 'node'
-      args: ['install', '--${_NODE_ENV}']
+      args: ['install', '--production']
       dir: 'frontend'
-    - name: 'node:${_NODE_VERSION}'
+    - name: 'node:16'
       entrypoint: 'yarn'
-      args: ['build', '--${_NODE_ENV}']
+      args: ['build', '--production']
       dir: 'frontend'
       waitFor: ['node']
 timeout: '3600s'
-substitutions:
-  _NODE_VERSION: '16'
-  _NODE_ENV: production
 
 options:
   logging: CLOUD_LOGGING_ONLY
