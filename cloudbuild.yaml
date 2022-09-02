@@ -11,7 +11,8 @@ steps:
       args: ['build', '--production', '--verbose']
       dir: 'frontend'
 
-    - name: 'gcr.io/cloud-builders/gcloud'
+    - id: 'app deploy'
+      name: 'gcr.io/cloud-builders/gcloud'
       args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
 substitutions:
