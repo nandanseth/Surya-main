@@ -1,10 +1,10 @@
 steps:
-    - name: 'node:16'
+    - name: 'node'
       entrypoint: 'npm'
       id: 'npm'
       args: ['install', '--production']
       dir: 'frontend'
-    - name: 'node:16'
+    - name: 'node'
       entrypoint: 'yarn'
       args: ['build', '--production']
       dir: 'frontend'
