@@ -1,14 +1,14 @@
 steps:
     - name: 'node:16'
-      entrypoint: 'node'
-      id: 'node'
+      entrypoint: 'npm'
+      id: 'npm'
       args: ['install', '--production']
       dir: 'frontend'
     - name: 'node:16'
       entrypoint: 'yarn'
       args: ['build', '--production']
       dir: 'frontend'
-      waitFor: ['node']
+      waitFor: ['npm']
 timeout: '3600s'
 
 options:
