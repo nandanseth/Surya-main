@@ -1,34 +1,47 @@
-# steps:
-#     - name: 'node'
-#       entrypoint: 'npm'
-#       id: 'npm'
-#       args: ['install', '--production', '--force']
-#       dir: 'frontend'
-#     - name: 'node'
-#       entrypoint: 'yarn'
-#       args: ['build', '--production']
-#       dir: 'frontend'
-#       waitFor: ['npm']
-# timeout: '3600s'
-
-# options:
-#   logging: CLOUD_LOGGING_ONLY
 steps:
-    - name: 'node:16.13.0'
-      entrypoint: 'npm'
-      args: ['install', '--production', '--verbose']
+    - id: 'restore cache'
+      name: gcr.io/${PROJECT_ID}/restore_cache
+      args:
+        [
+          '--bucket=gs://${_CACHE_BUCKET}',
+          '--key=node_modules-$( checksum yarn.lock )',
+          '--key_fallback=node_modules-',
+        ]
       dir: 'frontend'
-    - name: 'node:16.13.0'
+
+    - id: 'yarn install'
+      name: node:${_NODE_VERSION}-alpine
+      entrypoint: yarn
+      args: ['install']
+      dir: 'frontend'
+
+    - id: 'yarn build'
+      name: 'node:${_NODE_VERSION}'
       entrypoint: 'yarn'
       args: ['build', '--production', '--verbose']
       dir: 'frontend'
-    # - name: 'node:14'
-    #   entrypoint: 'yarn'
-    #   args: ['build']
-    #   dir: 'frontend'
+
+    - id: 'save cache'
+      waitFor: ['yarn build']
+      name: gcr.io/${PROJECT_ID}/save_cache
+      args:
+        [
+          '--bucket=gs://${_CACHE_BUCKET}',
+          '--key=node_modules-$( checksum yarn.lock )',
+          '--path=node_modules',
+          '--no-clobber',
+        ]
+      dir: 'frontend'
+
     - name: 'gcr.io/cloud-builders/gcloud'
       args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
+substitutions:
+  _NODE_VERSION: '16.13.0'
+  _CACHE_BUCKET: ''
+
 timeout: '3600s'
 options:
   logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+  substitution_option: 'ALLOW_LOOSE'

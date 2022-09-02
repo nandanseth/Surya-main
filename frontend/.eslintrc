@@ -14,8 +14,7 @@
         "import",
         "jsx-a11y",
         "react",
-        "react-hooks",
-        "sort-imports-es6-autofix"
+        "react-hooks"
     ],
 
     "rules": {
@@ -46,14 +45,6 @@
         "react/jsx-sort-props": "warn",
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off",
-        "sort-imports-es6-autofix/sort-imports-es6": [
-            "warn",
-            {
-                "ignoreCase": true,
-                "ignoreMemberSort": false,
-                "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-            }
-        ],
         "no-restricted-imports": [
             "error",
             {
