@@ -22,7 +22,7 @@
 #       secure: always
 #       script: auto
 env: flex
-runtime: nodejs14
+runtime: nodejs16
 env_variables:
   NODE_ENV: 'production'
 # instance_class: F4

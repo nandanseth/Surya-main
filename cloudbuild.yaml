@@ -14,11 +14,11 @@
 # options:
 #   logging: CLOUD_LOGGING_ONLY
 steps:
-    - name: 'node:14'
+    - name: 'node:16.13.0'
       entrypoint: 'npm'
       args: ['install', '--production', '--verbose']
       dir: 'frontend'
-    - name: 'node:14'
+    - name: 'node:16.13.0'
       entrypoint: 'yarn'
       args: ['build', '--production', '--verbose']
       dir: 'frontend'
