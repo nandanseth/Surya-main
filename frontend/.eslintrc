@@ -38,7 +38,6 @@
         "object-curly-newline": ["warn", { "consistent": true }],
         "object-shorthand": "warn",
         "prefer-template": "warn",
-        "prettier/prettier": "warn",
         "react-hooks/exhaustive-deps": "warn",
         "react-hooks/rules-of-hooks": "warn",
         "react/jsx-boolean-value": "warn",
