@@ -1,6 +1,6 @@
 {
     "env": { "browser": true },
-    "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+    "extends": ["plugin:@typescript-eslint/recommended"],
     "ignorePatterns": ["dist/"],
     "parser": "@typescript-eslint/parser",
 
