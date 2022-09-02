@@ -15,8 +15,7 @@
         "jsx-a11y",
         "react",
         "react-hooks",
-        "sort-imports-es6-autofix",
-        "prettier"
+        "sort-imports-es6-autofix"
     ],
 
     "rules": {
