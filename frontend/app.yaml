@@ -25,20 +25,20 @@ env: standard
 runtime: nodejs14
 env_variables:
   NODE_ENV: 'production'
-# instance_class: F4
+instance_class: F4
 service: default
 inbound_services:
     - warmup
 manual_scaling:
   instances: 1
-resources:
-  cpu: 2
-  memory_gb: 4.0
-  disk_size_gb: 30
-  volumes:
-  - name: ramdisk1
-    volume_type: tmpfs
-    size_gb: 2.0
+# resources:
+#   cpu: 2
+#   memory_gb: 4.0
+#   disk_size_gb: 30
+#   volumes:
+#   - name: ramdisk1
+#     volume_type: tmpfs
+#     size_gb: 2.0
 handlers:
     - url: /.*
       secure: always
