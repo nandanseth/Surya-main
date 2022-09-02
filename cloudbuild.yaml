@@ -2,7 +2,7 @@ steps:
     - name: 'node'
       entrypoint: 'npm'
       id: 'npm'
-      args: ['install', '--production', '--legacy-peer-deps']
+      args: ['install', '--production', '--force']
       dir: 'frontend'
     - name: 'node'
       entrypoint: 'yarn'
