@@ -1,17 +1,17 @@
 steps:
-    - name: 'node:16'
+    - name: 'node:${_NODE_VERSION}'
       entrypoint: 'node'
       id: 'node'
-      args: ['install', '--production']
+      args: ['install', '--${_NODE_ENV}']
       dir: 'frontend'
-    - name: 'node:16'
+    - name: 'node:${_NODE_VERSION}'
       entrypoint: 'yarn'
-      args: ['build', '--production']
+      args: ['build', '--${_NODE_ENV}']
       dir: 'frontend'
       waitFor: ['node']
 timeout: '3600s'
 substitutions:
-  _NODE_VERSION: 16
+  _NODE_VERSION: '16'
   _NODE_ENV: production
 
 options:
