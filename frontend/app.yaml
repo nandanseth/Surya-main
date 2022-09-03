@@ -1,4 +1,4 @@
-env: standard
+env: flex
 runtime: nodejs
 env_variables:
   NODE_ENV: 'production'
@@ -12,10 +12,10 @@ readiness_check:
 #   min_num_instances: 1
 # manual_scaling:
 #   instances: 1
-resources:
-  cpu: 2
-  memory_gb: 4.0
-  disk_size_gb: 30
+# resources:
+#   cpu: 2
+#   memory_gb: 4.0
+#   disk_size_gb: 30
   # volumes:
   # - name: ramdisk1
   #   volume_type: tmpfs
