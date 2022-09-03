@@ -23,7 +23,7 @@ substitutions:
   _NODE_VERSION: '16.13.0'
 
 timeout: '3600s'
-# options:
-#   # logging: CLOUD_LOGGING_ONLY
-#   dynamic_substitutions: true
-#   substitution_option: 'ALLOW_LOOSE'
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+  substitution_option: 'ALLOW_LOOSE'
