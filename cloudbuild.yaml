@@ -17,7 +17,7 @@ steps:
       env:
         - 'NODE_ENV=production'
       name: 'gcr.io/cloud-builders/gcloud'
-      args: ['app', 'deploy']
+      args: ['app', 'deploy', '--set-env-vars', 'NODE_ENV=production']
       dir: 'frontend'
 substitutions:
   _NODE_VERSION: '16.13.0'
