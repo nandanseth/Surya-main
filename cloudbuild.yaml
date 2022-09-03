@@ -1,15 +1,15 @@
 steps:
-    - id: 'npm install'
-      name: node:${_NODE_VERSION}-alpine
-      entrypoint: npm
-      args: ['install', '--production']
-      dir: 'frontend'
+    # - id: 'npm install'
+    #   name: node:${_NODE_VERSION}-alpine
+    #   entrypoint: npm
+    #   args: ['install', '--production']
+    #   dir: 'frontend'
 
-    - id: 'yarn build'
-      name: node:${_NODE_VERSION}-alpine
-      entrypoint: 'yarn'
-      args: ['build', '--production', '--verbose']
-      dir: 'frontend'
+    # - id: 'yarn build'
+    #   name: node:${_NODE_VERSION}-alpine
+    #   entrypoint: 'yarn'
+    #   args: ['build', '--production', '--verbose']
+    #   dir: 'frontend'
 
     - id: 'app deploy'
       name: 'gcr.io/cloud-builders/gcloud'
