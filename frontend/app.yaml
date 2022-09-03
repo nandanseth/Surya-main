@@ -1,8 +1,8 @@
 env: flex
-runtime: nodejs14
+runtime: custom
 env_variables:
   NODE_ENV: 'production'
-instance_class: F2
+# instance_class: F2
 service: default
 # inbound_services:
 #     - warmup
