@@ -1,11 +1,11 @@
-FROM gcr.io/google-appengine/nodejs
+FROM node:16.13.0-alpine as build
+WORKDIR /app
+COPY . /app
+# RUN yarn install
+# RUN yarn build
 
-# Add the runtime builder code
-ADD contents/ /opt/nodejs-runtime-builder
+ENV NODE_ENV production
 
-ENV NODE_ENV=production
+EXPOSE 3000
 
-# Setup the runtime builder code
-RUN cd /opt/nodejs-runtime-builder && npm install && npm run compile
-
-ENTRYPOINT ["node", "/opt/nodejs-runtime-builder/build/src/main.js", "--app-dir", "/workspace"]
+CMD ["yarn", "start:prod"]
