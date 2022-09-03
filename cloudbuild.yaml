@@ -1,8 +1,6 @@
 steps:
     - id: 'npm install'
       name: node:${_NODE_VERSION}-alpine
-      env:
-        - 'NODE_ENV=production'
       entrypoint: npm
       args: ['install', '--production']
       dir: 'frontend'
@@ -14,16 +12,23 @@ steps:
       dir: 'frontend'
 
     - id: 'app deploy'
-      env:
-        - 'NODE_ENV=production'
       name: 'gcr.io/cloud-builders/gcloud'
-      args: ['app', 'deploy', '--set-env-vars', 'NODE_ENV=production']
+      args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
+      waitFor
+
+    # - id: 'app deploy'
+    #   env:
+    #     - 'NODE_ENV=production'
+    #   name: 'gcr.io/cloud-builders/gcloud'
+    #   args: ['app', 'deploy', '--set-env-vars', 'NODE_ENV=production']
+    #   dir: 'frontend'
 substitutions:
   _NODE_VERSION: '16.13.0'
 
 timeout: '3600s'
 options:
+  env: ['NODE_ENV=production']
   logging: CLOUD_LOGGING_ONLY
   dynamic_substitutions: true
   substitution_option: 'ALLOW_LOOSE'
