@@ -1,7 +1,9 @@
 steps:
-    - id: 'yarn install'
+    - id: 'npm install'
       name: node:${_NODE_VERSION}-alpine
-      entrypoint: yarn
+      env:
+        - 'NODE_ENV=production'
+      entrypoint: npm
       args: ['install', '--production']
       dir: 'frontend'
 
@@ -12,15 +14,16 @@ steps:
       dir: 'frontend'
 
     - id: 'app deploy'
+      env:
+        - 'NODE_ENV=production'
       name: 'gcr.io/cloud-builders/gcloud'
-      args: ['app', 'deploy', 'app.yaml']
+      args: ['app', 'deploy']
       dir: 'frontend'
 substitutions:
   _NODE_VERSION: '16.13.0'
-  _CACHE_BUCKET: ''
 
 timeout: '3600s'
-options:
-  logging: CLOUD_LOGGING_ONLY
-  dynamic_substitutions: true
-  substitution_option: 'ALLOW_LOOSE'
+# options:
+#   # logging: CLOUD_LOGGING_ONLY
+#   dynamic_substitutions: true
+#   substitution_option: 'ALLOW_LOOSE'

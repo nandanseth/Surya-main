@@ -29,24 +29,24 @@ env_variables:
 service: default
 # inbound_services:
 #     - warmup
-resources:
- cpu: 4
- memory_gb: 5
- disk_size_gb: 18
+# resources:
+#  cpu: 4
+#  memory_gb: 5
+#  disk_size_gb: 18
 readiness_check:
   app_start_timeout_sec: 1500
 automatic_scaling:
   min_num_instances: 1
 # manual_scaling:
 #   instances: 1
-# resources:
-#   cpu: 2
-#   memory_gb: 4.0
-#   disk_size_gb: 30
-#   volumes:
-#   - name: ramdisk1
-#     volume_type: tmpfs
-#     size_gb: 2.0
+resources:
+  cpu: 2
+  memory_gb: 4.0
+  disk_size_gb: 30
+  volumes:
+  - name: ramdisk1
+    volume_type: tmpfs
+    size_gb: 2.0
 handlers:
     - url: /.*
       secure: always
