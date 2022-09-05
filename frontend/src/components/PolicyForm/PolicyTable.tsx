@@ -1,4 +1,6 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
+
 import { PolicyType } from '../../shared'
 import { SortByHeader, Table, TD, Th, TR } from '../../styles/styles'
 import { useNavigate } from 'react-router-dom'

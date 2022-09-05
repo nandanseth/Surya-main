@@ -7,7 +7,7 @@
     "parserOptions": {
         "ecmaVersion": "latest",
         "project": "tsconfig.json"
-    },
+    }, 
 
     "plugins": [
         "@typescript-eslint",
@@ -25,7 +25,15 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "warn",
         "@typescript-eslint/no-shadow": "warn",
-        "@typescript-eslint/no-unused-vars": "warn",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn", // or "error"
+          { 
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
+        ],
         "eqeqeq": "warn",
         "func-names": ["warn", "as-needed"],
         "import/first": "warn",

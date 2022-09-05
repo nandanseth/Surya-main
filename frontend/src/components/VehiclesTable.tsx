@@ -1,4 +1,5 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 import { SortByHeader, Table, TD, Th, TR } from '../styles/styles'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'

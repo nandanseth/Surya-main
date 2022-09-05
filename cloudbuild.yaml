@@ -1,9 +1,9 @@
 steps:
-    # - id: 'npm install'
-    #   name: node:${_NODE_VERSION}-alpine
-    #   entrypoint: npm
-    #   args: ['install', '--production']
-    #   dir: 'frontend'
+    - id: 'npm install'
+      name: node:${_NODE_VERSION}-alpine
+      entrypoint: npm
+      args: ['install', '--production']
+      dir: 'frontend'
 
     # - id: 'yarn build'
     #   name: node:${_NODE_VERSION}-alpine
@@ -26,8 +26,8 @@ substitutions:
   _NODE_VERSION: '16.13.0'
 
 timeout: '3600s'
-options:
-  env: ['NODE_ENV=production']
-  logging: CLOUD_LOGGING_ONLY
-  dynamic_substitutions: true
-  substitution_option: 'ALLOW_LOOSE'
+# options:
+#   env: ['NODE_ENV=production']
+#   logging: CLOUD_LOGGING_ONLY
+#   dynamic_substitutions: true
+#   substitution_option: 'ALLOW_LOOSE'

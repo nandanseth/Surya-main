@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8fa496f6.chunk.css",
+    "main.js": "/static/js/main.ecb8c205.chunk.js",
+    "main.js.map": "/static/js/main.ecb8c205.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.bac5863e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.bac5863e.js.map",
+    "static/js/2.7d12bb98.chunk.js": "/static/js/2.7d12bb98.chunk.js",
+    "static/js/2.7d12bb98.chunk.js.map": "/static/js/2.7d12bb98.chunk.js.map",
+    "static/js/3.a0ada966.chunk.js": "/static/js/3.a0ada966.chunk.js",
+    "static/js/3.a0ada966.chunk.js.map": "/static/js/3.a0ada966.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.8fa496f6.chunk.css.map": "/static/css/main.8fa496f6.chunk.css.map",
+    "static/js/2.7d12bb98.chunk.js.LICENSE.txt": "/static/js/2.7d12bb98.chunk.js.LICENSE.txt",
+    "static/media/back-arrow.30f92606.png": "/static/media/back-arrow.30f92606.png",
+    "static/media/blurred bg.e71734ec.png": "/static/media/blurred bg.e71734ec.png",
+    "static/media/coverage icon.ed1675ef.png": "/static/media/coverage icon.ed1675ef.png",
+    "static/media/drivers icon.5da34e45.png": "/static/media/drivers icon.5da34e45.png",
+    "static/media/insured icon.887c12b3.png": "/static/media/insured icon.887c12b3.png",
+    "static/media/logo.c2dd9561.png": "/static/media/logo.c2dd9561.png",
+    "static/media/loss history icon.41bf255e.png": "/static/media/loss history icon.41bf255e.png",
+    "static/media/payments icon.740ee97a.png": "/static/media/payments icon.740ee97a.png",
+    "static/media/policy icon.c83923f4.png": "/static/media/policy icon.c83923f4.png",
+    "static/media/reinsurance icon.ff2a2a98.png": "/static/media/reinsurance icon.ff2a2a98.png",
+    "static/media/vehicle icon.8aa3110b.png": "/static/media/vehicle icon.8aa3110b.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bac5863e.js",
+    "static/js/2.7d12bb98.chunk.js",
+    "static/css/main.8fa496f6.chunk.css",
+    "static/js/main.ecb8c205.chunk.js"
+  ]
+}

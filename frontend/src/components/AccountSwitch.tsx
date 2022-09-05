@@ -1,5 +1,6 @@
 import { Colors, transitionCss } from '../styles/styles'
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 import styled from 'styled-components'
 import useComponentVisible from '../hooks/useComponentVisible'
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useTheme } from '@mui/material/styles'
+import useTheme from '@mui/material/styles/useTheme'
 import _without from 'lodash/without'
 import Box from '@mui/material/Box'
 import CancelIcon from '@mui/icons-material/Cancel'
