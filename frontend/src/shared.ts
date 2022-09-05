@@ -5,7 +5,7 @@ const POLICY_API_PROD = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot
 //     RUNTIME_ENV === `production` ? POLICY_API_PROD : POLICY_API_LOCALHOST
 
 // Prod. TODO This is temporary. Need to reduce the build time dramatically.
-const host: string = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com`
+const host: string = 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com'
 console.log(`NODE_ENV: ${RUNTIME_ENV}`)
 
 export const urls = {
