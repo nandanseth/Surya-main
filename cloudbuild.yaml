@@ -1,34 +1,62 @@
-steps:
-    # - id: 'yarn'
-    #   name: node:${_NODE_VERSION}-alpine
-    #   entrypoint: yarn
-    #   dir: 'frontend'
+# TODO Working on reducing FE build time. Too many dependencies. Timeouts happen.
+# steps:
+#     # - id: 'yarn'
+#     #   name: node:${_NODE_VERSION}-alpine
+#     #   entrypoint: yarn
+#     #   dir: 'frontend'
 
-    # - id: 'yarn build'
-    #   name: node:${_NODE_VERSION}-alpine
-    #   entrypoint: 'yarn'
-    #   args: ['build', '--production', '--verbose']
-    #   dir: 'frontend'
-    #   waitFor: ['yarn']
+#     # - id: 'yarn build'
+#     #   name: node:${_NODE_VERSION}-alpine
+#     #   entrypoint: 'yarn'
+#     #   args: ['build', '--production', '--verbose']
+#     #   dir: 'frontend'
+#     #   waitFor: ['yarn']
+
+#     - id: 'app deploy'
+#       name: 'gcr.io/cloud-builders/gcloud'
+#       args: ['app', 'deploy', 'app.yaml']
+#       dir: 'frontend'
+#       # waitFor: ['yarn']
+
+#     # - id: 'app deploy'
+#     #   env:
+#     #     - 'NODE_ENV=production'
+#     #   name: 'gcr.io/cloud-builders/gcloud'
+#     #   args: ['app', 'deploy', '--set-env-vars', 'NODE_ENV=production']
+#     #   dir: 'frontend'
+# substitutions:
+#   _NODE_VERSION: '16.13.0'
+
+# timeout: '3600s'
+# options:
+#   env: ['NODE_ENV=production']
+#   logging: CLOUD_LOGGING_ONLY
+#   dynamic_substitutions: true
+#   substitution_option: 'ALLOW_LOOSE'
+
+steps:
+    - id: 'yarn install'
+      name: node:${_NODE_VERSION}-alpine
+      entrypoint: yarn
+      args: ['install', '--production']
+      dir: 'frontend'
+
+    - id: 'yarn build'
+      name: node:${_NODE_VERSION}-alpine
+      entrypoint: 'yarn'
+      args: ['build', '--production', '--verbose']
+      dir: 'frontend'
 
     - id: 'app deploy'
       name: 'gcr.io/cloud-builders/gcloud'
       args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
-      # waitFor: ['yarn']
-
-    # - id: 'app deploy'
-    #   env:
-    #     - 'NODE_ENV=production'
-    #   name: 'gcr.io/cloud-builders/gcloud'
-    #   args: ['app', 'deploy', '--set-env-vars', 'NODE_ENV=production']
-    #   dir: 'frontend'
 substitutions:
   _NODE_VERSION: '16.13.0'
+  _CACHE_BUCKET: ''
 
 timeout: '3600s'
 options:
-  env: ['NODE_ENV=production']
   logging: CLOUD_LOGGING_ONLY
   dynamic_substitutions: true
   substitution_option: 'ALLOW_LOOSE'
