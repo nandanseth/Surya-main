@@ -1,11 +1,15 @@
 const RUNTIME_ENV = process.env.NODE_ENV
-const POLICY_API_LOCALHOST = `http://localhost:3001`
-const POLICY_API_PROD = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com`
+// const POLICY_API_LOCALHOST = `http://localhost:3001`
+// const POLICY_API_PROD = `https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com`
 // const host: string =
 //     RUNTIME_ENV === `production` ? POLICY_API_PROD : POLICY_API_LOCALHOST
 
 // Prod. TODO This is temporary. Need to reduce the build time dramatically.
-const host: string = 'https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com'
+const host = "https://policy-api-dot-delta-pagoda-337917.ue.r.appspot.com"
+
+// Local/dev. TODO This is also temporary.
+
+// const host = "http://localhost:3001"
 console.log(`NODE_ENV: ${RUNTIME_ENV}`)
 
 export const urls = {
