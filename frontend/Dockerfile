@@ -6,5 +6,5 @@ WORKDIR /app
 # RUN yarn build --production
 EXPOSE 3000
 ENV NODE_ENV production
-RUN yarn build --production
+RUN yarn
 CMD ["serve", "-s", "build"]
