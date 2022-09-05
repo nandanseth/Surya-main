@@ -1,15 +1,15 @@
 steps:
-    - id: 'yarn'
-      name: node:${_NODE_VERSION}-alpine
-      entrypoint: yarn
-      dir: 'frontend'
+    # - id: 'yarn'
+    #   name: node:${_NODE_VERSION}-alpine
+    #   entrypoint: yarn
+    #   dir: 'frontend'
 
-    - id: 'yarn build'
-      name: node:${_NODE_VERSION}-alpine
-      entrypoint: 'yarn'
-      args: ['build', '--production', '--verbose']
-      dir: 'frontend'
-      waitFor: ['yarn']
+    # - id: 'yarn build'
+    #   name: node:${_NODE_VERSION}-alpine
+    #   entrypoint: 'yarn'
+    #   args: ['build', '--production', '--verbose']
+    #   dir: 'frontend'
+    #   waitFor: ['yarn']
 
     - id: 'app deploy'
       name: 'gcr.io/cloud-builders/gcloud'
