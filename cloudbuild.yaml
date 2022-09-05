@@ -1,9 +1,9 @@
 steps:
-    - id: 'yarn'
-      name: node:${_NODE_VERSION}-alpine
-      entrypoint: yarn
-      args: ['install']
-      dir: 'frontend'
+    # - id: 'yarn'
+    #   name: node:${_NODE_VERSION}-alpine
+    #   entrypoint: yarn
+    #   args: ['install']
+    #   dir: 'frontend'
 
     # - id: 'yarn build'
     #   name: node:${_NODE_VERSION}-alpine
