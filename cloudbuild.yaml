@@ -1,5 +1,5 @@
 steps:
-    - id: 'yarn install'
+    - id: 'yarn'
       name: node:${_NODE_VERSION}-alpine
       entrypoint: yarn
       args: ['install']
@@ -15,7 +15,7 @@ steps:
       name: 'gcr.io/cloud-builders/gcloud'
       args: ['app', 'deploy', 'app.yaml']
       dir: 'frontend'
-      waitFor: ['yarn install']
+      waitFor: ['yarn']
 
     # - id: 'app deploy'
     #   env:

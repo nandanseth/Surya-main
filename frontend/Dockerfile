@@ -2,8 +2,8 @@ FROM node:16.13.0-alpine
 COPY . /app
 WORKDIR /app
 
-# RUN yarn install --production --verbose
-# RUN yarn build --production
+RUN yarn install --production --verbose
+RUN yarn build --production
 EXPOSE 3000
 ENV NODE_ENV production
 CMD ["serve", "-s", "build"]
