@@ -21,7 +21,7 @@ import {
     bussinessUseClasses,
     classCodes,
     radius,
-    sizeClasses,
+    secondaryCategory,
 } from '../utils/policies/getCommercial'
 import { createContext, useState } from 'react'
 import { reinsurer } from '../utils/reinsurance/getReinsurer'
@@ -53,7 +53,7 @@ export const policyInitialState = {
     radius: radius[0],
     classCode: classCodes[0],
     businessUseClass: bussinessUseClasses[0],
-    sizeClass: sizeClasses[0],
+    secondaryCategory: secondaryCategory[0],
 }
 
 export const insuredInitialState = {
@@ -82,22 +82,48 @@ export const insuredInitialState = {
     contactEmail: null,
     corporationName: null,
     taxIdNumber: null,
+    additionalInsured: {
+        values: [
+            {
+            insName: "None",
+            address: null,
+            city: null,
+            zipCode: null,
+            state: "TX",
+            isWaiver: false,
+            isAddPremium: false
+            },
+        ],
+    },
 }
 
 export const driversInitialState = {
-    driverName: null,
+    driverFirstName: null,
+    driverMiddleName: null,
+    driverLastName: null,
     states: states[0],
     licenseNumber: null,
     licenseEffDate: null,
     licenseExpDate: null,
+    driverEffDate: null,
+    driverExpDate: null,
+    driverBirthDate: null
 }
 
+
+
 export interface Driver {
-    driverName: string
+    driverLastName: string
+    driverFirstName: string
+    driverMiddleName: string
     states: string
     licenseNumber: string
     licenseEffDate: string
     licenseExpDate: string
+    driverEffDate: string
+    driverExpDate: string
+    driverBirthDate: string
+
 }
 
 export const lossHistoryState = {
@@ -118,6 +144,11 @@ export const lossHistoryState = {
     isPolicyTransferred: yesNoOptions[0].value,
 }
 
+export const underwritingState = {
+    creditsDebits: '',
+    remarks: '',
+    isCamera: false
+}
 export const coverageState = {
     overall: 'Combined Single Limit',
     deductable: null,
@@ -135,6 +166,7 @@ export const coverageState = {
     pIProtectionSplitBodyPerAccident: bodyPerAccident[0],
     pIProtectionSplitPropertyDamage: propertyDamage[0],
     pIProtectionSplitAutoEntry: auto[0],
+    pedPipSingleLimit: "yes",
     medicalSingleLimit: limits[0],
     medicalSingleEntry: auto[0],
     medicalSplitBodyPerPerson: bodyPerPerson[0],
@@ -174,6 +206,7 @@ export const coverageState = {
 
     overallPremium: '',
     personalInjuryProtectionPremium: '',
+    pedPipProtectionPremium: '',
     medicalPaymentsPremium: '',
     underinsuredMotoristPremium: '',
     uninsuredMotoristPremium: '',
@@ -184,6 +217,9 @@ export const coverageState = {
 const defaultValue = 'No'
 const yesNoValues = ['Yes', defaultValue]
 
+export const uploadState = {
+
+}
 export const vehicleState = {
     yesNo: defaultValue,
     category: vehicleCategoryOptions[0].value,
@@ -219,6 +255,7 @@ export const vehicleState = {
     garageCountry: null,
     overallPremium: '',
     personalInjuryProtectionPremium: '',
+    pedPipProtectionPremium: '',
     medicalPaymentsPremium: '',
     underinsuredMotoristPremium: '',
     uninsuredMotoristPremium: '',
@@ -232,7 +269,7 @@ export const reinsuranceState = {
 }
 
 export const paymentState = {
-    payment: '100% DEPOSIT',
+    paymentType: '100% DEPOSIT',
 }
 
 export const FormContext = createContext(null)
@@ -240,6 +277,7 @@ export const FormContext = createContext(null)
 export const FormContextProvider = ({ children }) => {
     const [policyValues, setPolicyValues] = useState(policyInitialState)
     const [insuredValues, setInsuredValues] = useState(insuredInitialState)
+    //const [additionalInsuredValues, setAdditionalInsuredValues] = useState([{ ...additionalInsuredInitialState }])
     const [isAddActive, setAddActive] = useState(false)
     const [driverValues, setDriverValues] = useState([
         { ...driversInitialState },
@@ -251,6 +289,8 @@ export const FormContextProvider = ({ children }) => {
     const [vehicleValues, setVehicleValues] = useState([{ ...vehicleState }])
     const [reinsuranceValues, setReinsuranceValues] = useState(reinsuranceState)
     const [paymentValues, setPaymentValues] = useState(paymentState)
+    const [underwritingValues, setUnderwritingValues] = useState(underwritingState)
+    const [uploadValues, setUploadValues] = useState(uploadState)
 
     const store = {
         policy: { values: policyValues, setValues: setPolicyValues },
@@ -264,7 +304,13 @@ export const FormContextProvider = ({ children }) => {
             values: insuredValues,
             setValues: setInsuredValues,
             isAddActive,
-            setAddActive,
+            setAddActive
+        },
+        Uploads: {
+            values: uploadValues,
+            setValues: setUploadValues,
+            isAddActive,
+            setAddActive
         },
         drivers: {
             values: driverValues,
@@ -290,6 +336,10 @@ export const FormContextProvider = ({ children }) => {
             values: reinsuranceValues,
             setValues: setReinsuranceValues,
         },
+        underwriting: {
+            values: underwritingValues,
+            setValues: setUnderwritingValues
+        },
         reset: () => {
             setPolicyValues(policyInitialState)
             setInsuredValues(insuredInitialState)
@@ -302,6 +352,8 @@ export const FormContextProvider = ({ children }) => {
             setVehicleValues([{ ...vehicleState }])
             setReinsuranceValues(reinsuranceState)
             setPaymentValues(paymentState)
+            setUnderwritingValues(underwritingState)
+            setUploadValues(uploadState)
             return
         },
     }

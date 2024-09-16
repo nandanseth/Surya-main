@@ -32,6 +32,7 @@ export const classificationMap = {
         'Social Service Agency Auto All Other',
         'Paratransit',
         'Ambulance',
+        'Gurney'
     ].map(mapFunction),
     'Van Pools': ['Employer Furnished', 'All Other'].map(mapFunction),
 }

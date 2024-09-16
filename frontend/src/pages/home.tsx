@@ -7,16 +7,29 @@ import Buttons from '../components/Buttons'
 import Layout from '../utils/withLayout'
 import Overlay from '../components/Overlay'
 import PolicyForm from '../components/PolicyForm/PolicyForm'
+import PolicyAppForm from '../components/PolicyForm/PolicyAppForm'
+import PolicyRenewalForm from '../components/PolicyForm/PolicyRenewalForm'
 import PolicyTable from '../components/PolicyForm/PolicyTable'
 import Search from '../components/Search'
 import styled from 'styled-components'
+import Moralis from 'moralis'
+import { useMoralis } from 'react-moralis'
+import { APP_ID, SERVER_URL } from '../index'
+import { writeUsers } from '../utils/users/getWriteUsers'
+
 
 const title = 'Policies'
 
 const Home = () => {
     const [show, setShow] = useState(false)
+    const [showApplications, setShowApplications] = useState(false)
+    const [showRenewals, setShowRenewals] = useState(false)
+    const {authenticate, isAuthenticated, isAuthenticating, hasAuthError, authError, user, logout, account} = useMoralis();
     const [policies, setPolicies] = useState([testItem])
+    const [moralisPolicies, setMoralisPolicies] = useState([testItem])
     const [search, setSearch] = useState('')
+    const [role, setRole] = useState('')
+
     const alert = useAlert()
 
     // could be wrapped in a useMemo
@@ -24,6 +37,8 @@ const Home = () => {
         if (search === '') {
             return currentPolicies
         }
+
+        
 
         return currentPolicies?.filter((item) => {
             const policy = item?.policy
@@ -38,6 +53,19 @@ const Home = () => {
     }
 
     useEffect(() => {
+        let address
+        if (isAuthenticated) { 
+            console.log(user.get('username'), 'sdka')
+            if (user.get('username') && user.get('username').length > 3) {
+                address = user.get('username')
+            } else {
+                address = user.get('ethAddress')
+            }
+            
+        }
+
+        console.log(writeUsers, 'sal')
+        
         const getPolicies = async () => {
             try {
                 const res = await fetch(urls.getAllPoliciesUrl)
@@ -49,14 +77,52 @@ const Home = () => {
                 console.log(error)
             }
         }
-        getPolicies()
-    }, [])
+        const getMoralisPolicies = async () => {
+            try {
+                const appId = APP_ID;
+                const serverUrl = SERVER_URL;  
+
+                Moralis.start({ serverUrl, appId });
+                const Policies = await (Moralis as any).Object.extend("Policies");
+
+                const query = new (Moralis as any).Query(Policies);
+                const data = await query.limit(1000).find();
+                let dataJson
+                const policyData = []
+                for (const i in data) {
+                    const object = data[i]
+                    dataJson = JSON.parse(object.get("policyJson"))
+                    policyData.push(dataJson)
+                }
+                setMoralisPolicies(policyData)
+                console.log(dataJson, 'test')
+                //setMoralisPolicies(data)
+            } catch (error) {
+                alert.error('Error getting policies')
+                console.log(error)
+            }
+        }
+        if (isAuthenticated) {
+            getMoralisPolicies()
+        }
+        
+        
+    }, [isAuthenticated])
 
     const close = () => {
         setShow(false)
     }
 
-    const policiesToShow = searchFiter(policies)
+    const closeApp = () => {
+        setShowApplications(false)
+    }
+
+    const closeRenewals = () => {
+        setShowRenewals(false)
+    }
+
+
+    const policiesToShow = searchFiter(moralisPolicies)
     // this will be the list
     return (
         <FormContextProvider>
@@ -65,17 +131,28 @@ const Home = () => {
                     <ContentMain>
                         <Header>
                             <Title>{title}</Title>
-                            <Buttons.CreateNewPolicyButton
-                                onClick={() => {
-                                    setShow(true)
-                                }}
-                            />
+                            {(isAuthenticated && writeUsers.includes(user.get('username'))) ? (
+                                <>
+                                <Buttons.CreateNewPolicyButton
+                                    onClick={() => setShow(true)}
+                                />
+                                <Buttons.CreateNewPolicyButton
+                                    onClick={() => setShowApplications(true)}
+                                    textOverride="Pending Applications"
+                                />
+                                <Buttons.CreateNewPolicyButton
+                                    onClick={() => setShowRenewals(true)}
+                                    textOverride="Pending Renewals"
+                                />
+                                </>
+                            ) : (<></>)}
+                            
                             <Search
                                 clear={() => {
                                     setSearch('')
                                 }}
                                 onChange={(e) => {
-                                    setSearch(e.target.value)
+                                    setSearch(e.target.value.toUpperCase())
                                 }}
                                 placeholder="Search Policies"
                                 style={{ marginLeft: 'auto' }}
@@ -104,6 +181,49 @@ const Home = () => {
                             <PolicyForm
                                 close={() => {
                                     close()
+                                }}
+                                from="new"
+                            />
+                        </Wrapper>
+                    </Overlay>
+                )}
+                {showApplications && (
+                    <Overlay
+                        show={showApplications}
+                        style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
+                    >
+                        <Wrapper
+                            onClick={(e) => {
+                                if (e.currentTarget !== e.target) {
+                                    return
+                                }
+                                closeApp()
+                            }}
+                        >
+                            <PolicyAppForm
+                                close={() => {
+                                    closeApp()
+                                }}
+                            />
+                        </Wrapper>
+                    </Overlay>
+                )}
+                {showRenewals && (
+                    <Overlay
+                        show={showRenewals}
+                        style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
+                    >
+                        <Wrapper
+                            onClick={(e) => {
+                                if (e.currentTarget !== e.target) {
+                                    return
+                                }
+                                closeRenewals()
+                            }}
+                        >
+                            <PolicyRenewalForm
+                                close={() => {
+                                    closeRenewals()
                                 }}
                             />
                         </Wrapper>

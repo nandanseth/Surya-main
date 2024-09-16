@@ -6,7 +6,7 @@ import Checkbox from '../Form/Checkbox'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 
-const VehicleSection = ({ vehicles, setVehicles, ...rest }) => {
+const VehicleSection = ({ vehicles, setVehicles, makeAllTrue, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
@@ -21,6 +21,18 @@ const VehicleSection = ({ vehicles, setVehicles, ...rest }) => {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                        <Checkbox
+                            checked={vehicles.category}
+                            labelText="Select All"
+                            onChange={() => {
+                                if (vehicles.category) {
+                                    setVehicles(makeAllTrue(vehicles, false))
+                                } else {
+                                    setVehicles(makeAllTrue(vehicles, true))
+                                }
+                                
+                            }}
+                        />
                     <Container>
                         <Checkbox
                             checked={vehicles.category}
@@ -351,6 +363,16 @@ const VehicleSection = ({ vehicles, setVehicles, ...rest }) => {
                                 })
                             }}
                         />
+                        <Checkbox
+                            checked={vehicles.baseEffDate}
+                            labelText="Base Eff Date"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    baseEffDate: !vehicles.baseEffDate,
+                                })
+                            }}
+                        />
 
                         <Checkbox
                             checked={vehicles.baseExpDate}
@@ -370,6 +392,146 @@ const VehicleSection = ({ vehicles, setVehicles, ...rest }) => {
                                 setVehicles({
                                     ...vehicles,
                                     shl: !vehicles.shl,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.overallPremium}
+                            labelText="Overall Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    overallPremium: !vehicles.overallPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.personalInjuryProtectionPremium}
+                            labelText="Personal Injury Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    personalInjuryProtectionPremium: !vehicles.personalInjuryProtectionPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.pedPipProtectionPremium}
+                            labelText="Ped Pip Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    pedPipProtectionPremium: !vehicles.pedPipProtectionPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.medicalPaymentsPremium}
+                            labelText="Medical Payments Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    medicalPaymentsPremium: !vehicles.medicalPaymentsPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.underinsuredMotoristPremium}
+                            labelText="Underinsured Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    underinsuredMotoristPremium: !vehicles.underinsuredMotoristPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.uninsuredMotoristPremium}
+                            labelText="Uninsured Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    uninsuredMotoristPremium: !vehicles.uninsuredMotoristPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.totalPremium}
+                            labelText="Total Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    totalPremium: !vehicles.totalPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.earnedPremium}
+                            labelText="Earned Premium"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    earnedPremium: !vehicles.earnedPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.endorsement}
+                            labelText="Endorsement/Policy"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    endorsement: !vehicles.endorsement,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.endorsementEffectiveDate}
+                            labelText="Endorsement Date"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    endorsementEffectiveDate: !vehicles.endorsementEffectiveDate,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.commissionPercentage}
+                            labelText="Commission %"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    commissionPercentage: !vehicles.commissionPercentage,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.commissionAmount}
+                            labelText="Commission Amount"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    commissionAmount: !vehicles.commissionAmount,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.cancellationDate}
+                            labelText="Cancellation Date"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    cancellationDate: !vehicles.cancellationDate,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={vehicles.isCancelled}
+                            labelText="Is Cancelled?"
+                            onChange={() => {
+                                setVehicles({
+                                    ...vehicles,
+                                    isCancelled: !vehicles.isCancelled,
                                 })
                             }}
                         />

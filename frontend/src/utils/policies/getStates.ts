@@ -6,10 +6,13 @@ export const states = [
     'Connecticut',
     'Arizona',
     'New Jersey',
+    'New York',
+    'Florida',
     'Alabama',
     'California',
     'Ohio',
     'Indiana',
+    'North Carolina'
 ]
 
 export default states.map((item) => ({ value: item, label: item }))

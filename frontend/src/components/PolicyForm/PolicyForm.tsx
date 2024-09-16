@@ -9,6 +9,8 @@ import {
     PolicySection,
     ResinuranceSection,
     VehicleSection,
+    UploadSection,
+    UnderwritingSection
 } from '../PolicyFormSections'
 import { FormContext } from '../../context/insured-context'
 import { preSubmit, urls } from '../../shared'
@@ -17,24 +19,31 @@ import coverageIcon from '../../images/coverage icon.png'
 // import documentsIcon from '../../images/documents icon.png'
 import { Submit } from '../Buttons'
 import { useAlert } from 'react-alert'
+import uploadIcon from '../../images/upload.jpg'
 import driversIcon from '../../images/drivers icon.png'
 import insuredIcon from '../../images/insured icon.png'
 import lossHistoryIcon from '../../images/loss history icon.png'
 import paymentsIcon from '../../images/payments icon.png'
 import policyIcon from '../../images/policy icon.png'
 import reinsuranceIcon from '../../images/reinsurance icon.png'
+import underwritingIcon from '../../images/underwriting.png'
 import styled from 'styled-components'
 import vehicleIcon from '../../images/vehicle icon.png'
+import { useMoralis } from "react-moralis"
+import Moralis from 'moralis'
+import { useEffect } from 'react'
 
-const PolicyForm = ({ close }) => {
+const PolicyForm = ({ close, from }) => {
     const store = useContext(FormContext)
     const alert = useAlert()
 
     const [loading, setLoading] = useState(false)
-    const [current, setCurrent] = useState('insured')
+    const [current, setCurrent] = useState('upload')
+    const {isAuthenticated, user, logout, account} = useMoralis(); 
 
     const { reset } = store
     const Pages = {
+        upload: { page: UploadSection, name: 'Upload' },
         policy: { page: PolicySection, name: 'Policy' },
         insured: { page: InsuredSection, name: 'Insured' },
         drivers: { page: DriversSection, name: 'Drivers' },
@@ -44,21 +53,31 @@ const PolicyForm = ({ close }) => {
         documents: { page: DocumentsSection, name: 'Documents' },
         reinsurance: { page: ResinuranceSection, name: 'Reinsurance' },
         payments: { page: PaymentsSection, name: 'Payments' },
+        underwriting: { page: UnderwritingSection, name: 'Underwriting'}
     }
 
     const total = Object.keys(Pages).length
 
     const percentMap = {
-        policy: 2 / total,
-        insured: 1 / total,
-        drivers: 4 / total,
-        vehicles: 3 / total,
-        loss: 5 / total,
-        coverage: 6 / total,
+        upload: 1 / total,
+        underwriting: 2 / total,
+        policy: 4 / total,
+        insured: 3 / total,
+        drivers: 6 / total,
+        coverage: 5 / total,
+        
+        loss: 7 / total,
+        vehicles: 8 / total,
         // documents: 7 / total,
-        reinsurance: 8 / total,
-        payments: 9 / total,
+        reinsurance: 9 / total,
+        payments: 10 / total,
+        
+        
     }
+
+    useEffect(() => {
+        reset()
+    }, [])
 
     const { name, page: Current } = Pages[current]
 
@@ -84,7 +103,24 @@ const PolicyForm = ({ close }) => {
                 return false
             }
         }
-        return postStore()
+        const moralisStore = async () => {
+            try {
+                // const Policy = Moralis.Object.extend("Policies")
+                const Policy = (Moralis as any).Object.extend("Applications")
+                const policy = new Policy()
+                console.log(store,'la')
+                policy.set("policyJson", JSON.stringify(preSubmit(store)))
+                console.log(store)
+                policy.set("policyNum", store.policy.values.policyNum)
+                policy.set('Decision', 'Undefined')
+                await policy.save()
+                return true
+            } catch (error) {
+                console.log(error)
+                return false
+            }
+        }
+        return moralisStore()
     }
 
     const MenuFooter = () => (
@@ -117,7 +153,7 @@ const PolicyForm = ({ close }) => {
                 setCurrent={setCurrent}
             />
             <Main>
-                <Current store={store} />
+                <Current store={store} from={from} />
             </Main>
             <MenuFooter />
         </Container>
@@ -148,6 +184,24 @@ const FormHead = ({
                 </Left>
                 <Right>
                     <StyledIcon
+                        active={current === 'upload'}
+                        onClick={() => {
+                            setCurrent('upload')
+                        }}
+                        title="Upload Section"
+                    >
+                        <StyledImg src={uploadIcon} />
+                    </StyledIcon>
+                    <StyledIcon
+                        active={current === 'underwriting'}
+                        onClick={() => {
+                            setCurrent('underwriting')
+                        }}
+                        title="Underwriting"
+                    >
+                        <StyledImg src={underwritingIcon} />
+                    </StyledIcon>
+                    <StyledIcon
                         active={current === 'insured'}
                         onClick={() => {
                             setCurrent('insured')
@@ -167,15 +221,15 @@ const FormHead = ({
                         <StyledImg src={policyIcon} />
                     </StyledIcon>
                     <StyledIcon
-                        active={current === 'vehicles'}
+                        active={current === 'coverage'}
                         onClick={() => {
-                            setCurrent('vehicles')
+                            setCurrent('coverage')
                         }}
-                        title="Vehicles Section"
+                        title="Coverage"
                     >
-                        <StyledImg src={vehicleIcon} />
+                        <StyledImg src={coverageIcon} />
                     </StyledIcon>
-
+                    
                     <StyledIcon
                         active={current === 'drivers'}
                         onClick={() => {
@@ -197,14 +251,16 @@ const FormHead = ({
                     </StyledIcon>
 
                     <StyledIcon
-                        active={current === 'coverage'}
+                        active={current === 'vehicles'}
                         onClick={() => {
-                            setCurrent('coverage')
+                            setCurrent('vehicles')
                         }}
-                        title="Coverage"
+                        title="Vehicles Section"
                     >
-                        <StyledImg src={coverageIcon} />
+                        <StyledImg src={vehicleIcon} />
                     </StyledIcon>
+
+                   
                     <StyledIcon
                         active={current === 'reinsurance'}
                         onClick={() => {
@@ -214,6 +270,7 @@ const FormHead = ({
                     >
                         <StyledImg src={reinsuranceIcon} />
                     </StyledIcon>
+                    
                     <StyledIcon
                         active={current === 'payments'}
                         onClick={() => {
@@ -223,6 +280,7 @@ const FormHead = ({
                     >
                         <StyledImg src={paymentsIcon} />
                     </StyledIcon>
+                    
                 </Right>
             </HeaderContent>
         </Header>

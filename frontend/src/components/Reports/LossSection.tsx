@@ -6,7 +6,7 @@ import Checkbox from '../Form/Checkbox'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 
-const LossSection = ({ lossHistory, setLossHistory, ...rest }) => {
+const LossSection = ({ lossHistory, setLossHistory, makeAllTrue, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
@@ -21,6 +21,18 @@ const LossSection = ({ lossHistory, setLossHistory, ...rest }) => {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                    <Checkbox
+                            checked={lossHistory.accidentDate}
+                            labelText="Select All"
+                            onChange={() => {
+                                if (lossHistory.accidentDate) {
+                                    setLossHistory(makeAllTrue(lossHistory, false))
+                                } else {
+                                    setLossHistory(makeAllTrue(lossHistory, true))
+                                }
+                                
+                            }}
+                        />
                     <Container>
                         <Checkbox
                             checked={lossHistory.accidentDate}

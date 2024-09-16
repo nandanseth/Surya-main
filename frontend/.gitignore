@@ -179,3 +179,16 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/react,node,yarn,appengine
 .vscode/*
 service-account.json
+
+.gcloudignore
+# If you would like to upload your .git directory, .gitignore file or files
+# from your .gitignore file, remove the corresponding line
+# below:
+.git
+.gitignore
+
+# Node.js dependencies:
+node_modules/
+
+build
+!../.vscode/

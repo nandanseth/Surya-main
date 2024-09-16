@@ -6,7 +6,7 @@ import Checkbox from '../Form/Checkbox'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 
-const InsuredSection = ({ insured, setInsured, ...rest }) => {
+const InsuredSection = ({ insured, setInsured, makeAllTrue, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
@@ -19,6 +19,19 @@ const InsuredSection = ({ insured, setInsured, ...rest }) => {
                     <Typography className={classes.heading}>Insured</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                        <Checkbox
+                            checked={insured.agent}
+                            labelText="Select All"
+                            onChange={() => {
+                                if (insured.agent) {
+                                    setInsured(makeAllTrue(insured, false))
+                                } else {
+                                    setInsured(makeAllTrue(insured, true))
+                                }
+                                
+                            }}
+                        />
+                    
                     <Container>
                         <Checkbox
                             checked={insured.agent}
@@ -114,7 +127,7 @@ const InsuredSection = ({ insured, setInsured, ...rest }) => {
                         />
 
                         <Checkbox
-                            checked={insured.policyNum}
+                            checked={insured.address1}
                             labelText="Address 1"
                             onChange={() => {
                                 setInsured({
@@ -266,6 +279,7 @@ const InsuredSection = ({ insured, setInsured, ...rest }) => {
                                 })
                             }}
                         />
+
                     </Container>
                 </AccordionDetails>
             </Accordion>

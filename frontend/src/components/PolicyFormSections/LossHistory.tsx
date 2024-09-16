@@ -13,6 +13,7 @@ const title = 'Loss History'
 const LossHistory = ({ store }) => {
     const { lossHistory: lossStates } = store
     const { values, setValues, defaults } = lossStates
+    console.log(values)
 
     const removeFields = (i) => {
         if (values.length <= 0) {

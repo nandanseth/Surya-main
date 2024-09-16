@@ -25,9 +25,10 @@ export const testPolicies = [
         documents: {},
         policy: {
             expirationDate: null,
+            policyNum: "21NJN000179",
             coverageTerm: 'Annual',
             radius: 'Local',
-            sizeClass: 'Light Trucks ',
+            secondaryCategory: 'Taxi',
             effectiveDate: null,
             lineOfBusiness: 'Commercial',
             agent: 'Quantum Risk Solutions (QRSBRK)',
@@ -38,6 +39,23 @@ export const testPolicies = [
             businessUseClass: 'Service',
             policyCategory: 'Taxicabs and Limousines',
             classCode: 'Non-fleet',
+        },
+        renewal : {
+            renewalDecision : "undecided",
+            nonRenewalReason : "undecided",
+            dateOfDecision : "null"
+        },
+
+        underwriting: {
+            creditsDebits: "",
+            remarks: "",
+            isCamera: false
+        },
+        cancellation: {
+            cancellationReason: "null",
+            isCancelled: "No",
+            cancellationDate: "",
+            cancellationRate: ""
         },
         created_at: 1651859369.697056,
         coverage: {
@@ -122,6 +140,20 @@ export const testPolicies = [
             agent: 'Quantum Risk Solutions (QRSBRK)',
             phoneNumber: null,
             licenseEff: null,
+            additionalInsured: {
+                values: [
+                    {
+                    insName: "None",
+                    address: null,
+                    city: null,
+                    zipCode: null,
+                    state: "TX",
+                    isWaiver: false,
+                    isAddPremium: false
+                    },
+                ],
+            },
+                    
         },
         vehicles: {
             values: [
@@ -160,6 +192,7 @@ export const testPolicies = [
                 },
             ],
         },
+        Uploads: {},
         loss_history: null,
         drivers: {
             values: [
@@ -167,8 +200,12 @@ export const testPolicies = [
                     states: 'Oregon',
                     licenseNumber: null,
                     licenseExpDate: null,
-                    driverName: null,
+                    driverlastName: null,
+                    driverFirstName: null,
+                    driverMiddleName: null,
                     licenseEffDate: null,
+                    driverEffDate: null,
+                    driverExpDate: null
                 },
             ],
             defaults: null,
@@ -207,6 +244,8 @@ export const preSubmit = (store) => {
         vehicles,
         payments,
         reinsurance,
+        underwriting,
+        Uploads
     } = store
     const toReturn = {
         policy: { ...policy.values },
@@ -214,17 +253,21 @@ export const preSubmit = (store) => {
         drivers: { values: [...drivers?.values] },
         lossHistory: { incidents: [...lossHistory?.values] },
         documents,
+        Uploads: {...Uploads?.values},
         coverage: { ...coverage?.values },
         vehicles: { values: [...vehicles?.values] },
         payments: { ...payments?.values },
         reinsurance: { ...reinsurance?.values },
+        underwriting: { ...underwriting?.values}
     }
+    console.log(toReturn, "returned")
     return toReturn
 }
 export interface PolicyType {
     policy: {
         name: string
         lineOfBusiness: string
+        policyNum: string
         agent: string
         underwritingCode: string
         states: string
@@ -272,6 +315,7 @@ export interface PolicyType {
         deductable: string
         pIProtectionSingleEntry: string
         pIProtectionSingleLimit: string
+        pedPipSingleLimit: string
         underinsuredMotoristSingleAutoEntry: string
         pIProtectionSplitAutoEntry: string
         pIProtectionSplitBodyPerAccident: string
@@ -291,11 +335,29 @@ export interface PolicyType {
         combinedSectionEntry: string
         overallPremium: string
         personalInjuryProtectionPremium: string
+        pedPipProtectionPremium: string
         medicalPaymentsPremium: string
         underinsuredMotoristPremium: string
         uninsuredMotoristPremium: string
         hiredCSLPremium: string
         nonOwnedCSLPremium: string
+    }
+    renewal : {
+        renewalDecision : string
+        nonRenewalReason : string
+        dateOfDecision : string
+    },
+
+    underwriting: {
+        creditsDebits: string
+        remarks: string
+        isCamera: bool
+    },
+    cancellation: {
+        cancellationReason: string
+        isCancelled: string
+        cancellationDate: string,
+        cancellationRate: string
     }
     insured: {
         licenseState: string
@@ -324,6 +386,9 @@ export interface PolicyType {
         agent: string
         phoneNumber: string
         licenseEff: string
+        additionalInsured: {
+            values: any[]
+        }
     }
 
     vehicles: {
@@ -339,8 +404,10 @@ export const testItem = {
     policy: {
         expirationDate: null,
         coverageTerm: 'Annual',
+        name: null,
+        policyNum: "21NJN000179",
         radius: 'Local',
-        sizeClass: 'Light Trucks ',
+        secondaryCategory: 'Taxi',
         effectiveDate: null,
         lineOfBusiness: 'Commercial',
         agent: 'Quantum Risk Solutions (QRSBRK)',
@@ -407,6 +474,30 @@ export const testItem = {
         cslSplitAuto: 'Excluded',
         deductableAmount: null,
         combinedSectionEntry: 'Excluded',
+        overallPremium: "",
+        personalInjuryProtectionPremium: "",
+        pedPipProtectionPremium: "",
+        medicalPaymentsPremium: "",
+        underinsuredMotoristPremium: "",
+        uninsuredMotoristPremium: "",
+        hiredCSLPremium: "",
+        nonOwnedCSLPremium: ""
+    },
+    renewal : {
+        renewalDecision : "undecided",
+        nonRenewalReason : "undecided",
+        dateOfDecision : "null"
+    },
+    underwriting: {
+          creditsDebits: "",
+          remarks: "",
+          isCamera: false
+    },
+    cancellation: {
+          cancellationReason: "null",
+          isCancelled: "No",
+          cancellationDate: "",
+          cancellationRate: ""
     },
     insured: {
         licenseState: 'Oregon',
@@ -435,6 +526,19 @@ export const testItem = {
         agent: 'Quantum Risk Solutions (QRSBRK)',
         phoneNumber: null,
         licenseEff: null,
+        additionalInsured: {
+            values: [
+                {
+                insName: "None",
+                address: null,
+                city: null,
+                zipCode: null,
+                state: "TX",
+                isWaiver: false,
+                isAddPremium: false
+                },
+            ],
+        },
     },
     vehicles: {
         values: [
@@ -464,6 +568,7 @@ export const testItem = {
                 yesNo: 'No',
                 model: null,
                 baseNumber: null,
+                baseEffDate: null,
                 baseExpDate: null,
                 garageZipCode2: null,
                 vehicleState: null,
@@ -474,21 +579,30 @@ export const testItem = {
         ],
     },
     loss_history: null,
+    Uploads: {},
     drivers: {
         values: [
             {
                 states: 'Oregon',
                 licenseNumber: null,
                 licenseExpDate: null,
-                driverName: null,
+                driverLastName: null,
+                driverMiddleName: null,
+                driverFirstName: null,
                 licenseEffDate: null,
+                driverEffDate: null,
+                driverExpDate: null
             },
             {
                 states: 'Oregon',
                 licenseNumber: null,
                 licenseExpDate: null,
-                driverName: 'Omari Powell',
+                driverLastName: "Powell",
+                driverMiddleName: "J",
+                driverFirstName: "Omari",
                 licenseEffDate: null,
+                driverEffDate: null,
+                driverExpDate: null
             },
         ],
         defaults: null,

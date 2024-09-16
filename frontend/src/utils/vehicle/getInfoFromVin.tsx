@@ -20,7 +20,7 @@ const getDataFromList = (vinList: []) => {
     return reducedObj
 }
 
-const getInoFromVin = async (vin: string) => {
+const getInfoFromVin = async (vin: string) => {
     try {
         const res = await fetch(
             `https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${vin}?format=json`
@@ -35,4 +35,5 @@ const getInoFromVin = async (vin: string) => {
     }
 }
 
-export default getInoFromVin
+export default getInfoFromVin
+

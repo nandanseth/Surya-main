@@ -5,6 +5,7 @@ import autoEntryOptions from '../../utils/coverage/getAutoSymbolEntry'
 import CoverageOptions from '../../utils/coverage/getLimit'
 import SuryaInput from '../PolicyForm/PolicyFormInput'
 import SuryaSelect from '../PolicyForm/PolicyFormSelect'
+import {useEffect} from 'react'
 
 const { Section, SectionTitle, Flex, InputWrapper } = Form
 
@@ -42,6 +43,7 @@ const CoverageSection = ({ coverage, setCoverage }) => {
         splitSectionAutoEntryOptions,
         pIProtectionSingleLimit,
         pIProtectionSingleEntry,
+        pedPipSingleLimit,
         pIProtectionSplitBodyPerPerson,
         pIProtectionSplitBodyPerAccident,
         pIProtectionSplitPropertyDamage,
@@ -84,12 +86,14 @@ const CoverageSection = ({ coverage, setCoverage }) => {
         nonOwnedCSL,
         overallPremium,
         personalInjuryProtectionPremium,
+        pedPipProtectionPremium,
         medicalPaymentsPremium,
         underinsuredMotoristPremium,
         uninsuredMotoristPremium,
         hiredCSLPremium,
         nonOwnedCSLPremium,
     } = values
+
 
     const combinedSection = (
         <>

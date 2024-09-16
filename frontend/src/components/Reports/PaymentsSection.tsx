@@ -23,12 +23,12 @@ const PaymentsSection = ({ payments, setPayments, ...rest }) => {
                 <AccordionDetails>
                     <Container>
                         <Checkbox
-                            checked={payments.payments}
+                            checked={payments.paymentType}
                             labelText="Payments"
                             onChange={() => {
                                 setPayments({
                                     ...payments,
-                                    payments: !payments.payments,
+                                    payments: !payments.paymentType,
                                 })
                             }}
                         />

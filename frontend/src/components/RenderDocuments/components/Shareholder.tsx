@@ -369,6 +369,54 @@ const styles = StyleSheet.create({
     },
 })
 function Shareholder({ policy }) {
+
+
+    const CalculatePremium = () => {
+        let premium = 0.00
+
+        for (const i in policy.vehicles.values) {
+            if (policy.vehicles.values[i].baseEffDate === policy.policy.effectiveDate) {
+                console.log(policy.vehicles.values[i], 'cream')
+                if (!isNaN(parseFloat(policy.vehicles.values[i].overallPremium))) {
+                    premium+=parseFloat(policy.vehicles.values[i].overallPremium)
+                }
+                if (!isNaN(parseFloat(policy.vehicles.values[i].personalInjuryProtectionPremium))) {
+                    premium+=parseFloat(policy.vehicles.values[i].personalInjuryProtectionPremium)
+                }
+                if (!isNaN(parseFloat(policy.vehicles.values[i].pedPipProtectionPremium))) {
+                    premium+=parseFloat(policy.coverage.pedPipProtectionPremium)
+                }
+                if (!isNaN(parseFloat(policy.vehicles.values[i].medicalPaymentsPremium))) {
+                    premium+=parseFloat(policy.vehicles.values[i].medicalPaymentsPremium)
+                }
+                if (!isNaN(parseFloat(policy.vehicles.values[i].underinsuredMotoristPremium))) {
+                    premium+=parseFloat(policy.vehicles.values[i].underinsuredMotoristPremium)
+                }
+                if (!isNaN(parseFloat(policy.vehicles.values[i].uninsuredMotoristPremium))) {
+                    premium+=parseFloat(policy.vehicles.values[i].uninsuredMotoristPremium)
+                }
+                
+            }
+            if (!isNaN(parseFloat(policy.coverage.hiredCSLPremium))) {
+                premium+=parseFloat(policy.coverage.hiredCSLPremium)
+            }
+            if (!isNaN(parseFloat(policy.coverage.nonOwnedCSLPremium))) {
+                premium+=parseFloat(policy.coverage.nonOwnedCSLPremium)
+            }
+            
+        }
+        return premium
+    }
+
+
+
+    const SharesToReceive = () => {
+        const premiumTotal = CalculatePremium()
+        const subFee = premiumTotal*0.12
+        return Math.floor(subFee/2)
+    }
+
+
     const current = new Date()
     const date = `${
         current.getMonth() + 1
@@ -1152,6 +1200,11 @@ function Shareholder({ policy }) {
                     <Text style={styles.textSmallRight}>
                         Title :_____________________________{'\n'}
                         {'\n'}
+                    </Text>
+                    <Text style={styles.boldTextCenterSmall}>
+                    {'\n'}{'\n'}{'\n'}
+                    Number of Shares Acquired Based Upon Formula: {SharesToReceive()}{'\n'}
+                        
                     </Text>
                 </View>
                 <Text style={styles.footer}>SUR 001 11 18</Text>

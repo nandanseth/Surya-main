@@ -1,6 +1,7 @@
 import agentOptions, { agent } from './getAgent'
 import coverageTermOptions, { coverageTerm } from './getCoverageTerm'
 import entityTypeOptions, { entityType } from '../insured/getEntityType'
+import additionalInsuredOptions, { additionalInsured } from '../insured/getAdditionalInsured'
 import getGenderOptions, { gender } from '../insured/getGender'
 import lineOfBusinessOptions, { lineOfBusiness } from './getLineOfBusiness'
 import policyCategoryOptions, {
@@ -9,6 +10,7 @@ import policyCategoryOptions, {
 } from './getPolicyCategory'
 import policyLineItemOptions, { policyLineItem } from './getPolicyLineItem'
 import statesOptions, { states } from './getStates'
+import stateCodeOptions, { stateCodes } from './getStateCodes'
 import underwritingCodeOptions, {
     underwritingCode,
 } from './getUnderwritingCode'
@@ -16,6 +18,8 @@ import underwritingCodeOptions, {
 export {
     states,
     statesOptions,
+    stateCodes,
+    stateCodeOptions,
     coverageTermOptions,
     coverageTerm,
     policyCategoryOptions,
@@ -33,4 +37,7 @@ export {
     entityType,
     getGenderOptions,
     gender,
+    additionalInsuredOptions,
+    additionalInsured 
+
 }

@@ -7,12 +7,18 @@ import styled from 'styled-components'
 
 const Sidebar = () => {
     const { pathname } = useLocation()
-    const links = ['policies', 'reports', 'claims', 'settings']
+    const links = ['policies', 'reports', 'quickrate', 'settings']
     const check = (s) => {
         if (pathname === '/home' && s === 'policies') {
             return true
         }
         if (pathname.includes('/policies') && s === 'policies') {
+            return true
+        }
+        if (pathname.includes('/quickrate') && s === 'quickrate') {
+            return true
+        }
+        if (pathname.includes('/settings') && s === 'settings') {
             return true
         }
         return `/${s}` === pathname
@@ -32,7 +38,8 @@ const Sidebar = () => {
 const LinkMap: Record<string, string> = {
     policies: '/home',
     reports: '/reports',
-    claims: '/claims',
+    quickrate: '/quickrate',
+    // claims: '/claims',
     settings: '/settings',
 }
 

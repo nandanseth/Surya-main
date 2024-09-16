@@ -370,7 +370,7 @@ function RRGDecFile({ policy }) {
                         IS {'\n'}UNABLE TO MAKE PAYMENTS AS PROMISED.{'\n'}
                         {'\n'}
                         Date: {date} {'\n'}
-                        {'\n'}Insured: {policy.insured.contactName}
+                        {'\n'}Insured: {policy.policy.name}
                     </Text>
                 </View>
             </Page>

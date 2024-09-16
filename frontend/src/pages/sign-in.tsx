@@ -4,6 +4,7 @@ import icon from '../images/logo white.png'
 import Input from '../components/Input'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useMoralis } from 'react-moralis'
 
 const validateEmail = (email: string) => {
     const re = /\S+@\S+\.\S+/
@@ -20,6 +21,7 @@ type State = {
 
 const SignIn = () => {
     const navigate = useNavigate()
+    const {authenticate, isAuthenticated, isAuthenticating, hasAuthError, authError, enableWeb3, user, logout, account, Moralis} = useMoralis();
 
     const [form, setInput] = useState<State>({
         email: '',
@@ -39,6 +41,35 @@ const SignIn = () => {
         }
         navigate('/home')
     }
+
+    async function handleConnect(provider){
+        try {
+            await enableWeb3({ throwOnError: true, provider });
+
+            const { account, chainId } = Moralis;
+
+            console.log(account, chainId)
+
+            const { message } = await Moralis.Cloud.run("requestMessage", {
+                address: account,
+                chain: parseInt(chainId, 16),
+                network: "evm",
+            });
+
+            await authenticate({
+                signingMessage: message,
+                throwOnError: true,
+                onSuccess: () => navigate('/home'),
+                onError: () => console.log(authError)
+            })
+
+
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
+    
     const signInText = 'SIGN IN'
     return (
         <StyledBlock>
@@ -56,9 +87,10 @@ const SignIn = () => {
                     <StyledDiv>
                         <AdminText>Admin</AdminText>
                         <SignInText>Sign In</SignInText>
+                        <Button onClick={()=>handleConnect('metamask')}>Connect Wallet</Button>
                     </StyledDiv>
                     <InputFields>
-                        <MarginDiv>
+                        {/* <MarginDiv>
                             <Input
                                 error={
                                     form.error?.validEmail !== undefined &&
@@ -104,8 +136,9 @@ const SignIn = () => {
                                 type="password"
                                 value={form.password}
                             />
-                        </MarginDiv>
-                        <Button onClick={submit}>{signInText}</Button>
+                        </MarginDiv> */}
+                        
+                        {/* <Button onClick={submit}>{signInText}</Button> */}
                     </InputFields>
                 </SignInForm>
             </Main>
@@ -117,6 +150,17 @@ const SignIn = () => {
 const StyledBlock = styled(Block)`
     background: white;
 `
+
+const ConnectButton = styled.button`
+    display: flex;
+    flex: 1 1 auto;
+    background: #fcfeffb8;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 2rem;
+    justify-content: center;
+`
+
 
 const Main = styled.main`
     display: flex;

@@ -1,8 +1,80 @@
 // @ts-nocheck
-import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer'
+import { usePDF, PDFRenderer, Document, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer'
+import { useRef } from 'react'
+import { pdfjs } from 'react-pdf';
+import pdfLib from 'pdf-lib';
+import { saveAs } from 'file-saver';
+import JDSignature from '../../../images/JDSignature.png'
 
 const styles = StyleSheet.create({
     /* Control the left side */
+
+ headerLarge: {
+    fontSize: 18, // Adjusted for more prominent header size
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+    margin: 20, // More space above and below the header
+  },
+  headerSmall: {
+    fontSize: 15, // Adjusted size for sub-headers
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+    margin: 10, // Adjusted margin for spacing
+  },
+  normalText: {
+    fontSize: 12, // Larger text for better readability
+    fontFamily: 'Helvetica',
+    lineHeight: 1.4, // Adjusted line height for closer text lines
+    marginVertical: 4, // Space before and after paragraphs
+  },
+  normalTextBold: {
+    fontSize: 12, // Consistent text size with normal text
+    fontFamily: 'Helvetica-Bold',
+    lineHeight: 1.4,
+  },
+  documentTitle: {
+    fontSize: 18,
+    fontFamily: 'Helvetica-Bold',
+    textAlign: 'center',
+    marginVertical: 5,
+  },
+  documentSectionHeader: {
+    fontSize: 15,
+    fontFamily: 'Helvetica-Bold',
+    marginVertical: 5,
+  },
+  documentSubsection: {
+    fontSize: 12,
+    fontFamily: 'Helvetica',
+    marginVertical: 3,
+  },
+  documentFooter: {
+    fontSize: 12,
+    fontFamily: 'Helvetica',
+    marginTop: 5,
+  },
+  scheduleBox: {
+    borderWidth: 1,
+    borderColor: '#000', // Ensure black border
+    padding: 8, // Slightly reduced padding
+    marginVertical: 8, // Space above and below the box
+  },
+  scheduleHeader: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 6, // Space below the "SCHEDULE" header
+    textAlign: 'left', // Align text to the left
+  },
+  scheduleContent: {
+    fontSize: 12,
+    fontFamily: 'Helvetica',
+  },
+    page: {
+        paddingTop: 35,
+        paddingBottom: 65,
+        paddingHorizontal: 35,
+        fontFamily: 'Times-Roman',
+    },
     boldTextLeft: {
         fontSize: 14,
         fontFamily: 'Times-Bold',
@@ -29,6 +101,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Times-Roman',
         left: 10,
         right: 10,
+    },
+
+    textSmallNormal: {
+        fontSize: 12,
+        fontFamily: 'Times-Roman',
     },
 
     textSmallUnderline: {
@@ -180,6 +257,15 @@ const styles = StyleSheet.create({
         color: 'black',
         flex: 1,
     },
+
+    AutoCenterLarge: {
+        fontSize: 18,
+        top: 5,
+        textAlign: 'center',
+        color: 'black',
+        flex: 1,
+        fontFamily: 'Helvetica-Bold'
+    },
     policyNumber: {
         fontSize: 12,
         left: 0,
@@ -272,7 +358,63 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
     },
 
+    cellRomanNormal: {
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderCollapse: 'collapsed',
+        borderWidth: 1.25,
+        padding: '10px',
+        flexGrow: 1,
+        flexShrink: 1,
+        fontFamily: 'Times-Roman',
+        flexBasis: 'auto',
+        alignSelf: 'stretch',
+        fontSize: 12
+    },
+
+    cellRomanSmall: {
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderCollapse: 'collapsed',
+        borderWidth: 1.25,
+        padding: '10px',
+        flexGrow: 1,
+        flexShrink: 1,
+        fontFamily: 'Times-Roman',
+        flexBasis: 'auto',
+        alignSelf: 'stretch',
+        fontSize: 7
+    },
+
+    cellRomanXSmall: {
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderCollapse: 'collapsed',
+        borderWidth: 1.25,
+        padding: '10px',
+        flexGrow: 1,
+        flexShrink: 1,
+        fontFamily: 'Times-Roman',
+        flexBasis: '15%',
+        alignSelf: 'stretch',
+        fontSize: 10
+    },
+
     cellRomanBold: {
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderCollapse: 'collapsed',
+        borderWidth: 1.25,
+        padding: '8px',
+        flexGrow: 1,
+        flexShrink: 1,
+        fontFamily: 'Times-Bold',
+        fontSize: 14,
+        flexBasis: 'auto',
+        alignSelf: 'stretch',
+    },
+
+    cellRomanBoldXSmall: {
         borderColor: 'black',
         borderStyle: 'solid',
         borderCollapse: 'collapsed',
@@ -282,9 +424,10 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         fontFamily: 'Times-Bold',
         fontSize: 14,
-        flexBasis: 'auto',
+        flexBasis: '15%',
         alignSelf: 'stretch',
     },
+
     cellBold: {
         borderColor: 'black',
         borderStyle: 'solid',
@@ -324,6 +467,195 @@ const styles = StyleSheet.create({
     },
 })
 function PDFFile({ policy }: any) {
+
+    const getWaiverPremium = () => {
+        let waiverPremium = 0
+ 
+        if (policy.insured?.additionalInsured?.values) {
+            
+            for (const i in policy.insured.additionalInsured?.values) {
+                if (policy.insured.additionalInsured?.values[i].isWaiver === true) {
+                    waiverPremium += 500
+                }
+            }
+        }
+        
+        return waiverPremium
+    }
+
+    const effectiveDate = new Date(policy.policy.effectiveDate);
+    const comparisonDate = new Date('09/01/2024');
+
+    const addValue = effectiveDate >= comparisonDate ? 500.00 : 250.00;
+
+
+    const getAddInsuredPremium = () => {
+        let addPremium = 0
+        console.log(policy.insured, "lsoll")
+
+        
+        
+        if (policy.insured.additionalInsured?.values) {
+            
+            for (const i in policy.insured.additionalInsured?.values) {
+                if (policy.insured.additionalInsured?.values[i].isAddPremium === true) {
+                    addPremium += addValue
+                }
+            }
+        }
+        
+        return addPremium
+    }
+
+
+
+    const additionalInsuredAmount = policy.insured.additionalInsured?.values.length
+
+    const isPolicyIssFee = new Date(policy.policy.effectiveDate).getTime() > new Date('08/01/2023').getTime() ? true : false
+
+    const stateToTaxFee = {
+        'New Jersey': 0.05,
+        'Texas': 0.036,
+        'California': 0.036,
+        'Ohio': 0.05,
+        'Pennsylvania': 0.036,
+        'Arizona': 0.036,
+        'Virginia': 0.036,
+        'Alabama': 0.036,
+        'Oregon': 0.036,
+        'Connecticut': 0.04,
+        'Indiana': 0.025
+        }
+
+    const stateToCodeMap = {
+        'New Jersey': 'NJ',
+        'Texas': 'TX',
+        'California': 'CA',
+        'Ohio': 'OH',
+        'Pennsylvania': 'PA',
+        'Arizona': 'AZ',
+        'Virginia': 'VA',
+        'Alabama': 'AL',
+        'Oregon': 'OR',
+        'Connecticut': 'CT',
+        'Indiana': 'IN'
+        }
+
+    const CalculateVehicles = () => {
+        let vehicles = 0
+        for (const i in policy.vehicles.values) {
+            if (policy.vehicles.values[i].baseEffDate === policy.policy.effectiveDate) {
+                vehicles += 1
+            }
+        }
+        console.log(vehicles, "sla")
+
+        return vehicles
+    }
+
+    const CalculatePremium = () => {
+
+        let premium = 0.00
+        for (const i in policy.vehicles.values) {
+            if (policy.vehicles.values[i].baseEffDate === policy.policy.effectiveDate) {
+                if (!isNaN(parseFloat(policy.coverage.overallPremium))) {
+                    premium+=parseFloat(policy.coverage.overallPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.personalInjuryProtectionPremium))) {
+                    premium+=parseFloat(policy.coverage.personalInjuryProtectionPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.pedPipProtectionPremium))) {
+                    premium+=parseFloat(policy.coverage.pedPipProtectionPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.medicalPaymentsPremium))) {
+                    premium+=parseFloat(policy.coverage.medicalPaymentsPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.underinsuredMotoristPremium))) {
+                    premium+=parseFloat(policy.coverage.underinsuredMotoristPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.uninsuredMotoristPremium))) {
+                    premium+=parseFloat(policy.coverage.uninsuredMotoristPremium)
+                }
+                
+            }
+            
+        }
+        if (!isNaN(parseFloat(policy.coverage.hiredCSLPremium))) {
+            premium+=parseFloat(policy.coverage.hiredCSLPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.nonOwnedCSLPremium))) {
+            premium+=parseFloat(policy.coverage.nonOwnedCSLPremium)
+        }
+        premium+=getWaiverPremium()
+        premium+=getAddInsuredPremium()
+        console.log(premium, "KUSH")
+        return parseFloat(premium).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    }
+
+    const CalculateOnePremium = () => {
+
+        let premium = 0.00
+
+
+        if (!isNaN(parseFloat(policy.coverage.overallPremium))) {
+            premium+=parseFloat(policy.coverage.overallPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.personalInjuryProtectionPremium))) {
+            premium+=parseFloat(policy.coverage.personalInjuryProtectionPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.pedPipProtectionPremium))) {
+            premium+=parseFloat(policy.coverage.pedPipProtectionPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.medicalPaymentsPremium))) {
+            premium+=parseFloat(policy.coverage.medicalPaymentsPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.underinsuredMotoristPremium))) {
+            premium+=parseFloat(policy.coverage.underinsuredMotoristPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.uninsuredMotoristPremium))) {
+            premium+=parseFloat(policy.coverage.uninsuredMotoristPremium)
+        }
+                
+    
+            
+        return parseFloat(premium).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    }
+
+
+    const CalculateTax = () => {
+        const premium = parseFloat(CalculatePremium().replace(',',''))
+        const tax = stateToTaxFee[policy.policy.states]*premium
+        console.log(premium, tax, "KUSH")
+        return parseFloat(tax).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+
+    }
+
+    const CalculateSubFee = () => {
+        const premium = parseFloat(CalculatePremium().replace(',',''))
+        const subFee = premium*0.12
+        console.log(subFee, "KUSH")
+        return parseFloat(subFee).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+    }
+
+    
+
+    const value = effectiveDate >= comparisonDate ? 500.00 : 350.00;
+
+    const Total = () => {
+        const effectiveDate = new Date(policy.policy.effectiveDate);
+        const comparisonDate = new Date('09/01/2024');
+
+        const value = effectiveDate >= comparisonDate ? 500.00 : 350.00;
+
+        if (isPolicyIssFee) {
+
+            return (value + parseFloat(Math.abs(parseFloat(CalculatePremium().replace(',','')) + parseFloat(CalculateTax().replace(',','')) + parseFloat(CalculateSubFee().replace(',',''))))).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        } else {
+            return parseFloat(Math.abs(parseFloat(CalculatePremium().replace(',','')) + parseFloat(CalculateTax().replace(',','')) + parseFloat(CalculateSubFee().replace(',','')))).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        }
+
+    }
+        
     return (
         <Document>
             <Page style={styles.body}>
@@ -357,10 +689,11 @@ function PDFFile({ policy }: any) {
                         Mailing Address:{'\n'}
                     </Text>
                     <Text style={styles.textSmall}>
-                        5151 Hampstead High Street Suite 200{'\n'}
+                    1430 Gadsden Hwy, Suite 116-669
+                    {'\n'}
                     </Text>
                     <Text style={styles.textSmall}>
-                        Montgomery, AL 36104{'\n'}
+                    Birmingham, AL 35235{'\n'}
                         {'\n'}
                     </Text>
                     <Text style={styles.boldTextSmall}>
@@ -370,7 +703,7 @@ function PDFFile({ policy }: any) {
                 </View>
                 <View style={styles.borderSmall}>
                     <Text style={styles.textSmall}>
-                        {'\n'}NAMED INSURED: {policy.insured.contactName}
+                        {'\n'}NAMED INSURED: {policy.policy.name}
                         {'\n'}
                         {'\n'}
                     </Text>
@@ -378,7 +711,7 @@ function PDFFile({ policy }: any) {
                 <View style={styles.borderSmall}>
                     <Text style={styles.textSmall}>
                         {'\n'}MAILING ADDRESS: {policy.insured.address1}{' '}
-                        {policy.insured.city}, {policy.insured.state}{' '}
+                        {policy.insured.city}, {stateToCodeMap[policy.policy.states]}{' '}
                         {policy.insured.zipCode}
                         {'\n'}
                         {'\n'}
@@ -412,8 +745,9 @@ function PDFFile({ policy }: any) {
                         {'\n'}{' '}
                     </Text>
                     <Text style={styles.textSmallHelvetica}>
-                        Business Description: {policy.policy.policyCategory}
+                        Business Description: {(policy.policy.policyNum.charAt(4) === "N") ? (<>NEMT</>) : (policy.policy.policyNum.charAt(4) === "T") ? (<>Taxi</>) : (<>Limousine</>)}
                         {'\n'}
+                        Policy Type: {(policy.policy.lineOfBusiness !== 'Livery') ? ("Commercial") : ("Public or Livery")}
                         {'\n'}
                         {'\n'}
                     </Text>
@@ -483,10 +817,10 @@ function PDFFile({ policy }: any) {
                                 {policy.coverage.combinedSectionEntry}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.combinedSectionLimit}
+                                {parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.combinedSectionPremium}
+                                ${(parseFloat(policy.coverage.overallPremium)*CalculateVehicles()).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                         </View>
                     ) : (
@@ -499,73 +833,121 @@ function PDFFile({ policy }: any) {
                                 {policy.coverage.splitSectionAutoEntryOptions}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.splitSectionBodyPerPerson}/
-                                {policy.coverage.splitSectionBodyPerAccident}/
+                                {parseInt(policy.coverage.splitSectionBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.splitSectionBodyPerAccidentOptions.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
                                 {
-                                    policy.coverage
-                                        .splitSectionPropertyDamageOptions
+                                    parseInt(policy.coverage
+                                        .splitSectionPropertyDamageOptions.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})
                                 }
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.splitSectionPremium}
+                                ${(parseFloat(policy.coverage.overallPremium)*CalculateVehicles()).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                         </View>
                     )}
 
-                    {policy.coverage.personalInjury ===
-                    'Combined Single Limit' ? (
+                    {(policy.coverage.pedPipSingleLimit ===
+                    'yes' || policy.coverage.pedPipSingleLimit ===
+                    'Yes' || policy.coverage.pedPipSingleLimit === 'Up to $250,000' || policy.coverage.pedPipSingleLimit === 'Up to $15,000') ? (
                         <View style={[styles.rowLarge]} wrap={false}>
                             <Text style={[styles.cell]}>
                                 PEDESTRIAN INJURY {'\n'}PROTECTION (OR {'\n'}
+                                EQUIVALENT NO FAULT COVERED)
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                17
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                {(policy.coverage.pedPipSingleLimit ===
+                    'yes' || policy.coverage.pedPipSingleLimit ===
+                    'Yes' || policy.coverage.pedPipSingleLimit === 'Up to $250,000') ? (<>Up to $250,000</>) : (<>Up to $15,000</>)}
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                ${(parseFloat(policy.coverage.pedPipProtectionPremium)*CalculateVehicles()).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            </Text>
+                        </View>
+                    ) : (
+                        // <View style={[styles.rowLarge]} wrap={false}>
+                        //     <Text style={[styles.cell]}>
+                        //         PEDESTRIAN INJURY {'\n'}PROTECTION (OR {'\n'}
+                        //         EQUIVALENT NO FAULT COVERED)
+                        //     </Text>
+                        //     <Text style={[styles.cell]}>
+                        //         Excluded
+                        //     </Text>
+                        //     <Text style={[styles.cell]}>
+                        //         0
+                        //     </Text>
+                        //     <Text style={[styles.cell]}>
+                        //         $0
+                        //     </Text>
+                        // </View>
+                        <>
+                        </>
+                    )}
+
+                    {(policy.coverage.pIProtectionSingleEntry !== "Excluded") ? ((policy.coverage.personalInjury ===
+                    'Combined Single Limit') ? (
+                        <View style={[styles.rowLarge]} wrap={false}>
+                            <Text style={[styles.cell]}>
+                                PERSONAL INJURY {'\n'}PROTECTION (OR {'\n'}
                                 EQUIVALENT NO FAULT COVERED)
                             </Text>
                             <Text style={[styles.cell]}>
                                 {policy.coverage.pIProtectionSingleEntry}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.pIProtectionSingleLimit}
+                                {parseInt(policy.coverage.pIProtectionSingleLimit.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.pIProtectionSinglePremium}
+                                ${(parseFloat(policy.coverage.personalInjuryProtectionPremium)*CalculateVehicles()).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                         </View>
                     ) : (
                         <View style={[styles.rowLarge]} wrap={false}>
                             <Text style={[styles.cell]}>
-                                PEDESTRIAN INJURY {'\n'}PROTECTION (OR {'\n'}
+                                PERSONAL INJURY {'\n'}PROTECTION (OR {'\n'}
                                 EQUIVALENT NO FAULT COVERED)
                             </Text>
                             <Text style={[styles.cell]}>
                                 {policy.coverage.pIProtectionSplitAutoEntry}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.pIProtectionSplitBodyPerPerson}
+                                {parseInt(policy.coverage.pIProtectionSplitBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}
                                 /
                                 {
-                                    policy.coverage
-                                        .pIProtectionSplitBodyPerAccident
+                                    parseInt(policy.coverage
+                                        .pIProtectionSplitBodyPerAccident.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})
                                 }
                                 /
                                 {
-                                    policy.coverage
-                                        .pIProtectionSplitPropertyDamage
+                                    parseInt(policy.coverage
+                                        .pIProtectionSplitPropertyDamage.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})
                                 }
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.pIProtectionPremium}
+                                ${(policy.coverage.personalInjuryProtectionPremium*CalculateVehicles()).toLocaleString('en-US', {maximumFractionDigits: 2})}
+                            </Text>
+                        </View>
+                    )) : (
+                        <View style={[styles.rowLarge]} wrap={false}>
+                            <Text style={[styles.cell]}>
+                                PERSONAL INJURY {'\n'}PROTECTION (OR {'\n'}
+                                EQUIVALENT NO FAULT COVERED)
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                {policy.coverage.pIProtectionSplitAutoEntry}
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                0
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                $0
                             </Text>
                         </View>
                     )}
 
-                    <View style={[styles.rowLarge]} wrap={false}>
-                        <Text style={[styles.cell]}>
-                            PERSONAL INJURY {'\n'}PROTECTION (OR {'\n'}
-                            EQUIVALENT NO FAULT COVERED)
-                        </Text>
-                        <Text style={[styles.cell]}>Not Covered</Text>
-                        <Text style={[styles.cell]}>Column 3 Row 1</Text>
-                        <Text style={[styles.cell]}>Column 4 Row 1</Text>
-                    </View>
+                    
 
                     {policy.coverage.uninsuredMotorist ===
                     'Combined Single Limit' ? (
@@ -580,10 +962,10 @@ function PDFFile({ policy }: any) {
                                 }
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.uninsuredMotoristSingleLimit}
+                                {parseInt(policy.coverage.uninsuredMotoristSingleLimit.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.uninsuredMotoristSinglePremium}
+                                ${(parseFloat(policy.coverage.uninsuredMotoristPremium)*CalculateVehicles()).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </Text>
                         </View>
                     ) : (
@@ -595,12 +977,15 @@ function PDFFile({ policy }: any) {
                                 {policy.coverage.unMotoristAuto}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.unMotoristBodyPerPerson}/
-                                {policy.coverage.unMotoristBodyPerAccident}/
-                                {policy.coverage.unMotoristProperty}
+                                {parseInt(policy.coverage.unMotoristBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.unMotoristBodyPerAccident.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.unMotoristProperty.includes(',')
+                                    ? policy.coverage.unMotoristProperty.replace(/,/g, '')
+                                    : policy.coverage.unMotoristProperty,
+                                    10).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.unMotoristPremium}
+                                ${(parseFloat(policy.coverage.uninsuredMotoristPremium)*CalculateVehicles()).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </Text>
                         </View>
                     )}
@@ -619,14 +1004,14 @@ function PDFFile({ policy }: any) {
                             </Text>
                             <Text style={[styles.cell]}>
                                 {
-                                    policy.coverage
-                                        .underinsuredMotoristSingleLimit
+                                    parseInt(policy.coverage
+                                        .underinsuredMotoristSingleLimit.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})
                                 }
                             </Text>
                             <Text style={[styles.cell]}>
-                                {
-                                    policy.coverage
-                                        .underinsuredMotoristSinglePremium
+                                ${
+                                    (parseFloat(policy.coverage
+                                        .underinsuredMotoristPremium)*CalculateVehicles()).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
                                 }
                             </Text>
                         </View>
@@ -639,27 +1024,30 @@ function PDFFile({ policy }: any) {
                                 {policy.coverage.underMotoristAuto}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.underMotoristBodyPerPerson}/
-                                {policy.coverage.underMotoristBodyPerAccident}/
-                                {policy.coverage.underMotoristProperty}
+                                {parseInt(policy.coverage.underMotoristBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.underMotoristBodyPerAccident.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.underMotoristProperty.includes(',')
+          ? policy.coverage.underMotoristProperty.replace(/,/g, '')
+          : policy.coverage.underMotoristProperty,
+        10).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.underMotoristPremium}
+                                ${(parseFloat(policy.coverage.underinsuredMotoristPremium)*CalculateVehicles()).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                             </Text>
                         </View>
                     )}
-                    {policy.coverage.medicalPayments ===
-                    'Combined Single Limit' ? (
+                    {(policy.coverage.medicalSingleEntry !== "Excluded") ? ((policy.coverage.medicalPayments ===
+                    'Combined Single Limit') ? (
                         <View style={[styles.row]} wrap={false}>
                             <Text style={[styles.cell]}>MEDICAL PAYMENT</Text>
                             <Text style={[styles.cell]}>
                                 {policy.coverage.medicalSingleEntry}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.medicalSingleLimit}
+                                {parseInt(policy.coverage.medicalSingleLimit.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.medicalSinglePremium}
+                                ${(parseFloat(policy.coverage.medicalPaymentsPremium))*CalculateVehicles()}
                             </Text>
                         </View>
                     ) : (
@@ -669,34 +1057,150 @@ function PDFFile({ policy }: any) {
                                 {policy.coverage.medicalSplitAutoEntry}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.medicalSplitBodyPerPerson}/
-                                {policy.coverage.medicalSplitBodyPerAccident}/
-                                {policy.coverage.medicalSplitPropertyDamage}
+                                {parseInt(policy.coverage.medicalSplitBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.medicalSplitBodyPerAccident.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                                {parseInt(policy.coverage.medicalSplitPropertyDamage.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.medicalSplitPremium}
+                                ${(parseFloat(policy.coverage.medicalPaymentsPremium))*CalculateVehicles()}
+                            </Text>
+                        </View>
+                    )) : (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>MEDICAL PAYMENT</Text>
+                            <Text style={[styles.cell]}>
+                                {policy.coverage.medicalSplitAutoEntry}
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                0
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                $0
                             </Text>
                         </View>
                     )}
+                    {(policy.coverage.csl !== "No") ? ((parseInt(policy.coverage.hiredCSLPremium) > 0) ? (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>HIRED</Text>
+                            <Text style={[styles.cell]}>18</Text>
+                            <Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>
+                            <Text style={[styles.cell]}>${policy.coverage.hiredCSLPremium}</Text>
+                        </View>
+                    ) : ((policy.coverage.cslSplitAuto !== "Excluded") ? (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>HIRED</Text>
+                            <Text style={[styles.cell]}>18</Text>
+                            <Text style={[styles.cell]}>{parseInt(policy.coverage.cslBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                            {parseInt(policy.coverage.cslBodyPerAccident.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                            {parseInt(policy.coverage.cslProperty.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}</Text>
+                            <Text style={[styles.cell]}>${policy.coverage.hiredCSLPremium}</Text>
+                        </View>
+                    ) : (<View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>HIRED</Text>
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>18</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>$0</Text>
+                        </View>)
+                        )
+                        
+                    ) : (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>HIRED</Text>
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>18</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>$0</Text>
+                        </View>
+                    )}
 
-                    <View style={[styles.row]} wrap={false}>
-                        <Text style={[styles.cell]}>HIRED</Text>
-                        <Text style={[styles.cell]}>Not Covered</Text>
-                        <Text style={[styles.cell]}>Column 3 Row 1</Text>
-                        <Text style={[styles.cell]}>Column 4 Row 1</Text>
-                    </View>
-                    <View style={[styles.row]} wrap={false}>
-                        <Text style={[styles.cell]}>NON-OWNED</Text>
-                        <Text style={[styles.cell]}>Not Covered</Text>
-                        <Text style={[styles.cell]}>Column 3 Row 1</Text>
-                        <Text style={[styles.cell]}>Column 4 Row 1</Text>
-                    </View>
-                    <View style={[styles.row]} wrap={false}>
-                        <Text style={[styles.cell]}>DEDUCTIBLE</Text>
-                        <Text style={[styles.cell]}>Not Covered</Text>
-                        <Text style={[styles.cell]}>Column 3 Row 1</Text>
-                        <Text style={[styles.cell]}>Column 4 Row 1</Text>
-                    </View>
+                    {(policy.coverage.nonOwnedCSL !== "No") ? ((parseInt(policy.coverage.nonOwnedCSLPremium) > 0) ? (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>NON-OWNED</Text>
+                            <Text style={[styles.cell]}>19</Text>
+                            <Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>
+                            <Text style={[styles.cell]}>${policy.coverage.nonOwnedCSLPremium}</Text>
+                        </View>
+                    ) : ((policy.coverage.cslSplitAuto !== "Excluded") ? (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>NON-OWNED</Text>
+                            <Text style={[styles.cell]}>19</Text>
+                            <Text style={[styles.cell]}>{parseInt(policy.coverage.nonCslBodyPerPerson.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                            {parseInt(policy.coverage.nonCslBodyPerAccident.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}/
+                            {parseInt(policy.coverage.nonCslProperty.replace(/,/g, '')).toLocaleString('en-US', {maximumFractionDigits: 2})}</Text>
+                            <Text style={[styles.cell]}>${policy.coverage.nonOwnedCSLPremium}</Text>
+                        </View>
+                    ) : (<View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>NON-OWNED</Text>
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>19</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>$0</Text>
+                        </View>)
+                        )
+                        
+                    ) : (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>NON-OWNED</Text>
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>19</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>$0</Text>
+                        </View>
+                    )}
+                    {(policy.coverage.deductable !== "No" && typeof policy.coverage.deductableAmount !== 'undefined') ? (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>LIABILITY DEDUCTIBLE</Text>
+                            <Text style={[styles.cell]}>{policy.coverage.deductableAutoEntry}</Text>
+                            <Text style={[styles.cell]}>{policy.coverage.deductableAmount}</Text>
+                            <Text style={[styles.cell]}>N/A</Text>
+                            
+                        </View>
+                    ) : (
+                        <View style={[styles.row]} wrap={false}>
+                            <Text style={[styles.cell]}>LIABILITY DEDUCTIBLE</Text>
+                            <Text style={[styles.cell]}>Excluded</Text>
+                            <Text style={[styles.cell]}>N/A</Text>
+                            <Text style={[styles.cell]}>$0</Text>
+                        </View>
+                    )}
+
+                    {(getWaiverPremium() > 0 ) ? (
+                        <View style={[styles.row]}>
+                        
+                            <Text style={[styles.cell]}>
+                                Waiver of Subrogation Premium
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                Included
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                $500
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                {getWaiverPremium()}
+                            </Text>
+                        </View>
+                    ) : (
+                        <></>
+                    )}
+
+                    {(getAddInsuredPremium() > 0 ) ? (
+                        <View style={[styles.row]}>
+                        
+                            <Text style={[styles.cell]}>
+                                Additional Insured Premium
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                Included
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                ${addValue}
+                            </Text>
+                            <Text style={[styles.cell]}>
+                                {getAddInsuredPremium()}
+                            </Text>
+                        </View>
+                    ) : (
+                        <></>
+                    )}
+                    
                 </View>
             </Page>
             <Page style={styles.body}>
@@ -747,24 +1251,32 @@ function PDFFile({ policy }: any) {
                             Commercial Automobile Bodily Injury and Property
                             Damage
                         </Text>
-                        <Text style={[styles.cell]}></Text>
+                        <Text style={[styles.cell]}>${CalculatePremium()}</Text>
                     </View>
                     <View style={[styles.row]} wrap={false}>
                         <Text style={[styles.cellBold]}>2.</Text>
                         <Text style={[styles.cell]}>Premium Tax</Text>
-                        <Text style={[styles.cell]}></Text>
+                        <Text style={[styles.cell]}>${CalculateTax()}</Text>
                     </View>
                     <View style={[styles.row]} wrap={false}>
                         <Text style={[styles.cellBold]}>3.</Text>
                         <Text style={[styles.cell]}>
                             Shareholder Subscription Fee
                         </Text>
-                        <Text style={[styles.cell]}></Text>
+                        <Text style={[styles.cell]}>${CalculateSubFee()}</Text>
                     </View>
+                    {isPolicyIssFee && <View style={[styles.row]} wrap={false}>
+                        <Text style={[styles.cellBold]}>3.</Text>
+                        <Text style={[styles.cell]}>
+                            Policy Issuance Fee (Non-refundable)
+                        </Text>
+                        <Text style={[styles.cell]}>${value}</Text>
+                    </View>}
+                    
                     <View style={[styles.row]} wrap={false}>
                         <Text style={[styles.cellBold]}>4.</Text>
                         <Text style={[styles.cell]}>Total</Text>
-                        <Text style={[styles.cell]}></Text>
+                        <Text style={[styles.cell]}>${Total()}</Text>
                     </View>
                     <View style={[styles.row]} wrap={false}>
                         <Text style={[styles.cellBold]}></Text>
@@ -833,16 +1345,17 @@ function PDFFile({ policy }: any) {
                         <Text style={[styles.cellRomanBold]}>YEAR</Text>
                         <Text style={[styles.cellRomanBold]}>MODEL</Text>
                         <Text style={[styles.cellRomanBold]}>
-                            BODY TYPE w/ No. of {'\n'}PASSENGER SEATS
+                            SEATING CAPACITY
                         </Text>
-                        <Text style={[styles.cellRomanBold]}>VIN</Text>
+                        <Text style={[styles.cellRomanBoldXSmall]}>VIN</Text>
                         <Text style={[styles.cellRomanBold]}>
                             Principle Garage Address
                         </Text>
                         <Text style={[styles.cellRomanBold]}>Premium</Text>
                     </View>
                     {policy.vehicles.values.map((value) => (
-                        <View style={[styles.row]} wrap={false}>
+                        (value.baseEffDate === policy.policy.effectiveDate) ?
+                        (<View style={[styles.row]} wrap={false}>
                             <Text style={[styles.cellRoman]}>{value.make}</Text>
                             <Text style={[styles.cellRoman]}>
                                 {value.modelYear}
@@ -853,14 +1366,15 @@ function PDFFile({ policy }: any) {
                             <Text style={[styles.cellRoman]}>
                                 {value.seating}
                             </Text>
-                            <Text style={[styles.cellRoman]}>{value.vin}</Text>
+                            <Text style={[styles.cellRomanXSmall]}>{value.vin.replace("-", "")}</Text>
                             <Text style={[styles.cellRoman]}>
-                                {value.garageAddress1}
+                                {(value.garageAddress1 !== "null") ? (value.garageAddress1+", "+value.garageCity+" "+value.garageState+", "+value.garageZipCode) : (policy.insured.address1)}
                             </Text>
                             <Text style={[styles.cellRoman]}>
-                                {value.premium}
+                                ${CalculateOnePremium()}
                             </Text>
-                        </View>
+                        </View>) : (<></>)
+                        
                     ))}
                 </View>
             </Page>
@@ -899,12 +1413,12 @@ function PDFFile({ policy }: any) {
                 </View>
                 <View style={styles.tableCollapsed}>
                     <View style={[styles.rowLarge]} wrap={false}>
-                        <Text style={[styles.cellRomanBold]}>Date No.</Text>
+                        {/* <Text style={[styles.cellRomanBold]}>Date No.</Text> */}
                         <Text style={[styles.cellRomanBold]}>
                             Driver {'\n'}Name
                         </Text>
                         <Text style={[styles.cellRomanBold]}>
-                            Date of {'\n'}Hire
+                            Date {'\n'}Added
                         </Text>
                         <Text style={[styles.cellRomanBold]}>
                             Date of {'\n'}Birth
@@ -917,18 +1431,19 @@ function PDFFile({ policy }: any) {
                         </Text>
                     </View>
                     {policy.drivers.values.map((value) => (
-                        <View style={[styles.row]} wrap={false}>
-                            <Text style={[styles.cellRoman]}>
+                        (value.driverEffDate === policy.policy.effectiveDate) ?
+                        (<View style={[styles.row]} wrap={false}>
+                            {/* <Text style={[styles.cellRoman]}>
                                 {value.dateNo}
+                            </Text> */}
+                            <Text style={[styles.cellRoman]}>
+                                {value.driverFirstName} {value.driverMiddleName} {value.driverLastName}
                             </Text>
                             <Text style={[styles.cellRoman]}>
-                                {value.driverName}
+                                {value.driverEffDate}
                             </Text>
                             <Text style={[styles.cellRoman]}>
-                                {value.dateOfHire}
-                            </Text>
-                            <Text style={[styles.cellRoman]}>
-                                {value.dateOfBirth}
+                                {value.driverBirthDate}
                             </Text>
                             <Text style={[styles.cellRoman]}>
                                 {value.licenseNumber}
@@ -936,7 +1451,7 @@ function PDFFile({ policy }: any) {
                             <Text style={[styles.cellRoman]}>
                                 {value.states}
                             </Text>
-                        </View>
+                        </View>) : (<></>)
                     ))}
                 </View>
             </Page>
@@ -1010,8 +1525,8 @@ function PDFFile({ policy }: any) {
                     </Text>
                     <View style={styles.borderSmall}>
                         <Text style={styles.textSmallHelveticaBold}>
-                            Additional Insured:
-                            {policy.insured.additionalInsured}
+                            Additional Insured:{'\n'}{'\n'}
+                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<>Refer to Designated Insured endorsement</>) : (<></>)}
                             {'\n'}
                             {'\n'}
                             {'\n'}
@@ -1057,6 +1572,9 @@ function PDFFile({ policy }: any) {
                             Counter signed:JANAK DAVE
                         </Text>
                         <Text style={styles.AutoCenter}>By: </Text>
+           
+                        <Image style={{height: "20px", width: "50px", display: 'flex'}} src={JDSignature}/>
+                      
                     </View>
                 </View>
                 <View style={styles.borderSmall}>
@@ -1068,142 +1586,231 @@ function PDFFile({ policy }: any) {
                             marginBottom: 5,
                         }}
                     >
-                        <Text style={styles.policyNumber}>Date:</Text>
+                        <Text style={styles.policyNumber}>Date: {policy.policy.effectiveDate}</Text>
                         <Text style={styles.AutoCenter}>
                             (Authorized Representative)
                         </Text>
                     </View>
                 </View>
             </Page>
+            {
+                policy.insured.additionalInsured?.values.map((val, index) => {
+                    if (val.insName !== "None") {
 
-            {/*       <Page style={styles.body}>
-        <View>
-          <Text style={styles.boldTextSmall}>Policy Period From:      <Text style={styles.textSmall}>11/27/2021 to 11/27/2022{'\n'}</Text></Text>
-          <Text style={styles.boldTextSmall}>You are a:      <Text style={styles.textSmall}>LLC{'\n'}</Text></Text>
-          <Text style={styles.boldTextSmall}>Your Business/Operation is:      <Text style={styles.textSmall}>NEMT{'\n'}</Text></Text>
-          <Text style={styles.boldTextSmall}>Risk Purchasing Group:      <Text style={styles.textSmall}>Surya Insurance Company RRG{'\n'}</Text></Text>
-        </View>
-        <View style={styles.borderSmall}>
-          <Text style={styles.textSmall}>IN RETURN FOR THE PAYMENT OF PREMIUM, AND SUBJECT TO ALL THE TERMS OF THIS POLICY, 
-          WE AGREE WITH YOU TO PROVIDE THE INSURANCE AS STATED IN THIS POLICY, THERE ARE EXCLUSIONS, CONDITIONS AND LIMITATIONS 
-          CONTAINED IN THE POLICY FORMS AND ENDORSEMENTS{'\n'}
-            <Text style={styles.boldTextSmall}>PLEASE NOTE THAT YOUR POLICY WILL BE SUBJECT TO AN ENDORSEMENT THAT PROVIDES THAT COVERAGE 
-            WILL NOT EXCEED THE MINIMUM FINANCIAL RESPONSIBILITY LIMITS REQUIRED BY LAW FOR SUCH COVERED AUTO, IN THE EVENT THE DRIVER OF 
-            THE COVERED AUTO HAS NOT BEEN PREVIOUSLY SUBMITTED TO, APPROVED BY AND LISTED ON THE DRIVER SCHEDULE BY THE CARRIER AS A QUALIFIED 
-            OPERATOR AT THE TIME OF THE ACCIDENT.{'\n'}{'\n'}</Text>
-          </Text>
-          <Text style={styles.minMiniBoldTitle}>
-            {'\n'}2. SCHEDULE OF COVERAGES AND COVERED AUTOS
-          </Text>
-        </View>
-        <View style={styles.borderSmall}>
-          <Text style={styles.textSmall}>This policy provides only those coverages where a charge is shown in the premium column below. 
-          Each of these coverages will apply only to those “Autos” shown as Covered “Autos”. “Autos” are shown as covered “Autos” for a 
-          particular coverage by entry of one or more of the symbols from the Covered Auto Section of the Commercial Auto Coverage Form next 
-          to the name of the coverage.</Text>
-        </View>
-        <View style={styles.table}>
-          <View style={[styles.row, styles.header]}>
-              <Text style={[styles.headerText, styles.headerCell]}>Coverages</Text>
-              <Text style={[styles.headerText, styles.headerCell]}>Covered Auto Symbols</Text>
-              <Text style={[styles.headerText, styles.headerCell]}>Limit</Text>
-              <Text style={[styles.headerText, styles.headerCell]}>Premium</Text>
-          </View>
-        </View>
-        <View style={styles.tableCollapsed}>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Liability</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Medical Payments</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}></Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Personal Injury Protection (PIP)</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Optional No-Fault Benefits</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Uninsured and Underinsured Motorist</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Comprehensive</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Collision</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-          <View style={[styles.row]} wrap={false}>
-            <Text style={[styles.cell]}>Towing and Labor</Text>
-            <Text style={[styles.cell]}>Not Covered</Text>
-            <Text style={[styles.cell]}>Column 3 Row 1</Text>
-            <Text style={[styles.cell]}>Column 4 Row 1</Text>
-          </View>
-        </View>
-        <View style={{display: "flex", flexDirection: "row", marginTop: 8, marginBottom: 15}}>
-          <Text style={{flex: 1}}>
-            <Text style={styles.text}>Premium for Endorsements (not included in A through H above)</Text>
-          </Text>
-          <Text style={{flex: 1, textAlign: "right"}}>
-            <Text style={styles.text}>$1000</Text>
-          </Text>
-        </View>
-        <View style={styles.border}>
-          <View style={{display: "flex", flexDirection: "row", marginTop: 1, marginBottom: 2}}>
-            <Text style={{flex: 1}}>
-              <Text style={styles.text}>Total Annual Premium</Text>
-            </Text>
-            <Text style={{flex: 1, textAlign: "right"}}>
-              <Text style={styles.text}>$97,430.00</Text>
-            </Text>
-          </View>
-          <View style={{display: "flex", flexDirection: "row", marginTop: 1, marginBottom: 2}}>
-            <Text style={{flex: 1}}>
-              <Text style={styles.text}>Surplus Lines Tax</Text>
-            </Text>
-            <Text style={{flex: 1, textAlign: "right"}}>
-              <Text style={styles.text}>$2,922.90</Text>
-            </Text>
-          </View>
-          <View style={{display: "flex", flexDirection: "row", marginTop: 1, marginBottom: 2}}>
-            <Text style={{flex: 1}}>
-              <Text style={styles.text}>Stamping Fee</Text>
-            </Text>
-            <Text style={{flex: 1, textAlign: "right"}}>
-              <Text style={styles.text}>$243.58</Text>
-            </Text>
-          </View>
-        </View>
-        <Text
-          style={styles.pageNumber}
-          render={({ pageNumber, totalPages }) =>
-            `${pageNumber} / ${totalPages}`
-          }
-        />
-      </Page>
-      <Page orientation="landscape">
+                        return (
+                            <>
+                            <Page style={styles.body}>
+                                
+                                <View
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        marginTop: 1,
+                                        marginBottom: 5,
+                                    }}
+                                >
+                                    <Text style={styles.policyNumber}>
+                                        Policy Number: {policy.policy.policyNum}
+                                    </Text>
+                                    <Text style={styles.AutoDec}>
+                                        Business Auto Declarations{'\n'}
+                                        {'\n'}
+                                    </Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.AutoCenterLarge}>
+                                        DESIGNATED INSURED
+                                    </Text>
+                                    
+                                    <Text style={styles.textSmallHelvetica}>
+                                    {'\n'}
+                                    {'\n'}
+                                    {'\n'}
+                                    This endorsement modifies insurance provided under the following:
+                                    </Text>
+                                    <Text style={styles.textSmallHelveticaBold}>
+                                    {'\n'}
+                                    BUSINESS AUTO COVERAGE FORM
+                                    </Text>
+                                    <Text style={styles.textSmallNormal}>
+                                    {'\n'}
+                                    {'\n'}
+                                    With respect to coverage provided by this endorsement, the provisions of the Coverage Form apply unless modified by this
+                                    endorsement.
+                                    {'\n'}
+                                    {'\n'}
+                                    This endorsement identifies person(s) or organization(s) who are additional named insureds under the Who Is An Insured
+                                    Provision of the Coverage Form. This endorsement does not alter or broaden the coverage provided in the Coverage Form.
+                                    {'\n'}
+                                    {'\n'}
+                                    This endorsement is effective on the date indicated below.
+                                    {'\n'}
+                                    {'\n'}
+                                    </Text>
+                                    <View style={[styles.row]} wrap={false}>
+                                        <Text style={[styles.cellRomanNormal]}>
+                                            Endorsement Effective: {policy.policy.effectiveDate}
+                                        </Text>
+                                        <View style={[styles.borderSmall]}>
+                                            <Text style={[styles.textSmall]}>Countersigned By: </Text> 
+                                            <Image style={{height: "20px", width: "50px", display: 'flex'}} src={JDSignature}/>
+                                        </View>
+             
+                                        
+                           
+                                    </View>
+                                    <View style={[styles.row]} wrap={false}>
+                                        <Text style={[styles.cellRomanNormal]}>
+                                            Named Insured: {policy.policy.name}
+                                            {'\n'}
+                                            {'\n'}
+                                        </Text>
+                                    </View>
+                                    <Text style={styles.textSmallHelveticaBold}>
+                                    {'\n'}
+                                    SCHEDULE
+                                    </Text>
+                                    <View style={[styles.row]} wrap={false}>
+                                        <Text style={[styles.cellRomanNormal]}>
+                                            <Text style={[styles.boldTextSmall]}>
+                                                Name of Person(s) or Organization(s)
+                                            </Text>
+                                            {'\n'}
+                                            {'\n'}
+                                            {val.insName}
+                                            {'\n'}
+                                            {'\n'}
+                                            {val.address}
+                                            {'\n'}
+                                            {'\n'}
+                                            {val.city} {val.state} {val.zipCode}
+                                        </Text>
+                                        
+                                    </View>
+                                    <View>
+                                        <Text style={[styles.textSmallNormal]}>
+    
+                                        {'\n'}
+                                        {'\n'}
+                                        The above Schedule is to be fully completed to effect coverage.
+                                        {'\n'}
+                                        {'\n'}
+                                        Each person or organization shown in the Schedule is an insured for Liability Coverage, but only to the extent that person or organization 
+                                        qualifies as an additional named insured under the Who Is An Insured Provision contained in Section II of the Coverage Form.
+                                        {'\n'}
+                                        {'\n'}
+                                        All policies shall provide that {val.insName} {val.address} {val.city} {val.state} {val.zipCode} will be given at least 
+                                        thirty (30) days advance notice of cancellation for any reason, including non-payment of premium.
+                                        {'\n'}
+                                        {'\n'}
+                                        </Text>
+                                    </View>
+                                    
+                                </View>
+    
+    
+                            </Page>
+                            
+                            {(val.isWaiver === true) ? (
 
-      </Page> */}
+                                <Page style={styles.page}>
+                                    <View
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            marginTop: 1,
+                                            marginBottom: 5,
+                                        }}
+                                    >
+                                        <Text style={styles.policyNumber}>
+                                            Policy Number: {policy.policy.policyNum}
+                                        </Text>
+                                        <Text style={styles.AutoDec}>
+                                            COMMERCIAL AUTO CA 04 44 10 13
+                                            {'\n'}
+                                            {'\n'}
+                                        </Text>
+                                    </View>
+                                    <Text style={styles.documentTitle}>
+                                    COMMERCIAL AUTO
+                                    </Text>
+                                    <Text style={styles.headerSmall}>
+                                    WAIVER OF TRANSFER OF RIGHTS OF RECOVERY 
+                                    AGAINST OTHERS TO US (WAIVER OF SUBROGATION)
+                                    </Text>
+                                    <Text style={styles.normalText}>
+                                    This endorsement modifies insurance provided under the following:
+                                    {'\n'}
+                                    </Text>
+                                    <Text style={styles.normalTextBold}>
+                                    AUTO DEALERS COVERAGE FORM
+                                    {'\n'}
+                                    BUSINESS AUTO COVERAGE FORM
+                                    {'\n'}
+                                    MOTOR CARRIER COVERAGE FORM
+                                    {'\n'}
+                                    </Text>
+                                    <Text style={styles.normalText}>
+                                    With respect to coverage provided by this endorsement, the provisions of the Coverage Form apply unless 
+                                    modified by the endorsement.
+                                    {'\n'}
+                                    This endorsement changes the policy effective on the inception date of the policy unless another date is indicated below.
+                                    {'\n'}
+                                    </Text>
+                                    <View style={styles.scheduleBox}>
+                                    <Text style={styles.scheduleContent}>
+                                        <Text style={styles.normalTextBold}>Named Insured:</Text> {policy.policy.name}
+                                        {'\n'}
+                                        {'\n'}
+                                        <Text style={styles.normalTextBold}>Endorsement Effective Date: </Text> {policy.policy.effectiveDate}
+                                        {'\n'}
+                                        {'\n'}
+                                    </Text>
+                                    </View>
+                                    <Text style={styles.scheduleHeader}>
+                                    SCHEDULE
+                                    </Text>
+                                    <View style={styles.scheduleBox}>
+                                    <Text style={styles.scheduleContent}>
+                                        <Text style={styles.normalTextBold}>Name(s) Of Person(s) Or Organization(s): </Text>
+                                        {'\n'}
+                                        {'\n'}
+                                        {val.insName}
+                                        {'\n'}
+                                        {'\n'}
+                                        {val.address}
+                                        {'\n'}
+                                        {'\n'}
+                                        {val.city} {val.state} {val.zipCode}
+                                        {'\n'}
+                                        {'\n'}
+                                        <Text style={styles.normalTextBold}>
+                                        Information required to complete this Schedule, if not shown above, will be shown in the Declarations.
+                                        </Text>
+                                        {'\n'}
+                                        {'\n'}
+                                    </Text>
+                                    </View>
+                                    <Text style={styles.normalText}>
+                                    The Transfer Of Rights Of Recovery Against Others To Us condition does not apply to the person(s) or organization(s) shown in the Schedule, 
+                                    but only to the extent that subrogation is waived prior to the "accident" or the "loss" under a contract with that person or organization.
+                                    {'\n'}
+                                    </Text>
+                                </Page>
+
+                            ) : (
+                                <></>
+
+                            )}
+                            </>
+                        )
+
+                    }
+                    
+                })
+            }
+            
+
         </Document>
     )
 }

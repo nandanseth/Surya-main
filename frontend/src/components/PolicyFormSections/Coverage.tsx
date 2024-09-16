@@ -3,6 +3,7 @@ import autoEntryOptions from '../../utils/coverage/getAutoSymbolEntry'
 import CoverageOptions from '../../utils/coverage/getLimit'
 import SuryaInput from '../PolicyForm/PolicyFormInput'
 import SuryaSelect from '../PolicyForm/PolicyFormSelect'
+import { useEffect } from 'react'
 
 const { Section, SectionTitle, Flex, InputWrapper } = Form
 
@@ -23,9 +24,49 @@ const overallOptions = [
     { value: 'Split Limit', label: 'Split Limit' },
 ]
 
+function formatNumberWithCommas(number) {
+    return Intl.NumberFormat('en-US').format(number);
+}
+
+
+function formatNumericStringsInObject(obj) {
+    const formattedObject = {};
+    for (const key in obj) {
+        const value = obj[key];
+        if (key.includes('Premium')) {
+            // Ensure the value is a float for 'Premium' keys
+            // Check if the value is a string that can be converted to a number
+            if (typeof value === 'string' && !isNaN(value) && value.trim() !== '') {
+                // Convert string to float and assign
+                formattedObject[key] = parseFloat(value);
+            } else {
+                // Copy as is if it's already a float or not a numeric string
+                formattedObject[key] = value;
+            }
+        } else if (typeof value === 'string' && !isNaN(value) && value.trim() !== '') {
+            // It's a numeric string (and not a 'Premium' key), format it
+            formattedObject[key] = formatNumberWithCommas(value);
+        } else {
+            // Not a numeric string or a 'Premium' key, copy as is
+            formattedObject[key] = value;
+        }
+    }
+    return formattedObject;
+}
+
 const CoverageSection = ({ store }) => {
     const { coverage: coverageStates } = store
     const { values, setValues } = coverageStates
+
+    useEffect(() => {
+        // Check if splitSectionBodyPerPerson is not empty and is a number
+        const updatedValues = formatNumericStringsInObject(values);
+        setValues(updatedValues);
+        
+        
+    }, []);
+
+    
 
     const {
         overall,
@@ -56,6 +97,7 @@ const CoverageSection = ({ store }) => {
         underMotoristBodyPerAccident,
         underMotoristProperty,
         underMotoristAuto,
+        pedPipSingleLimit,
         // cslSingleLimit,
         // cslBodyPerAccident,
         // cslBodyPerPerson,
@@ -82,6 +124,7 @@ const CoverageSection = ({ store }) => {
         nonOwnedCSL,
         overallPremium,
         personalInjuryProtectionPremium,
+        pedPipProtectionPremium,
         medicalPaymentsPremium,
         underinsuredMotoristPremium,
         uninsuredMotoristPremium,
@@ -315,6 +358,8 @@ const CoverageSection = ({ store }) => {
             </InputWrapper>
         </>
     )
+
+    
 
     const medicalSplit = (
         <>
@@ -562,6 +607,25 @@ const CoverageSection = ({ store }) => {
         </>
     )
 
+    const pedPipSingle = (
+        <>
+            <InputWrapper>
+                <SuryaSelect
+                    label="Limit"
+                    onChange={(e) => {
+                        setValues({
+                            ...values,
+                            pedPipSingleLimit: e.target.value,
+                        })
+                    }}
+                    options={limitOptions}
+                    placeholder="Choose Limit"
+                    value={pedPipSingleLimit}
+                />
+            </InputWrapper>
+        </>
+    )
+
     return (
         <div>
             <Section>
@@ -638,6 +702,39 @@ const CoverageSection = ({ store }) => {
                         type="number"
                         value={personalInjuryProtectionPremium}
                     />
+                </Flex>
+            </Section>
+            <Section>
+                <SectionTitle>Pedestrian PIP</SectionTitle>
+                <Flex>
+                    <InputWrapper>
+                        <SuryaSelect
+                            label="Choose Ped PIP Coverage"
+                            onChange={(e) => {
+                                setValues({ ...values, pedPipSingleLimit: e.target.value })
+                            }}
+                            options={[
+                                { label: 'Up to $250,000', value: 'Up to $250,000' },
+                                { label: 'Up to $15,000', value: 'Up to $15,000' },
+                                { label: 'No', value: 'No' },
+                            ]}
+                            placeholder=""
+                            value={pedPipSingleLimit}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            label="Ped PIP Premium"
+                            onChange={(e) => {
+                                setValues({
+                                    ...values,
+                                    pedPipProtectionPremium: e.target.value,
+                                })
+                            }}
+                            placeholder=""
+                            value={pedPipProtectionPremium}
+                        />
+                    </InputWrapper>
                 </Flex>
             </Section>
             <Section>

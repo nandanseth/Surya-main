@@ -40,7 +40,7 @@
             "label": "Non-fleet"
         },
         "businessUseClass": null,
-        "sizeClass": null,
+        "secondaryCategory": null,
         "entity": ""
     },
     "insured": {
@@ -77,12 +77,27 @@
         "contactNumber": "6784274140",
         "contactEmail": "regina.powell2@yahoo.com",
         "corporationName": "Omari",
-        "taxIdNumber": "Powell"
+        "taxIdNumber": "Powell",
+        "additionalInsured": {
+            "values": [
+                {
+                "insName": "None",
+                "address": null,
+                "city": null,
+                "zipCode": null,
+                "state": null,
+                "isWaiver": false,
+                "isAddPremium": false
+                }
+            ]
+        }
     },
     "drivers": {
         "values": [
             {
-                "driverName": null,
+                "driverFirstName": null,
+                "driverLastName": null,
+                "driverMiddleName": null,
                 "states": {
                     "value": "",
                     "label": ""
@@ -203,6 +218,7 @@
         "pIProtectionSplitBodyPerPerson": null,
         "pIProtectionSplitBodyPerAccident": null,
         "pIProtectionSplitPropertyDamage": null,
+        "pedPipSingleLimit": null,
         "pIProtectionSplitAutoEntry": null,
         "medicalSingleLimit": {
             "value": "2,000,000",
@@ -252,6 +268,22 @@
         "nonCslBodyPerAccident": null,
         "nonCslProperty": null,
         "nonCslSplitAuto": null
+    },
+    "renewal" : {
+        "renewalDecision" : "undecided",
+        "nonRenewalReason" : "undecided",
+        "dateOfDecision" : "null"
+    },
+    "underwriting": {
+          "creditsDebits": "",
+          "remarks": "",
+          "isCamera": false
+    },
+    "cancellation": {
+          "cancellationReason": "null",
+          "isCancelled": "No",
+          "cancellationDate": "",
+          "cancellationRate": ""
     },
     "vehicles": {
         "states": [

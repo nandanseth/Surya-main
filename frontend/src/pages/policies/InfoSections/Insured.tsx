@@ -28,6 +28,7 @@ const Insured = ({ insured }) => {
         licenseExp,
         licenseEff,
         taxIdNumber,
+        additionalInsured
     } = insured
 
     return (
@@ -155,6 +156,17 @@ const Insured = ({ insured }) => {
                     <TitleInfo>{taxIdNumber}</TitleInfo>
                 </Tile>
             </Flex>
+            {additionalInsured?.values.map((val, index) => {
+                return (
+                <Flex>
+                    <Tile>
+                        <TitleTitle>Additional Insured {index+1}</TitleTitle>
+                        <TitleInfo>{val.insName}</TitleInfo>
+                    </Tile>
+                </Flex>
+                )
+            })}
+            
         </Section>
     )
 }

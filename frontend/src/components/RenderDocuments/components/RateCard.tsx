@@ -423,27 +423,93 @@ function RateCard({ policy }) {
     }
 
     const TotalPremium = () => {
-        return (
-            policy.coverage.overallPremium +
-            policy.coverage.personalInjuryProtectionPremium +
-            policy.coverage.medicalPaymentsPremium +
-            policy.coverage.underinsuredMotoristPremium +
-            policy.coverage.uninsuredMotoristPremium
-        )
+        let premium = 0.00
+
+    
+        for (const i in policy.vehicles.values) {
+            if (policy.vehicles.values[i].baseEffDate === policy.policy.effectiveDate) {
+                if (!isNaN(parseFloat(policy.coverage.overallPremium))) {
+                    premium+=parseFloat(policy.coverage.overallPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.personalInjuryProtectionPremium))) {
+                    premium+=parseFloat(policy.coverage.personalInjuryProtectionPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.pedPipProtectionPremium))) {
+                    premium+=parseFloat(policy.coverage.pedPipProtectionPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.medicalPaymentsPremium))) {
+                    premium+=parseFloat(policy.coverage.medicalPaymentsPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.underinsuredMotoristPremium))) {
+                    premium+=parseFloat(policy.coverage.underinsuredMotoristPremium)
+                }
+                if (!isNaN(parseFloat(policy.coverage.uninsuredMotoristPremium))) {
+                    premium+=parseFloat(policy.coverage.uninsuredMotoristPremium)
+                }
+                
+            }
+            
+        }
+
+        if (!isNaN(parseFloat(policy.coverage.hiredCSLPremium))) {
+            premium+=parseFloat(policy.coverage.hiredCSLPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.nonOwnedCSLPremium))) {
+            premium+=parseFloat(policy.coverage.nonOwnedCSLPremium)
+        }
+
+        return parseFloat(premium).toFixed(2)
+    }
+
+    const TotalVehiclePremium = (i) => {
+        let premium = 0.00
+
+        
+        if (policy.vehicles.values[i].baseEffDate === policy.policy.effectiveDate) {
+            if (!isNaN(parseFloat(policy.coverage.overallPremium))) {
+                premium+=parseFloat(policy.coverage.overallPremium)
+            }
+            if (!isNaN(parseFloat(policy.coverage.personalInjuryProtectionPremium))) {
+                premium+=parseFloat(policy.coverage.personalInjuryProtectionPremium)
+            }
+            if (!isNaN(parseFloat(policy.coverage.pedPipProtectionPremium))) {
+                premium+=parseFloat(policy.coverage.pedPipProtectionPremium)
+            }
+            if (!isNaN(parseFloat(policy.coverage.medicalPaymentsPremium))) {
+                premium+=parseFloat(policy.coverage.medicalPaymentsPremium)
+            }
+            if (!isNaN(parseFloat(policy.coverage.underinsuredMotoristPremium))) {
+                premium+=parseFloat(policy.coverage.underinsuredMotoristPremium)
+            }
+            if (!isNaN(parseFloat(policy.coverage.uninsuredMotoristPremium))) {
+                premium+=parseFloat(policy.coverage.uninsuredMotoristPremium)
+            }
+            
+               
+        }
+
+        if (!isNaN(parseFloat(policy.coverage.hiredCSLPremium))) {
+            premium+=parseFloat(policy.coverage.hiredCSLPremium)
+        }
+        if (!isNaN(parseFloat(policy.coverage.nonOwnedCSLPremium))) {
+            premium+=parseFloat(policy.coverage.nonOwnedCSLPremium)
+        }
+
+        return parseFloat(premium).toFixed(2)
     }
 
     const StateTaxNumber = () => {
         const states = {
             'New Jersey': 0.05,
-            Texas: 0.036,
-            California: 0.036,
-            Ohio: 0.05,
-            Pennsylvania: 0.036,
-            Arizona: 0.036,
-            Virginia: 0.036,
-            Alabama: 0.036,
-            Oregon: 0.036,
-            Connecticut: 0.04,
+            'Texas': 0.036,
+            'California': 0.036,
+            'Ohio': 0.05,
+            'Pennsylvania': 0.036,
+            'Arizona': 0.036,
+            'Virginia': 0.036,
+            'Alabama': 0.036,
+            'Oregon': 0.036,
+            'Connecticut': 0.04,
         }
         return (states[policy.policy.states] * 100).toFixed(2)
     }
@@ -461,6 +527,23 @@ function RateCard({ policy }) {
         ).toFixed(2)
     }
 
+    const ifNaN = (limit) => {
+        if (isNaN(limit)) {
+            return "100000"
+        } else {
+            return limit
+        }
+    }
+
+    const ifNum = (limit) => {
+
+        if (typeof(limit) === 'number') {
+            return limit.toString()
+        } else {
+            return limit
+        }
+    }
+
     return (
         <Document>
             <Page style={styles.body}>
@@ -470,7 +553,7 @@ function RateCard({ policy }) {
                         {'\n'}
                     </Text>
                     <Text style={styles.textSmallCenter}>
-                        608 Fifth Ave Suite #901, New York, NY 10020{'\n'}
+                        608 Fifth Ave Suite #903, New York, NY 10020{'\n'}
                         Phone: 212-489-5300 Fax: 212-489-0420{'\n'}
                         {'\n'}
                     </Text>
@@ -480,6 +563,7 @@ function RateCard({ policy }) {
                 </View>
             </Page>
             {policy.vehicles.values.map((value, index) => (
+                (value.baseEffDate === policy.policy.effectiveDate) ? (
                 <Page style={styles.body}>
                     <View>
                         <View style={[styles.titleRow]}>
@@ -590,72 +674,49 @@ function RateCard({ policy }) {
                                 {indexFormula({ index })}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.combinedSectionLimit !== '0'
-                                    ? 'Combined Single Limit'
-                                    : 'Split Limit'}
+                                Overall {policy.coverage.overall}
                             </Text>
                             <Text style={[styles.cell]}>
-                                {policy.coverage.combinedSectionLimit !== '0'
-                                    ? policy.coverage.combinedSectionLimit
-                                    : policy.coverage.splitSectionBodyPerPerson.slice(
-                                          0,
-                                          2
-                                      ) /
-                                      policy.coverage.splitSectionBodyPerAccidentOptions.slice(
-                                          0,
-                                          2
-                                      ) /
-                                      policy.coverage.splitSectionPropertyDamageOptions.slice(
-                                          0,
-                                          2
-                                      )}
+                                {(policy.coverage.overall !== 'Split Limit')
+                                    ? (policy.coverage.combinedSectionLimit)
+                                    : (policy.coverage.splitSectionBodyPerPerson.split(',')[0]+'/'+
+                                    policy.coverage.splitSectionBodyPerAccidentOptions.split(',')[0]+'/'+
+                                    policy.coverage.splitSectionPropertyDamageOptions.split(',')[0]
+                                    )}
                             </Text>
                             <Text style={[styles.cell]}>Base Rate</Text>
                             <Text style={[styles.cell]}>
-                                {value.overallPremium}
+                                {policy.coverage.overallPremium}
                             </Text>
                             <Text style={[styles.cell]}>
-                                ${value.overallPremium}.00
+                                ${policy.coverage.overallPremium}
                             </Text>
                         </View>
 
                         {/* pIProtection */}
-                        {policy.coverage.personalInjuryProtectionPremium !==
-                        '0' ? (
+                        {(policy.coverage.pIProtectionSingleEntry !== 'Excluded' || policy.coverage.pIProtectionSplitAutoEntry !== 'Excluded') ? (
                             <View style={[styles.row]}>
                                 <Text style={[styles.cell]}>
                                     {indexFormula({ index })}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    {policy.coverage.pIProtectionSingleLimit !==
-                                    '0'
-                                        ? 'Personal Injury Protection CSL'
-                                        : 'Personal Injury Protection Split Limit'}
+                                    Personal Injury {policy.coverage.personalInjury}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    {policy.coverage.pIProtectionSingleLimit !==
-                                    '0'
-                                        ? policy.coverage
-                                              .pIProtectionSingleLimit
-                                        : policy.coverage.pIProtectionSplitBodyPerPerson.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.pIProtectionSplitBodyPerAccident.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.pIProtectionSplitPropertyDamage.slice(
-                                              0,
-                                              2
-                                          )}
+                                    {policy.coverage.personalInjury !==
+                                    'Split Limit'
+                                        ? policy.coverage.pIProtectionSingleLimit
+                                        : policy.coverage.pIProtectionSplitBodyPerPerson.split(',')[0]+'/'+
+                                          policy.coverage.pIProtectionSplitBodyPerAccident.split(',')[0]+'/'+
+                                          policy.coverage.pIProtectionSplitPropertyDamage.split(',')[0]
+                                          }
                                 </Text>
                                 <Text style={[styles.cell]}>Base Rate</Text>
                                 <Text style={[styles.cell]}>
-                                    {value.personalInjuryProtectionPremium}
+                                    {policy.coverage.personalInjuryProtectionPremium}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    ${value.personalInjuryProtectionPremium}.00
+                                    ${policy.coverage.personalInjuryProtectionPremium}
                                 </Text>
                             </View>
                         ) : (
@@ -664,38 +725,51 @@ function RateCard({ policy }) {
 
                         {/* medical Payments */}
 
-                        {policy.coverage.medicalPaymentsPremium !== '0' ? (
+                        {(policy.coverage.medicalSingleEntry !== 'Excluded' || policy.coverage.medicalSplitAutoEntry !== 'Excluded') ? (
                             <View style={[styles.row]}>
                                 <Text style={[styles.cell]}>
                                     {indexFormula({ index })}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    {policy.coverage.medicalSingleLimit !== '0'
-                                        ? 'Medical Payments CSL'
-                                        : 'Medical Payments Split Limit'}
+                                    Medical Payments {policy.coverage.medicalPayments}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    {policy.coverage.medicalSingleLimit !== '0'
+                                    {policy.coverage.medicalPayments !== 'Split Limit'
                                         ? policy.coverage.medicalSingleLimit
-                                        : policy.coverage.medicalSplitBodyPerPerson.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.medicalSplitBodyPerAccident.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.medicalSplitPropertyDamage.slice(
-                                              0,
-                                              2
-                                          )}
+                                        : policy.coverage.medicalSplitBodyPerPerson.split(',')[0]+'/'+
+                                          policy.coverage.medicalSplitBodyPerAccident.split(',')[0]+'/'+
+                                          policy.coverage.medicalSplitPropertyDamage.split(',')[0]}
                                 </Text>
                                 <Text style={[styles.cell]}>Base Rate</Text>
                                 <Text style={[styles.cell]}>
-                                    {value.medicalPaymentsPremium}
+                                    {policy.coverage.medicalPaymentsPremium}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    ${value.medicalPaymentsPremium}.00
+                                    ${policy.coverage.medicalPaymentsPremium}
+                                </Text>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
+
+
+                        {(policy.coverage.pedPipSingleLimit !== 'No') ? (
+                            <View style={[styles.row]}>
+                                <Text style={[styles.cell]}>
+                                    {indexFormula({ index })}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    Ped PIP Combined Single Limit
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    Up to $250,000
+                                </Text>
+                                <Text style={[styles.cell]}>Base Rate</Text>
+                                <Text style={[styles.cell]}>
+                                    {policy.coverage.pedPipProtectionPremium}
+                                </Text>
+                                <Text style={[styles.cell]}>
+                                    ${policy.coverage.pedPipProtectionPremium}
                                 </Text>
                             </View>
                         ) : (
@@ -704,41 +778,30 @@ function RateCard({ policy }) {
 
                         {/* Underinsured Motorist */}
 
-                        {policy.coverage.underinsuredMotoristPremium !== '0' ? (
+                        {(policy.coverage.underinsuredMotoristSingleAutoEntry !== 'Excluded' || policy.coverage.underMotoristAuto !== 'Excluded') ? (
                             <View style={[styles.row]}>
                                 <Text style={[styles.cell]}>
                                     {indexFormula({ index })}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    {policy.coverage
-                                        .underinsuredMotoristSingleLimit !== '0'
-                                        ? 'Underinsured Motorist CSL'
-                                        : 'Underinsured Motorist Split Limit'}
+                                    Underinsured Motorist {policy.coverage
+                                        .underinsuredMotorist}
                                 </Text>
                                 <Text style={[styles.cell]}>
                                     {policy.coverage
-                                        .underinsuredMotoristSingleLimit !== '0'
+                                        .underinsuredMotorist !== 'Split Limit'
                                         ? policy.coverage
                                               .underinsuredMotoristSingleLimit
-                                        : policy.coverage.underMotoristBodyPerPerson.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.underMotoristBodyPerAccident.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.underMotoristProperty.slice(
-                                              0,
-                                              2
-                                          )}
+                                        : policy.coverage.underMotoristBodyPerPerson.split(',')[0]+'/'+
+                                          policy.coverage.underMotoristBodyPerAccident.split(',')[0]+'/'+
+                                          policy.coverage.underMotoristProperty.split(',')[0]}
                                 </Text>
                                 <Text style={[styles.cell]}>Base Rate</Text>
                                 <Text style={[styles.cell]}>
-                                    {value.underinsuredMotoristPremium}
+                                    {policy.coverage.underinsuredMotoristPremium}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    ${value.underinsuredMotoristPremium}.00
+                                    ${policy.coverage.underinsuredMotoristPremium}
                                 </Text>
                             </View>
                         ) : (
@@ -747,46 +810,35 @@ function RateCard({ policy }) {
 
                         {/* Uninsured Motorist */}
 
-                        {policy.coverage.uninsuredMotoristPremium !== '0' ? (
+                        {(policy.coverage.uninsuredMotoristSingleAutoEntry !== 'Excluded' || policy.coverage.unMotoristAuto !== 'Excluded') ? (
                             <View style={[styles.row]}>
                                 <Text style={[styles.cell]}>
                                     {indexFormula({ index })}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    {policy.coverage
-                                        .uninsuredMotoristSingleLimit !== '0'
-                                        ? 'Uninsured Motorist CSL'
-                                        : 'Uninsured Motorist Split Limit'}
+                                    Uninsured Motorist {policy.coverage.uninsuredMotorist}
                                 </Text>
                                 <Text style={[styles.cell]}>
                                     {policy.coverage
-                                        .uninsuredMotoristSingleLimit !== '0'
+                                        .uninsuredMotorist !== 'Split Limit'
                                         ? policy.coverage
                                               .uninsuredMotoristSingleLimit
-                                        : policy.coverage.unMotoristBodyPerPerson.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.unMotoristBodyPerAccident.slice(
-                                              0,
-                                              2
-                                          ) /
-                                          policy.coverage.unMotoristProperty.slice(
-                                              0,
-                                              2
-                                          )}
+                                        : policy.coverage.unMotoristBodyPerPerson.split(',')[0]+'/'+
+                                          policy.coverage.unMotoristBodyPerAccident.split(',')[0]+'/'+
+                                          policy.coverage.unMotoristProperty.split(',')[0]}
                                 </Text>
                                 <Text style={[styles.cell]}>Base Rate</Text>
                                 <Text style={[styles.cell]}>
-                                    {value.uninsuredMotoristPremium}
+                                    {policy.coverage.uninsuredMotoristPremium}
                                 </Text>
                                 <Text style={[styles.cell]}>
-                                    ${value.uninsuredMotoristPremium}.00
+                                    ${policy.coverage.uninsuredMotoristPremium}
                                 </Text>
                             </View>
                         ) : (
                             <></>
                         )}
+                        
                         <View style={[styles.row]}>
                             <Text style={[styles.cell]}></Text>
                             <Text style={[styles.cellBoldSmall]}>Total</Text>
@@ -794,30 +846,30 @@ function RateCard({ policy }) {
                             <Text style={[styles.cell]}>-</Text>
                             <Text style={[styles.cell]}>-</Text>
                             <Text style={[styles.cellBoldSmall]}>
-                                ${TotalPremium()}.00
+                                ${TotalVehiclePremium(index)}
                             </Text>
                         </View>
                     </View>
                 </Page>
-            ))}
+            ) : (<></>)))}
             <Page style={styles.body}>
                 <View style={[styles.row]}>
                     <Text style={[styles.cellBold]}>Total Premium</Text>
-                    <Text style={[styles.cellBold]}>$30.00</Text>
+                    <Text style={[styles.cellBold]}>${TotalPremium()}</Text>
                 </View>
                 <View style={[styles.row]}>
                     <Text style={[styles.cellBold]}>Subscription Fees 12%</Text>
-                    <Text style={[styles.cellBold]}>${SubFee(30)}</Text>
+                    <Text style={[styles.cellBold]}>${SubFee(TotalPremium())}</Text>
                 </View>
                 <View style={[styles.row]}>
                     <Text style={[styles.cellBold]}>
                         Tax {StateTaxNumber()}%
                     </Text>
-                    <Text style={[styles.cellBold]}>${StateTax(30)}</Text>
+                    <Text style={[styles.cellBold]}>${StateTax(TotalPremium())}</Text>
                 </View>
                 <View style={[styles.row]}>
                     <Text style={[styles.cellBold]}>Total</Text>
-                    <Text style={[styles.cellBold]}>${Total(30)}</Text>
+                    <Text style={[styles.cellBold]}>${Total(TotalPremium())}</Text>
                 </View>
             </Page>
         </Document>

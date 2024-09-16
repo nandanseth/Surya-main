@@ -13,7 +13,7 @@ const policyJSON = [
             radius: 'Local',
             classCode: 'Non-fleet',
             businessUseClass: 'Service',
-            sizeClass: 'Light Trucks ',
+            secondaryCategory: 'Taxi',
         },
         insured: {
             agent: 'American Business Insurance (ABIBRK)',
@@ -43,11 +43,26 @@ const policyJSON = [
             taxIdNumber: null,
             licenseEffDate: 'test',
             licenseExpDate: 'test',
+            additionalInsured: {
+                values: [
+                    {
+                    insName: "None",
+                    address: null,
+                    city: null,
+                    zipCode: null,
+                    state: "TX",
+                    isWaiver: false,
+                    isAddPremium: false
+                    },
+                ],
+            },
         },
         drivers: {
             values: [
                 {
-                    driverName: 'Michael',
+                    driverFirstName: 'Michael',
+                    driverLastName: "Stewart",
+                    driverMiddleName: "J",
                     states: 'Alabama',
                     licenseNumber: null,
                     licenseEffDate: '12/12/2021',
@@ -75,6 +90,24 @@ const policyJSON = [
                     isPolicyTransferred: 'Yes',
                 },
             ],
+        },
+        ,
+        renewal : {
+            renewalDecision : "undecided",
+            nonRenewalReason : "undecided",
+            dateOfDecision : null
+        },
+
+        underwriting: {
+            creditsDebits: "",
+            remarks: "",
+            isCamera: false
+        },
+        cancellation: {
+            cancellationReason: null,
+            isCancelled: "No",
+            cancellationDate: "",
+            cancellationRate: ""
         },
         documents: {},
         coverage: {

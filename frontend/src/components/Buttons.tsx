@@ -8,7 +8,7 @@ const CreateNewPolicyButton = ({
     onClick?: any
     textOverride?: string
 }) => {
-    const text = '+ Create new Policy' || textOverride
+    const text = textOverride || '+ Create new Policy'
     return <CreateButton onClick={onClick}>{text}</CreateButton>
 }
 
@@ -58,6 +58,13 @@ export const Save = styled.button`
 export const SmallSave = styled(Save)`
     padding: 12px 40px;
     min-width: 200px;
+    font-size: 14px;
+    font-weight: 500;
+`
+
+export const TinySave = styled(Save)`
+    padding: 12px 20px;
+    min-width: 50px;
     font-size: 14px;
     font-weight: 500;
 `
@@ -132,6 +139,12 @@ export const Submit = styled.button`
 export const DarkSubmit = styled(Submit)`
     background: black;
     color: white;
+`
+
+export const Accept = styled(Submit)`
+    background: green;
+    color: white;
+    min-width: 100px;
 `
 
 const Buttons = {

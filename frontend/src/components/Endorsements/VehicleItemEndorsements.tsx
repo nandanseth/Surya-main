@@ -1,23 +1,30 @@
 import { Col, Delete, Info, Item, Title } from './shared'
 import { Form } from '../../styles/styles'
+import { useState } from 'react'
+import Input from '../PolicyForm/PolicyFormInput'
+import { SmallSave, StyledCancel } from '../Buttons'
 
-const { Section, Flex } = Form
+const { Section, Flex, InputWrapper } = Form
 
 const VehicleItemEndorsements = ({
     num = 0,
     values,
     setValues,
     removeFields,
+    replaceFields,
+    endDate,
+    setEndDate,
+    
 }) => {
     const {
         vehicleType,
         state,
-        category,
-        fuelType,
         vin,
+        modelYear,
         make,
         model,
-        modelYear,
+        baseEffDate,
+        baseExpDate,
         overallPremium,
 
         // classification,
@@ -93,12 +100,18 @@ const VehicleItemEndorsements = ({
     // hiredCSLPremium: '',
     // nonOwnedCSLPremium: '',
 
+    const [showDate, setShowDate] = useState(false)
+
     return (
         <div>
             <Section>
                 <Flex>
                     <Item>
-                        <Delete onClick={() => removeFields(num)}>X</Delete>
+                        <Delete onClick={() => setShowDate(true)}>X</Delete>
+                        <Col>
+                            <Title>ID</Title>
+                            <Info>{num+1}</Info>
+                        </Col>
                         <Col>
                             <Title>Car</Title>
                             <Info>
@@ -111,29 +124,48 @@ const VehicleItemEndorsements = ({
                         </Col>
 
                         <Col>
+                            <Title>Eff Date</Title>
+                            <Info>{baseEffDate}</Info>
+                        </Col>
+                        <Col>
+                            <Title>Exp Date</Title>
+                            <Info>{baseExpDate}</Info>
+                        </Col>
+
+                        <Col>
                             <Title>VIN</Title>
                             <Info>{vin}</Info>
                         </Col>
 
-                        <Col>
-                            <Title>Fuel Type</Title>
-                            <Info>{fuelType}</Info>
-                        </Col>
 
-                        <Col>
-                            <Title>Category</Title>
-                            <Info>{category}</Info>
-                        </Col>
+                      
                         <Col>
                             <Title>Overall Premium</Title>
                             <Info>{overallPremium}</Info>
                         </Col>
-
+                        {showDate && 
                         <Col>
-                            <Title>Type</Title>
-                            <Info>{vehicleType}</Info>
+                        <InputWrapper>
+                            <Input
+                                label="Date"
+                                name="date"
+                                onChange={(e) => setEndDate(e.target.value)}
+                                placeholder="Date of End."
+                                value={endDate}
+                            />
+                            
+                        </InputWrapper>
+                        <SmallSave onClick={()=>removeFields(num)}>Submit</SmallSave>
+                        </Col>}
+                        <Col>
+                            <SmallSave onClick={()=>replaceFields(num)}>Replace</SmallSave>
                         </Col>
+
+                        
+
+                    
                     </Item>
+                    {/* <Delete onClick={() => replaceFields(num)}>🔄</Delete> */}
                 </Flex>
             </Section>
         </div>

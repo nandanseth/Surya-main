@@ -3,8 +3,12 @@ import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 import styled from 'styled-components'
 import useComponentVisible from '../hooks/useComponentVisible'
+import { useMoralis } from 'react-moralis'
+import {useNavigate} from 'react-router'
 
 const AccountSwitch = ({ title }) => {
+    const {isAuthenticated, isAuthenticating, user, logout, account} = useMoralis();
+    const navigate = useNavigate();
     const { ref, isComponentVisible, setIsComponentVisible } =
         useComponentVisible(false)
 
@@ -14,6 +18,11 @@ const AccountSwitch = ({ title }) => {
         }
 
         return <Up fontSize="medium" />
+    }
+
+    async function handleDisconnect(){
+        console.log(isAuthenticated)
+        await logout()
     }
 
     return (
@@ -29,9 +38,7 @@ const AccountSwitch = ({ title }) => {
             {isComponentVisible && (
                 <Options>
                     <OptionSelect
-                        onClick={() => {
-                            console.log('trust me danny')
-                        }}
+                        onClick={() => handleDisconnect()}
                     >
                         Sign Out
                     </OptionSelect>
@@ -87,7 +94,7 @@ const Options = styled.div`
     border: solid 1px #00000014;
 `
 
-const OptionSelect = styled.div`
+const OptionSelect = styled.button`
     cursor: pointer;
     width: 100%;
     background: white;

@@ -6,7 +6,7 @@ import Checkbox from '../Form/Checkbox'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 
-const PolicySection = ({ policy, setPolicy, ...rest }) => {
+const PolicySection = ({ policy, setPolicy, makeAllTrue, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
@@ -19,6 +19,19 @@ const PolicySection = ({ policy, setPolicy, ...rest }) => {
                     <Typography className={classes.heading}>Policy</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                    <Checkbox
+                            checked={policy.name}
+                            labelText="Select All"
+                            onChange={() => {
+                                if (policy.name) {
+                                    setPolicy(makeAllTrue(policy, false))
+                                } else {
+                                    setPolicy(makeAllTrue(policy, true))
+                                }
+                                
+                            }}
+                        />
+
                     <Container>
                         <Checkbox
                             checked={policy.name}
@@ -163,12 +176,12 @@ const PolicySection = ({ policy, setPolicy, ...rest }) => {
                         />
 
                         <Checkbox
-                            checked={policy.sizeClass}
+                            checked={policy.secondaryCategory}
                             labelText="Size Class"
                             onChange={() => {
                                 setPolicy({
                                     ...policy,
-                                    sizeClass: !policy.sizeClass,
+                                    secondaryCategory: !policy.secondaryCategory,
                                 })
                             }}
                         />

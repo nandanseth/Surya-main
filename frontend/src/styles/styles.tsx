@@ -177,7 +177,7 @@ export const Header = styled.header`
 `
 
 export const StyledDiv = styled.div`
-    padding: 0 0 18px 0;
+    padding: 18px 0 18px 0;
 `
 
 export const Table = styled.table`
@@ -228,6 +228,17 @@ export const TR = styled.tr`
         color: ${Colors.text};
         opacity: 0.68;
     }
+`
+
+export const TRLight = styled.tr`
+    padding: 8px 0;
+    border-radius: 4px;
+    background: white;
+    ${transitionCss}
+    :nth-child(2n) {
+        background: #f8f8f9;
+    }
+
 `
 
 export const SortByHeader = styled.button<{ green?: boolean }>`

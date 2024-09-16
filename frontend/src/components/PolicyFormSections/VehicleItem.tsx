@@ -10,6 +10,7 @@ import vehicleCategoryOptions, {
     optionsMap,
 } from '../../utils/vehicle/getVehicleCategory'
 import vehicleTypes from '../../utils/vehicle/getVehicleType'
+import { useEffect } from 'react'
 
 const { Section, SectionTitle, Flex, InputWrapper } = Form
 
@@ -67,21 +68,61 @@ const ynValues = ['Yes', dV]
 
 // TODO: there is absolutely no ned for this pattern to exist. we dont need the yes no values coming from the state AT ALL
 const VehicleItem = ({
-    num = 0,
+    num,
     values,
     setValues,
     removeFields,
     yesNoValues = ynValues,
     defaultValue = dV,
     yesNoOptions = ynOptions,
+
     save = (i) => {
         console.log(i)
     },
     isSave = false,
 }) => {
+
+  
+    // useEffect(() => {
+
+    //     const calcPremium = (totalPremium) => {
+    //         const baseDate = values[num].baseEffDate
+    //         const expDate = policyValues.expirationDate
+    //         const effDate = policyValues.effectiveDate
+    //         const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    //         const residualPremium = (totalPremium / (Math.round(Math.abs((expDate.getTime() - effDate.getTime()) / oneDay)))) * Math.round(Math.abs((expDate.getTime() - baseDate.getTime()) / oneDay)).toFixed(2)
+    //         return residualPremium;
+            
+    //     }
+        
+    //     const setDefaults = () => {
+    //         const copy = [...values]
+    
+    //         copy[num]["overallPremium"] = calcPremium(coverageValues.overallPremium)
+    //         copy[num]["personalInjuryProtectionPremium"] = calcPremium(coverageValues.personalInjuryProtectionPremium)
+    //         copy[num]["pedPipProtectionPremium"] = calcPremium(coverageValues.pedPipProtectionPremium)
+    //         copy[num]["medicalPaymentsPremium"] = calcPremium(coverageValues.medicalPaymentsPremium)
+    //         copy[num]["underinsuredMotoristPremium"] = calcPremium(coverageValues.underinsuredMotoristPremium)
+    //         copy[num]["uninsuredMotoristPremium"] = calcPremium(coverageValues.uninsuredMotoristPremium)
+    //         console.log(policyValues)
+
+    //         // copy[num]['baseEffDate'] = policyValues.effectiveDate
+    //         // copy[num]['baseExpDate'] = policyValues.expirationDate
+
+
+    //         setValues(copy)
+    
+    //     }
+    //     setDefaults()
+
+    // }, [values[num].baseEffDate])
+
+    
+
     const handleInputOnChange = (e) => {
         const copy = [...values]
         copy[num][e.target.name] = e.target.value
+        console.log(copy)
         setValues(copy)
     }
 
@@ -95,6 +136,7 @@ const VehicleItem = ({
         <div style={{ marginTop: 12, marginBottom: 12 }}>
             <Section>
                 <SectionTitle>{vQ}</SectionTitle>
+                <>Vehicle {num}</>
                 <Flex>
                     <RadioGroup
                         currentValue={values[num].yesNo}
@@ -170,6 +212,7 @@ const VehicleItem = ({
                     <InputWrapper>
                         <Input
                             label="Vin"
+                            name="vin"
                             onChange={handleInputOnChange}
                             placeholder="VIN"
                             value={values[num].vin}
@@ -179,6 +222,7 @@ const VehicleItem = ({
                     <InputWrapper>
                         <Input
                             label="Vehicle Make"
+                            name="make"
                             onChange={handleInputOnChange}
                             placeholder="Make"
                             value={values[num].make}
@@ -187,6 +231,7 @@ const VehicleItem = ({
                     <InputWrapper>
                         <Input
                             label="Vehicle Model"
+                            name="model"
                             onChange={handleInputOnChange}
                             placeholder="Model"
                             value={values[num].model}
@@ -195,6 +240,7 @@ const VehicleItem = ({
                     <InputWrapper>
                         <Input
                             label="Vehicle Model Year"
+                            name="modelYear"
                             onChange={handleInputOnChange}
                             placeholder="Year"
                             value={values[num].modelYear}
@@ -203,6 +249,7 @@ const VehicleItem = ({
                     <InputWrapper>
                         <Input
                             label="Seating"
+                            name="seating"
                             onChange={handleInputOnChange}
                             placeholder="Seating Capacity"
                             value={values[num].seating}
@@ -286,6 +333,15 @@ const VehicleItem = ({
                     </InputWrapper>
                     <InputWrapper>
                         <Input
+                            label="Ped PIP Protection Premium"
+                            name="pedPipProtectionPremium"
+                            onChange={handleInputOnChange}
+                            placeholder=""
+                            value={values[num].pedPipProtectionPremium}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <Input
                             label="Medical Payments Premium"
                             name="medicalPaymentsPremium"
                             onChange={handleInputOnChange}
@@ -308,7 +364,7 @@ const VehicleItem = ({
                             name="uninsuredMotoristPremium"
                             onChange={handleInputOnChange}
                             placeholder=""
-                            value={values[num].uninsuredMotoristPremium}
+                            value={values[num].uninsuredMotoristPremium }
                         />
                     </InputWrapper>
 
@@ -413,7 +469,16 @@ const VehicleItem = ({
                     </InputWrapper>
                     <InputWrapper>
                         <Input
-                            label="Base Number"
+                            label="Base Eff Date"
+                            name="baseEffDate"
+                            onChange={handleInputOnChange}
+                            placeholder="MM/DD/YYYY"
+                            value={values[num].baseEffDate}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <Input
+                            label="Base Exp Date"
                             name="baseExpDate"
                             onChange={handleInputOnChange}
                             placeholder="MM/DD/YYYY"

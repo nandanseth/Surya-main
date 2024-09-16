@@ -1,11 +1,16 @@
 import CoverageSection from './InfoSections/Coverage'
 import DocumentsSection from '../../components/RenderDocuments/RenderDocuments'
 import DriversSection from './InfoSections/Drivers'
+import RejectedDriversSection from './InfoSections/RejectedDrivers'
 import InsuredSection from './InfoSections/Insured'
 import LossHistorySection from './InfoSections/LossHistory'
+import NotesSection from './InfoSections/Notes'
+import PaymentsSection from './InfoSections/Payments'
 import PolicySection from './InfoSections/Policy'
 import styled from 'styled-components'
 import VehiclesSection from './InfoSections/Vehicles'
+import UnderwritingSection from './InfoSections/Underwriting'
+import ReinsuranceSection from './InfoSections/Reinsurance'
 
 export const Flex = styled.div`
     flex-flow: row wrap;
@@ -27,6 +32,22 @@ export const Title = styled.div`
     color: #000000;
     margin-right: auto;
     font-weight: 600;
+`
+
+export const AddButton = styled.button`
+    position: absolute;
+    font-size: 20px;
+    color: #000000;
+    float: right;
+    font-weight: 600;
+    border: 1px solid black;
+    border-radius: 2rem;
+    border-color: black;
+    padding: 10px;
+    right: 20px;
+    top: -10px;
+    background: #eceeee;
+    cursor:pointer;
 `
 
 export const Tile = styled.div`
@@ -189,8 +210,13 @@ export const policySectionMenu = [
     { name: 'Insured', to: '#insured', component: InsuredSection },
     { name: 'Vehicles', to: '#vehicles', component: VehiclesSection },
     { name: 'Loss History', to: '#losshistory', component: LossHistorySection },
+    { name: 'Notes', to: '#notes', component: NotesSection },
     { name: 'Drivers', to: '#drivers', component: DriversSection },
+    { name: 'Rejected Drivers', to: '#rejecteddrivers', component: RejectedDriversSection },
+    { name: 'Underwriting', to: '#underwriting', component: UnderwritingSection },
     { name: 'Documents', to: '#documents', component: DocumentsSection },
+    { name: 'Reinsurance', to: '#reinsurace', component: ReinsuranceSection },
+    { name: 'Payments', to: '#payments', component: PaymentsSection }
 ]
 
 export const Row = styled.div`

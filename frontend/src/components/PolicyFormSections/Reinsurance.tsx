@@ -10,10 +10,7 @@ const ReinusranceSection = ({ store }) => {
     const { values, setValues } = reinsuranceStates
     const { reinsuranceType, resInsAmount } = values
 
-    const inputLabel =
-        reinsuranceType === 'Price Forbes'
-            ? 'Reinsurance Percentage'
-            : 'Reinsurance Amount'
+    const inputLabel = 'Reinsurance Amount'
 
     return (
         <div>
@@ -35,7 +32,6 @@ const ReinusranceSection = ({ store }) => {
                     </InputWrapper>
                 </Flex>
                 <Flex>
-                    {reinsuranceType !== undefined && reinsuranceType !== zero && (
                         <InputWrapper>
                             <Input
                                 label={inputLabel}
@@ -49,7 +45,6 @@ const ReinusranceSection = ({ store }) => {
                                 value={resInsAmount}
                             />
                         </InputWrapper>
-                    )}
                 </Flex>
             </Section>
         </div>

@@ -1,16 +1,77 @@
 import AccountSwitch from './AccountSwitch'
 import styled from 'styled-components'
+import { useMoralis } from 'react-moralis'
+import { useState, useEffect } from 'react'
+import {useNavigate} from 'react-router'
 
 const Menu = ({ policySectionMenu }) => {
+
+    const {authenticate, isAuthenticated, isAuthenticating, hasAuthError, authError, user, enableWeb3, Moralis, logout, account} = useMoralis();
+    const [address, setAddress] = useState("")
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if(!user) return null;
+
+        if (user.get('username') && user.get('username').length > 3)  {
+            setAddress(user.get("username"))
+        } else {
+            setAddress(user.get("ethAddress"))
+        }
+        
+    }, [user]);
+
+    async function handleConnect(provider){
+        try {
+            await enableWeb3({ throwOnError: true, provider });
+
+            const { account, chainId } = Moralis;
+
+            console.log(account, chainId)
+
+            const { message } = await Moralis.Cloud.run("requestMessage", {
+                address: account,
+                chain: parseInt(chainId, 16),
+                network: "evm",
+            });
+
+            await authenticate({
+                signingMessage: message,
+                throwOnError: true,
+                onSuccess: () => navigate('/home'),
+                onError: () => console.log(authError)
+            })
+
+
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
+
     return (
         <Nav>
             {policySectionMenu}
             <Margin>
-                <AccountSwitch title="Kush Dave" />
+                {/* <AccountSwitch title="Kush Dave" /> */}
+                {isAuthenticated ? (<AccountSwitch title={(address.length < 33) ? (address) : (address.slice(33,43))}/>) : (<ConnectButton onClick={()=>handleConnect('metamask')}>Connect Wallet</ConnectButton>) }
+                
             </Margin>
         </Nav>
     )
 }
+
+const ConnectButton = styled.button`
+    display: flex;
+    flex: 1 1 auto;
+    background: #fcfeffb8;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 2rem;
+`
+
+
 
 const Nav = styled.nav`
     width: 100%;

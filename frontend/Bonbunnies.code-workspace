@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../Bonbunnies"
+		},
+		{
+			"path": "../../NiftyTunes"
+		},
+		{
+			"path": "../../reactPDFDownloadButton"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../Documents/Insurance underwriting Code"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "25_NFT_MARKET_PLACE"
+	}
+}

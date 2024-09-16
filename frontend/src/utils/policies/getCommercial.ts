@@ -1,18 +1,24 @@
 const mapFunction = (item) => ({ value: item, label: item })
 
-export const sizeClasses = [
-    'Light Trucks ',
-    'Medium Trucks',
-    'Heavy Trucks',
-    'Extra Heavy Trucks',
-    'Heavy Truck Tractors',
-    'Extra Heavy Truck-tractors',
-    'Semitrailers',
-    'Trailers',
-    'Service or Utility ',
+export const secondaryCategory = [
+    'Taxi',
+    'Limo',
+    'Mini-Van',
+    'Van',
+    'SUV',
+    'School Bus S-2 (NJ)',
+    'Transport Bus',
+    'Sightseeing',
+    'Shuttle Bus/Contract',
+    'Jitney',
+    'Omni',
+    'MAV/Wheelchair',
+    'BLS/Non ALS Ambulance',
+    'MAV/Wheelchair/Gurney',
+    'Paratransit'
 ]
 
-export const sizeClassOptions = sizeClasses.map(mapFunction)
+export const secondaryCategoryOptions = secondaryCategory.map(mapFunction)
 
 export const bussinessUseClasses = ['Service', 'Retail', 'Commerical']
 

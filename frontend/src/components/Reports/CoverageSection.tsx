@@ -6,7 +6,7 @@ import Checkbox from '../Form/Checkbox'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 
-const CoverageSection = ({ coverage, setCoverage, ...rest }) => {
+const CoverageSection = ({ coverage, setCoverage, makeAllTrue, ...rest }) => {
     const classes = useStyles()
     return (
         <div>
@@ -21,6 +21,18 @@ const CoverageSection = ({ coverage, setCoverage, ...rest }) => {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                        <Checkbox
+                            checked={coverage.overall}
+                            labelText="Select All"
+                            onChange={() => {
+                                if (coverage.overall) {
+                                    setCoverage(makeAllTrue(coverage, false))
+                                } else {
+                                    setCoverage(makeAllTrue(coverage, true))
+                                }
+                                
+                            }}
+                        />
                     <Container>
                         <Checkbox
                             checked={coverage.overall}
@@ -683,6 +695,18 @@ const CoverageSection = ({ coverage, setCoverage, ...rest }) => {
                         />
 
                         <Checkbox
+                            checked={coverage.pedPipProtectionPremium}
+                            labelText="Ped PIP Protection Premium"
+                            onChange={() => {
+                                setCoverage({
+                                    ...coverage,
+                                    pedPipProtectionPremium:
+                                        !coverage.pedPipProtectionPremium,
+                                })
+                            }}
+                        />
+
+                        <Checkbox
                             checked={coverage.medicalPaymentsPremium}
                             labelText="Medical Payments Premium"
                             onChange={() => {
@@ -714,6 +738,17 @@ const CoverageSection = ({ coverage, setCoverage, ...rest }) => {
                                     ...coverage,
                                     uninsuredMotoristPremium:
                                         !coverage.uninsuredMotoristPremium,
+                                })
+                            }}
+                        />
+                        <Checkbox
+                            checked={coverage.hiredCSLPremium}
+                            labelText="Hired CSL Premium"
+                            onChange={() => {
+                                setCoverage({
+                                    ...coverage,
+                                    hiredCSLPremium:
+                                        !coverage.hiredCSLPremium,
                                 })
                             }}
                         />

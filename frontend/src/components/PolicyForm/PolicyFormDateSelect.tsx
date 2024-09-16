@@ -3,7 +3,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import DatePicker from '@mui/lab/DatePicker'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
-const Picker = ({ value, onChange, label }) => (
+const SuryaDatePicker = ({ value, onChange, label }) => (
     <LocalizationProvider utils={DateFnsUtils}>
         <DatePicker
             KeyboardButtonProps={{
@@ -19,4 +19,4 @@ const Picker = ({ value, onChange, label }) => (
     </LocalizationProvider>
 )
 
-export default Picker
+export default SuryaDatePicker

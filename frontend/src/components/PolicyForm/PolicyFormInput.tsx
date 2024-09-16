@@ -5,6 +5,7 @@ const SuryaInput = ({
     label = '',
     placeholder,
     value,
+    defaultValue = '',
     onChange,
     style = {},
     name = '',
@@ -19,6 +20,7 @@ const SuryaInput = ({
             onChange={onChange}
             placeholder={placeholder}
             value={value}
+            defaultValue={defaultValue}
             variant="outlined"
             {...rest}
         />

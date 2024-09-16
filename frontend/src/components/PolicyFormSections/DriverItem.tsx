@@ -3,11 +3,22 @@ import { SmallSave, StyledCancel } from '../Buttons'
 import { statesOptions } from '../../utils/policies'
 import SuryaInput from '../PolicyForm/PolicyFormInput'
 import SuryaSelect from '../PolicyForm/PolicyFormSelect'
+import { useState, useEffect } from 'react'
+import TextField from '@mui/material/TextField'
+import {
+    Colors,
+    fonts,
+    Header,
+    StyledDiv,
+    SubTitle,
+    Title,
+} from '../../styles/styles'
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 
 const { Section, Flex, InputWrapper } = Form
 
 const DriverItem = ({
-    num = 0,
+    num,
     values,
     setValues,
     removeFields,
@@ -16,10 +27,14 @@ const DriverItem = ({
     },
     isSave = false,
 }) => {
+    
+
+
     const handleInputOnChange = (e) => {
         const copy = [...values]
         copy[num][e.target.name] = e.target.value
         setValues(copy)
+        console.log(copy)
     }
 
     const handleSelectOnChange = (e, propertyName) => {
@@ -27,19 +42,49 @@ const DriverItem = ({
         copy[num][propertyName] = e.target.value
         setValues(copy)
     }
+    const TimePicker = (props: any) => {
+        return (
+            <StyledDiv>
+                <MobileDatePicker {...props} />
+            </StyledDiv>
+        )
+    }
+
 
     return (
         <div style={{ marginTop: 12, marginBottom: 12 }}>
             <Section>
+                <>Driver {num}</>
                 <Flex>
+                    
                     <InputWrapper>
                         <SuryaInput
                             //options={driversOptions}
-                            label="What is the name of the driver?"
-                            name="driverName"
+                            label="Driver Last Name"
+                            name="driverLastName"
                             onChange={handleInputOnChange}
-                            placeholder="Driver Name"
-                            value={values[num].driverName}
+                            placeholder="Driver Last Name"
+                            value={values[num].driverLastName}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            //options={driversOptions}
+                            label="Driver First Name"
+                            name="driverFirstName"
+                            onChange={handleInputOnChange}
+                            placeholder="Driver First Name"
+                            value={values[num].driverFirstName}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            //options={driversOptions}
+                            label="Driver Middle Name"
+                            name="driverMiddleName"
+                            onChange={handleInputOnChange}
+                            placeholder="Driver Middle Name"
+                            value={values[num].driverMiddleName}
                         />
                     </InputWrapper>
                     <InputWrapper>
@@ -72,6 +117,15 @@ const DriverItem = ({
                             placeholder="MM/DD/YYYY"
                             value={values[num].licenseEffDate}
                         />
+                        {/* <TimePicker
+                                    inputFormat="MM/dd/yyyy"
+                                    label="License Effective Date"
+                                    onChange={handleInputOnChange}
+                                    renderInput={(params) => (
+                                        <TextField {...params} />
+                                    )}
+                                    value={values[num].licenseEffDate}
+                                /> */}
                     </InputWrapper>
                     <InputWrapper>
                         <SuryaInput
@@ -80,6 +134,44 @@ const DriverItem = ({
                             onChange={handleInputOnChange}
                             placeholder="MM/DD/YYYY"
                             value={values[num].licenseExpDate}
+                        />
+                        {/* <TimePicker
+                                    inputFormat="MM/dd/yyyy"
+                                    label="License Expiration Date"
+                                    onChange={handleInputOnChange}
+                                    renderInput={(params) => (
+                                        <TextField {...params} />
+                                    )}
+                                    value={values[num].licenseExpDate}
+                                /> */}
+                    </InputWrapper>
+                </Flex>
+                <Flex>
+                    <InputWrapper>
+                        <SuryaInput
+                            label="Driver Effective Date"
+                            name="driverEffDate"
+                            onChange={handleInputOnChange}
+                            placeholder="MM/DD/YYYY"
+                            value={values[num].driverEffDate}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            label="Driver Expiration Date"
+                            name="driverExpDate"
+                            onChange={handleInputOnChange}
+                            placeholder="MM/DD/YYYY"
+                            value={values[num].driverExpDate}
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <SuryaInput
+                            label="Driver Birth Date"
+                            name="driverBirthDate"
+                            onChange={handleInputOnChange}
+                            placeholder="MM/DD/YYYY"
+                            value={values[num].driverBirthDate}
                         />
                     </InputWrapper>
                 </Flex>
@@ -98,7 +190,7 @@ const DriverItem = ({
                                     save(num)
                                 }}
                             >
-                                Save Vehicle
+                                Save Driver
                             </SmallSave>
                         )}
                     </div>

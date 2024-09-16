@@ -18,6 +18,7 @@ const Coverage = ({ coverage }) => {
         pIProtectionSplitBodyPerAccident,
         pIProtectionSplitPropertyDamage,
         pIProtectionSplitAutoEntry,
+        pedPipSingleLimit,
         medicalSingleLimit,
         medicalSingleEntry,
         medicalSplitBodyPerPerson,
@@ -54,11 +55,12 @@ const Coverage = ({ coverage }) => {
         uninsuredMotorist,
         csl,
         nonOwnedCSL,
-        // overallPremium,
-        // personalInjuryProtectionPremium,
-        // medicalPaymentsPremium,
-        // underinsuredMotoristPremium,
-        // uninsuredMotoristPremium,
+        overallPremium,
+        pedPipProtectionPremium,
+        personalInjuryProtectionPremium,
+        medicalPaymentsPremium,
+        underinsuredMotoristPremium,
+        uninsuredMotoristPremium,
     } = coverage
 
     return (
@@ -119,14 +121,21 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Deductable Auto</TitleTitle>
                     <TitleInfo>{deductableAutoEntry}</TitleInfo>
                 </Tile>
-                <Tile>
-                    <TitleTitle>Combined Section Limit</TitleTitle>
-                    <TitleInfo>{combinedSectionLimit}</TitleInfo>
-                </Tile>
-                <Tile>
-                    <TitleTitle>Combined Section Entry</TitleTitle>
-                    <TitleInfo>{combinedSectionEntry}</TitleInfo>
-                </Tile>
+                {(overall !== "Split Limit") ? (
+                    <>
+                    <Tile>
+                        <TitleTitle>Combined Section Limit</TitleTitle>
+                        <TitleInfo>{combinedSectionLimit}</TitleInfo>
+                    </Tile>
+                    <Tile>
+                        <TitleTitle>Combined Section Entry</TitleTitle>
+                        <TitleInfo>{combinedSectionEntry}</TitleInfo>
+                    </Tile>
+                    </>
+                ) : (
+                    <></>
+                )}
+                
                 <Tile>
                     <TitleTitle>Split Section Body Per Person</TitleTitle>
                     <TitleInfo>{splitSectionBodyPerPerson}</TitleInfo>
@@ -188,6 +197,17 @@ const Coverage = ({ coverage }) => {
                     <TitleInfo>{pIProtectionSplitAutoEntry}</TitleInfo>
                 </Tile>
             </Flex>
+            <Title>Pedestrian PIP</Title>
+            <Flex>
+                <Tile>
+                    <TitleTitle>Ped PIP Included?</TitleTitle>
+                    <TitleInfo>{pedPipSingleLimit}</TitleInfo>
+                </Tile>
+                <Tile>
+                    <TitleTitle>Ped PIP Premium</TitleTitle>
+                    <TitleInfo>{pedPipProtectionPremium}</TitleInfo>
+                </Tile>
+            </Flex>
             <Title>Medical Payments</Title>
             <Flex>
                 <Tile>
@@ -230,23 +250,22 @@ const Coverage = ({ coverage }) => {
                     <TitleTitle>Underinsured Motorist</TitleTitle>
                     <TitleInfo>{underinsuredMotorist}</TitleInfo>
                 </Tile>
+                {(underinsuredMotorist !== "Split Limit") ? (
+                    <>
+                    <Tile>
+                        <TitleTitle>Underinsured Motorist Single Limit</TitleTitle>
+                        <TitleInfo>{underinsuredMotoristSingleLimit}</TitleInfo>
+                    </Tile>
 
-                <Tile>
-                    <TitleTitle>Underinsured Motorist Single Limit</TitleTitle>
-                    <TitleInfo>{underinsuredMotoristSingleLimit}</TitleInfo>
-                </Tile>
-
-                <Tile>
-                    <TitleTitle>Underinsured Motorist Auto</TitleTitle>
-                    <TitleInfo>{underinsuredMotoristSingleAutoEntry}</TitleInfo>
-                </Tile>
-
-                <Tile>
-                    <TitleTitle>
-                        Underinsured Motorist Body Per Person
-                    </TitleTitle>
-                    <TitleInfo>{underMotoristBodyPerPerson}</TitleInfo>
-                </Tile>
+                    <Tile>
+                        <TitleTitle>Underinsured Motorist Auto</TitleTitle>
+                        <TitleInfo>{underinsuredMotoristSingleAutoEntry}</TitleInfo>
+                    </Tile>
+                    </>
+                ) : (
+                    <></>
+                )}
+                
 
                 <Tile>
                     <TitleTitle>
@@ -275,25 +294,26 @@ const Coverage = ({ coverage }) => {
             <Title>Uninsured Motorist</Title>
             <Flex>
                 {/* now the uninsured section  */}
+                
                 <Tile>
                     <TitleTitle>Uninsured Motorist</TitleTitle>
                     <TitleInfo>{uninsuredMotorist}</TitleInfo>
                 </Tile>
-
-                <Tile>
-                    <TitleTitle>Uninsured Motorist Single Limit</TitleTitle>
-                    <TitleInfo>{uninsuredMotoristSingleLimit}</TitleInfo>
-                </Tile>
-
-                <Tile>
-                    <TitleTitle>Uninsured Motorist Auto</TitleTitle>
-                    <TitleInfo>{uninsuredMotoristSingleAutoEntry}</TitleInfo>
-                </Tile>
-
-                <Tile>
-                    <TitleTitle>Uninsured Motorist Body Per Person</TitleTitle>
-                    <TitleInfo>{unMotoristBodyPerPerson}</TitleInfo>
-                </Tile>
+                {(uninsuredMotorist !== "Split Limit") ? (
+                    <>
+                    <Tile>
+                        <TitleTitle>Uninsured Motorist Single Limit</TitleTitle>
+                        <TitleInfo>{uninsuredMotoristSingleLimit}</TitleInfo>
+                    </Tile>
+                    <Tile>
+                        <TitleTitle>Uninsured Motorist Auto</TitleTitle>
+                        <TitleInfo>{uninsuredMotoristSingleAutoEntry}</TitleInfo>
+                    </Tile>
+                    </>
+                ) : (
+                    <></>
+                )}
+                
 
                 <Tile>
                     <TitleTitle>Uninsured Motorist Body Per Person</TitleTitle>
