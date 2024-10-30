@@ -602,6 +602,22 @@ function ReplacedDriver({ policy, key, oldValue, newValue, keys, endDate, endNum
                     </Text>
                 </View>
             </Page>
+            <Page style={styles.body}>
+                <Text style={styles.textSmallHelveticaBold}>
+                    {'\n'}
+                    {'\n'}Payment has to be received within 14 Days, or else a NOC will be issued
+                </Text>
+                <Text style={styles.textSmallHelvetica}>
+                    {'\n'}
+                    {'\n'}Named Applicant Insured _________________________________________________
+                    {'\n'}
+                    {'\n'}
+                    Insured or Authorized Representative: _________________________________________
+                    {'\n'}
+                    {'\n'}
+                    Date: __________________________
+                </Text>
+            </Page>
         </Document>
     )
 }

@@ -36241,6 +36241,12 @@ export const territory = {
             "Territory": "TX002"
         },
         {
+            "Zip Code": "75154",
+            "City": "Glenn Heights",
+            "State": "Texas",
+            "Territory": "TX002"
+        },
+        {
             "Zip Code": "75398",
             "City": "Dallas",
             "State": "Texas",
@@ -36407,6 +36413,12 @@ export const territory = {
             "City": "Texarkana",
             "State": "Texas",
             "Territory": "TX041"
+        },
+        {
+            "Zip Code": "75969",
+            "City": "Pollock",
+            "State": "Texas",
+            "Territory": "TX047"
         },
         {
             "Zip Code": "75505",
@@ -40329,6 +40341,12 @@ export const territory = {
         {
             "Zip Code": "78014",
             "City": "Cotulla",
+            "State": "Texas",
+            "Territory": "TX064"
+        },
+        {
+            "Zip Code": "78070",
+            "City": "Spring Branch",
             "State": "Texas",
             "Territory": "TX064"
         },

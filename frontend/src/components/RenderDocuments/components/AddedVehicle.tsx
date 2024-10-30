@@ -460,7 +460,8 @@ function AddedVehicle({ policy, key, oldValue, newValue, endDate, endNumber}) {
         'Virginia': 0.036,
         'Alabama': 0.036,
         'Oregon': 0.036,
-        'Connecticut': 0.04
+        'Connecticut': 0.04,
+        'Indiana': 0.025
         }
 
     const daysBetween = () => {
@@ -573,6 +574,22 @@ function AddedVehicle({ policy, key, oldValue, newValue, endDate, endNumber}) {
                     TOTAL: <Text style={styles.textSmallCenter}>${Total()}{'\n'} {'\n'}{'\n'}</Text>
                     </Text>
                 </View>
+            </Page>
+            <Page style={styles.body}>
+                <Text style={styles.textSmallHelveticaBold}>
+                    {'\n'}
+                    {'\n'}Payment has to be received within 14 Days, or else a NOC will be issued
+                </Text>
+                <Text style={styles.textSmallHelvetica}>
+                    {'\n'}
+                    {'\n'}Named Applicant Insured _________________________________________________
+                    {'\n'}
+                    {'\n'}
+                    Insured or Authorized Representative: _________________________________________
+                    {'\n'}
+                    {'\n'}
+                    Date: __________________________
+                </Text>
             </Page>
         </Document>
     )

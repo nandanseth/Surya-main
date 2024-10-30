@@ -1319,6 +1319,18 @@ function QuoteSheetBroker({ policy }) {
                     <Text style={[styles.cellBold]}>${Total(TotalPremium())}</Text>
                 </View>
             </Page>
+            <Page style={styles.body}>
+                <Text style={styles.textSmallHelvetica}>
+                    {'\n'}
+                    {'\n'}Named Applicant Insured _________________________________________________
+                    {'\n'}
+                    {'\n'}
+                    Insured or Authorized Representative: _________________________________________
+                    {'\n'}
+                    {'\n'}
+                    Date: __________________________
+                </Text>
+            </Page>
         </Document>
     )
 }

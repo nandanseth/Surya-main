@@ -9,6 +9,7 @@ export const writeUsers = [
     'DAVIS O',
     'MARTIN M',
     'rshukla',
+    'nseth',
     'RIO',
     'ynothome',
     'KVekaria',

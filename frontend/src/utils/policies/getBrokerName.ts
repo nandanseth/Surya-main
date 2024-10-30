@@ -21,7 +21,9 @@ export const brokerName = [
     "Frank Scotto",
     "Angela Chmelicek",
     "Artur Momjyan",
-    "Heather Dezayas"
+    "Heather Dezayas",
+    "Carolina Morales",
+    "Katy Batista"
 ];
 
 export const brokerOptions = brokerName.map((item) => ({ value: item, label: item }))

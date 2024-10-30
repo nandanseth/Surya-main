@@ -412,7 +412,8 @@ const Payments = ({ payments, policy }) => {
         'Virginia': 0.036,
         'Alabama': 0.036,
         'Oregon': 0.036,
-        'Connecticut': 0.04
+        'Connecticut': 0.04,
+        'Indiana': 0.025
         }
 
 

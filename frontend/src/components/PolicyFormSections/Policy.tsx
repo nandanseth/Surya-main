@@ -232,14 +232,23 @@ const PoliciesSection = ({ store }) => {
                 let maxNumber = -Infinity;
                 let maxPolicyNumber = '';
                 console.log(policyNumbers, 'deam')
+                const cleanedPolicyNumbers = policyNumbers.filter(policyNumber => policyNumber !== undefined);
 
-                policyNumbers.forEach(policyNumber => {
-                const lastThreeDigits = parseInt(policyNumber.slice(-4), 10);
-
-                if (lastThreeDigits > maxNumber) {
-                    maxNumber = lastThreeDigits;
-                    maxPolicyNumber = policyNumber;
-                }
+                cleanedPolicyNumbers.forEach(policyNumber => {
+                    let lastThreeDigits = policyNumber.slice(-5)
+            
+                    if (lastThreeDigits[0] === '0') {
+                        lastThreeDigits = lastThreeDigits.slice(-4)
+                    }
+                    if (lastThreeDigits[0] === '0') {
+                        lastThreeDigits = lastThreeDigits.slice(-3)
+                    }
+                    lastThreeDigits = parseInt(lastThreeDigits, 10)
+            
+                    if (lastThreeDigits > maxNumber) {
+                        maxNumber = lastThreeDigits;
+                        maxPolicyNumber = policyNumber;
+                    }
                 });
                 console.log(maxNumber, 'deam')
 
@@ -286,16 +295,16 @@ const PoliciesSection = ({ store }) => {
 
         const policyNumbers = []
 
-        let dataJson = ''
+        // let dataJson = ''
         let dataJsonApp = ''
 
 
 
-        for (const i in data) {
-            const object = data[i]
-            dataJson = object.get("policyNum")
-            policyNumbers.push(dataJson)
-        }
+        // for (const i in data) {
+        //     const object = data[i]
+        //     dataJson = object.get("policyNum")
+        //     policyNumbers.push(dataJson)
+        // }
 
         for (const i in dataApp) {
             const objectApp = dataApp[i]
@@ -321,8 +330,18 @@ const PoliciesSection = ({ store }) => {
         let maxNumber = -Infinity;
         let maxPolicyNumber = '';
 
-        policyNumbers.forEach(policyNumber => {
-        const lastThreeDigits = parseInt(policyNumber.slice(-4), 10);
+        const cleanedPolicyNumbers = policyNumbers.filter(policyNumber => policyNumber !== undefined);
+
+        cleanedPolicyNumbers.forEach(policyNumber => {
+        let lastThreeDigits = policyNumber.slice(-5)
+
+        if (lastThreeDigits[0] === '0') {
+            lastThreeDigits = lastThreeDigits.slice(-4)
+        }
+        if (lastThreeDigits[0] === '0') {
+            lastThreeDigits = lastThreeDigits.slice(-3)
+        }
+        lastThreeDigits = parseInt(lastThreeDigits, 10)
 
         if (lastThreeDigits > maxNumber) {
             maxNumber = lastThreeDigits;

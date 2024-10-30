@@ -534,24 +534,37 @@ function AdditionalInsured({ policy, keyOne, oldValue, newValue, endDate, endNum
         let waiverPremium = 0
         let additionalPremium = 0
         let totalPremium = 0
-        console.log(getValues(newValue).isAddPremium, 'deammy')
+        console.log(getValues(newValue), newValue, 'deammy')
 
-        if (getValues(newValue).isWaiver === true) {
-            waiverPremium += 500
-            totalPremium += 500
+        if (Array.isArray(newValue)) {
+            for (const i in newValue) {
+                if (newValue[i].isWaiver === true) {
+                    waiverPremium += 500
+                    totalPremium += 500
+                }
+                if (newValue[i].isAddPremium === true) {
+                    additionalPremium += value
+                    totalPremium += value
+                }
+            }    
+        } else {
+            if (newValue.isWaiver === true) {
+                waiverPremium += 500
+                totalPremium += 500
+            }
+            if (newValue.isAddPremium === true) {
+                additionalPremium += value
+                totalPremium += value
+            }
+    
         }
-        if (getValues(newValue).isAddPremium === true) {
+        
 
-            
-
-            additionalPremium += value
-            totalPremium += value
-        }
-        console.log(additionalPremium, 'deammy')
         return {
             waiver: waiverPremium, 
             addPrem: additionalPremium, 
-            total: totalPremium}
+            total: totalPremium
+        }
     }
 
     const totalTax = () => {
@@ -1045,7 +1058,7 @@ function AdditionalInsured({ policy, keyOne, oldValue, newValue, endDate, endNum
                     BASE RATE
                 </Text>
                 <Text style={[styles.cellRomanSmall]}>
-                    ${value}
+                    $500
                 </Text>
                 <Text style={[styles.cellRomanSmall]}>
                     TOTAL RATE
@@ -1073,6 +1086,22 @@ function AdditionalInsured({ policy, keyOne, oldValue, newValue, endDate, endNum
 
     </Page>
     )}
+    <Page style={styles.body}>
+        <Text style={styles.textSmallHelveticaBold}>
+            {'\n'}
+            {'\n'}Payment has to be received within 14 Days, or else a NOC will be issued
+        </Text>
+        <Text style={styles.textSmallHelvetica}>
+            {'\n'}
+            {'\n'}Named Applicant Insured _________________________________________________
+            {'\n'}
+            {'\n'}
+            Insured or Authorized Representative: _________________________________________
+            {'\n'}
+            {'\n'}
+            Date: __________________________
+        </Text>
+    </Page>
     
     </Document>
 )}

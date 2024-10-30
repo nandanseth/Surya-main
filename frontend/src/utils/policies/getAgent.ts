@@ -20,7 +20,10 @@ export const agent = [
     "Artur Momjyan Insurance Agency (AMBRK)",
     'McClure and Associates (MCBRK)',
     'Donald R. Hardy Insurance Agency (DRHBRK)',
-    'Brooks Group Insurance Agency LLC'
+    'Brooks Group Insurance Agency LLC',
+    'World Insurance Associates LLC (WIABRK)',
+    'Ramos Insurance Agency (RIABRK',
+    'HILB Group of New Jersey (HLBBRK)'
 ]
 
 export default agent.map((item) => ({ value: item, label: item }))

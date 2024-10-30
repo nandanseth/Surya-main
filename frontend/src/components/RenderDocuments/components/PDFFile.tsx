@@ -1097,8 +1097,8 @@ function PDFFile({ policy }: any) {
                         </View>
                     ) : (<View style={[styles.row]} wrap={false}>
                             <Text style={[styles.cell]}>HIRED</Text>
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>18</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>Not Covered</Text>
+                            <Text style={[styles.cell]}>N/A</Text>
                             <Text style={[styles.cell]}>$0</Text>
                         </View>)
                         )
@@ -1106,8 +1106,8 @@ function PDFFile({ policy }: any) {
                     ) : (
                         <View style={[styles.row]} wrap={false}>
                             <Text style={[styles.cell]}>HIRED</Text>
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>18</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>Not Covered</Text>
+                            <Text style={[styles.cell]}>N/A</Text>
                             <Text style={[styles.cell]}>$0</Text>
                         </View>
                     )}
@@ -1130,8 +1130,8 @@ function PDFFile({ policy }: any) {
                         </View>
                     ) : (<View style={[styles.row]} wrap={false}>
                             <Text style={[styles.cell]}>NON-OWNED</Text>
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>19</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>Not Covered</Text>
+                            <Text style={[styles.cell]}>N/A</Text>
                             <Text style={[styles.cell]}>$0</Text>
                         </View>)
                         )
@@ -1139,8 +1139,8 @@ function PDFFile({ policy }: any) {
                     ) : (
                         <View style={[styles.row]} wrap={false}>
                             <Text style={[styles.cell]}>NON-OWNED</Text>
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>19</Text>) : (<Text style={[styles.cell]}>Not Covered</Text>)}
-                            {(policy.insured.additionalInsured?.values[0]?.insName && policy.insured.additionalInsured?.values[0]?.insName !== "None") ? (<Text style={[styles.cell]}>{parseInt(policy.coverage.combinedSectionLimit.replace(/,/g, '')).toLocaleString()}</Text>) : (<Text style={[styles.cell]}>N/A</Text>)}
+                            <Text style={[styles.cell]}>Not Covered</Text>
+                            <Text style={[styles.cell]}>N/A</Text>
                             <Text style={[styles.cell]}>$0</Text>
                         </View>
                     )}

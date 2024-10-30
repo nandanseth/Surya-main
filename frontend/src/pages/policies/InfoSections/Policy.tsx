@@ -150,34 +150,37 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
     endKeys.forEach((key) => {
     const values = end[key].values;
     console.log(values, 'values these')
+    if (key.includes("insured.city") || key.includes("insured.state")) {
+        return; // Skip processing for these keys
+    }
     if (values !== undefined && values.length > 0) {
         values.forEach((value) => {
         const time = value.time;
         if (groupedValues.hasOwnProperty(time)) {
             if (key.startsWith('vehicles.values') || key.startsWith('drivers.values')) {
-            // Handle array values
-            const oldValue = Array.isArray(value.oldValue) ? value.oldValue : value.oldValue;
-            const newValue = Array.isArray(value.newValue) ? value.newValue : value.newValue;
-            groupedValues[time][key] = {
-                oldValue: oldValue || '',
-                newValue: newValue || '',
-                effDate: value.effDate || ''
-            };
+                // Handle array values
+                const oldValue = Array.isArray(value.oldValue) ? value.oldValue : value.oldValue;
+                const newValue = Array.isArray(value.newValue) ? value.newValue : value.newValue;
+                groupedValues[time][key] = {
+                    oldValue: oldValue || '',
+                    newValue: newValue || '',
+                    effDate: value.effDate || ''
+                };
             } else {
-            groupedValues[time][key] = {
-                oldValue: value.oldValue,
-                newValue: value.newValue,
-                effDate: value.effDate
-            };
+                groupedValues[time][key] = {
+                    oldValue: value.oldValue,
+                    newValue: value.newValue,
+                    effDate: value.effDate
+                };
             }
         } else {
             if (key.startsWith('vehicles.values') || key.startsWith('drivers.values')) {
-            // Handle array values
-            const oldValue = Array.isArray(value.oldValue) ? value.oldValue : value.oldValue;
-            const newValue = Array.isArray(value.newValue) ? value.newValue : value.newValue;
-            groupedValues[time] = { [key]: { oldValue: oldValue || '', newValue: newValue || '', effDate: value.effDate || '' } };
+                // Handle array values
+                const oldValue = Array.isArray(value.oldValue) ? value.oldValue : value.oldValue;
+                const newValue = Array.isArray(value.newValue) ? value.newValue : value.newValue;
+                groupedValues[time] = { [key]: { oldValue: oldValue || '', newValue: newValue || '', effDate: value.effDate || '' } };
             } else {
-            groupedValues[time] = { [key]: { oldValue: value.oldValue, newValue: value.newValue, effDate: value.effDate || ''  } };
+                groupedValues[time] = { [key]: { oldValue: value.oldValue, newValue: value.newValue, effDate: value.effDate || ''  } };
             }
         }
         });

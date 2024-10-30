@@ -13,6 +13,8 @@ import PolicyUMTX from '../../components/RenderDocuments/components/PolicyUM/Pol
 import PolicyUMVACSL from '../../components/RenderDocuments/components/PolicyUM/PolicyUMVACSL.pdf'
 import PolicyUMVASplit from '../../components/RenderDocuments/components/PolicyUM/PolicyUMVASplit.pdf'
 import PolicyUMOHCSL from '../../components/RenderDocuments/components/PolicyUM/PolicyUMOHCSL.pdf'
+import PolicyUMINSplit from '../../components/RenderDocuments/components/PolicyUM/PolicyUMINSplit.pdf'
+import PolicyUMINCSL from '../../components/RenderDocuments/components/PolicyUM/PolicyUMINCSL.pdf'
 
 export const UMStateInfoMapping = {
     'New Jersey' : {
@@ -221,7 +223,7 @@ export const UMStateInfoMapping = {
             {x: 430, y: 405}
             ],
             pdf: PolicyUMTX,
-            pdfLink: '../../components/RenderDocuments/components/PolicyUM/TX.pdf'
+            pdfLink: '../../components/RenderDocuments/components/PolicyUMTX.pdf'
         }
     },
     'Virginia' : {
@@ -274,6 +276,32 @@ export const UMStateInfoMapping = {
             ],
             pdf: PolicyUMOHCSL,
             pdfLink: '../../components/RenderDocuments/components/PolicyUM/PolicyOHCSL.pdf'
+        }
+    },
+    'Indiana' : {
+        'Combined Single Limit': {
+            positions: [
+            {x: 155, y: 787.5},
+            {x: 205, y: 627.5},
+            {x: 175, y: 477.5},
+            {x: 225, y: 452.5},
+            {x: 175, y: 395},
+            {x: 440, y: 395}
+            ],
+            pdf: PolicyUMINCSL,
+            pdfLink: '../../components/RenderDocuments/components/PolicyUM/PolicyUMINCSL.pdf'
+        },
+        'Split Limit': {
+            positions: [
+            {x: 155, y: 787.5},
+            {x: 205, y: 627.5},
+            {x: 175, y: 467.5},
+            {x: 225, y: 447.5},
+            {x: 230, y: 370},
+            {x: 230, y: 340}
+            ],
+            pdf: PolicyUMINSplit,
+            pdfLink: '../../components/RenderDocuments/components/PolicyUM/PolicyUMINSplit.pdf'
         }
     }
     
