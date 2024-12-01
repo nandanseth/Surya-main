@@ -46,14 +46,23 @@ const UploadModal = ({policyNum, setOpenUpload , keyOne}) => {
             if (!documentsJSON) {
                 documentsJSON = {};
             }
-
-            documentsJSON[keyOne] = fileLinks;
+            if (!documentsJSON[keyOne]) {
+                documentsJSON[keyOne] = [];
+            }
+    
+            // Merge existing and new file links, avoiding duplicates
+            documentsJSON[keyOne] = [...new Set([...documentsJSON[keyOne], ...fileLinks])];
+            
+            // documentsJSON[keyOne] = fileLinks;
 
             policyData.set("documents", JSON.stringify(documentsJSON));
+
         } else {
             policyData = new Policies();
             policyData.set("policyNum", policyNum);
-            policyData.set("documents", JSON.stringify({ [keyOne]: fileLinks }));
+            // policyData.set("documents", JSON.stringify({ [keyOne]: fileLinks }));
+            let documentsJSON = { [keyOne]: fileLinks };
+            policyData.set("documents", JSON.stringify(documentsJSON));
         }
 
         await policyData.save();
@@ -158,5 +167,8 @@ const Submit = styled.button`
         box-shadow: 2px 2px 2px 2px #00000008;
         font-weight: bold;
     }
+
+`
+
 
 `
