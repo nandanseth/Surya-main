@@ -35,6 +35,7 @@ import { useState, useEffect } from 'react'
 import Moralis from 'moralis'
 import { stateToCodeMapping } from '../../utils/policies/stateToCodeMapping'
 import { APP_ID, SERVER_URL } from '../../index'
+import { useAlert } from 'react-alert'
 
 const { Section, Flex, InputWrapper } = Form
 
@@ -42,9 +43,63 @@ const PoliciesSection = ({ store }) => {
     const { policy: policyStates } = store
     const { values, setValues } = policyStates
     const [loading, setLoading] = useState(false)
+    const alert = useAlert()
+    const policyNum = values?.policyNum
+
+    useEffect(() => {
+        // For new applications (no policyNum) or non-APP numbers
+        if (!policyNum || (policyNum && !policyNum.toString().startsWith("APP-"))) {
+            generatePolicyNum();
+        }
+    }, []);
+
+    const generatePolicyNum = async() => {
+        try {
+            // If it's an APP number, prevent changes
+            if (policyNum && policyNum.toString().startsWith("APP-")) {
+                console.log("Cannot modify existing APP number:", policyNum);
+                return;
+            }
+
+            setLoading(true);
+
+            // Generate a random string using crypto
+            const array = new Uint32Array(4);
+            window.crypto.getRandomValues(array);
+            const randomString = Array.from(array, dec => dec.toString(16).padStart(8, '0')).join('');
+            
+            // Format it to be more readable and add a prefix
+            const policyNumberFinal = `APP-${randomString.slice(0, 12).toUpperCase()}`;
+            
+            // For existing policies in backend, update them
+            if (policyNum) {
+                await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+                const Applications = Moralis.Object.extend("Applications");
+                const appQuery = new Moralis.Query(Applications);
+                const dataApp = await appQuery.limit(2000).find();
+                
+                const appWithOldNumber = dataApp.find(app => app.get("policyNum") === policyNum);
+                if (appWithOldNumber) {
+                    appWithOldNumber.set("policyNum", policyNumberFinal);
+                    const policyJsonString = appWithOldNumber.get("policyJson");
+                    const policyJson = JSON.parse(policyJsonString);
+                    policyJson.policy.policyNum = policyNumberFinal;
+                    appWithOldNumber.set("policyJson", JSON.stringify(policyJson));
+                    await appWithOldNumber.save();
+                }
+            }
+
+            // Update frontend state
+            setValues({ ...values, policyNum: policyNumberFinal });
+            setLoading(false);
+        } catch (error) {
+            console.error('Error in generatePolicyNum:', error);
+            alert.error('Error generating policy number');
+            setLoading(false);
+        }
+    };
 
     const {
-        policyNum,
         states,
         lineOfBusiness,
         policyLineItem,
@@ -63,314 +118,22 @@ const PoliciesSection = ({ store }) => {
     } = values
 
     useEffect(() => {
-        
         if (values.effectiveDate && values.effectiveDate.length > 9) {
-            
             const month = values.effectiveDate.split("/")[0]
             const day = values.effectiveDate.split("/")[1]
             const year = (parseInt(values.effectiveDate.split("/")[2])+1).toString()
         
             setValues({...values, expirationDate: `${month}/${day}/${year}`})
         }
-
-        // const getPolicyNum = async() => {
-
-        //     setLoading(true)
-
-        //     const appId = APP_ID;
-        //     const serverUrl = SERVER_URL;  
-
-        //     Moralis.start({ serverUrl, appId });
-        //     const Policies = await (Moralis as any).Object.extend("Policies");
-        //     const Applications = await (Moralis as any).Object.extend("Applications");
-
-        //     const query = new (Moralis as any).Query(Policies);
-        //     const appQuery = new (Moralis as any).Query(Applications);
-        //     const data = await query.limit(1000).find();
-        //     const dataApp = await appQuery.limit(1000).find();
-
-        //     const policyNumbers = []
-
-        //     let dataJson = ''
-        //     let dataJsonApp = ''
-
-
-
-        //     for (const i in data) {
-        //         const object = data[i]
-        //         dataJson = object.get("policyNum")
-        //         policyNumbers.push(dataJson)
-        //     }
-
-        //     for (const i in dataApp) {
-        //         const objectApp = dataApp[i]
-        //         dataJsonApp = objectApp.get("policyNum")
-        //         policyNumbers.push(dataJsonApp)
-        //     }
-
-        //     console.log(values.effectiveDate, effectiveDate, stateToCodeMapping, 'fe')
-
-        //     const effYear = parseInt(values.effectiveDate.split("/")[2]).toString().slice(2,4)
-        //     const state = stateToCodeMapping[values.states]
-        //     let categorySingle = ''
-
-        //     if (values.secondaryCategory === 'Taxi') {
-        //         categorySingle = 'T'
-        //     } else if (values.secondaryCategory === 'Limo') {
-        //         categorySingle = 'L'
-        //     } else {
-        //         categorySingle = 'N'
-        //     }
-
-
-        //     let maxNumber = -Infinity;
-        //     let maxPolicyNumber = '';
-        //     console.log(policyNumbers, 'deam')
-
-        //     policyNumbers.forEach(policyNumber => {
-        //     const lastThreeDigits = parseInt(policyNumber.slice(-3), 10);
-
-        //     if (lastThreeDigits > maxNumber) {
-        //         maxNumber = lastThreeDigits;
-        //         maxPolicyNumber = policyNumber;
-        //     }
-        //     });
-        //     console.log(maxNumber, 'deam')
-
-        //     const policyNumberFinal = effYear + state + categorySingle + '00' + (maxNumber+1).toString()
-
-        //     const copy = values
-
-            
-
-
-        //     copy['policyNum'] = policyNumberFinal
-
-        //     console.log(copy, 'frle')
-
-        //     setValues(copy)
-        //     setLoading(false)
-
-        // }
-
-        // if (values.effectiveDate && values.secondaryCategory && values.states) {
-        //     getPolicyNum()
-        // }
-
-        
-    
-
     }, [values.effectiveDate])
 
-
-
-    useEffect(() => {
-
-        const getDuplicate = (polNumbers) => {
-
-            const foundNumbers = polNumbers.filter(item => item === values.policyNum);
-            if (foundNumbers && foundNumbers.length > 1) {
-                return true
-            } else {
-                return false
-            }
-            
-
-
-        }
-
-        const getPolicyNum = async() => {
-
-            setLoading(true)
-
-            const appId = APP_ID;
-            const serverUrl = SERVER_URL;  
-
-            Moralis.start({ serverUrl, appId });
-            const Policies = await (Moralis as any).Object.extend("Policies");
-            const Applications = await (Moralis as any).Object.extend("Applications");
-
-            const query = new (Moralis as any).Query(Policies);
-            const appQuery = new (Moralis as any).Query(Applications);
-            const data = await query.limit(1000).find();
-            const dataApp = await appQuery.limit(2000).find();
-
-            const policyNumbers = []
-            let dataJsonApp = ''
-
-
-
-            // for (const i in data) {
-            //     const object = data[i]
-            //     dataJson = object.get("policyNum")
-            //     policyNumbers.push(dataJson)
-            // }
-
-            for (const i in dataApp) {
-                const objectApp = dataApp[i]
-                dataJsonApp = objectApp.get("policyNum")
-                policyNumbers.push(dataJsonApp)
-            }
-
-            const isTrue = getDuplicate(policyNumbers)
-
-            if (isTrue) {
-
-                const effYear = parseInt(values.effectiveDate.split("/")[2]).toString().slice(2,4)
-                const state = stateToCodeMapping[values.states]
-                let categorySingle = ''
-
-                if (values.secondaryCategory === 'Taxi') {
-                    categorySingle = 'T'
-                } else if (values.secondaryCategory === 'Limo') {
-                    categorySingle = 'L'
-                } else {
-                    categorySingle = 'N'
-                }
-
-
-                let maxNumber = -Infinity;
-                let maxPolicyNumber = '';
-                console.log(policyNumbers, 'deam')
-                const cleanedPolicyNumbers = policyNumbers.filter(policyNumber => policyNumber !== undefined);
-
-                cleanedPolicyNumbers.forEach(policyNumber => {
-                    let lastThreeDigits = policyNumber.slice(-5)
-            
-                    if (lastThreeDigits[0] === '0') {
-                        lastThreeDigits = lastThreeDigits.slice(-4)
-                    }
-                    if (lastThreeDigits[0] === '0') {
-                        lastThreeDigits = lastThreeDigits.slice(-3)
-                    }
-                    lastThreeDigits = parseInt(lastThreeDigits, 10)
-            
-                    if (lastThreeDigits > maxNumber) {
-                        maxNumber = lastThreeDigits;
-                        maxPolicyNumber = policyNumber;
-                    }
-                });
-                console.log(maxNumber, 'deam')
-
-                const policyNumberFinal = effYear + state + categorySingle + '0' + (maxNumber+1).toString()
-
-                const copy = values
-
-                
-
-
-                copy['policyNum'] = policyNumberFinal
-
-                console.log(copy, 'frle')
-
-                setValues({...values, policyNum: policyNumberFinal})
-
-            }
-            
-            setLoading(false)
-
-        }
-
-        if (values.effectiveDate && values.secondaryCategory && values.states && values.policyNum !== "null") {
-            getPolicyNum()
-        }
-
-    }, [])
-
-
-
-    const getPolicyNum = async() => {
-
-        const appId = APP_ID;
-        const serverUrl = SERVER_URL;  
-
-        Moralis.start({ serverUrl, appId });
-        const Policies = await (Moralis as any).Object.extend("Policies");
-        const Applications = await (Moralis as any).Object.extend("Applications");
-        console.log('hi')
-        const query = new (Moralis as any).Query(Policies);
-        const appQuery = new (Moralis as any).Query(Applications);
-        const data = await query.limit(1000).find();
-        const dataApp = await appQuery.limit(1000).find();
-
-        const policyNumbers = []
-
-        // let dataJson = ''
-        let dataJsonApp = ''
-
-
-
-        // for (const i in data) {
-        //     const object = data[i]
-        //     dataJson = object.get("policyNum")
-        //     policyNumbers.push(dataJson)
-        // }
-
-        for (const i in dataApp) {
-            const objectApp = dataApp[i]
-            dataJsonApp = objectApp.get("policyNum")
-            policyNumbers.push(dataJsonApp)
-        }
-
-        console.log(values.effectiveDate, effectiveDate, stateToCodeMapping, 'fe')
-
-        const effYear = parseInt(values.effectiveDate.split("/")[2]).toString().slice(2,4)
-        const state = stateToCodeMapping[values.states]
-        let categorySingle = ''
-
-        if (values.secondaryCategory === 'Taxi') {
-            categorySingle = 'T'
-        } else if (values.secondaryCategory === 'Limo') {
-            categorySingle = 'L'
-        } else {
-            categorySingle = 'N'
-        }
-
-
-        let maxNumber = -Infinity;
-        let maxPolicyNumber = '';
-
-        const cleanedPolicyNumbers = policyNumbers.filter(policyNumber => policyNumber !== undefined);
-
-        cleanedPolicyNumbers.forEach(policyNumber => {
-        let lastThreeDigits = policyNumber.slice(-5)
-
-        if (lastThreeDigits[0] === '0') {
-            lastThreeDigits = lastThreeDigits.slice(-4)
-        }
-        if (lastThreeDigits[0] === '0') {
-            lastThreeDigits = lastThreeDigits.slice(-3)
-        }
-        lastThreeDigits = parseInt(lastThreeDigits, 10)
-
-        if (lastThreeDigits > maxNumber) {
-            maxNumber = lastThreeDigits;
-            maxPolicyNumber = policyNumber;
-        }
-        });
-
-        const policyNumberFinal = effYear + state + categorySingle + '0' + (maxNumber+1).toString()
-
-        const copy = values
-
-        
-
-
-        copy['policyNum'] = policyNumberFinal
-
-        console.log(copy, policyNumberFinal, 'frle')
-
-        setValues({...values, policyNum: policyNumberFinal})
-
-    }
-
     const TimePicker = (props: any) => {
-    return (
-        <StyledDiv>
-            <MobileDatePicker {...props} />
-        </StyledDiv>
-    )
-}
+        return (
+            <StyledDiv>
+                <MobileDatePicker {...props} />
+            </StyledDiv>
+        )
+    }
 
     return (
         <>

@@ -72,23 +72,29 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
     }
 
     useEffect(() => {
-
-        
-        
         const renderEndorsementsMoralis = async() => {
-
-            const Endorsements = (Moralis as any).Object.extend("Endorsements")  
-            const queryEnd = new (Moralis as any).Query(Endorsements);
-            const dataEnd = await queryEnd.equalTo("policyNum", policyNum).first();
-            let appendedChanges
-            if (dataEnd !== undefined) {
-                appendedChanges = dataEnd.get("endorsementsJson")
-                setEnd(JSON.parse(appendedChanges))
-            }  
+            try {
+                const Endorsements = (Moralis as any).Object.extend("Endorsements")  
+                const queryEnd = new (Moralis as any).Query(Endorsements);
+                queryEnd.equalTo("policyNum", policyNum);
+                const dataEnd = await queryEnd.first();
+                
+                if (dataEnd !== undefined) {
+                    const appendedChanges = dataEnd.get("endorsementsJson")
+                    setEnd(JSON.parse(appendedChanges))
+                } else {
+                    setEnd({})
+                }
+            } catch (error) {
+                console.error('Error fetching endorsements:', error);
+                setEnd({})
+            }
         };
-        renderEndorsementsMoralis()
 
-    }, [])
+        if (policyNum) {
+            renderEndorsementsMoralis()
+        }
+    }, [policyNum])
 
     const getEndDocStatus = async(index) => {
         const Endorsements = (Moralis as any).Object.extend("EndorsementDocs")  
@@ -267,9 +273,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -282,9 +288,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -297,9 +303,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -315,9 +321,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -330,9 +336,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -344,9 +350,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -360,9 +366,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -373,9 +379,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -386,9 +392,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -397,10 +403,10 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
         )))}
         </TDCenter>
         <TDCenter>
-            {isDocAvailable[parseInt(index)+1] ? (<DownloadButton onClick={async() => await getEndDoc(parseInt(index)+1)}>Download Uploaded Doc</DownloadButton>) : (<DownloadButton onClick={() => setOpenUpload(true)}>Upload</DownloadButton>)}
+            {isDocAvailable[parseInt(index)+1] ? (<EndorsementButton onClick={async() => await getEndDoc(parseInt(index)+1)}>Download Uploaded Doc</EndorsementButton>) : (<EndorsementButton onClick={() => setOpenUpload(true)}>Upload</EndorsementButton>)}
         </TDCenter>
         <TDCenter>
-            {isDocAvailable[parseInt(index)+1] ? (<DownloadButton onClick={() => setOpenUpload(true)}>Re-Upload</DownloadButton>) : (<></>)}
+            {isDocAvailable[parseInt(index)+1] ? (<EndorsementButton onClick={() => setOpenUpload(true)}>Re-Upload</EndorsementButton>) : (<></>)}
         </TDCenter>
       </TR>
         {
@@ -464,9 +470,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -479,9 +485,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -494,9 +500,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -512,9 +518,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -527,9 +533,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -541,9 +547,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -557,9 +563,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -570,9 +576,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -585,9 +591,9 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
             >
                 {({ loading }) =>
                     loading ? (
-                        <DownloadButton>Loading Document...</DownloadButton>
+                        <EndorsementButton>Loading Document...</EndorsementButton>
                     ) : (
-                        <DownloadButton>Download</DownloadButton>
+                        <EndorsementButton>Download</EndorsementButton>
                     )
                 }
             </PDFDownloadLink>
@@ -698,8 +704,8 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
                 </Row>
                 
                 <Flex>
-            <Table>
-            <thead>
+            <EndorsementTable>
+            <EndorsementTH>
               <TR>
               <Th>Endt. #</Th>
                 <Th>Key</Th>
@@ -711,15 +717,52 @@ const Policy = ({ policy, policyFull, endorsements, endorsementsOnclick }) => {
                 <Th>Upload</Th>
                 <Th>Re-Upload</Th>
               </TR>
-            </thead>
+            </EndorsementTH>
             <tbody>
               {modifiedEndKeys}
             </tbody>
-          </Table></Flex>
+          </EndorsementTable></Flex>
             </Section>
         </>
     )
 }
+
+// Add these styled components at the top with your other styled components
+const EndorsementTable = styled(Table)`
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+`
+
+
+const EndorsementTH = styled.thead`
+  background: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+`
+
+const EndorsementButton = styled.button`
+  background: #fff;
+  border: 1px solid #dee2e6;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+`
 
 const Row = styled.div`
     display: flex;

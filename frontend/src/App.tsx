@@ -5,13 +5,13 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import AlertTemplate from 'react-alert-template-basic'
 import Settings from './pages/settings'
 import PolicyHome from './pages/home'
-import Quickrate from './pages/quickrate'
 import PolicyPage from './pages/policies/policy'
 import Reports from './pages/reports'
 import SignIn from './pages/sign-in'
 import Moralis from 'moralis'
 import { useMoralis } from 'react-moralis'
 import { useState, useEffect } from 'react'
+import TablesPage from './components/Tables'
 
 const options = {
     timeout: 2000,
@@ -55,11 +55,7 @@ function App() {
                             path="/home"
                             // title="Home | Surya"
                         />
-                        <Route
-                            element={<Quickrate />}
-                            path="/quickrate"
-                            // title="Home | Surya"
-                        />
+
                         <Route
                             element={<Settings />}
                             path="/settings"
@@ -68,6 +64,11 @@ function App() {
                         <Route
                             element={<PolicyPage />}
                             path="/policies/:slug"
+                            // title="Policies | Surya"
+                        />
+                         <Route
+                            element={<TablesPage />}
+                            path="/tables"
                             // title="Policies | Surya"
                         />
                         <Route

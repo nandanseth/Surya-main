@@ -276,6 +276,9 @@ export interface PolicyType {
         businessUseClass: string
         policyCategory: string
         classCode: string
+        effectiveDate: string
+        expirationDate: string
+        status: string
     }
     created_at: number
     coverage: {

@@ -149,7 +149,7 @@ const filterPolicyList = ({
 
         const comparisonDate = new Date('09/01/2024');
 
-        const addValue = effectiveDate >= comparisonDate ? 500.00 : 250.00;
+        const addValue = item.policy.effectiveDate >= comparisonDate ? 500.00 : 250.00;
 
     
         const getAddInsuredPremium = () => {
@@ -274,6 +274,7 @@ const Home = () => {
     const [policy, setPolicy] = useState(policyDefault)
     const [drivers, setDrivers] = useState(driversDefault)
     const [insured, setInsured] = useState(insuredDefault)
+    
     const [coverage, setCoverage] = useState(coverageDefault)
     const [vehicles, setVehicles] = useState(vehiclesDefault)
     const [lossHistory, setLossHistory] = useState(lossHistoryDefault)
@@ -388,9 +389,7 @@ const Home = () => {
     }
 
     const generateData = () => {
-        setGenerating(true) 
-        // when we get the policies we will need to filter them
-        //const filteredPolicies = [testItem]
+        setGenerating(true);
         const filteredPolicies = filterPolicyList({
             endDate,
             startDate,
@@ -398,14 +397,10 @@ const Home = () => {
             overallRange,
             isSplit,
             policies,
-        })
+        });
 
-        console.log(filteredPolicies,  endDate,
-            startDate,
-            premiumRange,
-            overallRange,
-            isSplit, 
-            'flefael')
+        console.log("Filtered policies for report:", filteredPolicies);
+        console.log("Payment headers:", filterTrue(payments));
 
         if (filteredPolicies.length === 0) {
             alert.error('There are no policies that fit this')
@@ -459,28 +454,20 @@ const Home = () => {
         const csvFormattedList = []
 
         const csvFormatted = filteredPolicies.map((currPolicy) => {
-            const builtPolicy = {}
+            const builtPolicy = {};
             buildList.map(({ headers, key }) => {
+                console.log(`Processing ${key} headers:`, headers);
                 headers.map((currVal) => {
-                    builtPolicy[currVal] = currPolicy[key][currVal]
-                })
-            })
+                    builtPolicy[currVal] = currPolicy[key][currVal];
+                });
+            });
+            console.log("Built policy object:", builtPolicy);
+            return builtPolicy;
+        });
 
-            if (check) {
-                currPolicy[listValue.key].values.map((currItem) => {
-                    const toAppend = { ...builtPolicy }
-                    listValue.headers.map((key) => {
-                        toAppend[key] = currItem[key]
-                    })
-                    csvFormattedList.push(toAppend)
-                })
-            }
+        setGenerating(false);
 
-            return builtPolicy
-        })
-        setGenerating(false)
-
-        return check ? csvFormattedList : csvFormatted
+        return check ? csvFormattedList : csvFormatted;
     }
 
     useEffect(() => {
@@ -628,67 +615,94 @@ const Home = () => {
         }
 
         const getPaymentTotals = (payments) => {
-            let totalPremium = 0.00
-            let totalTax = 0.00
-            let totalSubFee = 0.00
-            let totalInstallmentFee = 0.00
-            for (const i in payments) {
-                totalPremium += parseFloat(payments[i]['Installment'])
-                totalTax += parseFloat(payments[i]['Tax'])
-                totalSubFee += parseFloat(payments[i]['SubscriptionFee'])
-                totalInstallmentFee += parseFloat(payments[i]['InstallmentFee'])
-            }
-            return [totalPremium, totalSubFee, totalTax, totalInstallmentFee]
+            if (!payments) return [0, 0, 0, 0];
+            
+            return payments.reduce((totals, payment) => {
+                return [
+                    totals[0] + (parseFloat(payment['Installment']) || 0),
+                    totals[1] + (parseFloat(payment['SubscriptionFee']) || 0),
+                    totals[2] + (parseFloat(payment['Tax']) || 0),
+                    totals[3] + (parseFloat(payment['InstallmentFee']) || 0)
+                ];
+            }, [0, 0, 0, 0]);
         }
 
         // const getTaxFee = () => {
         //     const agentToTaxFee = 
         // }
         const getPayments = async() => {
+            try {
+                console.log("Starting getPayments function");
+                await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+                const Policies = await Moralis.Object.extend("Policies");
+                const query = new Moralis.Query(Policies);
+                const data = await query.limit(1000).find();
+                console.log("Raw Moralis data:", data.length, "policies found");
 
-            const appId = APP_ID;
-            const serverUrl = SERVER_URL;  
+                const policyData = [];
 
-            Moralis.start({ serverUrl, appId });
-            const Policies = await (Moralis as any).Object.extend("Policies");
+                for (const i in data) {
+                    const object = data[i];
+                    const dataJson = JSON.parse(object.get("policyJson"));
+                    console.log("Processing policy:", dataJson.policy?.policyNum);
+                    
+                    // Calculate base premium
+                    const totalPremium = CalculateAllPremium(dataJson.vehicles.values);
+                    console.log("Total Premium calculated:", totalPremium);
+                    
+                    // Initialize payments if it doesn't exist
+                    if (!dataJson.payments) {
+                        dataJson.payments = {
+                            values: []  // Initialize empty array for payments
+                        };
+                    }
+                    
+                    // Log payment values before processing
+                    console.log("Raw payment structure:", dataJson.payments);
+                    console.log("Raw payment values:", dataJson.payments.values);
 
-            const query = new (Moralis as any).Query(Policies);
-            const data = await query.limit(1000).find();
-            let dataJson
-            const policyData = []
+                    // Calculate payment totals from existing payments or initialize to 0
+                    const [totalPremiumPaid, subFeePaid, taxFeePaid, installFeePaid] = 
+                        Array.isArray(dataJson.payments.values) ? getPaymentTotals(dataJson.payments.values) : [0, 0, 0, 0];
+                    
+                    console.log("Payment totals:", {
+                        totalPremiumPaid,
+                        subFeePaid,
+                        taxFeePaid,
+                        installFeePaid
+                    });
 
-            for (const i in data) {
-                const object = data[i]
-                dataJson = JSON.parse(object.get("policyJson"))
-                
-                console.log(CalculateAllPremium(dataJson.vehicles.values), 'mele')
+                    // Add calculated fields to payments object
+                    const taxRate = stateToTaxFee[dataJson.policy.states] || 0;
+                    console.log("Tax rate for state", dataJson.policy.states, ":", taxRate);
 
-                dataJson.payments['installmentNo'] = 'Total'
-                dataJson.payments['totalPremium'] = CalculateAllPremium(dataJson.vehicles.values)
-                dataJson.payments['subscriptionFee'] = CalculateAllPremium(dataJson.vehicles.values)*.12
-                dataJson.payments['taxFee'] = CalculateAllPremium(dataJson.vehicles.values)*stateToTaxFee[dataJson.policy.states]
+                    // Create new payments object with calculated values
+                    dataJson.payments = {
+                        values: dataJson.payments.values || [], // Keep existing payments array
+                        installmentNo: 'Total',
+                        totalPremium: totalPremium,
+                        subscriptionFee: (parseFloat(totalPremium) * 0.12).toFixed(2),
+                        taxFee: (parseFloat(totalPremium) * taxRate).toFixed(2),
+                        totalPremiumPaid: totalPremiumPaid.toFixed(2),
+                        subscriptionFeePaid: subFeePaid.toFixed(2),
+                        taxFeePaid: taxFeePaid.toFixed(2),
+                        installmentFeePaid: installFeePaid.toFixed(2),
+                        totalPremiumDue: (parseFloat(totalPremium) - totalPremiumPaid).toFixed(2),
+                        subscriptionFeeDue: (parseFloat(totalPremium) * 0.12 - subFeePaid).toFixed(2),
+                        taxFeeDue: (parseFloat(totalPremium) * taxRate - taxFeePaid).toFixed(2)
+                    };
 
-                dataJson.payments['totalPremiumPaid'] = getPaymentTotals(dataJson.payments.values)[0]
-                dataJson.payments['subscriptionFeePaid'] = getPaymentTotals(dataJson.payments.values)[1]
-                dataJson.payments['taxFeePaid'] = getPaymentTotals(dataJson.payments.values)[2]
-                dataJson.payments['installmentFeePaid'] = getPaymentTotals(dataJson.payments.values)[3]
+                    console.log("Updated payments object:", dataJson.payments);
+                    policyData.push(dataJson);
+                }
 
-                dataJson.payments['totalPremiumDue'] = CalculateAllPremium(dataJson.vehicles.values) - getPaymentTotals(dataJson.payments.values)[0]
-                dataJson.payments['subscriptionFeeDue'] = CalculateAllPremium(dataJson.vehicles.values)*.12 - getPaymentTotals(dataJson.payments.values)[1]
-                dataJson.payments['taxFeeDue'] = CalculateAllPremium(dataJson.vehicles.values)*stateToTaxFee[dataJson.policy.states] - getPaymentTotals(dataJson.payments.values)[2]
-
-
-                policyData.push(dataJson)
-
-
-
+                console.log("Final processed policy data:", policyData);
+                setPolicies(policyData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error in getPayments:', error);
+                setLoading(false);
             }
-
-            console.log(dataJson, 'pap')
-            
-    
-            setPolicies(policyData)
-            setLoading(false)
         }
 
         

@@ -12,7 +12,8 @@ export const states = [
     'California',
     'Ohio',
     'Indiana',
-    'North Carolina'
+    'North Carolina',
+    'Massachusetts'
 ]
 
 export default states.map((item) => ({ value: item, label: item }))

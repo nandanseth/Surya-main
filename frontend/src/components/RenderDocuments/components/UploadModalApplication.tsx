@@ -19,92 +19,106 @@ const UploadModalApplication = ({policyNum, setOpenUpload, setUploads, uploads})
     }, [uploadName, setUploadName])
 
     const onSubmit = async() => {
-
-        const appId = APP_ID;
-        const serverUrl = SERVER_URL;   
-
-        Moralis.start({ serverUrl, appId });
-        const Policies = await (Moralis as any).Object.extend("Applications");
-
-        const query = new (Moralis as any).Query(Policies);
-        const policyData = await query.equalTo("policyNum", policyNum).first();
-
-        console.log(policyNum, 'spree')
-
-        console.log(policyData.get("policyJson"))
-
-        const policyJSON = JSON.parse(policyData.get("policyJson"))
-
-        if (!policyJSON.Uploads) {
-            policyJSON.Uploads = {}
-        }
-
-        console.log(uploadDoc.name, uploadDoc, 'mevel')
-
-        // await saveFile(uploadDoc.name, uploadDoc, {
-        //     onSuccess: (result) => {console.log(uploadName); policyJSON.Uploads[uploadName] = result.url();},
-        //     onError: (error) => console.log(error),
-        // });
-
-        const mergedObj = {};
-
-        // Loop through obj1 and add its properties to mergedObj
-        for (const key in uploads) {
-        mergedObj[key] = [...uploads[key]];
-        }
-
-        // Loop through obj2 and add its properties to mergedObj
-        for (const key in policyJSON.Uploads) {
-        if (mergedObj.hasOwnProperty(key)) {
-            // If the key already exists in mergedObj, concatenate the arrays and remove duplicates
-            mergedObj[key] = [...new Set([...mergedObj[key], ...policyJSON.Uploads[key]])];
-        } else {
-            // If the key doesn't exist in mergedObj, simply add the key-value pair
-            mergedObj[key] = [...policyJSON.Uploads[key]];
-        }
-        }
-
-        const fileLinks = [];
-        for (let i = 0; i < uploadDoc.length; i++) {
-            const file = uploadDoc.item(i);
-            console.log(file, file.name, 'revel')
-            let filename
-            if (file.name.includes("&")) {
-                filename = file.name.replace("&", "and")
-            } else {
-                filename = file.name
+        try {
+            if (!uploadDoc || uploadDoc.length === 0) {
+                throw new Error('Please select files to upload');
             }
-            await saveFile(filename, file, {
-            onSuccess: (result) => {
-                const url = result.url().replace('http','https')
-                console.log(result, url, 'sign');
-                fileLinks.push(url);},
-            onError: (error) => console.log(error),
-            });
-            
+
+            const appId = APP_ID;
+            const serverUrl = SERVER_URL;   
+
+            Moralis.start({ serverUrl, appId });
+            const Policies = await (Moralis as any).Object.extend("Applications");
+
+            const query = new (Moralis as any).Query(Policies);
+            console.log(policyNum, 'policyNum')
+            const policyData = await query.equalTo("policyNum", policyNum).first();
+            if (!policyData) {
+                throw new Error('Policy not found');
+            }
+
+            console.log(policyNum, 'spree')
+
+            console.log(policyData.get("policyJson"))
+
+            const policyJSON = JSON.parse(policyData.get("policyJson"))
+
+            if (!policyJSON.Uploads) {
+                policyJSON.Uploads = {}
+            }
+
+            console.log(uploadDoc.name, uploadDoc, 'mevel')
+
+            // await saveFile(uploadDoc.name, uploadDoc, {
+            //     onSuccess: (result) => {console.log(uploadName); policyJSON.Uploads[uploadName] = result.url();},
+            //     onError: (error) => console.log(error),
+            // });
+
+            const mergedObj = {};
+
+            // Loop through obj1 and add its properties to mergedObj
+            for (const key in uploads) {
+            mergedObj[key] = [...uploads[key]];
+            }
+
+            // Loop through obj2 and add its properties to mergedObj
+            for (const key in policyJSON.Uploads) {
+            if (mergedObj.hasOwnProperty(key)) {
+                // If the key already exists in mergedObj, concatenate the arrays and remove duplicates
+                mergedObj[key] = [...mergedObj[key], ...policyJSON.Uploads[key]].filter((item, index, array) => array.indexOf(item) === index);
+                alert(mergedObj[key])
+            } else {
+                // If the key doesn't exist in mergedObj, simply add the key-value pair
+                mergedObj[key] = [...policyJSON.Uploads[key]];
+            }
+            }
+
+            const fileLinks = [];
+            for (let i = 0; i < uploadDoc.length; i++) {
+                const file = uploadDoc.item(i);
+                console.log(file, file.name, 'revel')
+                let filename
+                if (file.name.includes("&")) {
+                    filename = file.name.replace("&", "and")
+                } else {
+                    filename = file.name
+                }
+                await saveFile(filename, file, {
+                onSuccess: (result) => {
+                    const url = result.url().replace('http','https')
+                    console.log(result, url, 'sign');
+                    fileLinks.push(url);},
+                onError: (error) => console.log(error),
+                });
+                
+            }
+
+
+
+            if (!mergedObj[uploadName]) {
+                mergedObj[uploadName] = [];
+            }
+            mergedObj[uploadName].push(...fileLinks);
+
+
+            console.log(policyJSON, 'cjor')
+
+            // policyData.set("policyJson", JSON.stringify(policyJSON))
+            // console.log(JSON.stringify(policyJSON))
+            // policyData.save()
+
+            console.log(mergedObj, 'askdkak')
+
+            setUploads(mergedObj)
+
+            setOpenUpload(false)
+            //window.location.reload()
+
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert(error.message)
+            return;
         }
-
-
-
-        if (!mergedObj[uploadName]) {
-            mergedObj[uploadName] = [];
-        }
-        mergedObj[uploadName].push(...fileLinks);
-
-
-        console.log(policyJSON, 'cjor')
-
-        // policyData.set("policyJson", JSON.stringify(policyJSON))
-        // console.log(JSON.stringify(policyJSON))
-        // policyData.save()
-
-        console.log(mergedObj, 'askdkak')
-
-        setUploads(mergedObj)
-
-        setOpenUpload(false)
-        //window.location.reload()
-
     }
 
 

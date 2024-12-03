@@ -24,11 +24,13 @@ const Home = () => {
     const [show, setShow] = useState(false)
     const [showApplications, setShowApplications] = useState(false)
     const [showRenewals, setShowRenewals] = useState(false)
+    const [showPendingApps, setShowPendingApps] = useState(false)
     const {authenticate, isAuthenticated, isAuthenticating, hasAuthError, authError, user, logout, account} = useMoralis();
     const [policies, setPolicies] = useState([testItem])
     const [moralisPolicies, setMoralisPolicies] = useState([testItem])
     const [search, setSearch] = useState('')
     const [role, setRole] = useState('')
+    const [moralisApplications, setMoralisApplications] = useState([])
 
     const alert = useAlert()
 
@@ -49,6 +51,17 @@ const Home = () => {
                 checkAllKeys({ object: insured, check: search }) ||
                 id?.includes(search)
             )
+        })
+    }
+
+    const searchApplicationsFilter = (applications) => {
+        if (search === '') {
+            return applications
+        }
+
+        return applications?.filter((app) => {
+            const policyJson = JSON.parse(app.policyJson || '{}')
+            return policyJson?.policy?.name?.toUpperCase().includes(search.toUpperCase())
         })
     }
 
@@ -102,8 +115,35 @@ const Home = () => {
                 console.log(error)
             }
         }
+        const getApplications = async () => {
+            try {
+                await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+                const Application = Moralis.Object.extend("Applications")
+                const query = new Moralis.Query(Application);
+                const data = await query.limit(2000).find();
+                
+                const applications = data.map(app => ({
+                    id: app.id,
+                    policyJson: app.get("policyJson"),
+                    policyNum: app.get("policyNum"),
+                    Decision: app.get("Decision"),
+                    _created_at: app.get("_created_at"),
+                    _updated_at: app.get("_updated_at"),
+                    policyStatus: app.get("policyStatus"),
+                    brokerName: app.get("brokerName"),
+                    genReDate: app.get("genReDate"),
+                    policyUnderwriter: app.get("policyUnderwriter")
+                }));
+                
+                setMoralisApplications(applications);
+            } catch (error) {
+                console.error('Error fetching applications:', error);
+            }
+        };
+
         if (isAuthenticated) {
             getMoralisPolicies()
+            getApplications()
         }
         
         
@@ -124,21 +164,28 @@ const Home = () => {
 
     const policiesToShow = searchFiter(moralisPolicies)
     // this will be the list
+    const toggleButton = (
+        <Buttons.CreateNewPolicyButton
+            onClick={() => setShowPendingApps(!showPendingApps)}
+            textOverride={showPendingApps ? "Bound Policies" : "Pending Applications"}
+        />
+    )
+
     return (
         <FormContextProvider>
             <Layout>
                 <ContentLayout>
                     <ContentMain>
                         <Header>
-                            <Title>{title}</Title>
+                            <Title>Policies</Title>
                             {(isAuthenticated && writeUsers.includes(user.get('username'))) ? (
                                 <>
                                 <Buttons.CreateNewPolicyButton
                                     onClick={() => setShow(true)}
                                 />
                                 <Buttons.CreateNewPolicyButton
-                                    onClick={() => setShowApplications(true)}
-                                    textOverride="Pending Applications"
+                                    onClick={() => setShowPendingApps(!showPendingApps)}
+                                    textOverride={showPendingApps ? "Bound Policies" : "Pending Applications"}
                                 />
                                 <Buttons.CreateNewPolicyButton
                                     onClick={() => setShowRenewals(true)}
@@ -148,88 +195,40 @@ const Home = () => {
                             ) : (<></>)}
                             
                             <Search
-                                clear={() => {
-                                    setSearch('')
-                                }}
-                                onChange={(e) => {
-                                    setSearch(e.target.value.toUpperCase())
-                                }}
+                                clear={() => setSearch('')}
+                                onChange={(e) => setSearch(e.target.value.toUpperCase())}
                                 placeholder="Search Policies"
                                 style={{ marginLeft: 'auto' }}
                                 value={search}
                             />
                         </Header>
                         <Section>
-                            <PolicyTable policies={policiesToShow} />
+                            {showPendingApps ? (
+                                <PolicyAppForm 
+                                    applications={searchApplicationsFilter(moralisApplications)}
+                                    searchValue={search}
+                                />
+                            ) : (
+                                <PolicyTable policies={policiesToShow} />
+                            )}
                         </Section>
                     </ContentMain>
-                    <Side />
                 </ContentLayout>
-                {show && (
-                    <Overlay
-                        show={show}
-                        style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
-                    >
-                        <Wrapper
-                            onClick={(e) => {
-                                if (e.currentTarget !== e.target) {
-                                    return
-                                }
-                                close()
-                            }}
-                        >
-                            <PolicyForm
-                                close={() => {
-                                    close()
-                                }}
-                                from="new"
-                            />
-                        </Wrapper>
-                    </Overlay>
-                )}
-                {showApplications && (
-                    <Overlay
-                        show={showApplications}
-                        style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
-                    >
-                        <Wrapper
-                            onClick={(e) => {
-                                if (e.currentTarget !== e.target) {
-                                    return
-                                }
-                                closeApp()
-                            }}
-                        >
-                            <PolicyAppForm
-                                close={() => {
-                                    closeApp()
-                                }}
-                            />
-                        </Wrapper>
-                    </Overlay>
-                )}
-                {showRenewals && (
-                    <Overlay
-                        show={showRenewals}
-                        style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
-                    >
-                        <Wrapper
-                            onClick={(e) => {
-                                if (e.currentTarget !== e.target) {
-                                    return
-                                }
-                                closeRenewals()
-                            }}
-                        >
-                            <PolicyRenewalForm
-                                close={() => {
-                                    closeRenewals()
-                                }}
-                            />
-                        </Wrapper>
-                    </Overlay>
-                )}
             </Layout>
+
+            {/* Add PolicyForm Modal */}
+            {show && (
+                <Overlay show={show}>
+                    <PolicyForm close={close} from="new" />
+                </Overlay>
+            )}
+
+            {/* Add PolicyRenewalForm Modal */}
+            {showRenewals && (
+                <Overlay show={showRenewals}>
+                    <PolicyRenewalForm close={closeRenewals} />
+                </Overlay>
+            )}
         </FormContextProvider>
     )
 }

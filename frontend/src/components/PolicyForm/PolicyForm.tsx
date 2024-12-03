@@ -32,6 +32,7 @@ import vehicleIcon from '../../images/vehicle icon.png'
 import { useMoralis } from "react-moralis"
 import Moralis from 'moralis'
 import { useEffect } from 'react'
+import { APP_ID, SERVER_URL } from '../../index'
 
 const PolicyForm = ({ close, from }) => {
     const store = useContext(FormContext)
@@ -82,45 +83,71 @@ const PolicyForm = ({ close, from }) => {
     const { name, page: Current } = Pages[current]
 
     const onSubmit = () => {
-        const postStore = async () => {
+        const checkForDuplicates = async () => {
             try {
-                //we can do some verification here
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(preSubmit(store)),
+                // First check if policy number exists and starts with "APP"
+                if (!store.policy.values.policyNum || !store.policy.values.policyNum.toString().startsWith("APP")) {
+                    alert.error('Please go to the Policy Section to Generate an APP Number');
+                    setCurrent('policy'); // Automatically switch to policy section
+                    return false;
                 }
-                console.log(JSON.stringify(preSubmit(store)))
-                const res = await fetch(urls.createPoliciesUrl, requestOptions)
-                const data = await res.json()
-                console.log({ data }, 'test')
-                return true
+
+                await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+                const Applications = Moralis.Object.extend("Applications");
+                const query = new Moralis.Query(Applications);
+                
+                // Add validation to ensure store has required data
+                if (!store || !store.policy || !store.policy.values || !store.policy.values.name) {
+                    alert.error('Missing required policy information');
+                    return false;
+                }
+                
+                // Get the last 30 policies, ordered by creation date
+                query.descending("createdAt");
+                query.limit(30);
+                const data = await query.find();                // Get current policy data
+                const currentPolicy = preSubmit(store);
+                const currentPolicyName = currentPolicy.policy.name;
+                
+                // Check for duplicates in the last 30 policies
+                for (const app of data) {
+                    const appJson = JSON.parse(app.get("policyJson"));
+                    const appName = appJson.policy?.name;
+                    
+                    if (appName === currentPolicyName) {
+                        alert.error('This policy already exists in the last 30 submissions');
+                        return false;
+                    }
+                }
+                return true;
             } catch (error) {
-                alert.error('Error submitting')
-                console.log(error)
-                return false
+                alert.error('Error checking for duplicates');
+                console.error('Error checking for duplicates:', error);
+                return false;
             }
-        }
+        };
+
         const moralisStore = async () => {
             try {
-                // const Policy = Moralis.Object.extend("Policies")
-                const Policy = (Moralis as any).Object.extend("Applications")
-                const policy = new Policy()
-                console.log(store,'la')
-                policy.set("policyJson", JSON.stringify(preSubmit(store)))
-                console.log(store)
-                policy.set("policyNum", store.policy.values.policyNum)
-                policy.set('Decision', 'Undefined')
-                await policy.save()
-                return true
+                // Check for duplicates first
+                const isDuplicate = await checkForDuplicates();
+                if (!isDuplicate) {
+                    return false;
+                }
+
+                const Policy = (Moralis as any).Object.extend("Applications");
+                const policy = new Policy();
+                policy.set("policyJson", JSON.stringify(preSubmit(store)));
+                policy.set("policyNum", store.policy.values.policyNum);
+                policy.set('Decision', 'Undefined');
+                await policy.save();
+                return true;
             } catch (error) {
-                console.log(error)
-                return false
+                console.log(error);
+                return false;
             }
-        }
-        return moralisStore()
+        };
+        return moralisStore();
     }
 
     const MenuFooter = () => (
@@ -322,6 +349,15 @@ const Header = styled.div`
     backdrop-filter: blur(4px);
     display: block;
     top: 0;
+`
+
+const StyledButton = styled.button`
+    background-color: white;
+    font-color: black;
+    border-radius: 1rem;
+    border: 1px solid black;
+    font-size: 16px;
+    padding: 7.5px;
 `
 
 const HeaderContent = styled.div`

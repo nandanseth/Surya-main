@@ -65753,8 +65753,24 @@ export const territory = {
             "City": "Winslow",
             "State": "AZ",
             "Territory": "AZ129"
+        },
+        {
+            "Zip Code": "85726",
+            "City": "Winslow",
+            "State": "AZ",
+            "Territory": "AZ119"
+        },
+        {
+            "Zip Code": "90039",
+            "City": "Winslow",
+            "State": "AZ",
+            "Territory": "AZ110"
+        },
+        {
+            "Zip Code": "85013",
+            "City": "Winslow",
+            "State": "AZ",
+            "Territory": "AZ117"
         }
-
- 
     ]
 }

@@ -51,30 +51,47 @@ export const AddButton = styled.button`
 `
 
 export const Tile = styled.div`
-    padding: 12px 8px;
-    border-radius: 8px;
-    background: #eceeee;
+    padding: 16px;
+    border-radius: 12px;
+    background: white;
     display: flex;
     flex-direction: column;
     margin: 8px;
     margin-left: 0px;
-    min-width: 100px;
-    min-height: 64px;
-    align-items: center;
+    min-width: 120px;
+    min-height: 80px;
+    align-items: flex-start;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    border: 1px solid #eaeaea;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 `
 
 export const TitleTitle = styled.h3`
-    color: black;
+    color: #6b7280;
     font-weight: 500;
-    font-size: 12px;
-    margin-bottom: 6px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 `
 
 export const TitleInfo = styled.p`
-    color: black;
+    color: #111827;
     font-weight: 600;
-    font-size: 16px;
-    opacity: 0.9;
+    font-size: 18px;
+    margin: 0;
+    line-height: 1.4;
+    
+    // Add ellipsis for long text
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `
 
 export const SubSection = styled.div`
@@ -198,7 +215,7 @@ export const TileItem = ({ title, value }) => {
     return (
         <Tile>
             <TitleTitle>{title}</TitleTitle>
-            <TitleInfo>{value}</TitleInfo>
+            <TitleInfo>{value || '—'}</TitleInfo>
         </Tile>
     )
 }

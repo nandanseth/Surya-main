@@ -7,6 +7,7 @@ export const payment = [
     '25% Deposit Plus 7 Monthly Installments-$15 FEE',
     '20% Deposit Plus 9 Monthly Installments-$15 FEE',
     '20% Deposit Plus 8 Monthly Installments-$15 FEE',
+    '20% Deposit Plus 9 Monthly Installments-$50 FEE',
     '10% Deposit Plus 9 Monthly Installments-$15 FEE',
     '15% Deposit Plus 9 Monthly Installments-$15 FEE',
     '15% Deposit Plus 8 Monthly Installments-$15 FEE',

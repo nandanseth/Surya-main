@@ -1,5 +1,6 @@
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
+import { Tooltip } from '@mui/material'
 
 import { PolicyType } from '../../shared'
 import { SortByHeader, Table, TD, Th, TR } from '../../styles/styles'
@@ -115,6 +116,78 @@ const useSortableData = (items: PolicyType[], config = null) => {
     return { items: sortedItems, requestSort, sortConfig }
 }
 
+const PremiumSummary = ({ policies }) => {
+    const formatDate = (daysAgo) => {
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        return date.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric' 
+        });
+    };
+    
+    const calculateTotalPremiums = (days) => {
+        const CalculatePremium = (vehicles, coverage) => {
+            let premium = 0.00
+    
+            for (const i in vehicles.values) {
+               
+                    if (!isNaN(parseFloat(vehicles.values[i].overallPremium))) {
+                        premium+=parseFloat(vehicles.values[i].overallPremium)
+                    }
+                    if (!isNaN(parseFloat(vehicles.values[i].personalInjuryProtectionPremium))) {
+                        premium+=parseFloat(vehicles.values[i].personalInjuryProtectionPremium)
+                    }
+                    if (!isNaN(parseFloat(vehicles.values[i].pedPipProtectionPremium))) {
+                        premium+=parseFloat(vehicles.values[i].pedPipProtectionPremium)
+                    }
+                    if (!isNaN(parseFloat(vehicles.values[i].medicalPaymentsPremium))) {
+                        premium+=parseFloat(vehicles.values[i].medicalPaymentsPremium)
+                    }
+                    if (!isNaN(parseFloat(vehicles.values[i].underinsuredMotoristPremium))) {
+                        premium+=parseFloat(vehicles.values[i].underinsuredMotoristPremium)
+                    }
+                    if (!isNaN(parseFloat(vehicles.values[i].uninsuredMotoristPremium))) {
+                        premium+=parseFloat(vehicles.values[i].uninsuredMotoristPremium)
+                    }
+                
+            
+            }
+            if (!isNaN(parseFloat(coverage.hiredCSLPremium))) {
+                premium+=parseFloat(coverage.hiredCSLPremium)
+            }
+    
+            if (!isNaN(parseFloat(coverage.nonOwnedCSLPremium))) {
+                premium+=parseFloat(coverage.nonOwnedCSLPremium)
+            }
+        
+            return premium
+        }
+    
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        
+        return policies.reduce((total, policy) => {
+            const policyDate = new Date(policy.policy.effectiveDate);
+            if (policyDate >= cutoffDate) {
+                const premium = CalculatePremium(policy.vehicles, policy.coverage);
+                return total + (typeof premium === 'string' ? parseFloat(premium.replace(/,/g, '')) : premium);
+            }
+            return total;
+        }, 0).toLocaleString('en-US', {minimumFractionDigits: 2});
+    };
+
+    return (
+        <TooltipContent>
+            <SummaryRow>Since {formatDate(7)}: ${calculateTotalPremiums(7)}</SummaryRow>
+            <SummaryRow>Since {formatDate(14)}: ${calculateTotalPremiums(14)}</SummaryRow>
+            <SummaryRow>Since {formatDate(30)}: ${calculateTotalPremiums(30)}</SummaryRow>
+            <SummaryRow>Since {formatDate(90)}: ${calculateTotalPremiums(90)}</SummaryRow>
+        </TooltipContent>
+    );
+};
+
 const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
     const { items, requestSort, sortConfig } = useSortableData(policies);
 
@@ -189,16 +262,48 @@ const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
                         const green = i === headers.length - 1
                         return (
                             <Th key={i}>
-                                <SortByHeader
-                                    green={green}
-                                    type="button"
-                                    onClick={() => requestSort(name)}
-                                >
-                                    {name}
-                                    {getAttribute(name)?.direction
-                                        ? getArrow(getAttribute(name).direction)
-                                        : null}
-                                </SortByHeader>
+                                {name === 'Premium' ? (
+                                    <Tooltip 
+                                        title={<PremiumSummary policies={policies} />}
+                                        arrow
+                                        placement="top"
+                                        componentsProps={{
+                                            tooltip: {
+                                                sx: {
+                                                    bgcolor: 'white',
+                                                    color: 'black',
+                                                    boxShadow: '0px 2px 8px rgba(0,0,0,0.15)',
+                                                    p: 2,
+                                                    '& .MuiTooltip-arrow': {
+                                                        color: 'white',
+                                                    },
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <SortByHeader
+                                            green={green}
+                                            type="button"
+                                            onClick={() => requestSort(name)}
+                                        >
+                                            {name}
+                                            {getAttribute(name)?.direction
+                                                ? getArrow(getAttribute(name).direction)
+                                                : null}
+                                        </SortByHeader>
+                                    </Tooltip>
+                                ) : (
+                                    <SortByHeader
+                                        green={green}
+                                        type="button"
+                                        onClick={() => requestSort(name)}
+                                    >
+                                        {name}
+                                        {getAttribute(name)?.direction
+                                            ? getArrow(getAttribute(name).direction)
+                                            : null}
+                                    </SortByHeader>
+                                )}
                             </Th>
                         )
                     })}
@@ -231,7 +336,7 @@ const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
                             (<>
                                Expired
                             </>))}</TD>
-                            <TD>${CalculatePremium(vehicles, policy, coverage)}</TD>
+                            <TD>${CalculatePremium(vehicles, coverage)}</TD>
                         </TR>
                     )
                 )}
@@ -242,6 +347,20 @@ const PoliciesTable = ({ policies }: { policies: PolicyType[] }) => {
 
 const Name = styled(TD)`
     font-weight: 600;
+`
+
+const TooltipContent = styled.div`
+    min-width: 200px;
+`
+
+const SummaryRow = styled.div`
+    padding: 4px 0;
+    font-size: 14px;
+    font-weight: 500;
+    
+    &:not(:last-child) {
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
 `
 
 export default PoliciesTable

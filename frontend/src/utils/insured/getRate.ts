@@ -1226,5 +1226,13 @@ export const baserate = {"Rate" : [
    {
       "Territory ": "AZ129",
       "Taxi Rate ": 1382
-     }
+     },
+     {
+        "Territory ": "AZ119",
+        "Taxi Rate ": 2287
+     },
+     {
+      "Territory ": "AZ110",
+      "Taxi Rate ": 4755
+   }
 ]}

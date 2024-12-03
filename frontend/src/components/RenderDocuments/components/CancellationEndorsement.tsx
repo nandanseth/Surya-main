@@ -485,8 +485,9 @@ function CancellationEndorsement({ policy }) {
                     const totalDays = daysBetween(cancelDate, effDate)
                     console.log(totalDays, coveragePremium, 'cancel')
 
-                    if (new Date(cancelDate).getTime() !== new Date(effDate).getTime()) {
-                        if (policy.cancellation.cancellationReason === 'Cancel / Rewrite at Different Limit') {
+                    if (policy.cancellation.cancellationRate !== "Short Rate") {
+                        if (new Date(cancelDate).getTime() !== new Date(effDate).getTime()) {
+                            if (policy.cancellation.cancellationReason === 'Cancel / Rewrite at Different Limit') {
                             
                             totalPremium += coveragePremium*(totalDays/365)
                         } else if (new Date(effDate).getTime() === new Date(effDateBase).getTime()) {
@@ -496,8 +497,22 @@ function CancellationEndorsement({ policy }) {
                             totalPremium += coveragePremium*(totalDays/365)
                             console.log(coveragePremium*(totalDays/365), 'ciel')
                         }
-                        
+                    } else {
+                        if (new Date(cancelDate).getTime() === new Date(expDate).getTime() || new Date(cancelDate).getTime() < new Date(expDate).getTime()) {
+                            const totalDays = daysBetween(cancelDate, effDate);
+                            let adjustedPremium = coveragePremium * (totalDays / 365);
+        
+                            
+                                const proRataReturn = coveragePremium - adjustedPremium;
+                                const shortRateReturn = proRataReturn * 0.9;
+                                adjustedPremium = coveragePremium - shortRateReturn;
+                            }
+        
+                            totalPremium += adjustedPremium;
+                        }
                     }
+
+                    
 
                     
                 }

@@ -20,21 +20,14 @@ import { preSubmit, urls, testItem } from '../../shared'
 import { useContext, useState } from 'react'
 import coverageIcon from '../../images/coverage icon.png'
 // import documentsIcon from '../../images/documents icon.png'
-import { Accept, Submit } from '../Buttons'
-import { useAlert } from 'react-alert'
-import driversIcon from '../../images/drivers icon.png'
-import insuredIcon from '../../images/insured icon.png'
-import lossHistoryIcon from '../../images/loss history icon.png'
-import paymentsIcon from '../../images/payments icon.png'
-import policyIcon from '../../images/policy icon.png'
-import reinsuranceIcon from '../../images/reinsurance icon.png'
+import { Accept, Submit } from '../Buttons' 
 import styled from 'styled-components'
 import vehicleIcon from '../../images/vehicle icon.png' 
 import { useEffect } from 'react'
 import { useMoralis } from "react-moralis"
 import Moralis from 'moralis'
 import { APP_ID, SERVER_URL } from '../../index'
-import { SortByHeader, Table, TD, Th, TR } from '../../styles/styles'
+import { SortByHeader, Table, Th, TR } from '../../styles/styles'
 import PolicyEditForm from './PolicyEditForm'
 import SuryaSelect from './PolicyFormSelect'
 import SuryaInput from './PolicyFormInput'
@@ -42,294 +35,343 @@ import { stateToCodeMapping } from '../../utils/policies/stateToCodeMapping'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { brokerOptions } from '../../utils/policies/getBrokerName'
+import { PolicyType } from '../../shared'
+import { createGlobalStyle } from 'styled-components';
+import ReactDOM from 'react-dom';
+import { IconButton, FormControl, FormGroup, FormControlLabel, Checkbox, Popover } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+
+const GlobalStyle = createGlobalStyle`
+    .react-datepicker-popper {
+        z-index: 9999 !important;
+    }
+`;
 
 const { Section } = Form
 
-const PolicyAppForm = ({ close }) => {
-    const store = useContext(FormContext)
-    const alert = useAlert()
+interface Application {
+    id: string
+    policyJson: string
+    policyNum: string
+    Decision: string
+    _created_at: string
+    _updated_at: string
+    policyStatus: string
+    effectiveDate: string
+    brokerName: string
+    genReDate: string
+    policyUnderwriter: string
+}
 
+interface PolicyAppFormProps {
+    applications: Application[]
+    searchValue: string
+}
+
+const PolicyAppForm = ({ applications, searchValue }: PolicyAppFormProps) => {
+    const [moralisStatus, setMoralisStatus] = useState<string[]>([])
+    const [moralisUWStatus, setMoralisUWStatus] = useState<string[]>([])
+    const [genReDateStatus, setGenReDateStatus] = useState<(string | Date)[]>([])
+    const [decisionStatus, setDecisionStatus] = useState<string[]>([])
+    const [createdDates, setCreatedDates] = useState<boolean[]>([])
+    const [brokerNames, setBrokerNames] = useState<string[]>([])
     const [loading, setLoading] = useState(false)
-    const [current, setCurrent] = useState('policy')
-    const [moralisApps, setMoralisApps] = useState([testItem])
-    const [moralisStartingApps, setMoralisStartingApps] = useState([testItem])
-    const [showForm, setShowForm] = useState(false)
-    const [currentApp, setCurrentApp] = useState([testItem])
-    const [rejectedApps, setRejectedApps] = useState()
+    const [selectedPolicyNum, setSelectedPolicyNum] = useState<string | null>(null)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [selectedApp, setSelectedApp] = useState<Application | null>(null)
+    const [sortField, setSortField] = useState<string>('')
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
     const {isAuthenticated, user, logout, account} = useMoralis(); 
-    const [moralisStatus, setMoralisStatus] = useState('')
-    const [moralisUWStatus, setMoralisUWStatus] = useState('')
-    const [genReDateStatus, setGenReDateStatus] = useState('')
-    const [createdDates, setCreatedDates] = useState([])
-    const [search, setSearch] = useState('')
-    const [decisionStatus, setDecisionStatus] = useState('')
-    const [clearSearch, setClearSearch] = useState(false)
-    const [brokerNames, setBrokerNames] = useState([]);
+    const [underwriterFilters, setUnderwriterFilters] = useState<string[]>([]);
+    const [tempUnderwriterFilters, setTempUnderwriterFilters] = useState<string[]>([]);
+    const [underwriterAnchorEl, setUnderwriterAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-
-
-    const { reset } = store
-
+    // Initialize status arrays when applications change
     useEffect(() => {
-        
-        const getApplications = async() => {
-            try {
-                const appId = APP_ID;
-                const serverUrl = SERVER_URL;   
+        if (applications?.length) {
+            setMoralisStatus(applications.map(app => app.policyStatus || 'Undefined'))
+            setMoralisUWStatus(applications.map(app => app.policyUnderwriter || 'Undefined'))
+            setGenReDateStatus(applications.map(app => app.genReDate || ''))
+            setDecisionStatus(applications.map(app => app.Decision || 'Undefined'))
+            setBrokerNames(applications.map(app => app.brokerName || 'Undefined'))
+            
+            // Set created dates based on 60 day check
+            const fortyDaysAgo = new Date()
+            fortyDaysAgo.setDate(fortyDaysAgo.getDate() - 60)
+            setCreatedDates(applications.map(app => {
+                const createdAt = new Date(app._created_at)
+                return createdAt > fortyDaysAgo
+            }))
+        }
+    }, [applications])
 
-                Moralis.start({ serverUrl, appId });
-
-                const Application = await (Moralis as any).Object.extend("Applications")
-                const query = new (Moralis as any).Query(Application);
-                const data = await query.limit(1000).find();
-
-                const fortyDaysAgo = new Date();
-                fortyDaysAgo.setDate(fortyDaysAgo.getDate() - 70);
-
-                let dataJson
-                let statusString
-                let uwString
-                let genReDate
-                let createdAt
-                let createdDate
-                let polNum
-                let decision = "null"
-                const appData = []
-                const statusData=[]
-                const uwData = []
-                const genReDateData = []
-                const decisionData = []
-                const createdDateData = []
-                const brokerNamesData = [];
+    const updateBrokerName = async (newBrokerName: string, app: Application, index: number) => {
+        try {
+            setLoading(true)
+            await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+            const Application = Moralis.Object.extend("Applications");
+            const query = new Moralis.Query(Application);
+            const data = await query.equalTo("policyNum", app.policyNum).first();
+            
+            if (data) {
+                data.set("brokerName", newBrokerName);
+                await data.save();
                 
-                for (const i in data) {
-                    const object = data[i]
-                    dataJson = JSON.parse(object.get("policyJson"))
-                    statusString = object.get("policyStatus")
-                    uwString = object.get("policyUnderwriter")
-                    decision = object.get("Decision")
-                    genReDate = object.get("genReDate")
-                    createdAt = new Date(dataJson.policy.effectiveDate)
-                    polNum = object.get("policyNum")
-
-                    console.log(fortyDaysAgo, createdAt, createdAt < fortyDaysAgo, dataJson.policy.name, 'classic')
-
- 
-                    if (createdAt < fortyDaysAgo) {
-                        createdDate = false
-                    } else {
-                        createdDate = true
-                    }
-                    
-                    console.log(dataJson.insured.additionalInsured, 'lsnuts')
-                    
-
-
-                    appData.push(dataJson)
-
-                
-                    statusData.push(statusString)
-                    uwData.push(uwString)
-                    genReDateData.push(genReDate)
-                    decisionData.push(decision)
-                    createdDateData.push(createdDate)
-
-                    const brokerName = object.get("brokerName") || "Undefined"; // Assuming brokerName is stored in your database
-                    brokerNamesData.push(brokerName);
-
-
-                    
-                    if (polNum === '23NJN00271') {
-                        console.log(decision, createdDateData, dataJson, 'clems')
-                    }
-                }
-
-                
-                
-                setMoralisApps(appData)
-                setMoralisStartingApps(appData)
-
-                setMoralisStatus(statusData)
-                setMoralisUWStatus(uwData)
-                setGenReDateStatus(genReDateData)
-                setDecisionStatus(decisionData)
-                setCreatedDates(createdDateData)
-                setBrokerNames(brokerNamesData);
-
-                const rejectedData = []
-                for (const i in data) {
-
-                    const object = data[i]
-                    if (object.get("Decision") !== 'Rejected') {
-                        rejectedData.push(object.get("Decision"))
-                    }
-                    
-                }
-
-                setRejectedApps(rejectedData)
-                console.log(rejectedData, 'skak')
-
-            } catch (error) {
-                alert.error("Error getting Applications")
-                console.log(error)
+                const newBrokerNames = [...brokerNames]
+                newBrokerNames[index] = newBrokerName
+                setBrokerNames(newBrokerNames)
             }
+        } catch (error) {
+            console.error('Error updating broker name:', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const statusOptions = [
+        { value: 'Awaiting Documents', label: 'Awaiting Documents' },
+        { value: 'Documents Uploaded', label: 'Documents Uploaded' },
+        { value: 'Additional Docs Requested', label: 'Additional Docs Requested' },
+        { value: 'Quote Sent to GenRe', label: 'Quote Sent to GenRe' },
+        { value: 'Quote Received from GenRe / In Discussion', label: 'Quote Recieved from GenRe / In Discussion' },
+        { value: 'Quote Sent to Broker', label: 'Quote Sent to Broker' },
+        { value: 'Quote Not Taken By Broker', label: 'Quote Not Taken By Broker' },
+        { value: 'Quote Accepted By Broker', label: 'Quote Accepted By Broker' },
+        { value: 'N/A', label: 'N/A' }
+    ]
+
+    const underwriterOptions = [
+        { value: "Anthony Stola", label: "Anthony Stola" },
+        { value: "Tim Kirkem", label: "Tim Kirkem" },
+        { value: "Undefined", label: "Undefined" }
+    ]
+
+    const updateStatus = async (newStatus: string, app: Application, index: number) => {
+        try {
+            setLoading(true)
+            await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+            const Application = Moralis.Object.extend("Applications");
+            const query = new Moralis.Query(Application);
+            const data = await query.equalTo("policyNum", app.policyNum).first();
+            
+            if (data) {
+                data.set("policyStatus", newStatus);
+                await data.save();
+                
+                const newStatuses = [...moralisStatus]
+                newStatuses[index] = newStatus
+                setMoralisStatus(newStatuses)
+            }
+        } catch (error) {
+            console.error('Error updating status:', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const updateGenReDate = async (newDate: Date, app: Application, index: number) => {
+        try {
+            if (!newDate) {
+                // Handle clearing the date
+                setLoading(true);
+                await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+                const Application = Moralis.Object.extend("Applications");
+                const query = new Moralis.Query(Application);
+                const data = await query.equalTo("policyNum", app.policyNum).first();
+                
+                if (data) {
+                    data.set("genReDate", "");
+                    await data.save();
+                    
+                    const newGenReDates = [...genReDateStatus];
+                    newGenReDates[index] = "";
+                    setGenReDateStatus(newGenReDates);
+                }
+                return;
+            }
+            
+            setLoading(true);
+            await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+            const Application = Moralis.Object.extend("Applications");
+            const query = new Moralis.Query(Application);
+            const data = await query.equalTo("policyNum", app.policyNum).first();
+            
+            if (data) {
+                // Create a new date object to avoid timezone issues
+                const validDate = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+                data.set("genReDate", validDate);
+                await data.save();
+                
+                const newGenReDates = [...genReDateStatus]
+                newGenReDates[index] = validDate
+                setGenReDateStatus(newGenReDates)
+            }
+        } catch (error) {
+            console.error('Error updating GenRe date:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const updateUnderwriter = async (newUnderwriter: string, app: Application, index: number) => {
+        try {
+            setLoading(true)
+            await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+            const Application = Moralis.Object.extend("Applications");
+            const query = new Moralis.Query(Application);
+            const data = await query.equalTo("policyNum", app.policyNum).first();
+            
+            if (data) {
+                data.set("policyUnderwriter", newUnderwriter);
+                await data.save();
+                
+                const newUWStatus = [...moralisUWStatus]
+                newUWStatus[index] = newUnderwriter
+                setMoralisUWStatus(newUWStatus)
+            }
+        } catch (error) {
+            console.error('Error updating underwriter:', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const parseDate = (dateStr: string): Date => {
+        if (!dateStr) return new Date(0); // Return earliest possible date if empty
+        
+        // Handle MM/DD/YYYY format
+        const [month, day, year] = dateStr.split('/').map(num => parseInt(num, 10));
+        return new Date(year, month - 1, day); // month is 0-based in Date constructor
+    }
+
+    // Add this helper function to check if a date is within the last 45 days
+    const isWithinPast45Days = (dateStr: string): boolean => {
+        if (!dateStr) return false;
+        
+        const effectiveDate = parseDate(dateStr);
+        const today = new Date();
+        const daysAgo45 = new Date();
+        daysAgo45.setDate(today.getDate() - 45);
+        
+        return effectiveDate >= daysAgo45;
+    }
+
+    const handleUnderwriterFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log('Filter button clicked'); // Debug log
+        event.preventDefault();
+        event.stopPropagation();
+        setTempUnderwriterFilters([...underwriterFilters]);
+        setUnderwriterAnchorEl(event.currentTarget);
+    };
+
+    const handleUnderwriterFilterClose = () => {
+        setUnderwriterAnchorEl(null);
+    };
+
+    const applyUnderwriterFilters = () => {
+        setUnderwriterFilters(tempUnderwriterFilters);
+        handleUnderwriterFilterClose();
+    };
+
+    // Modify the filterApplications function to include underwriter filtering
+    const filterApplications = (apps: Application[]) => {
+        // First filter out "Quote Accepted by Broker" status
+        let filteredApps = apps.filter(app => 
+            app.policyStatus !== 'Quote Accepted By Broker'
+        );
+
+        // Then apply effective date filter
+        filteredApps = filteredApps.filter(app => {
+            const policyData = JSON.parse(app.policyJson || '{}');
+            return isWithinPast45Days(policyData.policy?.effectiveDate);
+        });
+
+        // Apply underwriter filters if any are selected
+        if (underwriterFilters.length > 0) {
+            filteredApps = filteredApps.filter(app => 
+                underwriterFilters.includes(app.policyUnderwriter || 'Undefined')
+            );
         }
 
+        return filteredApps;
+    };
 
+    // Modify the sortApplications function to filter first
+    const sortApplications = (apps: Application[]) => {
+        // First filter applications by effective date
+        const filteredAppsOne = apps.filter(app => {
+            const policyData = JSON.parse(app.policyJson || '{}');
+            return isWithinPast45Days(policyData.policy?.effectiveDate);
+        });
 
+        const filteredApps = filterApplications(filteredAppsOne);
 
+        // Then apply sorting if needed
+        if (!sortField) return filteredApps;
 
-        getApplications()
-    }, [showForm, clearSearch])
+        return [...filteredApps].sort((a, b) => {
+            let aValue, bValue;
 
+            switch (sortField) {
+                case 'name':
+                    aValue = JSON.parse(a.policyJson || '{}').policy?.name || ''
+                    bValue = JSON.parse(b.policyJson || '{}').policy?.name || ''
+                    break;
+                case 'effectiveDate':
+                    aValue = parseDate(JSON.parse(a.policyJson || '{}').policy?.effectiveDate || '')
+                    bValue = parseDate(JSON.parse(b.policyJson || '{}').policy?.effectiveDate || '')
+                    if (sortDirection === 'asc') {
+                        return aValue.getTime() - bValue.getTime();
+                    }
+                    return bValue.getTime() - aValue.getTime();
+                case 'broker':
+                    aValue = a.brokerName || ''
+                    bValue = b.brokerName || ''
+                    break;
+                case 'status':
+                    aValue = a.policyStatus || ''
+                    bValue = b.policyStatus || ''
+                    break;
+                case 'underwriter':
+                    aValue = a.policyUnderwriter || ''
+                    bValue = b.policyUnderwriter || ''
+                    break;
+                case 'underwritingCode':
+                    aValue = JSON.parse(a.policyJson || '{}').policy?.underwritingCode || ''
+                    bValue = JSON.parse(b.policyJson || '{}').policy?.underwritingCode || ''
+                    break;
+                case 'agent':
+                    aValue = JSON.parse(a.policyJson || '{}').policy?.agent || ''
+                    bValue = JSON.parse(b.policyJson || '{}').policy?.agent || ''
+                    break;
+                case 'genReDate':
+                    aValue = a.genReDate ? new Date(a.genReDate).getTime() : 0
+                    bValue = b.genReDate ? new Date(b.genReDate).getTime() : 0
+                    return sortDirection === 'asc' ? aValue - bValue : bValue - aValue
+                default:
+                    return 0;
+            }
 
-
-    const logStatus = async(label, app, i) => {
-        const Application = (Moralis as any).Object.extend("Applications")
-
-        const query = new (Moralis as any).Query(Application);
-        const data = await query.equalTo("policyNum", app.policy.policyNum).first();
-
-        data.set("policyStatus", label)
-        console.log(moralisStatus, i, label, 'dead')
-
-        const copyStatus = [...moralisStatus]
-        copyStatus[i] = label
-
-        setMoralisStatus(copyStatus)
-        
-        data.save()
-        
+            if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+            return 0;
+        });
     }
-
-    const logUWStatus = async(label, app, i) => {
-        const Application = (Moralis as any).Object.extend("Applications")
-
-        const query = new (Moralis as any).Query(Application);
-        const data = await query.equalTo("policyNum", app.policy.policyNum).first();
-
-        data.set("policyUnderwriter", label)
-
-        const copyStatus = [...moralisUWStatus]
-        copyStatus[i] = label
-
-        setMoralisUWStatus(copyStatus)
-        
-        data.save()
-        
-    }
-
-    const logGenReDateStatus = async(label, app, i) => {
-        const Application = (Moralis as any).Object.extend("Applications")
-
-        const query = new (Moralis as any).Query(Application);
-        const data = await query.equalTo("policyNum", app.policy.policyNum).first();
-
-        data.set("genReDate", label)
-
-        const copyStatus = [...genReDateStatus]
-        copyStatus[i] = label
-
-        setGenReDateStatus(copyStatus)
-        
-        data.save()
-        
-    }
-
-
-    
-
-    
 
     useEffect(() => {
-
-        
-        const searchApp = async(policies) => {
-            console.log(search, 'free')
-            if (search === '') {
-                setMoralisApps(policies)
-            }
+        const sortedApps = sortApplications(applications);
+        const newMoralisStatus = sortedApps.map(app => app.policyStatus || 'Undefined');
+        const newMoralisUWStatus = sortedApps.map(app => app.policyUnderwriter || 'Undefined');
+        const newGenReDateStatus = sortedApps.map(app => app.genReDate || '');
+        const newDecisionStatus = sortedApps.map(app => app.Decision || 'Undefined');
+        const newBrokerNames = sortedApps.map(app => app.brokerName || 'Undefined');
     
-            const currentPolicies = [...policies]
-            const filteredPolicies = currentPolicies.filter((item) => {
-                const policy = item?.policy.name
-                return (
-                    policy?.includes(search)
-    
-                )
-            })
-    
-            const appId = APP_ID;
-            const serverUrl = SERVER_URL;   
-    
-            Moralis.start({ serverUrl, appId });
-    
-            const Application = await (Moralis as any).Object.extend("Applications")
-            const query = new (Moralis as any).Query(Application);
-    
-            let statusString
-            let uwString
-            let genReDate
-            let createdAt
-            let createdDate
-            let decision = "null"
-
-            const fortyDaysAgo = new Date();
-            fortyDaysAgo.setDate(fortyDaysAgo.getDate() - 60);
-            const appData = []
-            const statusData=[]
-            const uwData = []
-            const genReDateData = []
-            const decisionData = []
-            const createdDateData = []
-            if (filteredPolicies.length === 1) {
-                for (const i in filteredPolicies) {
-                    const object = filteredPolicies[i]
-                    const data = await query.equalTo("policyNum", object.policy.policyNum).first();
-                    statusString = data.get("policyStatus")
-                    uwString = data.get("policyUnderwriter")
-                    decision = data.get("Decision")
-                    genReDate = data.get("genReDate")
-                    createdAt = data.get("_created_at")
-                    console.log(createdAt, 'skiing')
-
-                    if (createdAt < fortyDaysAgo) {
-                        createdDate = false
-                    } else {
-                        createdDate = true
-                    }
-
-                    // createdDate = true
-                    
-        
-        
-                
-                    statusData.push(statusString)
-                    uwData.push(uwString)
-                    genReDateData.push(genReDate)
-                    decisionData.push(decision)
-                    createdDateData.push(createdDate)
-        
-                }
-                setMoralisApps(filteredPolicies)
-    
-                setMoralisStatus(statusData)
-                setMoralisUWStatus(uwData)
-                setGenReDateStatus(genReDateData)
-                setDecisionStatus(decisionData)
-                setCreatedDate(createdDateData)
-            }
-             
-    
-        }
-
-
-        searchApp(moralisStartingApps)
-        
-
-    }, [search])
-
-
+        setMoralisStatus(newMoralisStatus);
+        setMoralisUWStatus(newMoralisUWStatus);
+        setGenReDateStatus(newGenReDateStatus);
+        setDecisionStatus(newDecisionStatus);
+        setBrokerNames(newBrokerNames);
+    }, [applications, sortField, sortDirection, underwriterFilters]);
 
     const closeApp = async(app) => {
 
@@ -340,9 +382,7 @@ const PolicyAppForm = ({ close }) => {
             const Application = (Moralis as any).Object.extend("Applications")
 
             const query = new (Moralis as any).Query(Application);
-            console.log(app.app.policy.policyNum, "NUMBer")
             const data = await query.equalTo("policyNum", app.app.policy.policyNum).first();
-            console.log(data, "DATAFIELD")
             data.set("Decision", "Rejected")
             //data.destroy({useMasterKey: true})
             await data.save()
@@ -354,461 +394,523 @@ const PolicyAppForm = ({ close }) => {
         }
     }
 
-    const onSubmit = (app) => {
-        const postStore = async () => {
-            try {
-                //we can do some verification here
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(preSubmit(store)),
-                }
-                console.log(JSON.stringify(preSubmit(store)))
-                const res = await fetch(urls.createPoliciesUrl, requestOptions)
-                const data = await res.json()
-                console.log({ data }, 'test')
-                return true
-            } catch (error) {
-                alert.error('Error submitting')
-                console.log(error)
-                return false
-            }
+    const ButtonContainer = styled.div`
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        align-items: stretch;
+        min-width: 120px;
+    `
+
+    const AcceptButton = styled(Accept)`
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        width: 100%;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `
+
+    const RejectButton = styled(Close)`
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        width: 100%;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ff4444;
+        
+        &:hover {
+            background-color: #cc0000;
+            opacity: 1;
+            color: white;
         }
+    `
 
-        const getPolicyNum = async() => {
+    const RejectedText = styled.span`
+        color: #ff4444;
+        font-weight: 600;
+        font-size: 13px;
+        text-align: center;
+        width: 100%;
+        display: block;
+    `
 
-            const appId = APP_ID;
-            const serverUrl = SERVER_URL;  
-
-            Moralis.start({ serverUrl, appId });
-            const Policies = await (Moralis as any).Object.extend("Policies");
-            const Applications = await (Moralis as any).Object.extend("Applications");
-
-            const query = new (Moralis as any).Query(Policies);
-
-            const data = await query.limit(1000).find();
-
-
-            const policyNumbers = []
-
-            let dataJson = ''
-
-
-
-            for (const i in data) {
-                const object = data[i]
-                dataJson = object.get("policyNum")
-                policyNumbers.push(dataJson)
-            }
-
-
-            const effYear = parseInt(app.app.policy.effectiveDate.split("/")[2]).toString().slice(2,4)
-            const state = stateToCodeMapping[app.app.policy.states]
-            let categorySingle = ''
-
-            if (app.app.policy.secondaryCategory === 'Taxi') {
-                categorySingle = 'T'
-            } else if (app.app.policy.secondaryCategory === 'Limo') {
-                categorySingle = 'L'
-            } else {
-                categorySingle = 'N'
-            }
-
-
-            let maxNumber = -Infinity;
-            let maxPolicyNumber = '';
-
-            policyNumbers.forEach(policyNumber => {
-            const lastThreeDigits = parseInt(policyNumber.slice(-3), 10);
-            console.log(lastThreeDigits, app.app.insured.name, 'keys')
-            if (lastThreeDigits > maxNumber) {
-                maxNumber = lastThreeDigits;
-                maxPolicyNumber = policyNumber;
-            }
-            });
-
-            const policyNumberFinal = effYear + state + categorySingle + '00' + (maxNumber+1).toString()
-
-            
-
-
-            app.app.policy.policyNum = policyNumberFinal
-
-        }
-
-        const moralisStore = async (app) => {
-            try {
-                // const Policy = Moralis.Object.extend("Policies")
-                const Policy = (Moralis as any).Object.extend("Policies")
-                const policy = new Policy()
-
-                const initPolicy = (Moralis as any).Object.extend("InitialPolicies")
-                const initpolicy = new initPolicy()
-
-                if (app.app.policy.underwritingCode !== 'Renewal') {
-                    
-                    await getPolicyNum()
-                }
-
-                app.app.payments.values = []
-
-                if (!app.app.payments.paymentType || app.app.payments.paymentType === 'null') {
-                    app.app.payments.paymentType = "FULLPAY_POL"
-                }
-                
-                initpolicy.set("policyJson", JSON.stringify(app.app))
-                policy.set("policyJson", JSON.stringify(app.app))
-                console.log(app, "EXTRA")
-
-                initpolicy.set("policyNum", app.app.policy.policyNum)
-                policy.set("policyNum", app.app.policy.policyNum)
-                await policy.save()
-
-                const Application = (Moralis as any).Object.extend("Applications")
-
-                const query = new (Moralis as any).Query(Application);
-                const data = await query.equalTo("policyNum", app.app.policy.policyNum).first();
-
-                console.log(data, "LSL")
-
-                data.set("Decision", "Accepted")
-
-                //data.destroy({useMasterKey: true})
-
-                await data.save()
-
-                return true
-            } catch (error) {
-                console.log(error)
-                return false
-            }
-        }
-        return moralisStore(app)
-    }
+    const AUTHORIZED_USERS = ['KVekaria', 'kushdave', 'rshukla', 'rshukla1'];
 
     const MenuFooter = (app) => (
-        
-        <>
-            <Accept
+        <ButtonContainer>
+            <AcceptButton
                 disabled={loading}
-                onClick={async () => {
-                    setLoading(true)
-                    const check = await onSubmit(app)
-                    
+                onClick={async (e) => {
+                    e.stopPropagation();
+                    setLoading(true);
+                    const check = await onSubmit(app);
                     if (check) {
-                        setLoading(false)
-                        close()
-                        reset()
+                        setLoading(false);
+                        close();
                     }
-                    setLoading(false)
-                    // window.location.reload()
+                    setLoading(false);
                 }}
             >
                 {loading ? 'Loading' : 'Accept'}
-            </Accept>
-            <Close onClick={() => closeApp(app)}>Reject</Close>
-        </>
+            </AcceptButton>
+            <RejectButton onClick={(e) => {
+                e.stopPropagation();
+                closeApp(app);
+            }}>
+                Reject
+            </RejectButton>
+        </ButtonContainer>
     )
 
     const MenuFooterReject = (app) => (
-        
-        <>
-
-            <Close onClick={() => closeApp(app)}>Reject</Close>
-        </>
+        <ButtonContainer>
+            <RejectButton onClick={(e) => {
+                e.stopPropagation();
+                closeApp(app);
+            }}>
+                Reject
+            </RejectButton>
+        </ButtonContainer>
     )
 
-    const MenuFooterRejected = (app) => (
-        
-        <>
-            Rejected
-        </>
+    const MenuFooterRejected = () => (
+        <ButtonContainer>
+            <RejectedText>Rejected</RejectedText>
+        </ButtonContainer>
     )
 
+    const onSubmit = async (app) => {
+        const generatePolicyNumber = async (app) => {
+            await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+            const Policies = Moralis.Object.extend("Policies");
+            const query = new Moralis.Query(Policies);
+            const data = await query.limit(2000).find();
+            const policyJson = JSON.parse(app.app.policyJson || '{}')
+            // Get all existing policy numbers
+            const policyNumbers = data.map(object => object.get("policyNum"));
 
+            // Generate policy number components
+            const effYear = policyJson.policy.effectiveDate.split("/")[2].slice(-2);
+            const state = stateToCodeMapping[policyJson.policy.states];
+            const categoryMap = {
+                'Taxi': 'T',
+                'Limo': 'L'
+            };
+            const categorySingle = categoryMap[policyJson.policy.secondaryCategory] || 'N';
 
-    const ShowPolicyForm = (app) => {
-        setShowForm(true)
-        
-        setCurrentApp(app.app)
-    }
+            // Find the highest number and increment
+            const maxNumber = policyNumbers.reduce((max, policyNumber) => {
+                const lastThreeDigits = parseInt(policyNumber.slice(-3), 10);
+                return Math.max(max, lastThreeDigits);
+            }, -1);
 
-    const CloseForm = () => {
-        setShowForm(false)
-    }
+            return `${effYear}${state}${categorySingle}00${maxNumber + 1}`;
+        };
 
-    const EditApp = (app) => (
-        <>
-            <Button
-                onClick={() => {
-                    ShowPolicyForm(app);
-                }}
-            >
-                Edit
-            </Button>
-        </>
-    )
+        const updateApplication = async (policyNum) => {
+            const Application = Moralis.Object.extend("Applications");
+            const query = new Moralis.Query(Application);
+            const application = await query.equalTo("policyNum", policyNum).first();
 
-    const sortMoralisAppsAlphabetically = async (morApps) => {
-        try {
-            const indexMap = morApps.reduce((acc, app, index) => {
-                acc[app.policy.policyNum] = index;
-                return acc;
-            }, {});
-    
-            const sortedApps = morApps.sort((a, b) => {
-                const nameA = a.policy.name.toUpperCase();
-                const nameB = b.policy.name.toUpperCase();
-                if (nameA < nameB) {
-                    return -1;
-                }
-                if (nameA > nameB) {
-                    return 1;
-                }
-                return 0;
-            });
-    
-            const appData = [];
-            const statusData = new Array(morApps.length);
-            const uwData = new Array(morApps.length);
-            const genReDateData = new Array(morApps.length);
-            const decisionData = new Array(morApps.length);
-            const createdDateData = new Array(morApps.length);
-            const brokerNameData = new Array(morApps.length); // New array for broker names
-    
-            for (let i = 0; i < sortedApps.length; i++) {
-                const originalIndex = indexMap[sortedApps[i].policy.policyNum];
-    
-                // Reposition other states
-                statusData[i] = moralisStatus[originalIndex];
-                uwData[i] = moralisUWStatus[originalIndex];
-                genReDateData[i] = genReDateStatus[originalIndex];
-                decisionData[i] = decisionStatus[originalIndex];
-                createdDateData[i] = createdDates[originalIndex];
-                brokerNameData[i] = brokerNames[originalIndex]; // Add broker name data
+            if (application) {
+                application.set("Decision", "Accepted");
+                await application.save();
             }
-    
-            setMoralisStatus(statusData);
-            setMoralisUWStatus(uwData);
-            setGenReDateStatus(genReDateData);
-            setDecisionStatus(decisionData);
-            setCreatedDates(createdDateData);
-            setBrokerNames(brokerNameData); // Update broker names state
-    
-            setMoralisApps([...sortedApps]);
+        };
+
+        const savePolicyToMoralis = async (policyData) => {
+            const Policy = Moralis.Object.extend("Policies");
+            const InitialPolicy = Moralis.Object.extend("InitialPolicies");
+            
+            const policy = new Policy();
+            const initPolicy = new InitialPolicy();
+            console.log(policyData)
+            // Set policy data
+            const policyJsonString = JSON.stringify(policyData);
+            policy.set("policyJson", policyJsonString);
+            policy.set("policyNum", policyData.policy.policyNum);
+            
+            initPolicy.set("policyJson", policyJsonString);
+            initPolicy.set("policyNum",  policyData.policy.policyNum);
+
+            // Save both policies
+            await Promise.all([
+                policy.save(),
+                initPolicy.save()
+            ]);
+        };
+
+        try {
+            // Initialize Moralis
+            await Moralis.start({ serverUrl: SERVER_URL, appId: APP_ID });
+            console.log(app.app.policyJson)
+            const policyJson = JSON.parse(app.app.policyJson || '{}')
+
+            // Generate new policy number if not a renewal
+            if (policyJson.policy.underwritingCode !== 'Renewal') {
+                policyJson.policy.policyNum = await generatePolicyNumber(app);
+            }
+
+            // Set default payment values
+            policyJson.payments.values = [];
+            policyJson.payments.paymentType = policyJson.payments.paymentType || "FULLPAY_POL";
+
+            // Save policy and update application
+            await savePolicyToMoralis(policyJson);
+            await updateApplication(policyJson.policy.policyNum);
+
             return true;
         } catch (error) {
-            console.log(error);
+            console.error('Error in onSubmit:', error);
             return false;
         }
     };
 
-    const logBrokerName = async (label, app, i) => {
-        const Application = (Moralis as any).Object.extend("Applications");
-        const query = new (Moralis as any).Query(Application);
-        const data = await query.equalTo("policyNum", app.policy.policyNum).first();
-    
-        data.set("brokerName", label);
-    
-        const copyBrokerNames = [...brokerNames];
-        copyBrokerNames[i] = label;
-    
-        setBrokerNames(copyBrokerNames);
-        
-        data.save();
-    };
-
-
-    
-
     return (
         <>
-        <Container>
+            <GlobalStyle />
             {loading && (
                 <div style={overlayStyle}>
                     <CircularProgress />
                 </div>
             )}
-            {/* <FormHead
-                current={current}
-                name={name}
-                percent={percentMap[current]}
-                setCurrent={setCurrent}
-            /> */}
-            
-            <Search
-                clear={() => {
-                    setClearSearch(true)
-                    setSearch('')
-                }}
-                onChange={(e) => {
-                    setSearch(e.target.value.toUpperCase())
-                }}
-                placeholder="Search Policies"
-                style={{ marginLeft: 'auto' }}
-                value={search}
-            />
-            <Button disabled={loading} onClick={
-                async() => {
-                setLoading(true)
-                const check = await sortMoralisAppsAlphabetically(moralisApps);
-                if (check) {
-                    setLoading(false)
-                }
-                setLoading(false)
-                }} style={{ marginRight: 'auto', padding: "10px", marginLeft: '10px' }}>Sort Alphabetically</Button>
-            <Table>
+            <StyledTable>
                 <thead>
-                        <Th>
-                            Application Name
+                    <tr>
+                    <Th>
+                        <SortByHeader
+                            onClick={() => {
+                                setSortDirection(sortField === 'name' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                setSortField('name')
+                            }}
+                            active={sortField === 'name'}
+                            direction={sortDirection}
+                        >
+                            Policy Name
+                            </SortByHeader>
                         </Th>
                         <Th>
+                            <SortByHeader
+                                onClick={() => {
+                                setSortDirection(sortField === 'effectiveDate' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                setSortField('effectiveDate')
+                            }}
+                            active={sortField === 'effectiveDate'}
+                            direction={sortDirection}
+                        >
+                                Effective Date
+                            </SortByHeader>
+                        </Th>
+                        <Th>
+                            <SortByHeader
+                                onClick={() => {
+                                    setSortDirection(sortField === 'agent' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                    setSortField('agent')
+                                }}
+                                active={sortField === 'agent'}
+                                direction={sortDirection}
+                            >
+                                Agent
+                            </SortByHeader>
+                        </Th>
+                        <Th>
+                            <SortByHeader
+                                onClick={() => {
+                                    setSortDirection(sortField === 'underwritingCode' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                    setSortField('underwritingCode')
+                                }}
+                                active={sortField === 'underwritingCode'}
+                                direction={sortDirection}
+                            >
+                                Underwriting Code
+                            </SortByHeader>
+                        </Th>
+                        
+                        <Th>
+                            <SortByHeader
+                                onClick={() => {
+                                setSortDirection(sortField === 'broker' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                setSortField('broker')
+                            }}
+                            active={sortField === 'broker'}
+                            direction={sortDirection}
+                        >
                             Broker Name
+                            </SortByHeader>
                         </Th>
                         <Th>
-                            Limit
-                        </Th>
-                        <Th>
-                            Renewal
-                        </Th>
-                        <Th>
-                            Eff Date
-                        </Th>
-                        <Th>
-                            GenRe Date
-                        </Th>
-                        <Th>
+                            <SortByHeader
+                                onClick={() => {
+                                    setSortDirection(sortField === 'status' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                setSortField('status')
+                            }}
+                            active={sortField === 'status'}
+                            direction={sortDirection}
+                        >
                             Status
+                            </SortByHeader>
                         </Th>
                         <Th>
+                            <SortByHeader
+                                onClick={() => {
+                                    setSortDirection(sortField === 'underwriter' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                setSortField('underwriter')
+                            }}
+                            active={sortField === 'underwriter'}
+                            direction={sortDirection}
+                        >
                             Underwriter
+                            <IconButton
+                                size="small"
+                                onClick={handleUnderwriterFilterClick}
+                                style={{ marginLeft: '4px' }}
+                            >
+                                <FilterListIcon fontSize="small" />
+                            </IconButton>
+                        </SortByHeader>
+                        <Popover
+                            id="underwriter-filter-popover"
+                            open={Boolean(underwriterAnchorEl)}
+                            anchorEl={underwriterAnchorEl}
+                            onClose={handleUnderwriterFilterClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            slotProps={{
+                                paper: {
+                                    style: {
+                                        marginTop: '8px',
+                                        maxHeight: '400px',
+                                        overflowY: 'auto',
+                                        zIndex: 9999
+                                    }
+                                }
+                            }}
+                        >
+                            <FormControl sx={{ p: 2 }} component="fieldset" variant="standard">
+                                <FormGroup>
+                                    {underwriterOptions.map((option) => (
+                                        <FormControlLabel
+                                            key={option.value}
+                                            control={
+                                                <Checkbox
+                                                    checked={tempUnderwriterFilters.includes(option.value)}
+                                                    onChange={(e) => {
+                                                        e.stopPropagation();
+                                                        if (e.target.checked) {
+                                                            setTempUnderwriterFilters([...tempUnderwriterFilters, option.value]);
+                                                        } else {
+                                                            setTempUnderwriterFilters(tempUnderwriterFilters.filter(uw => uw !== option.value));
+                                                        }
+                                                    }}
+                                                />
+                                            }
+                                            label={option.label}
+                                        />
+                                    ))}
+                                </FormGroup>
+                                <div style={{ 
+                                    display: 'flex', 
+                                    justifyContent: 'flex-end', 
+                                    gap: '8px',
+                                    marginTop: '16px',
+                                    borderTop: '1px solid #eee',
+                                    paddingTop: '16px'
+                                }}>
+                                    <Button
+                                        onClick={() => {
+                                            setTempUnderwriterFilters([]);
+                                            handleUnderwriterFilterClose();
+                                        }}
+                                        style={{
+                                            backgroundColor: '#f5f5f5',
+                                            border: '1px solid #ddd',
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        onClick={applyUnderwriterFilters}
+                                        style={{
+                                            backgroundColor: Colors.electricBlue,
+                                            color: 'white',
+                                        }}
+                                    >
+                                        Apply
+                                    </Button>
+                                </div>
+                            </FormControl>
+                        </Popover>
                         </Th>
-                        <Th>Broker Name</Th>
                         <Th>
-                            Accept/Reject
+                            <SortByHeader
+                                onClick={() => {
+                                    setSortDirection(sortField === 'genReDate' && sortDirection === 'asc' ? 'desc' : 'asc')
+                                    setSortField('genReDate')
+                                }}
+                                active={sortField === 'genReDate'}
+                                direction={sortDirection}
+                            >
+                                GenRe Date
+                            </SortByHeader>
                         </Th>
+                        <Th>
+                            <SortByHeader>
+                            Decision
+                            </SortByHeader>
+                        </Th>
+                        
+                        
+                    </tr>
                 </thead>
                 <tbody>
-                {moralisApps.map(
-                        (app, i) => (
-                            (decisionStatus[i] === 'Undefined' && createdDates[i] === true) ? (
-                            <TR>
-                  
-                                    <Name>{app.policy.name}{"       "}
-                                    <EditApp app={app}/>
-                                    </Name>
-                                    <Name>
-                                        {app.policy.agent}
-                                    </Name>
-                                    <Name>
-                                        {(app.coverage.overall !== 'Split Limit') ? (app.coverage.combinedSectionLimit) : (<>{app.coverage.splitSectionBodyPerPerson} / {app.coverage.splitSectionBodyPerAccidentOptions} </>)}
-                                    </Name>
-
-                                    <Name>
-                                        {app.policy.underwritingCode}
-                                    </Name>
-
-                                    <Name>
-                                        {app.policy.effectiveDate}
-                                    </Name>
-                                    <div style={{ border: '1px solid black', width: '140px', display: 'inline-block' }}>
-                                        <DatePicker
+                    {sortApplications(applications).map((app, i) => {
+                        const policyData = JSON.parse(app.policyJson || '{}')
+                        return (
+                            <ClickableRow key={app.id} onClick={() => {
+                                setSelectedApp(app)
+                                setShowEditModal(true)
+                            }}>
+                                <TD>{policyData.policy?.name || 'N/A'}</TD>
+                                <TD>{policyData.policy?.effectiveDate || 'N/A'}</TD>
+                                <TD>{policyData.policy?.agent || 'N/A'}</TD>
+                                <TD>{policyData.policy?.underwritingCode || 'N/A'}</TD>
+                                <TD className="select-column" onClick={(e) => e.stopPropagation()}>
+                                    <Select
+                                        value={brokerNames[i] || ''}
+                                        onChange={(e) => updateBrokerName(e.target.value, app, i)}
+                                    >
+                                        <option value="Undefined">Select Broker</option>
+                                        {brokerOptions.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </TD>
+                                <TD className="select-column" onClick={(e) => e.stopPropagation()}>
+                                    <Select
+                                        value={moralisStatus[i] || ''}
+                                        onChange={(e) => updateStatus(e.target.value, app, i)}
+                                    >
+                                        <option value="Undefined">Select Status</option>
+                                        {statusOptions.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </TD>
+                                <TD className="select-column" onClick={(e) => e.stopPropagation()}>
+                                    <Select
+                                        value={moralisUWStatus[i] || ''}
+                                        onChange={(e) => updateUnderwriter(e.target.value, app, i)}
+                                    >
+                                        <option value="Undefined">Select Underwriter</option>
+                                        {underwriterOptions.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                </TD>
+                                <TD className="date-column" onClick={(e) => e.stopPropagation()}>
+                                    <DatePickerContainer>
+                                        <StyledDatePicker
                                             label="GenRe Date"
                                             name="GenRe Date"
-                                            onChange={(date) => logGenReDateStatus(date, app, i)}
+                                            onChange={(date) => updateGenReDate(date, app, i)}
                                             dateFormat="MM/dd/yyyy"
                                             placeholder="GenRe Date"
                                             selected={genReDateStatus[i]}
-                                            style={{ border: 'none', width: '100%', color: "black" }}
-                                        />
-                                    </div>
-
-                                    <Name>
-                                        <SuryaSelect
-                                            label="Choose status"
-                                            onChange={(e) => {
-                                                logStatus(e.target.value, app, i)
+                                            popperContainer={({ children }) => 
+                                                ReactDOM.createPortal(children, document.body)
+                                            }
+                                            popperProps={{
+                                                positionFixed: true,
+                                                strategy: 'fixed'
                                             }}
-                                            options={[
-                                                { value: 'Awaiting Documents', label: 'Awaiting Documents' },
-                                                { value: 'Documents Uploaded', label: 'Documents Uploaded' },
-                                                { value: 'Additional Docs Requested', label: 'Additional Docs Requested' },
-                                                { value: 'Quote Sent to GenRe', label: 'Quote Sent to GenRe' },
-                                                { value: 'Quote Received from GenRe / In Discussion', label: 'Quote Recieved from GenRe / In Discussion' },
-                                                { value: 'Quote Sent to Broker', label: 'Quote Sent to Broker' },
-                                                { value: 'Quote Not Taken By Broker', label: 'Quote Not Taken By Broker' },
-                                                { value: 'Quote Accepted By Broker', label: 'Quote Accepted By Broker' },
-                                                { value: 'N/A', label: 'N/A' }
+                                            popperModifiers={[
+                                                {
+                                                    name: 'preventOverflow',
+                                                    options: {
+                                                        boundary: 'window'
+                                                    }
+                                                },
+                                                {
+                                                    name: 'zIndex',
+                                                    options: {
+                                                        zIndex: 9999
+                                                    }
+                                                }
                                             ]}
-                                            placeholder="Status"
-                                            value={moralisStatus[i]}
                                         />
-                                    </Name>
-                                    <Name>
-                                        <SuryaSelect
-                                            label="Choose Underwriter"
-                                            onChange={(e) => {
-                                                logUWStatus(e.target.value, app, i)
-                                            }}
-                                            options={[
-                                                { value: 'Tim Kirkem', label: 'Tim Kirkem' },
-                                                { value: 'Anthony Stola', label: 'Anthony Stola' },
-                                                { value: 'Undefined', label: 'Undefined' }
-                                                
-                                            ]}
-                                            placeholder="UWStatus"
-                                            value={moralisUWStatus[i]}
-                                        />
-                                    </Name>
-                                    <Name>
-                                        <SuryaSelect
-                                            label="Choose Broker"
-                                            onChange={(e) => logBrokerName(e.target.value, app, i)}
-                                            options={brokerOptions}
-                                            placeholder="Broker Name"
-                                            value={brokerNames[i]}
-                                        />
-                                    </Name>
-
-                                    {
-                                    (user.get('username') === 'KVekaria' || user.get('username') === 'kushdave' || user.get('username') === 'rshukla' || user.get('username') === 'rshukla1') ? (<Name><MenuFooter app={app}/></Name>) : (<Name><MenuFooterReject app={app}/></Name>)}
-                            </TR>
-                            ) : (<></>)
+                                    </DatePickerContainer>
+                                </TD>
+                                <TD className="decision-column" onClick={(e) => e.stopPropagation()}>
+                                    {app.Decision === "Rejected" ? (
+                                        <MenuFooterRejected />
+                                    ) : app.Decision === "Accepted" ? (
+                                        <MenuFooterReject app={app} />
+                                    ) : AUTHORIZED_USERS.includes(user?.get('username')) ? (
+                                        <MenuFooter app={app} />
+                                    ) : (
+                                        <MenuFooterReject app={app} />
+                                    )}
+                                </TD>
+                            </ClickableRow>
                         )
-                    )}
+                    })}
                 </tbody>
-            </Table>
-            {/* <MenuFooter /> */}
-        </Container>
+            </StyledTable>
 
-        {showForm && (
-            <Overlay
-                show={showForm}
-                style={{ background: 'rgba(11, 17, 20, 0.7939303)' }}
-            >
-                <Wrapper
-                    onClick={(e) => {
-                        if (e.currentTarget !== e.target) {
-                            return
-                        }
-                        CloseForm()
-                    }}
-                >
-                    <PolicyEditForm
-                        close={() => {
-                            CloseForm()
+            {showEditModal && selectedApp && (
+                <Overlay show={showEditModal}>
+                    <PolicyEditForm 
+                        policyNum={selectedApp.policyNum}
+                        onClose={() => {
+                            setShowEditModal(false)
+                            setSelectedApp(null)
                         }}
-                        app={currentApp}
                     />
-                </Wrapper>
-            </Overlay>
-            
-        )}
+                </Overlay>
+            )}
         </>
-
     )
+}
+
+const ClickableRow = styled.tr`
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: ${Colors.light};
+    }
+    z-index: 1;
+`
+
+const overlayStyle = {
+    position: 'absolute' as const,
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    zIndex: 1000,
 }
 
 const Button = styled.button`
@@ -818,6 +920,59 @@ const Button = styled.button`
     border: 1px solid black;
     font-size: 16px;
     padding: 7.5px;
+`
+
+const TD = styled.td`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    
+    &.select-column {
+        width: 150px;
+    }
+    align-items: center;
+    font-weight: 600;
+
+    &.decision-column {
+        width: 120px;
+        padding: 8px;
+        vertical-align: middle;
+    }
+
+    &.date-column {
+        width: 130px;
+        padding: 4px 8px;
+        position: relative;
+        z-index: auto;
+    }
+
+    .date-picker-wrapper {
+        position: relative;
+        z-index: auto;
+    }
+
+    .date-picker {
+        width: 100%;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid ${Colors.black};
+        font-size: 13px;
+        cursor: pointer;
+        background-color: white;
+    }
+
+    .date-picker-popper {
+        z-index: 9999 !important;
+    }
+
+    .react-datepicker-wrapper {
+        position: relative;
+    }
+    .react-datepicker__input-container {
+        display: block;
+        width: 100%;
+    }
 `
 
 const ProgressContainer = styled.div`
@@ -928,61 +1083,57 @@ const Nav = styled.div`
     padding: 12px 20px;
 `
 
-const StyledIcon = styled.div<{ active: boolean }>`
-  width: 40px;
-  height: 100%;
-  margin: 0 24px;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  ${transitionCss}
-  ${({ active }) =>
-      active &&
-      `
-      border-bottom: solid 4px #3A5560;
-      background-color: #00000003;
-    `}}
-`
-
-const StyledImg = styled.img`
+const StyledTable = styled(Table)`
+    border-collapse: separate;
+    border-spacing: 0;
     width: 100%;
-    height: auto;
-    object-fit: contain;
-    margin: auto;
+    
+    th, td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    td {
+        position: relative;
+        z-index: auto;
+    }
+`
+// Add styled Select component
+const Select = styled.select`
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid ${Colors.black};
+    font-size: 13px;
+    width: 120px;  // Reduced from 200px
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+        border-color: ${Colors.electricBlue};
+    }
+
+    &:focus {
+        outline: none;
+        border-color: ${Colors.electricBlue};
+    }
 `
 
-const Wrapper = styled.div`
-    display: flex;
-    flex: 1 1 auto;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
-    height: 100%;
+const StyledDatePicker = styled(DatePicker)`
     width: 100%;
+    border: none;
+    color: black;
 `
 
-const Name = styled(TD)`
-    font-weight: 600;
-    font-size: 16px;
-    text-align: center;
-    align-items: center;
+const DatePickerContainer = styled.div`
+    border: 1px solid black;
+    width: 120px;
+    position: relative;
 `
-const overlayStyle = {
-    position: 'absolute', // Or 'absolute' if the spinner should be contained within a specific parent
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Light white background
-    zIndex: 1000, // Ensure it sits above everything else
-};
-
-
 
 export default PolicyAppForm

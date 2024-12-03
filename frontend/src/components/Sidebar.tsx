@@ -7,15 +7,15 @@ import styled from 'styled-components'
 
 const Sidebar = () => {
     const { pathname } = useLocation()
-    const links = ['policies', 'reports', 'quickrate', 'settings']
+    const links = ['policies', 'reports', 'tables', 'settings']
     const check = (s) => {
         if (pathname === '/home' && s === 'policies') {
             return true
         }
-        if (pathname.includes('/policies') && s === 'policies') {
+        if (pathname === '/tables' && s === 'tables') {
             return true
         }
-        if (pathname.includes('/quickrate') && s === 'quickrate') {
+        if (pathname.includes('/policies') && s === 'policies') {
             return true
         }
         if (pathname.includes('/settings') && s === 'settings') {
@@ -38,12 +38,13 @@ const Sidebar = () => {
 const LinkMap: Record<string, string> = {
     policies: '/home',
     reports: '/reports',
-    quickrate: '/quickrate',
+    tables: '/tables',
     // claims: '/claims',
     settings: '/settings',
 }
 
 const SidebarItem = ({ link, active }: { link: string; active?: boolean }) => (
+    
     <Link style={{ display: 'inherit' }} to={LinkMap[link]}>
         <IconHolder active={active}>
             {/* <Icon src={active ? iconMap[link].active : iconMap[link].default} /> */}

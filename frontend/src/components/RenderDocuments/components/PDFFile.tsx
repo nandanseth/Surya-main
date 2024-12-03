@@ -625,7 +625,7 @@ function PDFFile({ policy }: any) {
     const CalculateTax = () => {
         const premium = parseFloat(CalculatePremium().replace(',',''))
         const tax = stateToTaxFee[policy.policy.states]*premium
-        console.log(premium, tax, "KUSH")
+        console.log(premium, tax, policy.policy.states, stateToTaxFee[policy.policy.states], "KUSH")
         return parseFloat(tax).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 
     }
